@@ -339,8 +339,10 @@ function getPinyin(chinese) {
 }
 
 function speak(chinese) {
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
-  new Audio(url).play();
+  const utterance = new SpeechSynthesisUtterance(chinese);
+  utterance.lang = 'zh-CN';
+  utterance.rate = 0.8;
+  speechSynthesis.speak(utterance);
 }
 
 async function getCharMeaning(char) {
