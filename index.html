@@ -217,9 +217,9 @@
   <div class="columns">
     <div class="column">
       <div class="column-label">English</div>
-      <div class="card card-input" onclick="document.getElementById('english-input').focus()">
-        <input type="text" id="english-input" placeholder="Type a word..." autofocus>
-      </div>
+      <form id="translate-form" class="card card-input" onclick="document.getElementById('english-input').focus()">
+        <input type="text" id="english-input" placeholder="Type a word..." autofocus enterkeyhint="search">
+      </form>
     </div>
     <div class="column">
       <div class="column-label">Traditional</div>
@@ -469,11 +469,9 @@ async function buildBreakdown(traditional, simplified, container) {
   }
 }
 
-document.getElementById('english-input').addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    translate();
-  }
+document.getElementById('translate-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+  translate();
 });
 
 window.addEventListener('online', () => {
