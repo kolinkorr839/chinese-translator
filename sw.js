@@ -1,4 +1,4 @@
-const CACHE_NAME = 'chinese-translator-v1';
+const CACHE_NAME = 'chinese-translator-v2';
 const STATIC_ASSETS = [
   './index.html',
   './manifest.json',
@@ -28,6 +28,17 @@ self.addEventListener('fetch', e => {
 
   if (url.hostname === 'translate.googleapis.com' || url.hostname === 'translate.google.com') {
     e.respondWith(fetch(e.request));
+    return;
+  }
+
+  if (e.request.url.endsWith('/index.html') || e.request.url.endsWith('/')) {
+    e.respondWith(
+      fetch(e.request).then(resp => {
+        const clone = resp.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+        return resp;
+      }).catch(() => caches.match(e.request))
+    );
     return;
   }
 
