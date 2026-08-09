@@ -339,10 +339,15 @@ function getPinyin(chinese) {
 }
 
 function speak(chinese) {
-  const utterance = new SpeechSynthesisUtterance(chinese);
-  utterance.lang = 'zh-CN';
-  utterance.rate = 0.8;
-  speechSynthesis.speak(utterance);
+  const audio = new Audio(
+    `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`
+  );
+  audio.play().catch(() => {
+    const utterance = new SpeechSynthesisUtterance(chinese);
+    utterance.lang = 'zh-CN';
+    utterance.rate = 0.8;
+    speechSynthesis.speak(utterance);
+  });
 }
 
 async function getCharMeaning(char) {
