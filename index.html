@@ -343,20 +343,22 @@ function speak(chinese, el) {
     el.style.color = '#248a3d';
     setTimeout(() => el.style.color = '', 300);
   }
-  const audio = new Audio(
-    `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`
-  );
-  audio.play().catch(() => {
+  const voices = speechSynthesis.getVoices();
+  const femaleVoice = voices.find(v => v.lang.startsWith('zh') && /ting-ting|female|lili|meijia/i.test(v.name))
+    || voices.find(v => v.lang.startsWith('zh'));
+  if (femaleVoice) {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(chinese);
     u.lang = 'zh-CN';
     u.rate = 0.8;
-    const voices = speechSynthesis.getVoices();
-    const v = voices.find(v => v.lang.startsWith('zh') && /ting-ting|female|lili|meijia/i.test(v.name))
-      || voices.find(v => v.lang.startsWith('zh'));
-    if (v) u.voice = v;
+    u.voice = femaleVoice;
     speechSynthesis.speak(u);
-  });
+  } else {
+    const audio = new Audio(
+      `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`
+    );
+    audio.play().catch(() => {});
+  }
 }
 
 async function getCharMeaning(char) {
