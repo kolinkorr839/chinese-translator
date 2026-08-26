@@ -1,0 +1,3479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mandarin Chinese in 14 Days</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page {
+  size: A4;
+  margin: 2cm;
+  @bottom-center { content: counter(page); font-size: 10pt; color: #8a8478; }
+}
+@media print {
+  body { font-size: 11pt; background: #FFFDF8 !important; }
+  .page-break { page-break-before: always; }
+  .no-break { page-break-inside: avoid; }
+  .cover-page { page-break-after: always; }
+  .lesson { page-break-before: always; }
+  .quiz { page-break-before: always; }
+  .cheat-sheet { page-break-before: always; }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  color: #1a1a2e;
+  line-height: 1.7;
+  margin: 0;
+  padding: 2rem 4rem;
+  background: #F5F0E8;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    );
+  counter-reset: page;
+}
+h1 { font-family: 'Cormorant Garamond', 'Noto Serif TC', serif; color: #C41E3A; font-size: 2rem; margin: 1.5rem 0 1rem; }
+h2 { font-family: 'Cormorant Garamond', serif; color: #1a1a2e; font-size: 1.5rem; margin: 2rem 0 1rem; border-bottom: 2px solid #C41E3A; padding-bottom: 0.3rem; }
+h3 { font-family: 'Cormorant Garamond', serif; color: #1a1a2e; font-size: 1.2rem; margin: 1.5rem 0 0.8rem; }
+h4 { font-family: 'Cormorant Garamond', serif; color: #1a1a2e; font-size: 1.05rem; margin: 1rem 0 0.5rem; }
+p { margin: 0.5rem 0; }
+ol, ul { margin: 0.5rem 0 0.5rem 1.5rem; }
+li { margin: 0.3rem 0; }
+
+/* Cover page */
+.cover-page {
+  text-align: center;
+  padding: 2rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.cover-page h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.8rem;
+  border: none;
+  color: #1a1a2e;
+  margin-bottom: 0.5rem;
+}
+.cover-page .subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  color: #C41E3A;
+  margin-bottom: 0.3rem;
+  font-weight: 600;
+}
+.cover-page .sub-subtitle {
+  font-size: 1rem;
+  color: #8a8478;
+  font-style: italic;
+}
+.cover-page .cover-chars {
+  font-size: 4rem;
+  margin: 2rem 0;
+  color: #C41E3A;
+}
+
+/* TOC */
+.toc { margin: 1rem 0; }
+.toc ul { list-style: none; margin-left: 0; }
+.toc li { padding: 0.3rem 0; border-bottom: 1px dotted #E8E0D4; }
+.toc li.indent { padding-left: 1.5rem; }
+
+/* Tone colors */
+.t1 { color: #C41E3A; font-weight: 600; }
+.t2 { color: #2E6BA7; font-weight: 600; }
+.t3 { color: #2D7D46; font-weight: 600; }
+.t4 { color: #6B3FA0; font-weight: 600; }
+.t5 { color: #8a8478; font-weight: 600; }
+
+/* Phrase blocks */
+.phrase {
+  background: #FFFDF8;
+  border-left: 3px solid #C41E3A;
+  padding: 0.6rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.phrase-list { margin: 1rem 0; }
+.phrase .chars { font-size: 1.3rem; margin-bottom: 0.2rem; }
+.phrase .trad { color: #1a1a2e; }
+.phrase .simp { color: #1a1a2e; }
+.phrase .divider { color: #E8E0D4; margin: 0 0.3rem; font-weight: 300; }
+.phrase .pinyin { font-size: 1.05rem; margin-bottom: 0.1rem; }
+.phrase .approx { font-size: 0.9rem; color: #8a8478; font-style: italic; }
+.phrase .meaning { font-size: 0.95rem; color: #1a1a2e; font-weight: 600; }
+
+/* Dialogue */
+.dialogue { margin: 1rem 0; }
+.dialogue-line {
+  background: #FFFDF8;
+  border-left: 3px solid #B8860B;
+  padding: 0.5rem 1rem;
+  margin: 0.4rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.dialogue-line .speaker {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  color: #1a1a2e;
+  display: inline-block;
+  min-width: 2rem;
+  margin-bottom: 0.2rem;
+}
+.dialogue-line .chars { font-size: 1.2rem; }
+.dialogue-line .pinyin { font-size: 1rem; }
+.dialogue-line .approx { font-size: 0.85rem; color: #8a8478; font-style: italic; }
+.dialogue-line .meaning { font-size: 0.9rem; color: #1a1a2e; }
+
+/* Boxes */
+.tip-box {
+  background: #FDF8EC;
+  border-left: 4px solid #B8860B;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 0 6px 6px 0;
+}
+.tip-box::before { content: "Tip: "; font-family: 'Cormorant Garamond', serif; font-weight: 700; color: #B8860B; }
+.cultural-note {
+  background: #EEF2EA;
+  border-left: 4px solid #7D8471;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 0 6px 6px 0;
+}
+.cultural-note::before { content: "Cultural Note: "; font-family: 'Cormorant Garamond', serif; font-weight: 700; color: #5A6350; }
+.practice-box {
+  background: #FDF8EC;
+  border-left: 4px solid #B8860B;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 0 6px 6px 0;
+}
+.review-box {
+  background: #F5F0E8;
+  border-left: 4px solid #6B3FA0;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 0 6px 6px 0;
+}
+.pronunciation-box {
+  background: #FFFDF8;
+  border-left: 4px solid #2E6BA7;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 0 6px 6px 0;
+}
+.vocab-box {
+  background: #FFFDF8;
+  border-left: 4px solid #1a1a2e;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 0 6px 6px 0;
+}
+.goal {
+  background: #FFFDF8;
+  border: 2px solid #C41E3A;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+.warmup {
+  background: #FFFDF8;
+  padding: 0.8rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+  border: 1px dashed #E8E0D4;
+}
+.tiny-grammar {
+  background: #FFFDF8;
+  border: 1px solid #C41E3A;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  border-radius: 6px;
+}
+
+/* Exercises */
+.exercise { margin: 0.8rem 0; }
+.exercise-item { margin: 0.4rem 0; padding: 0.3rem 0; }
+.exercise-blank { border-bottom: 2px solid #1a1a2e; display: inline-block; min-width: 8rem; margin: 0 0.3rem; }
+
+/* Quiz */
+.quiz { margin: 2rem 0; }
+
+/* Cheat sheet */
+.cheat-sheet { margin: 1.5rem 0; }
+.cheat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+.cheat-grid .phrase { font-size: 0.9rem; padding: 0.4rem 0.8rem; }
+.cheat-grid .phrase .chars { font-size: 1.1rem; }
+
+/* Vocabulary appendix */
+.vocab-entry {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #E8E0D4;
+  margin: 0.2rem 0;
+}
+.vocab-entry .chars { font-size: 1.1rem; }
+.vocab-example {
+  margin: 0.3rem 0 0.3rem 1.5rem;
+  padding: 0.3rem 0.8rem;
+  background: #FFFDF8;
+  border-left: 2px solid #E8E0D4;
+  font-size: 0.9rem;
+}
+
+/* Answer key */
+.answer-section { margin: 1rem 0; }
+.answer-section ol { margin-left: 1.5rem; }
+.answer-section .phrase { padding: 0.3rem 0.8rem; margin: 0.2rem 0; }
+
+/* Tone legend */
+.tone-legend {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding: 0.8rem 1rem;
+  background: #FFFDF8;
+  border: 1px solid #E8E0D4;
+  border-radius: 6px;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1rem 0;
+}
+th, td {
+  border: 1px solid #E8E0D4;
+  padding: 0.4rem 0.8rem;
+  text-align: left;
+}
+th { background: #1a1a2e; color: #FFFDF8; font-family: 'Cormorant Garamond', serif; font-weight: 600; }
+tr:nth-child(even) { background: #FFFDF8; }
+
+.section-title { color: #1a1a2e; }
+.toc a { color: #1a1a2e; text-decoration: none; }
+.toc a:hover { color: #C41E3A; text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- ==================== COVER PAGE ==================== -->
+<div class="cover-page">
+  <h1>Mandarin Chinese in 14 Days</h1>
+  <p class="subtitle">A Complete Survival Course for Absolute Beginners</p>
+  <p class="sub-subtitle">Learn Basic Conversation in Just 5-10 Minutes a Day</p>
+</div>
+
+<!-- ==================== TABLE OF CONTENTS ==================== -->
+<div class="page-break"></div>
+<h1>Table of Contents</h1>
+<div class="toc">
+<ul>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#how-to-use">How to Use This Book</a></li>
+  <li><a href="#pronunciation">Mandarin Pronunciation Made Easy</a></li>
+  <li class="indent"><a href="#lesson-1">Lesson 1: Greetings &amp; Basics</a></li>
+  <li class="indent"><a href="#lesson-2">Lesson 2: Introducing Yourself</a></li>
+  <li class="indent"><a href="#lesson-3">Lesson 3: Numbers &amp; Money</a></li>
+  <li class="indent"><a href="#lesson-4">Lesson 4: Ordering Food</a></li>
+  <li class="indent"><a href="#lesson-5">Lesson 5: Transportation</a></li>
+  <li class="indent"><a href="#lesson-6">Lesson 6: Hotel</a></li>
+  <li class="indent"><a href="#lesson-7">Lesson 7: Directions</a></li>
+  <li class="indent"><a href="#lesson-8">Lesson 8: Shopping</a></li>
+  <li class="indent"><a href="#lesson-9">Lesson 9: Emergencies</a></li>
+  <li class="indent"><a href="#lesson-10">Lesson 10: Time</a></li>
+  <li class="indent"><a href="#lesson-11">Lesson 11: Weather &amp; Small Talk</a></li>
+  <li class="indent"><a href="#lesson-12">Lesson 12: Friends &amp; Family</a></li>
+  <li class="indent"><a href="#lesson-13">Lesson 13: Putting It Together</a></li>
+  <li class="indent"><a href="#lesson-14">Lesson 14: Final Conversation Practice</a></li>
+  <li><a href="#quiz-1">Week 1 Quiz</a></li>
+  <li><a href="#quiz-2">Week 2 Quiz</a></li>
+  <li><a href="#cheat-sheets">Cheat Sheets</a></li>
+  <li><a href="#answer-key">Answer Key</a></li>
+</ul>
+</div>
+
+<!-- ==================== INTRODUCTION ==================== -->
+<div class="page-break"></div>
+<h1 id="introduction">Introduction</h1>
+
+<p>Mandarin Chinese might look impossible at first glance. Thousands of characters. Four tones that can turn "mother" into "horse." A writing system that seems to have no connection to the sounds. It's no wonder most English speakers feel intimidated.</p>
+
+<p>But here's the secret: <strong>Mandarin grammar is far simpler than English.</strong> No verb conjugation. No noun genders. No tenses. No plural forms. The word "eat" is always just "eat" - whether it's yesterday, today, or tomorrow, whether it's I, you, or they. If you've ever struggled with Spanish verb tables or German cases, Mandarin will feel refreshingly straightforward.</p>
+
+<p>The only real challenge is the tones - and you already use tones in English without thinking about it. When you say "Really?" with a rising voice, that's a tone. When you say "No." with a sharp drop, that's a tone too. You just need to learn to use tones on individual words, and that comes with practice.</p>
+
+<p><strong>You do NOT need to learn to read or write Chinese characters to start speaking.</strong> This book shows characters for reference alongside pinyin (the standard romanization system), so you can see how the language looks on signs and menus. But everything you need to speak is written in letters you already know, plus simple English pronunciation guides.</p>
+
+<p>Both traditional characters (used in Taiwan, Hong Kong) and simplified characters (used in mainland China) are shown side by side throughout, so you can recognize either form.</p>
+
+<p>This book is designed for <strong>5-10 minutes per day</strong>. One lesson per day, fourteen days total. Each lesson gives you phrases you can use immediately. By the end, you'll be able to greet people, introduce yourself, order food, navigate transportation, check into a hotel, shop, ask for directions, and handle basic emergencies - all in Mandarin.</p>
+
+<p>One more thing: Chinese people genuinely love it when foreigners try to speak their language. Even a simple "hello" in Mandarin will earn you smiles, encouragement, and often enthusiastic help. Don't worry about being perfect. Worry about being brave enough to try.</p>
+
+<!-- ==================== HOW TO USE THIS BOOK ==================== -->
+<div class="page-break"></div>
+<h1 id="how-to-use">How to Use This Book</h1>
+
+<p><strong>Do one lesson per day.</strong> Each lesson takes 5-10 minutes. Don't skip ahead - lessons build on each other.</p>
+
+<p><strong>Say every phrase out loud at least three times.</strong> Speaking is the only way to train your mouth and ears. Reading silently doesn't work for language learning.</p>
+
+<p><strong>Review the previous lesson before starting a new one.</strong> Quick review at the start of each lesson helps lock phrases into your long-term memory.</p>
+
+<h3>How to Read the Phrases</h3>
+<p>Every phrase in this book follows this format:</p>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">你好</span> <span class="divider">|</span> <span class="trad">你好</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span></div>
+  <div class="approx">nee how</div>
+  <div class="meaning">Hello</div>
+</div>
+
+<p><strong>Line 1:</strong> Traditional characters | Simplified characters</p>
+<p><strong>Line 2:</strong> Pinyin (romanization with tone marks) - color-coded by tone</p>
+<p><strong>Line 3:</strong> English pronunciation guide (read this like English to approximate the sound)</p>
+<p><strong>Line 4:</strong> English meaning</p>
+
+<h3>Tone Color System</h3>
+<p>Pinyin is color-coded so you can see the tone at a glance:</p>
+<div class="tone-legend">
+  <span><span class="t1">Tone 1 (flat)</span> - hold a steady high note</span>
+  <span><span class="t2">Tone 2 (rising)</span> - voice goes up, like "huh?"</span>
+  <span><span class="t3">Tone 3 (dip)</span> - voice dips down then up</span>
+  <span><span class="t4">Tone 4 (falling)</span> - voice drops sharply, like "No!"</span>
+  <span><span class="t5">neutral</span> - light and quick, no stress</span>
+</div>
+
+<!-- ==================== PRONUNCIATION GUIDE ==================== -->
+<div class="page-break"></div>
+<h1 id="pronunciation">Mandarin Pronunciation Made Easy</h1>
+
+<h2>The Four Tones (Learn These First!)</h2>
+
+<p>Mandarin has four tones plus a neutral tone. The same syllable pronounced in different tones means completely different things. This is the one thing you must get right - but it's easier than you think.</p>
+
+<div class="pronunciation-box">
+<h4><span class="t1">Tone 1 - High and Flat (&#x0304;)</span></h4>
+<p>Hold your voice at a steady high pitch, like singing and holding a note. Think of a doctor saying "Ahhhhh."</p>
+<div class="phrase">
+  <div class="chars"><span class="simp">妈</span> <span class="divider">|</span> <span class="trad">媽</span></div>
+  <div class="pinyin"><span class="t1">mā</span></div>
+  <div class="approx">mah (flat, steady)</div>
+  <div class="meaning">mom</div>
+</div>
+</div>
+
+<div class="pronunciation-box">
+<h4><span class="t2">Tone 2 - Rising (&#x0301;)</span></h4>
+<p>Voice rises from middle to high, like asking a question in English: "Huh?" or "What?"</p>
+<div class="phrase">
+  <div class="chars"><span class="simp">麻</span> <span class="divider">|</span> <span class="trad">麻</span></div>
+  <div class="pinyin"><span class="t2">má</span></div>
+  <div class="approx">mah? (rising, like a question)</div>
+  <div class="meaning">hemp / numb</div>
+</div>
+</div>
+
+<div class="pronunciation-box">
+<h4><span class="t3">Tone 3 - Dipping (&#x030C;)</span></h4>
+<p>Voice dips down low then rises slightly. Like saying "well..." when you're skeptical. The dip is the important part.</p>
+<div class="phrase">
+  <div class="chars"><span class="simp">马</span> <span class="divider">|</span> <span class="trad">馬</span></div>
+  <div class="pinyin"><span class="t3">mǎ</span></div>
+  <div class="approx">mah (voice goes down then up)</div>
+  <div class="meaning">horse</div>
+</div>
+</div>
+
+<div class="pronunciation-box">
+<h4><span class="t4">Tone 4 - Falling (&#x0300;)</span></h4>
+<p>Voice drops sharply from high to low, like saying "No!" firmly or "Stop!"</p>
+<div class="phrase">
+  <div class="chars"><span class="simp">骂</span> <span class="divider">|</span> <span class="trad">罵</span></div>
+  <div class="pinyin"><span class="t4">mà</span></div>
+  <div class="approx">mah! (sharp falling)</div>
+  <div class="meaning">to scold</div>
+</div>
+</div>
+
+<div class="pronunciation-box">
+<h4><span class="t5">Neutral Tone (no mark)</span></h4>
+<p>Light, short, and unstressed. It attaches to the end of words and is pronounced quickly.</p>
+<div class="phrase">
+  <div class="chars"><span class="simp">吗</span> <span class="divider">|</span> <span class="trad">嗎</span></div>
+  <div class="pinyin"><span class="t5">ma</span></div>
+  <div class="approx">muh (quick, soft)</div>
+  <div class="meaning">question particle</div>
+</div>
+</div>
+
+<h3>More Tone Pairs to Practice</h3>
+<p>Notice how the tone completely changes the meaning:</p>
+
+<div class="phrase-list">
+<div class="phrase">
+  <div class="chars"><span class="simp">书</span> <span class="divider">|</span> <span class="trad">書</span></div>
+  <div class="pinyin"><span class="t1">shū</span></div>
+  <div class="approx">shoo (flat)</div>
+  <div class="meaning">book</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">熟</span> <span class="divider">|</span> <span class="trad">熟</span></div>
+  <div class="pinyin"><span class="t2">shú</span></div>
+  <div class="approx">shoo (rising)</div>
+  <div class="meaning">cooked / familiar</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">买</span> <span class="divider">|</span> <span class="trad">買</span></div>
+  <div class="pinyin"><span class="t3">mǎi</span></div>
+  <div class="approx">my (dip)</div>
+  <div class="meaning">to buy</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">卖</span> <span class="divider">|</span> <span class="trad">賣</span></div>
+  <div class="pinyin"><span class="t4">mài</span></div>
+  <div class="approx">my (falling)</div>
+  <div class="meaning">to sell</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">汤</span> <span class="divider">|</span> <span class="trad">湯</span></div>
+  <div class="pinyin"><span class="t1">tāng</span></div>
+  <div class="approx">tahng (flat)</div>
+  <div class="meaning">soup</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">糖</span> <span class="divider">|</span> <span class="trad">糖</span></div>
+  <div class="pinyin"><span class="t2">táng</span></div>
+  <div class="approx">tahng (rising)</div>
+  <div class="meaning">sugar / candy</div>
+</div>
+</div>
+
+<h3>Tone Change Rules</h3>
+<div class="tip-box">
+<strong>Third tone + third tone:</strong> When two third-tone syllables come in a row, the first one changes to second tone. Example: 你好 is written <span class="t3">nǐ</span> <span class="t3">hǎo</span> but spoken as <span class="t2">ní</span> <span class="t3">hǎo</span>. You don't need to memorize this - it happens naturally as you practice.
+</div>
+
+<div class="tip-box">
+不 (<span class="t4">bù</span>, "not") changes to second tone before another fourth tone. So 不是 is spoken <span class="t2">bú</span> <span class="t4">shì</span>, not <span class="t4">bù</span> <span class="t4">shì</span>.
+</div>
+
+<div class="tip-box">
+一 (<span class="t1">yī</span>, "one") changes tone depending on what follows: becomes <span class="t4">yì</span> before tones 1, 2, 3, and becomes <span class="t2">yí</span> before tone 4.
+</div>
+
+<h2>Initials (Beginning Consonants)</h2>
+
+<p>Most Mandarin consonants sound similar to English. Here are the tricky ones:</p>
+
+<table>
+<tr><th>Pinyin</th><th>Sounds like</th><th>Tips</th></tr>
+<tr><td><strong>b</strong></td><td>"b" in "bed"</td><td>Unaspirated (less breathy than English "b")</td></tr>
+<tr><td><strong>p</strong></td><td>"p" in "put"</td><td>Aspirated (a puff of air)</td></tr>
+<tr><td><strong>d</strong></td><td>"d" in "day"</td><td>Unaspirated</td></tr>
+<tr><td><strong>t</strong></td><td>"t" in "top"</td><td>Aspirated</td></tr>
+<tr><td><strong>g</strong></td><td>"g" in "go"</td><td>Unaspirated</td></tr>
+<tr><td><strong>k</strong></td><td>"k" in "kite"</td><td>Aspirated</td></tr>
+<tr><td><strong>zh</strong></td><td>"j" in "jump"</td><td>Tongue curled back (retroflex). Like "dr" said quickly.</td></tr>
+<tr><td><strong>ch</strong></td><td>"ch" in "church"</td><td>Tongue curled back with a puff of air</td></tr>
+<tr><td><strong>sh</strong></td><td>"sh" in "she"</td><td>Tongue curled back</td></tr>
+<tr><td><strong>r</strong></td><td>Between "r" and "zh"</td><td>Like "pleasure" but with tongue curled back</td></tr>
+<tr><td><strong>z</strong></td><td>"dz" in "kids"</td><td>Tongue flat behind lower teeth</td></tr>
+<tr><td><strong>c</strong></td><td>"ts" in "cats"</td><td>Tongue flat with a puff of air</td></tr>
+<tr><td><strong>s</strong></td><td>"s" in "see"</td><td>Tongue flat behind lower teeth</td></tr>
+<tr><td><strong>j</strong></td><td>"j" in "jeep"</td><td>Tongue flat, pressed against roof of mouth</td></tr>
+<tr><td><strong>q</strong></td><td>"ch" in "cheese"</td><td>Like "j" but with a puff of air</td></tr>
+<tr><td><strong>x</strong></td><td>"sh" in "she"</td><td>Tongue flat behind lower teeth (not curled back like sh)</td></tr>
+</table>
+
+<div class="tip-box">
+The hardest distinction for English speakers: <strong>zh/ch/sh</strong> (tongue curled back) vs <strong>z/c/s</strong> (tongue flat) vs <strong>j/q/x</strong> (tongue behind lower teeth). Don't stress about perfecting these right away - you'll be understood even if they're not perfect.
+</div>
+
+<h2>Finals (Vowels &amp; Endings)</h2>
+
+<table>
+<tr><th>Pinyin</th><th>Sounds like</th><th>Example</th></tr>
+<tr><td><strong>a</strong></td><td>"ah" in "father"</td><td>大 dà (big)</td></tr>
+<tr><td><strong>o</strong></td><td>"aw" in "saw"</td><td>多 duō (many)</td></tr>
+<tr><td><strong>e</strong></td><td>"uh" in "duh"</td><td>喝 hē (drink)</td></tr>
+<tr><td><strong>i</strong></td><td>"ee" in "see"</td><td>你 nǐ (you)</td></tr>
+<tr><td><strong>u</strong></td><td>"oo" in "too"</td><td>五 wǔ (five)</td></tr>
+<tr><td><strong>ü</strong></td><td>Say "ee" with rounded lips</td><td>去 qù (go)</td></tr>
+<tr><td><strong>ai</strong></td><td>"eye"</td><td>买 mǎi (buy)</td></tr>
+<tr><td><strong>ei</strong></td><td>"ay" in "say"</td><td>北 běi (north)</td></tr>
+<tr><td><strong>ao</strong></td><td>"ow" in "how"</td><td>好 hǎo (good)</td></tr>
+<tr><td><strong>ou</strong></td><td>"oh"</td><td>走 zǒu (walk)</td></tr>
+<tr><td><strong>an</strong></td><td>"ahn"</td><td>三 sān (three)</td></tr>
+<tr><td><strong>en</strong></td><td>"un" in "fun"</td><td>人 rén (person)</td></tr>
+<tr><td><strong>ang</strong></td><td>"ahng"</td><td>忙 máng (busy)</td></tr>
+<tr><td><strong>eng</strong></td><td>"ung" in "lung"</td><td>风 fēng (wind)</td></tr>
+<tr><td><strong>ong</strong></td><td>"oong" (rhymes with "goong")</td><td>中 zhōng (middle)</td></tr>
+<tr><td><strong>er</strong></td><td>"ar" in "car" (American English)</td><td>二 èr (two)</td></tr>
+<tr><td><strong>ian</strong></td><td>"yen"</td><td>天 tiān (sky/day)</td></tr>
+<tr><td><strong>iang</strong></td><td>"yahng"</td><td>两 liǎng (two, for counting)</td></tr>
+<tr><td><strong>iao</strong></td><td>"yow" in "meow"</td><td>小 xiǎo (small)</td></tr>
+<tr><td><strong>iu</strong></td><td>"yo" in "yo-yo"</td><td>六 liù (six)</td></tr>
+<tr><td><strong>ua</strong></td><td>"wah"</td><td>花 huā (flower)</td></tr>
+<tr><td><strong>uo</strong></td><td>"waw"</td><td>我 wǒ (I/me)</td></tr>
+<tr><td><strong>ui</strong></td><td>"way"</td><td>水 shuǐ (water)</td></tr>
+<tr><td><strong>uan</strong></td><td>"wahn"</td><td>饭 fàn (rice/meal)</td></tr>
+<tr><td><strong>üe</strong></td><td>"you-eh"</td><td>学 xué (study)</td></tr>
+</table>
+
+<div class="tip-box">
+After <strong>j, q, x</strong>, the letter "u" is always pronounced "ü" (the dots are dropped in writing but the sound stays). So "qu" is pronounced "chü", not "koo".
+</div>
+
+<div class="tip-box">
+The letter <strong>i</strong> after zh, ch, sh, r, z, c, s is NOT pronounced "ee". It's a buzzy, held consonant sound - almost silent. Just hold the consonant. This is one of the few sounds you simply need to hear and imitate.
+</div>
+
+<!-- ==================== LESSON 1 ==================== -->
+<div class="lesson">
+<h2 id="lesson-1">Lesson 1: Greetings &amp; Basics</h2>
+
+<div class="goal">By the end of this lesson, you can greet people, say please, thank you, sorry, yes, no, and goodbye in Mandarin.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">你好</span> <span class="divider">|</span> <span class="trad">你好</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span></div>
+  <div class="approx">nee how</div>
+  <div class="meaning">Hello</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">您好</span> <span class="divider">|</span> <span class="trad">您好</span></div>
+  <div class="pinyin"><span class="t2">nín</span> <span class="t3">hǎo</span></div>
+  <div class="approx">neen how</div>
+  <div class="meaning">Hello (polite, for elders or strangers)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">早上好</span> <span class="divider">|</span> <span class="trad">早上好</span></div>
+  <div class="pinyin"><span class="t3">zǎo</span><span class="t5">shang</span> <span class="t3">hǎo</span></div>
+  <div class="approx">dzow shahng how</div>
+  <div class="meaning">Good morning</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">晚上好</span> <span class="divider">|</span> <span class="trad">晚上好</span></div>
+  <div class="pinyin"><span class="t3">wǎn</span><span class="t5">shang</span> <span class="t3">hǎo</span></div>
+  <div class="approx">wahn shahng how</div>
+  <div class="meaning">Good evening</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">谢谢</span> <span class="divider">|</span> <span class="trad">謝謝</span></div>
+  <div class="pinyin"><span class="t4">xiè</span><span class="t5">xie</span></div>
+  <div class="approx">syeh syeh</div>
+  <div class="meaning">Thank you</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">不客气</span> <span class="divider">|</span> <span class="trad">不客氣</span></div>
+  <div class="pinyin"><span class="t2">bú</span> <span class="t4">kè</span><span class="t5">qi</span></div>
+  <div class="approx">boo kuh chee</div>
+  <div class="meaning">You're welcome</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">对不起</span> <span class="divider">|</span> <span class="trad">對不起</span></div>
+  <div class="pinyin"><span class="t4">duì</span><span class="t5">bu</span><span class="t3">qǐ</span></div>
+  <div class="approx">dway boo chee</div>
+  <div class="meaning">Sorry / Excuse me (apology)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">没关系</span> <span class="divider">|</span> <span class="trad">沒關係</span></div>
+  <div class="pinyin"><span class="t2">méi</span> <span class="t1">guān</span><span class="t5">xi</span></div>
+  <div class="approx">may gwahn shee</div>
+  <div class="meaning">It's OK / No problem</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">请</span> <span class="divider">|</span> <span class="trad">請</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span></div>
+  <div class="approx">ching</div>
+  <div class="meaning">Please</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">是</span> <span class="divider">|</span> <span class="trad">是</span></div>
+  <div class="pinyin"><span class="t4">shì</span></div>
+  <div class="approx">shir</div>
+  <div class="meaning">Yes / Is / Am / Are</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">不是</span> <span class="divider">|</span> <span class="trad">不是</span></div>
+  <div class="pinyin"><span class="t2">bú</span> <span class="t4">shì</span></div>
+  <div class="approx">boo shir</div>
+  <div class="meaning">No / Is not</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">对</span> <span class="divider">|</span> <span class="trad">對</span></div>
+  <div class="pinyin"><span class="t4">duì</span></div>
+  <div class="approx">dway</div>
+  <div class="meaning">Correct / Right</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">再见</span> <span class="divider">|</span> <span class="trad">再見</span></div>
+  <div class="pinyin"><span class="t4">zài</span><span class="t4">jiàn</span></div>
+  <div class="approx">dzai jee-en</div>
+  <div class="meaning">Goodbye</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">拜拜</span> <span class="divider">|</span> <span class="trad">拜拜</span></div>
+  <div class="pinyin"><span class="t2">bái</span><span class="t2">bái</span></div>
+  <div class="approx">bye bye</div>
+  <div class="meaning">Bye-bye (casual)</div>
+</div>
+
+</div>
+
+<div class="vocab-box">
+<h4>Key Vocabulary</h4>
+<p><span class="t3">nǐ</span> = you | <span class="t2">nín</span> = you (polite) | <span class="t3">hǎo</span> = good | <span class="t4">shì</span> = is/am/are | <span class="t4">bù</span> = not | <span class="t3">qǐng</span> = please | <span class="t4">duì</span> = correct</p>
+</div>
+
+<div class="practice-box">
+<h4>Speaking Practice</h4>
+<p>Say each of these three times out loud. Focus on the tones - they matter more than perfect consonants.</p>
+<ol>
+<li><span class="t3">nǐ</span> <span class="t3">hǎo</span> (Hello)</li>
+<li><span class="t4">xiè</span><span class="t5">xie</span> (Thank you)</li>
+<li><span class="t4">duì</span><span class="t5">bu</span><span class="t3">qǐ</span> (Sorry)</li>
+<li><span class="t4">zài</span><span class="t4">jiàn</span> (Goodbye)</li>
+</ol>
+</div>
+
+<h3>Mini Dialogue</h3>
+<p><em>You walk into a small shop in Beijing.</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好！</span> <span class="divider">|</span> <span class="trad">你好！</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>!</div>
+  <div class="approx">nee how!</div>
+  <div class="meaning">Hello!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Shop:</span>
+  <div class="chars"><span class="simp">你好！欢迎！</span> <span class="divider">|</span> <span class="trad">你好！歡迎！</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>! <span class="t1">huān</span><span class="t2">yíng</span>!</div>
+  <div class="approx">nee how! hwahn ying!</div>
+  <div class="meaning">Hello! Welcome!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">谢谢！</span> <span class="divider">|</span> <span class="trad">謝謝！</span></div>
+  <div class="pinyin"><span class="t4">xiè</span><span class="t5">xie</span>!</div>
+  <div class="approx">syeh syeh!</div>
+  <div class="meaning">Thank you!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Shop:</span>
+  <div class="chars"><span class="simp">不客气！</span> <span class="divider">|</span> <span class="trad">不客氣！</span></div>
+  <div class="pinyin"><span class="t2">bú</span> <span class="t4">kè</span><span class="t5">qi</span>!</div>
+  <div class="approx">boo kuh chee!</div>
+  <div class="meaning">You're welcome!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">再见！</span> <span class="divider">|</span> <span class="trad">再見！</span></div>
+  <div class="pinyin"><span class="t4">zài</span><span class="t4">jiàn</span>!</div>
+  <div class="approx">dzai jee-en!</div>
+  <div class="meaning">Goodbye!</div>
+</div>
+</div>
+
+<div class="pronunciation-box">
+<h4>Pronunciation Tips</h4>
+<p><strong>xiè</strong> - The "x" sounds like "sh" but with your tongue pressed flat behind your lower teeth. Say "she" but pull your tongue forward and down.</p>
+<p><strong>qǐng</strong> - The "q" sounds like "ch" but lighter, with your tongue flat. Say "ching" with a soft start.</p>
+</div>
+
+<div class="cultural-note">
+Use <span class="t2">nín</span> (您) instead of <span class="t3">nǐ</span> (你) when speaking to someone older than you, in a position of authority, or when you want to be extra polite (hotel staff, police, etc.). In casual settings with peers, <span class="t3">nǐ</span> is fine.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: Word Order</h4>
+<p>Mandarin uses the same basic word order as English: <strong>Subject + Verb + Object</strong>.</p>
+<p><span class="t3">wǒ</span> <span class="t4">shì</span> = I am | <span class="t3">nǐ</span> <span class="t4">shì</span> = you are | <span class="t1">tā</span> <span class="t4">shì</span> = he/she is</p>
+<p>Notice: <span class="t4">shì</span> never changes form. No "am/is/are" distinction. It's always just <span class="t4">shì</span>.</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<p>Translate these to Mandarin:</p>
+<ol>
+<li class="exercise-item">Hello (polite) <span class="exercise-blank"></span></li>
+<li class="exercise-item">Thank you <span class="exercise-blank"></span></li>
+<li class="exercise-item">Sorry <span class="exercise-blank"></span></li>
+<li class="exercise-item">Goodbye <span class="exercise-blank"></span></li>
+<li class="exercise-item">You're welcome <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Fill in the blanks:</strong></p>
+<ol>
+<li class="exercise-item">_______ (Hello) = <span class="t3">nǐ</span> <span class="exercise-blank"></span></li>
+<li class="exercise-item">_______ (Thank you) = <span class="exercise-blank"></span><span class="t5">xie</span></li>
+<li class="exercise-item">_______ (Goodbye) = <span class="t4">zài</span><span class="exercise-blank"></span></li>
+<li class="exercise-item">_______ (Sorry) = <span class="t4">duì</span><span class="exercise-blank"></span><span class="t3">qǐ</span></li>
+<li class="exercise-item">_______ (Please) = <span class="exercise-blank"></span></li>
+</ol>
+<p><strong>Match:</strong></p>
+<ol start="6">
+<li class="exercise-item">不客气 = <span class="exercise-blank"></span> (a. Sorry b. You're welcome c. No problem)</li>
+<li class="exercise-item">没关系 = <span class="exercise-blank"></span> (a. Sorry b. You're welcome c. No problem)</li>
+<li class="exercise-item">是 = <span class="exercise-blank"></span> (a. Not b. Yes/is c. Please)</li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 2 ==================== -->
+<div class="lesson">
+<h2 id="lesson-2">Lesson 2: Introducing Yourself</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 1</h4>
+<p>Say these out loud: <span class="t3">nǐ</span> <span class="t3">hǎo</span> (hello) | <span class="t4">xiè</span><span class="t5">xie</span> (thank you) | <span class="t4">zài</span><span class="t4">jiàn</span> (goodbye)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can introduce yourself, say your name, say where you're from, and ask others the same questions.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我叫...</span> <span class="divider">|</span> <span class="trad">我叫...</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">jiào</span>...</div>
+  <div class="approx">waw jee-ow...</div>
+  <div class="meaning">My name is... (I am called...)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">你叫什么名字？</span> <span class="divider">|</span> <span class="trad">你叫什麼名字？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t4">jiào</span> <span class="t2">shén</span><span class="t5">me</span> <span class="t2">míng</span><span class="t5">zi</span>?</div>
+  <div class="approx">nee jee-ow shun muh ming dzuh?</div>
+  <div class="meaning">What is your name?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">您贵姓？</span> <span class="divider">|</span> <span class="trad">您貴姓？</span></div>
+  <div class="pinyin"><span class="t2">nín</span> <span class="t4">guì</span> <span class="t4">xìng</span>?</div>
+  <div class="approx">neen gway shing?</div>
+  <div class="meaning">What is your surname? (very polite)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我姓...</span> <span class="divider">|</span> <span class="trad">我姓...</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">xìng</span>...</div>
+  <div class="approx">waw shing...</div>
+  <div class="meaning">My surname is...</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我是美国人</span> <span class="divider">|</span> <span class="trad">我是美國人</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">shì</span> <span class="t3">měi</span><span class="t2">guó</span><span class="t2">rén</span></div>
+  <div class="approx">waw shir may gwaw ren</div>
+  <div class="meaning">I am American</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">你是哪国人？</span> <span class="divider">|</span> <span class="trad">你是哪國人？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t4">shì</span> <span class="t3">nǎ</span> <span class="t2">guó</span> <span class="t2">rén</span>?</div>
+  <div class="approx">nee shir nah gwaw ren?</div>
+  <div class="meaning">What country are you from?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">认识你很高兴</span> <span class="divider">|</span> <span class="trad">認識你很高興</span></div>
+  <div class="pinyin"><span class="t4">rèn</span><span class="t5">shi</span> <span class="t3">nǐ</span> <span class="t3">hěn</span> <span class="t1">gāo</span><span class="t4">xìng</span></div>
+  <div class="approx">ren shir nee hun gow shing</div>
+  <div class="meaning">Nice to meet you</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我不会说中文</span> <span class="divider">|</span> <span class="trad">我不會說中文</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t2">bú</span> <span class="t4">huì</span> <span class="t1">shuō</span> <span class="t1">zhōng</span><span class="t2">wén</span></div>
+  <div class="approx">waw boo hway shwaw johng wen</div>
+  <div class="meaning">I can't speak Chinese</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我会说一点点</span> <span class="divider">|</span> <span class="trad">我會說一點點</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">huì</span> <span class="t1">shuō</span> <span class="t4">yì</span><span class="t3">diǎn</span><span class="t3">diǎn</span></div>
+  <div class="approx">waw hway shwaw ee dee-en dee-en</div>
+  <div class="meaning">I can speak a tiny bit</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">你会说英文吗？</span> <span class="divider">|</span> <span class="trad">你會說英文嗎？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t4">huì</span> <span class="t1">shuō</span> <span class="t1">yīng</span><span class="t2">wén</span> <span class="t5">ma</span>?</div>
+  <div class="approx">nee hway shwaw ying wen mah?</div>
+  <div class="meaning">Do you speak English?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">请再说一遍</span> <span class="divider">|</span> <span class="trad">請再說一遍</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span> <span class="t4">zài</span> <span class="t1">shuō</span> <span class="t2">yí</span> <span class="t4">biàn</span></div>
+  <div class="approx">ching dzai shwaw ee bee-en</div>
+  <div class="meaning">Please say it again</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">慢一点</span> <span class="divider">|</span> <span class="trad">慢一點</span></div>
+  <div class="pinyin"><span class="t4">màn</span> <span class="t4">yì</span> <span class="t3">diǎn</span></div>
+  <div class="approx">mahn ee dee-en</div>
+  <div class="meaning">A little slower, please</div>
+</div>
+
+</div>
+
+<div class="vocab-box">
+<h4>Countries</h4>
+<p><span class="t3">měi</span><span class="t2">guó</span> 美國|美国 = America | <span class="t1">yīng</span><span class="t2">guó</span> 英國|英国 = England | <span class="t2">fǎ</span><span class="t2">guó</span> 法國|法国 = France | <span class="t2">dé</span><span class="t2">guó</span> 德國|德国 = Germany | <span class="t4">rì</span><span class="t3">běn</span> 日本 = Japan | <span class="t2">hán</span><span class="t2">guó</span> 韓國|韩国 = Korea | <span class="t1">zhōng</span><span class="t2">guó</span> 中國|中国 = China</p>
+<p>Pattern: country name + 人 (<span class="t2">rén</span>) = person from that country</p>
+</div>
+
+<h3>Mini Dialogue</h3>
+<p><em>At a hostel common area in Beijing.</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">Li:</span>
+  <div class="chars"><span class="simp">你好！你叫什么名字？</span> <span class="divider">|</span> <span class="trad">你好！你叫什麼名字？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>! <span class="t3">nǐ</span> <span class="t4">jiào</span> <span class="t2">shén</span><span class="t5">me</span> <span class="t2">míng</span><span class="t5">zi</span>?</div>
+  <div class="approx">nee how! nee jee-ow shun muh ming dzuh?</div>
+  <div class="meaning">Hello! What's your name?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好！我叫 Jonathan。你呢？</span> <span class="divider">|</span> <span class="trad">你好！我叫 Jonathan。你呢？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>! <span class="t3">wǒ</span> <span class="t4">jiào</span> Jonathan. <span class="t3">nǐ</span> <span class="t5">ne</span>?</div>
+  <div class="approx">nee how! waw jee-ow Jonathan. nee nuh?</div>
+  <div class="meaning">Hello! My name is Jonathan. And you?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Li:</span>
+  <div class="chars"><span class="simp">我叫李明。你是哪国人？</span> <span class="divider">|</span> <span class="trad">我叫李明。你是哪國人？</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">jiào</span> <span class="t3">lǐ</span> <span class="t2">míng</span>. <span class="t3">nǐ</span> <span class="t4">shì</span> <span class="t3">nǎ</span> <span class="t2">guó</span> <span class="t2">rén</span>?</div>
+  <div class="approx">waw jee-ow lee ming. nee shir nah gwaw ren?</div>
+  <div class="meaning">I'm Li Ming. Where are you from?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">我是美国人。认识你很高兴！</span> <span class="divider">|</span> <span class="trad">我是美國人。認識你很高興！</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">shì</span> <span class="t3">měi</span><span class="t2">guó</span><span class="t2">rén</span>. <span class="t4">rèn</span><span class="t5">shi</span> <span class="t3">nǐ</span> <span class="t3">hěn</span> <span class="t1">gāo</span><span class="t4">xìng</span>!</div>
+  <div class="approx">waw shir may gwaw ren. ren shir nee hun gow shing!</div>
+  <div class="meaning">I'm American. Nice to meet you!</div>
+</div>
+</div>
+
+<div class="pronunciation-box">
+<h4>Pronunciation Tips</h4>
+<p><strong>wǒ</strong> - Not "woe." The "o" sound is more like "aw" with rounded lips. Think "waw" with a dipping tone.</p>
+<p><strong>shì</strong> - The "i" after "sh" is a held buzzy sound, not "ee." Just hold the "shr" sound and let it trail off.</p>
+</div>
+
+<div class="cultural-note">
+Chinese names have the <strong>surname first</strong>, then the given name. 李明 = Li (surname) Ming (given name). When meeting someone formally, ask their surname with 您贵姓 (<span class="t2">nín</span> <span class="t4">guì</span> <span class="t4">xìng</span>). They'll reply with 我姓... (<span class="t3">wǒ</span> <span class="t4">xìng</span>...).
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: The Question Particle 吗 (ma)</h4>
+<p>To turn any statement into a yes/no question, just add <span class="t5">ma</span> (吗) at the end:</p>
+<p>你是美国人。= You are American. (statement)</p>
+<p>你是美国人<strong>吗</strong>？= Are you American? (question)</p>
+<p>That's it. No word order changes. No "do/does/is/are." Just add <span class="t5">ma</span>.</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<p>Translate these to Mandarin:</p>
+<ol>
+<li class="exercise-item">What is your name? <span class="exercise-blank"></span></li>
+<li class="exercise-item">I'm American. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Nice to meet you. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Do you speak English? <span class="exercise-blank"></span></li>
+<li class="exercise-item">I can speak a tiny bit. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Fill in the blanks:</strong></p>
+<ol>
+<li class="exercise-item">My name is... = <span class="t3">wǒ</span> <span class="exercise-blank"></span>...</li>
+<li class="exercise-item">I am American = <span class="t3">wǒ</span> <span class="exercise-blank"></span> <span class="t3">měi</span><span class="t2">guó</span><span class="t2">rén</span></li>
+<li class="exercise-item">Do you speak English? = <span class="t3">nǐ</span> <span class="t4">huì</span> <span class="t1">shuō</span> <span class="t1">yīng</span><span class="t2">wén</span> <span class="exercise-blank"></span>?</li>
+<li class="exercise-item">Please say it again = <span class="t3">qǐng</span> <span class="exercise-blank"></span> <span class="t1">shuō</span> <span class="t2">yí</span> <span class="t4">biàn</span></li>
+</ol>
+<p><strong>Translate to English:</strong></p>
+<ol start="5">
+<li class="exercise-item">我会说一点点 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">认识你很高兴 = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 3 ==================== -->
+<div class="lesson">
+<h2 id="lesson-3">Lesson 3: Numbers &amp; Money</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 2</h4>
+<p>Say these out loud: <span class="t3">wǒ</span> <span class="t4">jiào</span>... (my name is) | <span class="t3">nǐ</span> <span class="t4">shì</span> <span class="t3">nǎ</span> <span class="t2">guó</span> <span class="t2">rén</span>? (where are you from?) | <span class="t3">wǒ</span> <span class="t4">huì</span> <span class="t1">shuō</span> <span class="t4">yì</span><span class="t3">diǎn</span><span class="t3">diǎn</span> (I speak a little)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can count to 100, ask prices, and handle basic money transactions.</div>
+
+<h3>Numbers 0-10</h3>
+<div class="phrase-list">
+<div class="phrase">
+  <div class="chars"><span class="simp">零</span> <span class="divider">|</span> <span class="trad">零</span></div>
+  <div class="pinyin"><span class="t2">líng</span></div>
+  <div class="approx">ling</div>
+  <div class="meaning">0 - zero</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">一</span> <span class="divider">|</span> <span class="trad">一</span></div>
+  <div class="pinyin"><span class="t1">yī</span></div>
+  <div class="approx">ee</div>
+  <div class="meaning">1 - one</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">二</span> <span class="divider">|</span> <span class="trad">二</span></div>
+  <div class="pinyin"><span class="t4">èr</span></div>
+  <div class="approx">ar</div>
+  <div class="meaning">2 - two</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">三</span> <span class="divider">|</span> <span class="trad">三</span></div>
+  <div class="pinyin"><span class="t1">sān</span></div>
+  <div class="approx">sahn</div>
+  <div class="meaning">3 - three</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">四</span> <span class="divider">|</span> <span class="trad">四</span></div>
+  <div class="pinyin"><span class="t4">sì</span></div>
+  <div class="approx">suh</div>
+  <div class="meaning">4 - four</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">五</span> <span class="divider">|</span> <span class="trad">五</span></div>
+  <div class="pinyin"><span class="t3">wǔ</span></div>
+  <div class="approx">woo</div>
+  <div class="meaning">5 - five</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">六</span> <span class="divider">|</span> <span class="trad">六</span></div>
+  <div class="pinyin"><span class="t4">liù</span></div>
+  <div class="approx">lee-oh</div>
+  <div class="meaning">6 - six</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">七</span> <span class="divider">|</span> <span class="trad">七</span></div>
+  <div class="pinyin"><span class="t1">qī</span></div>
+  <div class="approx">chee</div>
+  <div class="meaning">7 - seven</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">八</span> <span class="divider">|</span> <span class="trad">八</span></div>
+  <div class="pinyin"><span class="t1">bā</span></div>
+  <div class="approx">bah</div>
+  <div class="meaning">8 - eight</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">九</span> <span class="divider">|</span> <span class="trad">九</span></div>
+  <div class="pinyin"><span class="t3">jiǔ</span></div>
+  <div class="approx">jee-oh</div>
+  <div class="meaning">9 - nine</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">十</span> <span class="divider">|</span> <span class="trad">十</span></div>
+  <div class="pinyin"><span class="t2">shí</span></div>
+  <div class="approx">shir</div>
+  <div class="meaning">10 - ten</div>
+</div>
+</div>
+
+<div class="tip-box">
+Numbers 11-99 follow a simple pattern: 十一 <span class="t2">shí</span><span class="t1">yī</span> = 10+1 = 11. 二十 <span class="t4">èr</span><span class="t2">shí</span> = 2x10 = 20. 二十五 <span class="t4">èr</span><span class="t2">shí</span><span class="t3">wǔ</span> = 25. 一百 <span class="t4">yì</span><span class="t3">bǎi</span> = 100. 一千 <span class="t4">yì</span><span class="t1">qiān</span> = 1000.
+</div>
+
+<h3>Money Phrases</h3>
+<div class="phrase-list">
+<div class="phrase">
+  <div class="chars"><span class="simp">多少钱？</span> <span class="divider">|</span> <span class="trad">多少錢？</span></div>
+  <div class="pinyin"><span class="t1">duō</span><span class="t5">shao</span> <span class="t2">qián</span>?</div>
+  <div class="approx">dwaw shaow chee-en?</div>
+  <div class="meaning">How much money? / How much does it cost?</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">...块</span> <span class="divider">|</span> <span class="trad">...塊</span></div>
+  <div class="pinyin">...<span class="t4">kuài</span></div>
+  <div class="approx">...kwai</div>
+  <div class="meaning">...(amount) yuan (colloquial)</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">太贵了</span> <span class="divider">|</span> <span class="trad">太貴了</span></div>
+  <div class="pinyin"><span class="t4">tài</span> <span class="t4">guì</span> <span class="t5">le</span></div>
+  <div class="approx">tie gway luh</div>
+  <div class="meaning">Too expensive!</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">便宜一点</span> <span class="divider">|</span> <span class="trad">便宜一點</span></div>
+  <div class="pinyin"><span class="t2">pián</span><span class="t5">yi</span> <span class="t4">yì</span> <span class="t3">diǎn</span></div>
+  <div class="approx">pee-en yee ee dee-en</div>
+  <div class="meaning">A little cheaper, please</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">可以</span> <span class="divider">|</span> <span class="trad">可以</span></div>
+  <div class="pinyin"><span class="t3">kě</span><span class="t3">yǐ</span></div>
+  <div class="approx">kuh yee</div>
+  <div class="meaning">OK / Can / Acceptable</div>
+</div>
+<div class="phrase">
+  <div class="chars"><span class="simp">我要这个</span> <span class="divider">|</span> <span class="trad">我要這個</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t4">zhè</span><span class="t5">ge</span></div>
+  <div class="approx">waw yow juh guh</div>
+  <div class="meaning">I want this one</div>
+</div>
+</div>
+
+<h3>Mini Dialogue</h3>
+<p><em>At a market stall in Beijing.</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好，这个多少钱？</span> <span class="divider">|</span> <span class="trad">你好，這個多少錢？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>, <span class="t4">zhè</span><span class="t5">ge</span> <span class="t1">duō</span><span class="t5">shao</span> <span class="t2">qián</span>?</div>
+  <div class="approx">nee how, juh guh dwaw shaow chee-en?</div>
+  <div class="meaning">Hello, how much is this?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Seller:</span>
+  <div class="chars"><span class="simp">三十五块。</span> <span class="divider">|</span> <span class="trad">三十五塊。</span></div>
+  <div class="pinyin"><span class="t1">sān</span><span class="t2">shí</span><span class="t3">wǔ</span> <span class="t4">kuài</span>.</div>
+  <div class="approx">sahn shir woo kwai.</div>
+  <div class="meaning">35 yuan.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">太贵了！二十块可以吗？</span> <span class="divider">|</span> <span class="trad">太貴了！二十塊可以嗎？</span></div>
+  <div class="pinyin"><span class="t4">tài</span> <span class="t4">guì</span> <span class="t5">le</span>! <span class="t4">èr</span><span class="t2">shí</span> <span class="t4">kuài</span> <span class="t3">kě</span><span class="t3">yǐ</span> <span class="t5">ma</span>?</div>
+  <div class="approx">tie gway luh! ar shir kwai kuh yee mah?</div>
+  <div class="meaning">Too expensive! How about 20 yuan?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Seller:</span>
+  <div class="chars"><span class="simp">三十块吧。</span> <span class="divider">|</span> <span class="trad">三十塊吧。</span></div>
+  <div class="pinyin"><span class="t1">sān</span><span class="t2">shí</span> <span class="t4">kuài</span> <span class="t5">ba</span>.</div>
+  <div class="approx">sahn shir kwai bah.</div>
+  <div class="meaning">How about 30 yuan.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">好，可以。</span> <span class="divider">|</span> <span class="trad">好，可以。</span></div>
+  <div class="pinyin"><span class="t3">hǎo</span>, <span class="t3">kě</span><span class="t3">yǐ</span>.</div>
+  <div class="approx">how, kuh yee.</div>
+  <div class="meaning">OK, deal.</div>
+</div>
+</div>
+
+<div class="cultural-note">
+<strong>Cash is nearly dead in Chinese cities.</strong> Almost everyone pays with WeChat Pay or Alipay by scanning QR codes. As a tourist, you may need cash for small vendors, but many places only accept mobile payment. You can set up WeChat Pay or Alipay with a foreign credit card before your trip. The phrase to know: 可以用微信支付吗？ (<span class="t3">kě</span><span class="t3">yǐ</span> <span class="t4">yòng</span> <span class="t1">wēi</span><span class="t4">xìn</span> <span class="t1">zhī</span><span class="t4">fù</span> <span class="t5">ma</span>) = "Can I use WeChat Pay?"
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: Measure Words</h4>
+<p>In Mandarin, you can't say "one apple" directly. You need a "measure word" between the number and the noun: 一<strong>个</strong>苹果 (<span class="t2">yí</span> <strong><span class="t4">gè</span></strong> <span class="t2">píng</span><span class="t3">guǒ</span>) = one apple.</p>
+<p>The good news: 个 (<span class="t4">gè</span>) is the universal measure word. Use it for anything and people will understand you, even if technically a different measure word is more correct.</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">How much does this cost? <span class="exercise-blank"></span></li>
+<li class="exercise-item">Too expensive! <span class="exercise-blank"></span></li>
+<li class="exercise-item">I want this one. <span class="exercise-blank"></span></li>
+<li class="exercise-item">25 yuan <span class="exercise-blank"></span></li>
+<li class="exercise-item">OK / Can <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Write these numbers in pinyin:</strong></p>
+<ol>
+<li class="exercise-item">17 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">42 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">88 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">100 = <span class="exercise-blank"></span></li>
+</ol>
+<p><strong>Translate:</strong></p>
+<ol start="5">
+<li class="exercise-item">太贵了 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">多少钱 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">便宜一点 = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 4 ==================== -->
+<div class="lesson">
+<h2 id="lesson-4">Lesson 4: Ordering Food</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 3</h4>
+<p>Say these out loud: <span class="t1">duō</span><span class="t5">shao</span> <span class="t2">qián</span>? (how much?) | <span class="t4">tài</span> <span class="t4">guì</span> <span class="t5">le</span> (too expensive!) | <span class="t3">kě</span><span class="t3">yǐ</span> (OK/can)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can order food and drinks at a restaurant, ask for the bill, and handle common dining situations.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我要...</span> <span class="divider">|</span> <span class="trad">我要...</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">yào</span>...</div>
+  <div class="approx">waw yow...</div>
+  <div class="meaning">I want... / I'd like...</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">请给我...</span> <span class="divider">|</span> <span class="trad">請給我...</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span> <span class="t3">gěi</span> <span class="t3">wǒ</span>...</div>
+  <div class="approx">ching gay waw...</div>
+  <div class="meaning">Please give me...</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">菜单</span> <span class="divider">|</span> <span class="trad">菜單</span></div>
+  <div class="pinyin"><span class="t4">cài</span><span class="t1">dān</span></div>
+  <div class="approx">tsai dahn</div>
+  <div class="meaning">Menu</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">点菜</span> <span class="divider">|</span> <span class="trad">點菜</span></div>
+  <div class="pinyin"><span class="t3">diǎn</span> <span class="t4">cài</span></div>
+  <div class="approx">dee-en tsai</div>
+  <div class="meaning">To order food</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">饺子</span> <span class="divider">|</span> <span class="trad">餃子</span></div>
+  <div class="pinyin"><span class="t3">jiǎo</span><span class="t5">zi</span></div>
+  <div class="approx">jee-ow dzuh</div>
+  <div class="meaning">Dumplings</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">米饭</span> <span class="divider">|</span> <span class="trad">米飯</span></div>
+  <div class="pinyin"><span class="t3">mǐ</span><span class="t4">fàn</span></div>
+  <div class="approx">mee fahn</div>
+  <div class="meaning">Rice</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">面条</span> <span class="divider">|</span> <span class="trad">麵條</span></div>
+  <div class="pinyin"><span class="t4">miàn</span><span class="t2">tiáo</span></div>
+  <div class="approx">mee-en tee-ow</div>
+  <div class="meaning">Noodles</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">水</span> <span class="divider">|</span> <span class="trad">水</span></div>
+  <div class="pinyin"><span class="t3">shuǐ</span></div>
+  <div class="approx">shway</div>
+  <div class="meaning">Water</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">啤酒</span> <span class="divider">|</span> <span class="trad">啤酒</span></div>
+  <div class="pinyin"><span class="t2">pí</span><span class="t3">jiǔ</span></div>
+  <div class="approx">pee jee-oh</div>
+  <div class="meaning">Beer</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">茶</span> <span class="divider">|</span> <span class="trad">茶</span></div>
+  <div class="pinyin"><span class="t2">chá</span></div>
+  <div class="approx">chah</div>
+  <div class="meaning">Tea</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">买单</span> <span class="divider">|</span> <span class="trad">買單</span></div>
+  <div class="pinyin"><span class="t3">mǎi</span><span class="t1">dān</span></div>
+  <div class="approx">my dahn</div>
+  <div class="meaning">The bill, please / Check, please</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">好吃</span> <span class="divider">|</span> <span class="trad">好吃</span></div>
+  <div class="pinyin"><span class="t3">hǎo</span><span class="t1">chī</span></div>
+  <div class="approx">how chir</div>
+  <div class="meaning">Delicious</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">不要辣</span> <span class="divider">|</span> <span class="trad">不要辣</span></div>
+  <div class="pinyin"><span class="t2">bú</span> <span class="t4">yào</span> <span class="t4">là</span></div>
+  <div class="approx">boo yow lah</div>
+  <div class="meaning">No spice, please</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我吃素</span> <span class="divider">|</span> <span class="trad">我吃素</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t1">chī</span> <span class="t4">sù</span></div>
+  <div class="approx">waw chir soo</div>
+  <div class="meaning">I'm vegetarian</div>
+</div>
+
+</div>
+
+<div class="vocab-box">
+<h4>More Food Words</h4>
+<p><span class="t1">jī</span> 雞|鸡 = chicken | <span class="t2">niú</span><span class="t4">ròu</span> 牛肉 = beef | <span class="t1">zhū</span><span class="t4">ròu</span> 豬肉|猪肉 = pork | <span class="t2">yú</span> 魚|鱼 = fish | <span class="t1">dàn</span> 蛋 = egg | <span class="t1">qīng</span><span class="t4">cài</span> 青菜 = vegetables | <span class="t1">tāng</span> 湯|汤 = soup</p>
+</div>
+
+<h3>Mini Dialogue</h3>
+<p><em>At a local restaurant in Beijing. You sit down and the server brings tea.</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">Server:</span>
+  <div class="chars"><span class="simp">你好，要点什么？</span> <span class="divider">|</span> <span class="trad">你好，要點什麼？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>, <span class="t4">yào</span> <span class="t3">diǎn</span> <span class="t2">shén</span><span class="t5">me</span>?</div>
+  <div class="approx">nee how, yow dee-en shun muh?</div>
+  <div class="meaning">Hello, what would you like to order?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">我要饺子和一个啤酒。</span> <span class="divider">|</span> <span class="trad">我要餃子和一個啤酒。</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t3">jiǎo</span><span class="t5">zi</span> <span class="t2">hé</span> <span class="t2">yí</span> <span class="t4">gè</span> <span class="t2">pí</span><span class="t3">jiǔ</span>.</div>
+  <div class="approx">waw yow jee-ow dzuh huh ee guh pee jee-oh.</div>
+  <div class="meaning">I'd like dumplings and a beer.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Server:</span>
+  <div class="chars"><span class="simp">要辣的吗？</span> <span class="divider">|</span> <span class="trad">要辣的嗎？</span></div>
+  <div class="pinyin"><span class="t4">yào</span> <span class="t4">là</span> <span class="t5">de</span> <span class="t5">ma</span>?</div>
+  <div class="approx">yow lah duh mah?</div>
+  <div class="meaning">Do you want it spicy?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">不要辣，谢谢。</span> <span class="divider">|</span> <span class="trad">不要辣，謝謝。</span></div>
+  <div class="pinyin"><span class="t2">bú</span> <span class="t4">yào</span> <span class="t4">là</span>, <span class="t4">xiè</span><span class="t5">xie</span>.</div>
+  <div class="approx">boo yow lah, syeh syeh.</div>
+  <div class="meaning">No spice, thanks.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">很好吃！买单。</span> <span class="divider">|</span> <span class="trad">很好吃！買單。</span></div>
+  <div class="pinyin"><span class="t3">hěn</span> <span class="t3">hǎo</span><span class="t1">chī</span>! <span class="t3">mǎi</span><span class="t1">dān</span>.</div>
+  <div class="approx">hun how chir! my dahn.</div>
+  <div class="meaning">Very delicious! Bill, please.</div>
+</div>
+</div>
+
+<div class="cultural-note">
+In China, one person typically orders for the whole table and dishes are <strong>shared</strong>. It's normal to order several dishes and everyone eats from the common plates. <strong>Do not tip</strong> - tipping is not expected and can cause confusion. When the bill comes, expect a friendly "fight" over who pays - this is the <strong>bill-fighting ritual</strong> (抢着买单 <span class="t3">qiǎng</span><span class="t5">zhe</span> <span class="t3">mǎi</span><span class="t1">dān</span>). The person who invited usually pays. As a guest, make a show of trying to pay, then graciously accept.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: 要 (yào) and 不要 (bú yào)</h4>
+<p><span class="t4">yào</span> means "want" or "will." <span class="t2">bú</span> <span class="t4">yào</span> means "don't want." These are your most useful ordering words:</p>
+<p><span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t2">chá</span> = I want tea</p>
+<p><span class="t3">wǒ</span> <span class="t2">bú</span> <span class="t4">yào</span> <span class="t4">là</span> = I don't want spicy</p>
+<p><span class="t3">nǐ</span> <span class="t4">yào</span> <span class="t2">shén</span><span class="t5">me</span>? = What do you want?</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">I'd like dumplings. <span class="exercise-blank"></span></li>
+<li class="exercise-item">No spice, please. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Bill, please. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Very delicious! <span class="exercise-blank"></span></li>
+<li class="exercise-item">I'm vegetarian. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Match the phrase to its meaning:</strong></p>
+<ol>
+<li class="exercise-item">菜单 = <span class="exercise-blank"></span> (a. rice b. menu c. noodles)</li>
+<li class="exercise-item">米饭 = <span class="exercise-blank"></span> (a. rice b. menu c. noodles)</li>
+<li class="exercise-item">啤酒 = <span class="exercise-blank"></span> (a. tea b. water c. beer)</li>
+<li class="exercise-item">好吃 = <span class="exercise-blank"></span> (a. delicious b. hello c. expensive)</li>
+</ol>
+<p><strong>Translate:</strong></p>
+<ol start="5">
+<li class="exercise-item">I want tea and water. = <span class="exercise-blank"></span></li>
+<li class="exercise-item">Please give me the menu. = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 5 ==================== -->
+<div class="lesson">
+<h2 id="lesson-5">Lesson 5: Transportation</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 4</h4>
+<p>Say these out loud: <span class="t3">wǒ</span> <span class="t4">yào</span>... (I want...) | <span class="t3">mǎi</span><span class="t1">dān</span> (the bill) | <span class="t3">hǎo</span><span class="t1">chī</span> (delicious)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can take taxis, the subway, and the high-speed train, and navigate airports.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">地铁站</span> <span class="divider">|</span> <span class="trad">地鐵站</span></div>
+  <div class="pinyin"><span class="t4">dì</span><span class="t3">tiě</span><span class="t4">zhàn</span></div>
+  <div class="approx">dee tee-eh jahn</div>
+  <div class="meaning">Subway station</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">火车站</span> <span class="divider">|</span> <span class="trad">火車站</span></div>
+  <div class="pinyin"><span class="t3">huǒ</span><span class="t1">chē</span><span class="t4">zhàn</span></div>
+  <div class="approx">hwaw chuh jahn</div>
+  <div class="meaning">Train station</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">高铁</span> <span class="divider">|</span> <span class="trad">高鐵</span></div>
+  <div class="pinyin"><span class="t1">gāo</span><span class="t3">tiě</span></div>
+  <div class="approx">gow tee-eh</div>
+  <div class="meaning">High-speed train</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">机场</span> <span class="divider">|</span> <span class="trad">機場</span></div>
+  <div class="pinyin"><span class="t1">jī</span><span class="t3">chǎng</span></div>
+  <div class="approx">jee chahng</div>
+  <div class="meaning">Airport</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">出租车</span> <span class="divider">|</span> <span class="trad">出租車</span></div>
+  <div class="pinyin"><span class="t1">chū</span><span class="t1">zū</span><span class="t1">chē</span></div>
+  <div class="approx">choo dzoo chuh</div>
+  <div class="meaning">Taxi</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">公共汽车</span> <span class="divider">|</span> <span class="trad">公共汽車</span></div>
+  <div class="pinyin"><span class="t1">gōng</span><span class="t4">gòng</span> <span class="t4">qì</span><span class="t1">chē</span></div>
+  <div class="approx">goong gohng chee chuh</div>
+  <div class="meaning">Bus</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我要去...</span> <span class="divider">|</span> <span class="trad">我要去...</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t4">qù</span>...</div>
+  <div class="approx">waw yow choo...</div>
+  <div class="meaning">I want to go to...</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">到了吗？</span> <span class="divider">|</span> <span class="trad">到了嗎？</span></div>
+  <div class="pinyin"><span class="t4">dào</span> <span class="t5">le</span> <span class="t5">ma</span>?</div>
+  <div class="approx">dow luh mah?</div>
+  <div class="meaning">Are we there yet? / Have we arrived?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">多长时间？</span> <span class="divider">|</span> <span class="trad">多長時間？</span></div>
+  <div class="pinyin"><span class="t1">duō</span> <span class="t2">cháng</span> <span class="t2">shí</span><span class="t1">jiān</span>?</div>
+  <div class="approx">dwaw chahng shir jee-en?</div>
+  <div class="meaning">How long (time)?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">票</span> <span class="divider">|</span> <span class="trad">票</span></div>
+  <div class="pinyin"><span class="t4">piào</span></div>
+  <div class="approx">pee-ow</div>
+  <div class="meaning">Ticket</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">在哪里？</span> <span class="divider">|</span> <span class="trad">在哪裡？</span></div>
+  <div class="pinyin"><span class="t4">zài</span> <span class="t3">nǎ</span><span class="t3">lǐ</span>?</div>
+  <div class="approx">dzai nah lee?</div>
+  <div class="meaning">Where is it?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">下车</span> <span class="divider">|</span> <span class="trad">下車</span></div>
+  <div class="pinyin"><span class="t4">xià</span> <span class="t1">chē</span></div>
+  <div class="approx">syah chuh</div>
+  <div class="meaning">Get off (a vehicle)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">上车</span> <span class="divider">|</span> <span class="trad">上車</span></div>
+  <div class="pinyin"><span class="t4">shàng</span> <span class="t1">chē</span></div>
+  <div class="approx">shahng chuh</div>
+  <div class="meaning">Get on (a vehicle)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">请在这里停</span> <span class="divider">|</span> <span class="trad">請在這裡停</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span> <span class="t4">zài</span> <span class="t4">zhè</span><span class="t3">lǐ</span> <span class="t2">tíng</span></div>
+  <div class="approx">ching dzai juh lee ting</div>
+  <div class="meaning">Please stop here</div>
+</div>
+
+</div>
+
+<h3>Mini Dialogue</h3>
+<p><em>Getting a taxi (or DiDi) to your hotel.</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好，我要去北京饭店。</span> <span class="divider">|</span> <span class="trad">你好，我要去北京飯店。</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>, <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t4">qù</span> <span class="t3">běi</span><span class="t1">jīng</span> <span class="t4">fàn</span><span class="t4">diàn</span>.</div>
+  <div class="approx">nee how, waw yow choo bay jing fahn dee-en.</div>
+  <div class="meaning">Hello, I want to go to Beijing Hotel.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Driver:</span>
+  <div class="chars"><span class="simp">好的，大概二十分钟。</span> <span class="divider">|</span> <span class="trad">好的，大概二十分鐘。</span></div>
+  <div class="pinyin"><span class="t3">hǎo</span> <span class="t5">de</span>, <span class="t4">dà</span><span class="t4">gài</span> <span class="t4">èr</span><span class="t2">shí</span> <span class="t1">fēn</span><span class="t1">zhōng</span>.</div>
+  <div class="approx">how duh, dah guy ar shir fen johng.</div>
+  <div class="meaning">OK, about 20 minutes.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">到了吗？</span> <span class="divider">|</span> <span class="trad">到了嗎？</span></div>
+  <div class="pinyin"><span class="t4">dào</span> <span class="t5">le</span> <span class="t5">ma</span>?</div>
+  <div class="approx">dow luh mah?</div>
+  <div class="meaning">Are we there?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Driver:</span>
+  <div class="chars"><span class="simp">到了，到了。</span> <span class="divider">|</span> <span class="trad">到了，到了。</span></div>
+  <div class="pinyin"><span class="t4">dào</span> <span class="t5">le</span>, <span class="t4">dào</span> <span class="t5">le</span>.</div>
+  <div class="approx">dow luh, dow luh.</div>
+  <div class="meaning">We're here, we're here.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">多少钱？</span> <span class="divider">|</span> <span class="trad">多少錢？</span></div>
+  <div class="pinyin"><span class="t1">duō</span><span class="t5">shao</span> <span class="t2">qián</span>?</div>
+  <div class="approx">dwaw shaow chee-en?</div>
+  <div class="meaning">How much?</div>
+</div>
+</div>
+
+<div class="cultural-note">
+<strong>DiDi</strong> (滴滴 <span class="t1">dī</span><span class="t1">dī</span>) is China's ride-hailing app (like Uber). It's often easier than hailing a street taxi, especially if you don't speak much Mandarin - you type in the destination and the app handles it. The <strong>high-speed train</strong> (高铁 <span class="t1">gāo</span><span class="t3">tiě</span>) is China's pride - fast, clean, punctual, and the best way to travel between cities. Buy tickets in advance on the 12306 app or at the station with your passport.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: 在 (zài) for Location</h4>
+<p><span class="t4">zài</span> means "at" or "in" for locations:</p>
+<p><span class="t4">zài</span> <span class="t4">zhè</span><span class="t3">lǐ</span> = here (at this place)</p>
+<p><span class="t4">zài</span> <span class="t4">nà</span><span class="t3">lǐ</span> = there (at that place)</p>
+<p>地铁站 <span class="t4">zài</span> <span class="t3">nǎ</span><span class="t3">lǐ</span>? = Where is the subway station?</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">I want to go to the airport. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Where is the subway station? <span class="exercise-blank"></span></li>
+<li class="exercise-item">How long does it take? <span class="exercise-blank"></span></li>
+<li class="exercise-item">Please stop here. <span class="exercise-blank"></span></li>
+<li class="exercise-item">One ticket, please. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Match:</strong></p>
+<ol>
+<li class="exercise-item">高铁 = <span class="exercise-blank"></span> (a. bus b. high-speed train c. taxi)</li>
+<li class="exercise-item">机场 = <span class="exercise-blank"></span> (a. train station b. subway c. airport)</li>
+<li class="exercise-item">下车 = <span class="exercise-blank"></span> (a. get on b. get off c. stop)</li>
+<li class="exercise-item">票 = <span class="exercise-blank"></span> (a. money b. ticket c. station)</li>
+</ol>
+<p><strong>Fill in:</strong></p>
+<ol start="5">
+<li class="exercise-item">I want to go to the train station = <span class="t3">wǒ</span> <span class="exercise-blank"></span> <span class="exercise-blank"></span> <span class="t3">huǒ</span><span class="t1">chē</span><span class="t4">zhàn</span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 6 ==================== -->
+<div class="lesson">
+<h2 id="lesson-6">Lesson 6: Hotel</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 5</h4>
+<p>Say these out loud: <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t4">qù</span>... (I want to go to...) | ...  <span class="t4">zài</span> <span class="t3">nǎ</span><span class="t3">lǐ</span>? (where is...?) | <span class="t3">qǐng</span> <span class="t4">zài</span> <span class="t4">zhè</span><span class="t3">lǐ</span> <span class="t2">tíng</span> (please stop here)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can check into a hotel, ask about your room, request amenities, and check out.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我有预订</span> <span class="divider">|</span> <span class="trad">我有預訂</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t3">yǒu</span> <span class="t4">yù</span><span class="t4">dìng</span></div>
+  <div class="approx">waw yo yoo ding</div>
+  <div class="meaning">I have a reservation</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">房间</span> <span class="divider">|</span> <span class="trad">房間</span></div>
+  <div class="pinyin"><span class="t2">fáng</span><span class="t1">jiān</span></div>
+  <div class="approx">fahng jee-en</div>
+  <div class="meaning">Room</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">单人间</span> <span class="divider">|</span> <span class="trad">單人間</span></div>
+  <div class="pinyin"><span class="t1">dān</span><span class="t2">rén</span><span class="t1">jiān</span></div>
+  <div class="approx">dahn ren jee-en</div>
+  <div class="meaning">Single room</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">双人间</span> <span class="divider">|</span> <span class="trad">雙人間</span></div>
+  <div class="pinyin"><span class="t1">shuāng</span><span class="t2">rén</span><span class="t1">jiān</span></div>
+  <div class="approx">shwahng ren jee-en</div>
+  <div class="meaning">Double room</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">住几天？</span> <span class="divider">|</span> <span class="trad">住幾天？</span></div>
+  <div class="pinyin"><span class="t4">zhù</span> <span class="t3">jǐ</span> <span class="t1">tiān</span>?</div>
+  <div class="approx">joo jee tee-en?</div>
+  <div class="meaning">How many nights?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">护照</span> <span class="divider">|</span> <span class="trad">護照</span></div>
+  <div class="pinyin"><span class="t4">hù</span><span class="t4">zhào</span></div>
+  <div class="approx">hoo jow</div>
+  <div class="meaning">Passport</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">钥匙</span> <span class="divider">|</span> <span class="trad">鑰匙</span></div>
+  <div class="pinyin"><span class="t4">yào</span><span class="t5">shi</span></div>
+  <div class="approx">yow shir</div>
+  <div class="meaning">Key</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">WiFi密码是什么？</span> <span class="divider">|</span> <span class="trad">WiFi密碼是什麼？</span></div>
+  <div class="pinyin">WiFi <span class="t4">mì</span><span class="t3">mǎ</span> <span class="t4">shì</span> <span class="t2">shén</span><span class="t5">me</span>?</div>
+  <div class="approx">WiFi mee mah shir shun muh?</div>
+  <div class="meaning">What's the WiFi password?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">空调</span> <span class="divider">|</span> <span class="trad">空調</span></div>
+  <div class="pinyin"><span class="t1">kōng</span><span class="t2">tiáo</span></div>
+  <div class="approx">kohng tee-ow</div>
+  <div class="meaning">Air conditioning</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">热水</span> <span class="divider">|</span> <span class="trad">熱水</span></div>
+  <div class="pinyin"><span class="t4">rè</span> <span class="t3">shuǐ</span></div>
+  <div class="approx">ruh shway</div>
+  <div class="meaning">Hot water</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">退房</span> <span class="divider">|</span> <span class="trad">退房</span></div>
+  <div class="pinyin"><span class="t4">tuì</span><span class="t2">fáng</span></div>
+  <div class="approx">tway fahng</div>
+  <div class="meaning">Check out</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">早餐几点？</span> <span class="divider">|</span> <span class="trad">早餐幾點？</span></div>
+  <div class="pinyin"><span class="t3">zǎo</span><span class="t1">cān</span> <span class="t3">jǐ</span> <span class="t3">diǎn</span>?</div>
+  <div class="approx">dzow tsahn jee dee-en?</div>
+  <div class="meaning">What time is breakfast?</div>
+</div>
+
+</div>
+
+<h3>Mini Dialogue</h3>
+<p><em>Checking into a hotel in Beijing.</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好，我有预订。</span> <span class="divider">|</span> <span class="trad">你好，我有預訂。</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>, <span class="t3">wǒ</span> <span class="t3">yǒu</span> <span class="t4">yù</span><span class="t4">dìng</span>.</div>
+  <div class="approx">nee how, waw yo yoo ding.</div>
+  <div class="meaning">Hello, I have a reservation.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Front desk:</span>
+  <div class="chars"><span class="simp">好的，请给我您的护照。</span> <span class="divider">|</span> <span class="trad">好的，請給我您的護照。</span></div>
+  <div class="pinyin"><span class="t3">hǎo</span> <span class="t5">de</span>, <span class="t3">qǐng</span> <span class="t3">gěi</span> <span class="t3">wǒ</span> <span class="t2">nín</span> <span class="t5">de</span> <span class="t4">hù</span><span class="t4">zhào</span>.</div>
+  <div class="approx">how duh, ching gay waw neen duh hoo jow.</div>
+  <div class="meaning">OK, please give me your passport.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">WiFi密码是什么？</span> <span class="divider">|</span> <span class="trad">WiFi密碼是什麼？</span></div>
+  <div class="pinyin">WiFi <span class="t4">mì</span><span class="t3">mǎ</span> <span class="t4">shì</span> <span class="t2">shén</span><span class="t5">me</span>?</div>
+  <div class="approx">WiFi mee mah shir shun muh?</div>
+  <div class="meaning">What's the WiFi password?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Front desk:</span>
+  <div class="chars"><span class="simp">在房卡上。早餐七点到九点。</span> <span class="divider">|</span> <span class="trad">在房卡上。早餐七點到九點。</span></div>
+  <div class="pinyin"><span class="t4">zài</span> <span class="t2">fáng</span><span class="t3">kǎ</span> <span class="t4">shàng</span>. <span class="t3">zǎo</span><span class="t1">cān</span> <span class="t1">qī</span> <span class="t3">diǎn</span> <span class="t4">dào</span> <span class="t3">jiǔ</span> <span class="t3">diǎn</span>.</div>
+  <div class="approx">dzai fahng kah shahng. dzow tsahn chee dee-en dow jee-oh dee-en.</div>
+  <div class="meaning">It's on the room card. Breakfast is 7:00 to 9:00.</div>
+</div>
+</div>
+
+<div class="cultural-note">
+In China, hotels are required by law to <strong>register foreign guests with the local police</strong>. This is routine - just hand over your passport at check-in. They'll scan it and return it quickly. Most mid-range and higher hotels are used to foreign guests. Budget hotels may not be licensed to accept foreigners. <strong>Hot water</strong> (<span class="t4">rè</span> <span class="t3">shuǐ</span>) is a big deal in China - most hotel rooms have an electric kettle. Drinking hot or warm water is deeply embedded in Chinese culture and is considered healthy.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: 几 (jǐ) vs 多少 (duōshao)</h4>
+<p>Both mean "how many" but:</p>
+<p><span class="t3">jǐ</span> = for small numbers (under ~10): 住几天？(How many days?)</p>
+<p><span class="t1">duō</span><span class="t5">shao</span> = for large/unknown numbers: 多少钱？(How much money?)</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">I have a reservation. <span class="exercise-blank"></span></li>
+<li class="exercise-item">What's the WiFi password? <span class="exercise-blank"></span></li>
+<li class="exercise-item">What time is breakfast? <span class="exercise-blank"></span></li>
+<li class="exercise-item">I want to check out. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Three nights. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Translate to English:</strong></p>
+<ol>
+<li class="exercise-item">房间 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">钥匙 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">热水 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">空调 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">退房 = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 7 ==================== -->
+<div class="lesson">
+<h2 id="lesson-7">Lesson 7: Directions</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 6</h4>
+<p>Say these out loud: <span class="t3">wǒ</span> <span class="t3">yǒu</span> <span class="t4">yù</span><span class="t4">dìng</span> (I have a reservation) | WiFi <span class="t4">mì</span><span class="t3">mǎ</span> <span class="t4">shì</span> <span class="t2">shén</span><span class="t5">me</span>? (WiFi password?) | <span class="t4">tuì</span><span class="t2">fáng</span> (check out)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can ask for and understand basic directions.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">请问</span> <span class="divider">|</span> <span class="trad">請問</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span><span class="t4">wèn</span></div>
+  <div class="approx">ching wen</div>
+  <div class="meaning">Excuse me, may I ask... (polite opener)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">左</span> <span class="divider">|</span> <span class="trad">左</span></div>
+  <div class="pinyin"><span class="t3">zuǒ</span></div>
+  <div class="approx">dzwaw</div>
+  <div class="meaning">Left</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">右</span> <span class="divider">|</span> <span class="trad">右</span></div>
+  <div class="pinyin"><span class="t4">yòu</span></div>
+  <div class="approx">yo</div>
+  <div class="meaning">Right</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">直走</span> <span class="divider">|</span> <span class="trad">直走</span></div>
+  <div class="pinyin"><span class="t2">zhí</span> <span class="t3">zǒu</span></div>
+  <div class="approx">jr dzoh</div>
+  <div class="meaning">Go straight</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">前面</span> <span class="divider">|</span> <span class="trad">前面</span></div>
+  <div class="pinyin"><span class="t2">qián</span><span class="t5">miàn</span></div>
+  <div class="approx">chee-en mee-en</div>
+  <div class="meaning">In front / Ahead</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">后面</span> <span class="divider">|</span> <span class="trad">後面</span></div>
+  <div class="pinyin"><span class="t4">hòu</span><span class="t5">miàn</span></div>
+  <div class="approx">ho mee-en</div>
+  <div class="meaning">Behind</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">旁边</span> <span class="divider">|</span> <span class="trad">旁邊</span></div>
+  <div class="pinyin"><span class="t2">páng</span><span class="t1">biān</span></div>
+  <div class="approx">pahng bee-en</div>
+  <div class="meaning">Beside / Next to</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">对面</span> <span class="divider">|</span> <span class="trad">對面</span></div>
+  <div class="pinyin"><span class="t4">duì</span><span class="t4">miàn</span></div>
+  <div class="approx">dway mee-en</div>
+  <div class="meaning">Opposite / Across from</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">近</span> <span class="divider">|</span> <span class="trad">近</span></div>
+  <div class="pinyin"><span class="t4">jìn</span></div>
+  <div class="approx">jin</div>
+  <div class="meaning">Near / Close</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">远</span> <span class="divider">|</span> <span class="trad">遠</span></div>
+  <div class="pinyin"><span class="t3">yuǎn</span></div>
+  <div class="approx">yoo-en</div>
+  <div class="meaning">Far</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">...怎么走？</span> <span class="divider">|</span> <span class="trad">...怎麼走？</span></div>
+  <div class="pinyin">...<span class="t3">zěn</span><span class="t5">me</span> <span class="t3">zǒu</span>?</div>
+  <div class="approx">...dzun muh dzoh?</div>
+  <div class="meaning">How do I get to...?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">地图</span> <span class="divider">|</span> <span class="trad">地圖</span></div>
+  <div class="pinyin"><span class="t4">dì</span><span class="t2">tú</span></div>
+  <div class="approx">dee too</div>
+  <div class="meaning">Map</div>
+</div>
+
+</div>
+
+<h3>Mini Dialogue</h3>
+<p><em>Asking for directions on the street.</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">请问，地铁站怎么走？</span> <span class="divider">|</span> <span class="trad">請問，地鐵站怎麼走？</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span><span class="t4">wèn</span>, <span class="t4">dì</span><span class="t3">tiě</span><span class="t4">zhàn</span> <span class="t3">zěn</span><span class="t5">me</span> <span class="t3">zǒu</span>?</div>
+  <div class="approx">ching wen, dee tee-eh jahn dzun muh dzoh?</div>
+  <div class="meaning">Excuse me, how do I get to the subway station?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Person:</span>
+  <div class="chars"><span class="simp">直走，然后左转。</span> <span class="divider">|</span> <span class="trad">直走，然後左轉。</span></div>
+  <div class="pinyin"><span class="t2">zhí</span> <span class="t3">zǒu</span>, <span class="t2">rán</span><span class="t4">hòu</span> <span class="t3">zuǒ</span> <span class="t3">zhuǎn</span>.</div>
+  <div class="approx">jr dzoh, rahn ho dzwaw jwahn.</div>
+  <div class="meaning">Go straight, then turn left.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">远吗？</span> <span class="divider">|</span> <span class="trad">遠嗎？</span></div>
+  <div class="pinyin"><span class="t3">yuǎn</span> <span class="t5">ma</span>?</div>
+  <div class="approx">yoo-en mah?</div>
+  <div class="meaning">Is it far?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Person:</span>
+  <div class="chars"><span class="simp">不远，五分钟就到了。</span> <span class="divider">|</span> <span class="trad">不遠，五分鐘就到了。</span></div>
+  <div class="pinyin"><span class="t4">bù</span> <span class="t3">yuǎn</span>, <span class="t3">wǔ</span> <span class="t1">fēn</span><span class="t1">zhōng</span> <span class="t4">jiù</span> <span class="t4">dào</span> <span class="t5">le</span>.</div>
+  <div class="approx">boo yoo-en, woo fen johng jee-oh dow luh.</div>
+  <div class="meaning">Not far, five minutes and you'll be there.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">谢谢！</span> <span class="divider">|</span> <span class="trad">謝謝！</span></div>
+  <div class="pinyin"><span class="t4">xiè</span><span class="t5">xie</span>!</div>
+  <div class="approx">syeh syeh!</div>
+  <div class="meaning">Thank you!</div>
+</div>
+</div>
+
+<div class="cultural-note">
+Chinese addresses work from <strong>large to small</strong>: country, city, district, street, building number - the reverse of Western addresses. When giving directions, Chinese people often reference <strong>landmarks</strong> rather than street names: "next to the KFC" or "across from the big bank." If you're lost, showing someone the address on your phone screen is very effective - most people will helpfully point you in the right direction.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: Location Words</h4>
+<p>Location words come AFTER the noun they describe:</p>
+<p>银行 <span class="t2">páng</span><span class="t1">biān</span> = beside the bank (bank + beside)</p>
+<p>地铁站 <span class="t4">duì</span><span class="t4">miàn</span> = across from the subway station</p>
+<p>饭店 <span class="t4">hòu</span><span class="t5">miàn</span> = behind the restaurant</p>
+<p>This is the opposite of English. English: "behind the restaurant." Mandarin: "restaurant behind."</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">How do I get to the airport? <span class="exercise-blank"></span></li>
+<li class="exercise-item">Turn left. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Go straight. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Is it far? <span class="exercise-blank"></span></li>
+<li class="exercise-item">It's next to the hotel. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Translate to Mandarin:</strong></p>
+<ol>
+<li class="exercise-item">left = <span class="exercise-blank"></span></li>
+<li class="exercise-item">right = <span class="exercise-blank"></span></li>
+<li class="exercise-item">straight = <span class="exercise-blank"></span></li>
+<li class="exercise-item">near = <span class="exercise-blank"></span></li>
+<li class="exercise-item">far = <span class="exercise-blank"></span></li>
+</ol>
+<p><strong>Fill in:</strong></p>
+<ol start="6">
+<li class="exercise-item">Excuse me, how do I get to the hotel? = <span class="t3">qǐng</span><span class="t4">wèn</span>, <span class="t4">fàn</span><span class="t4">diàn</span> <span class="exercise-blank"></span> <span class="t3">zǒu</span>?</li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 8 ==================== -->
+<div class="lesson">
+<h2 id="lesson-8">Lesson 8: Shopping</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 7</h4>
+<p>Say these out loud: <span class="t3">qǐng</span><span class="t4">wèn</span> (excuse me) | <span class="t3">zuǒ</span> (left) | <span class="t4">yòu</span> (right) | <span class="t2">zhí</span> <span class="t3">zǒu</span> (go straight)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can shop for clothes, ask about sizes and colors, and handle haggling at markets.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">商店</span> <span class="divider">|</span> <span class="trad">商店</span></div>
+  <div class="pinyin"><span class="t1">shāng</span><span class="t4">diàn</span></div>
+  <div class="approx">shahng dee-en</div>
+  <div class="meaning">Shop / Store</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">超市</span> <span class="divider">|</span> <span class="trad">超市</span></div>
+  <div class="pinyin"><span class="t1">chāo</span><span class="t4">shì</span></div>
+  <div class="approx">chow shir</div>
+  <div class="meaning">Supermarket</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我可以试试吗？</span> <span class="divider">|</span> <span class="trad">我可以試試嗎？</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t3">kě</span><span class="t3">yǐ</span> <span class="t4">shì</span><span class="t5">shi</span> <span class="t5">ma</span>?</div>
+  <div class="approx">waw kuh yee shir shir mah?</div>
+  <div class="meaning">Can I try it on?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">大</span> <span class="divider">|</span> <span class="trad">大</span></div>
+  <div class="pinyin"><span class="t4">dà</span></div>
+  <div class="approx">dah</div>
+  <div class="meaning">Big / Large</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">小</span> <span class="divider">|</span> <span class="trad">小</span></div>
+  <div class="pinyin"><span class="t3">xiǎo</span></div>
+  <div class="approx">syow</div>
+  <div class="meaning">Small</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">大一号</span> <span class="divider">|</span> <span class="trad">大一號</span></div>
+  <div class="pinyin"><span class="t4">dà</span> <span class="t1">yī</span> <span class="t4">hào</span></div>
+  <div class="approx">dah ee how</div>
+  <div class="meaning">One size bigger</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">小一号</span> <span class="divider">|</span> <span class="trad">小一號</span></div>
+  <div class="pinyin"><span class="t3">xiǎo</span> <span class="t1">yī</span> <span class="t4">hào</span></div>
+  <div class="approx">syow ee how</div>
+  <div class="meaning">One size smaller</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">红色</span> <span class="divider">|</span> <span class="trad">紅色</span></div>
+  <div class="pinyin"><span class="t2">hóng</span><span class="t4">sè</span></div>
+  <div class="approx">hohng suh</div>
+  <div class="meaning">Red</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">蓝色</span> <span class="divider">|</span> <span class="trad">藍色</span></div>
+  <div class="pinyin"><span class="t2">lán</span><span class="t4">sè</span></div>
+  <div class="approx">lahn suh</div>
+  <div class="meaning">Blue</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">白色</span> <span class="divider">|</span> <span class="trad">白色</span></div>
+  <div class="pinyin"><span class="t2">bái</span><span class="t4">sè</span></div>
+  <div class="approx">bye suh</div>
+  <div class="meaning">White</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">黑色</span> <span class="divider">|</span> <span class="trad">黑色</span></div>
+  <div class="pinyin"><span class="t1">hēi</span><span class="t4">sè</span></div>
+  <div class="approx">hay suh</div>
+  <div class="meaning">Black</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">打折</span> <span class="divider">|</span> <span class="trad">打折</span></div>
+  <div class="pinyin"><span class="t3">dǎ</span><span class="t2">zhé</span></div>
+  <div class="approx">dah juh</div>
+  <div class="meaning">Discount / On sale</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">合适</span> <span class="divider">|</span> <span class="trad">合適</span></div>
+  <div class="pinyin"><span class="t2">hé</span><span class="t4">shì</span></div>
+  <div class="approx">huh shir</div>
+  <div class="meaning">Fits well / Suitable</div>
+</div>
+
+</div>
+
+<h3>Mini Dialogue</h3>
+<p><em>Shopping at a market in Beijing.</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">这个多少钱？</span> <span class="divider">|</span> <span class="trad">這個多少錢？</span></div>
+  <div class="pinyin"><span class="t4">zhè</span><span class="t5">ge</span> <span class="t1">duō</span><span class="t5">shao</span> <span class="t2">qián</span>?</div>
+  <div class="approx">juh guh dwaw shaow chee-en?</div>
+  <div class="meaning">How much is this?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Seller:</span>
+  <div class="chars"><span class="simp">一百块。</span> <span class="divider">|</span> <span class="trad">一百塊。</span></div>
+  <div class="pinyin"><span class="t4">yì</span><span class="t3">bǎi</span> <span class="t4">kuài</span>.</div>
+  <div class="approx">ee buy kwai.</div>
+  <div class="meaning">100 yuan.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">太贵了！五十块可以吗？</span> <span class="divider">|</span> <span class="trad">太貴了！五十塊可以嗎？</span></div>
+  <div class="pinyin"><span class="t4">tài</span> <span class="t4">guì</span> <span class="t5">le</span>! <span class="t3">wǔ</span><span class="t2">shí</span> <span class="t4">kuài</span> <span class="t3">kě</span><span class="t3">yǐ</span> <span class="t5">ma</span>?</div>
+  <div class="approx">tie gway luh! woo shir kwai kuh yee mah?</div>
+  <div class="meaning">Too expensive! How about 50 yuan?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Seller:</span>
+  <div class="chars"><span class="simp">不行，八十块。</span> <span class="divider">|</span> <span class="trad">不行，八十塊。</span></div>
+  <div class="pinyin"><span class="t4">bù</span><span class="t2">xíng</span>, <span class="t1">bā</span><span class="t2">shí</span> <span class="t4">kuài</span>.</div>
+  <div class="approx">boo shing, bah shir kwai.</div>
+  <div class="meaning">No way, 80 yuan.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">好吧，我要了。</span> <span class="divider">|</span> <span class="trad">好吧，我要了。</span></div>
+  <div class="pinyin"><span class="t3">hǎo</span> <span class="t5">ba</span>, <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t5">le</span>.</div>
+  <div class="approx">how bah, waw yow luh.</div>
+  <div class="meaning">OK fine, I'll take it.</div>
+</div>
+</div>
+
+<div class="cultural-note">
+<strong>Haggling is expected at outdoor markets and small shops</strong>, but NOT at malls, supermarkets, or chain stores (prices are fixed there). A good strategy: offer about 40-50% of the asking price and negotiate up to about 60-70%. Always smile and be friendly about it - it's a game, not a fight. Walk away slowly if the price isn't right - the seller will often call you back with a lower offer.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: 的 (de) - The Description Particle</h4>
+<p><span class="t5">de</span> connects a description to a noun:</p>
+<p><span class="t2">hóng</span><span class="t4">sè</span> <span class="t5">de</span> = red (one) | <span class="t4">dà</span> <span class="t5">de</span> = big (one) | <span class="t3">wǒ</span> <span class="t5">de</span> = my/mine</p>
+<p>有红色的吗？(<span class="t3">yǒu</span> <span class="t2">hóng</span><span class="t4">sè</span> <span class="t5">de</span> <span class="t5">ma</span>?) = Do you have it in red?</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">Can I try it on? <span class="exercise-blank"></span></li>
+<li class="exercise-item">One size bigger, please. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Do you have it in blue? <span class="exercise-blank"></span></li>
+<li class="exercise-item">Too expensive! <span class="exercise-blank"></span></li>
+<li class="exercise-item">Is there a discount? <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Colors - write the pinyin:</strong></p>
+<ol>
+<li class="exercise-item">红色 (red) = <span class="exercise-blank"></span></li>
+<li class="exercise-item">蓝色 (blue) = <span class="exercise-blank"></span></li>
+<li class="exercise-item">黑色 (black) = <span class="exercise-blank"></span></li>
+<li class="exercise-item">白色 (white) = <span class="exercise-blank"></span></li>
+</ol>
+<p><strong>Translate:</strong></p>
+<ol start="5">
+<li class="exercise-item">This is too big. = <span class="exercise-blank"></span></li>
+<li class="exercise-item">Do you have a smaller one? = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 9 ==================== -->
+<div class="lesson">
+<h2 id="lesson-9">Lesson 9: Emergencies</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 8</h4>
+<p>Say these out loud: <span class="t3">wǒ</span> <span class="t3">kě</span><span class="t3">yǐ</span> <span class="t4">shì</span><span class="t5">shi</span> <span class="t5">ma</span>? (can I try it?) | <span class="t4">tài</span> <span class="t4">guì</span> <span class="t5">le</span> (too expensive) | <span class="t3">dǎ</span><span class="t2">zhé</span> (discount)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can describe basic health problems, find a doctor or pharmacy, and handle emergency situations.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">救命！</span> <span class="divider">|</span> <span class="trad">救命！</span></div>
+  <div class="pinyin"><span class="t4">jiù</span><span class="t4">mìng</span>!</div>
+  <div class="approx">jee-oh ming!</div>
+  <div class="meaning">Help! (life-threatening emergency)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">帮帮我</span> <span class="divider">|</span> <span class="trad">幫幫我</span></div>
+  <div class="pinyin"><span class="t1">bāng</span><span class="t5">bang</span> <span class="t3">wǒ</span></div>
+  <div class="approx">bahng bahng waw</div>
+  <div class="meaning">Help me (less urgent)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">警察</span> <span class="divider">|</span> <span class="trad">警察</span></div>
+  <div class="pinyin"><span class="t3">jǐng</span><span class="t2">chá</span></div>
+  <div class="approx">jing chah</div>
+  <div class="meaning">Police</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">医院</span> <span class="divider">|</span> <span class="trad">醫院</span></div>
+  <div class="pinyin"><span class="t1">yī</span><span class="t4">yuàn</span></div>
+  <div class="approx">ee yoo-en</div>
+  <div class="meaning">Hospital</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">医生</span> <span class="divider">|</span> <span class="trad">醫生</span></div>
+  <div class="pinyin"><span class="t1">yī</span><span class="t1">shēng</span></div>
+  <div class="approx">ee shung</div>
+  <div class="meaning">Doctor</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">药房</span> <span class="divider">|</span> <span class="trad">藥房</span></div>
+  <div class="pinyin"><span class="t4">yào</span><span class="t2">fáng</span></div>
+  <div class="approx">yow fahng</div>
+  <div class="meaning">Pharmacy</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我不舒服</span> <span class="divider">|</span> <span class="trad">我不舒服</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">bù</span> <span class="t1">shū</span><span class="t5">fu</span></div>
+  <div class="approx">waw boo shoo foo</div>
+  <div class="meaning">I don't feel well</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">头疼</span> <span class="divider">|</span> <span class="trad">頭疼</span></div>
+  <div class="pinyin"><span class="t2">tóu</span> <span class="t2">téng</span></div>
+  <div class="approx">toe tung</div>
+  <div class="meaning">Headache</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">肚子疼</span> <span class="divider">|</span> <span class="trad">肚子疼</span></div>
+  <div class="pinyin"><span class="t4">dù</span><span class="t5">zi</span> <span class="t2">téng</span></div>
+  <div class="approx">doo dzuh tung</div>
+  <div class="meaning">Stomachache</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">发烧</span> <span class="divider">|</span> <span class="trad">發燒</span></div>
+  <div class="pinyin"><span class="t1">fā</span><span class="t1">shāo</span></div>
+  <div class="approx">fah shaow</div>
+  <div class="meaning">Fever</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">过敏</span> <span class="divider">|</span> <span class="trad">過敏</span></div>
+  <div class="pinyin"><span class="t4">guò</span><span class="t3">mǐn</span></div>
+  <div class="approx">gwaw min</div>
+  <div class="meaning">Allergic / Allergy</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我的护照丢了</span> <span class="divider">|</span> <span class="trad">我的護照丟了</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t5">de</span> <span class="t4">hù</span><span class="t4">zhào</span> <span class="t1">diū</span> <span class="t5">le</span></div>
+  <div class="approx">waw duh hoo jow dee-oh luh</div>
+  <div class="meaning">I lost my passport</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">大使馆</span> <span class="divider">|</span> <span class="trad">大使館</span></div>
+  <div class="pinyin"><span class="t4">dà</span><span class="t3">shǐ</span><span class="t3">guǎn</span></div>
+  <div class="approx">dah shir gwahn</div>
+  <div class="meaning">Embassy</div>
+</div>
+
+</div>
+
+<div class="cultural-note">
+<strong>Emergency numbers in China:</strong> 110 (police), 120 (ambulance), 119 (fire). Chinese pharmacies (药房) can often help with minor ailments without a doctor visit - pharmacists can recommend medicine over the counter. For serious issues, go to a hospital (医院). Major cities have international hospitals with English-speaking staff.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: 了 (le) - Something Changed</h4>
+<p><span class="t5">le</span> at the end of a sentence signals that something changed or happened:</p>
+<p>护照丢<strong>了</strong> = passport is lost (it wasn't lost before, now it is)</p>
+<p>到<strong>了</strong> = arrived (we weren't there before, now we are)</p>
+<p>太贵<strong>了</strong> = it's become too expensive (reacting to a price)</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">I don't feel well. <span class="exercise-blank"></span></li>
+<li class="exercise-item">I have a headache. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Where is the hospital? <span class="exercise-blank"></span></li>
+<li class="exercise-item">I lost my passport. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Help me! <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Match the symptom:</strong></p>
+<ol>
+<li class="exercise-item">头疼 = <span class="exercise-blank"></span> (a. stomachache b. headache c. fever)</li>
+<li class="exercise-item">发烧 = <span class="exercise-blank"></span> (a. stomachache b. headache c. fever)</li>
+<li class="exercise-item">肚子疼 = <span class="exercise-blank"></span> (a. stomachache b. headache c. fever)</li>
+<li class="exercise-item">过敏 = <span class="exercise-blank"></span> (a. allergy b. fever c. cold)</li>
+</ol>
+<p><strong>Translate:</strong></p>
+<ol start="5">
+<li class="exercise-item">Where is the pharmacy? = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 10 ==================== -->
+<div class="lesson">
+<h2 id="lesson-10">Lesson 10: Time</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 9</h4>
+<p>Say these out loud: <span class="t3">wǒ</span> <span class="t4">bù</span> <span class="t1">shū</span><span class="t5">fu</span> (I don't feel well) | <span class="t1">yī</span><span class="t4">yuàn</span> (hospital) | <span class="t4">yào</span><span class="t2">fáng</span> (pharmacy)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can tell time, say days and dates, and make appointments.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">现在几点？</span> <span class="divider">|</span> <span class="trad">現在幾點？</span></div>
+  <div class="pinyin"><span class="t4">xiàn</span><span class="t4">zài</span> <span class="t3">jǐ</span> <span class="t3">diǎn</span>?</div>
+  <div class="approx">syee-en dzai jee dee-en?</div>
+  <div class="meaning">What time is it now?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">三点</span> <span class="divider">|</span> <span class="trad">三點</span></div>
+  <div class="pinyin"><span class="t1">sān</span> <span class="t3">diǎn</span></div>
+  <div class="approx">sahn dee-en</div>
+  <div class="meaning">3 o'clock</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">三点半</span> <span class="divider">|</span> <span class="trad">三點半</span></div>
+  <div class="pinyin"><span class="t1">sān</span> <span class="t3">diǎn</span> <span class="t4">bàn</span></div>
+  <div class="approx">sahn dee-en bahn</div>
+  <div class="meaning">3:30 (three and a half)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">三点十五分</span> <span class="divider">|</span> <span class="trad">三點十五分</span></div>
+  <div class="pinyin"><span class="t1">sān</span> <span class="t3">diǎn</span> <span class="t2">shí</span><span class="t3">wǔ</span> <span class="t1">fēn</span></div>
+  <div class="approx">sahn dee-en shir woo fen</div>
+  <div class="meaning">3:15</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">上午</span> <span class="divider">|</span> <span class="trad">上午</span></div>
+  <div class="pinyin"><span class="t4">shàng</span><span class="t3">wǔ</span></div>
+  <div class="approx">shahng woo</div>
+  <div class="meaning">Morning (AM)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">下午</span> <span class="divider">|</span> <span class="trad">下午</span></div>
+  <div class="pinyin"><span class="t4">xià</span><span class="t3">wǔ</span></div>
+  <div class="approx">syah woo</div>
+  <div class="meaning">Afternoon (PM)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">今天</span> <span class="divider">|</span> <span class="trad">今天</span></div>
+  <div class="pinyin"><span class="t1">jīn</span><span class="t1">tiān</span></div>
+  <div class="approx">jin tee-en</div>
+  <div class="meaning">Today</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">明天</span> <span class="divider">|</span> <span class="trad">明天</span></div>
+  <div class="pinyin"><span class="t2">míng</span><span class="t1">tiān</span></div>
+  <div class="approx">ming tee-en</div>
+  <div class="meaning">Tomorrow</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">昨天</span> <span class="divider">|</span> <span class="trad">昨天</span></div>
+  <div class="pinyin"><span class="t2">zuó</span><span class="t1">tiān</span></div>
+  <div class="approx">dzwaw tee-en</div>
+  <div class="meaning">Yesterday</div>
+</div>
+
+</div>
+
+<div class="vocab-box">
+<h4>Days of the Week</h4>
+<p><span class="t1">xīng</span><span class="t1">qī</span><span class="t1">yī</span> 星期一 = Monday | <span class="t1">xīng</span><span class="t1">qī</span><span class="t4">èr</span> 星期二 = Tuesday | <span class="t1">xīng</span><span class="t1">qī</span><span class="t1">sān</span> 星期三 = Wednesday | <span class="t1">xīng</span><span class="t1">qī</span><span class="t4">sì</span> 星期四 = Thursday | <span class="t1">xīng</span><span class="t1">qī</span><span class="t3">wǔ</span> 星期五 = Friday | <span class="t1">xīng</span><span class="t1">qī</span><span class="t4">liù</span> 星期六 = Saturday | <span class="t1">xīng</span><span class="t1">qī</span><span class="t4">rì</span> 星期日 = Sunday</p>
+<p>Pattern: 星期 (week) + number. Sunday uses 日 (sun/day) or 天.</p>
+</div>
+
+<div class="vocab-box">
+<h4>Months</h4>
+<p>Even simpler: number + 月 (<span class="t4">yuè</span>). 一月 = January, 二月 = February... 十二月 = December.</p>
+<p>Day of the month: number + 号 (<span class="t4">hào</span>). 五号 = the 5th.</p>
+<p>Example: 八月二号 = August 2nd.</p>
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: Time Goes Before the Verb</h4>
+<p>In English, time can go at the end: "I go tomorrow." In Mandarin, time goes BEFORE the verb:</p>
+<p><span class="t3">wǒ</span> <span class="t2">míng</span><span class="t1">tiān</span> <span class="t4">qù</span> = I tomorrow go = I'll go tomorrow</p>
+<p><span class="t3">wǒ</span> <span class="t4">xià</span><span class="t3">wǔ</span> <span class="t1">sān</span> <span class="t3">diǎn</span> <span class="t4">dào</span> = I afternoon 3 o'clock arrive = I'll arrive at 3 PM</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">What time is it? <span class="exercise-blank"></span></li>
+<li class="exercise-item">Today is Monday. <span class="exercise-blank"></span></li>
+<li class="exercise-item">I'll go tomorrow morning. <span class="exercise-blank"></span></li>
+<li class="exercise-item">It's 2:30 PM. <span class="exercise-blank"></span></li>
+<li class="exercise-item">What day is today? <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Write the day in Mandarin:</strong></p>
+<ol>
+<li class="exercise-item">Wednesday = <span class="exercise-blank"></span></li>
+<li class="exercise-item">Friday = <span class="exercise-blank"></span></li>
+<li class="exercise-item">Sunday = <span class="exercise-blank"></span></li>
+</ol>
+<p><strong>Write the time:</strong></p>
+<ol start="4">
+<li class="exercise-item">8:00 AM = <span class="exercise-blank"></span></li>
+<li class="exercise-item">4:30 PM = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 11 ==================== -->
+<div class="lesson">
+<h2 id="lesson-11">Lesson 11: Weather &amp; Small Talk</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 10</h4>
+<p>Say these out loud: <span class="t4">xiàn</span><span class="t4">zài</span> <span class="t3">jǐ</span> <span class="t3">diǎn</span>? (what time?) | <span class="t1">jīn</span><span class="t1">tiān</span> (today) | <span class="t2">míng</span><span class="t1">tiān</span> (tomorrow)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can make small talk about weather, how you're doing, and common chitchat topics.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">天气</span> <span class="divider">|</span> <span class="trad">天氣</span></div>
+  <div class="pinyin"><span class="t1">tiān</span><span class="t4">qì</span></div>
+  <div class="approx">tee-en chee</div>
+  <div class="meaning">Weather</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">今天很热</span> <span class="divider">|</span> <span class="trad">今天很熱</span></div>
+  <div class="pinyin"><span class="t1">jīn</span><span class="t1">tiān</span> <span class="t3">hěn</span> <span class="t4">rè</span></div>
+  <div class="approx">jin tee-en hun ruh</div>
+  <div class="meaning">Today is very hot</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">冷</span> <span class="divider">|</span> <span class="trad">冷</span></div>
+  <div class="pinyin"><span class="t3">lěng</span></div>
+  <div class="approx">lung</div>
+  <div class="meaning">Cold</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">下雨了</span> <span class="divider">|</span> <span class="trad">下雨了</span></div>
+  <div class="pinyin"><span class="t4">xià</span> <span class="t3">yǔ</span> <span class="t5">le</span></div>
+  <div class="approx">syah yoo luh</div>
+  <div class="meaning">It's raining</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">你吃了吗？</span> <span class="divider">|</span> <span class="trad">你吃了嗎？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t1">chī</span> <span class="t5">le</span> <span class="t5">ma</span>?</div>
+  <div class="approx">nee chir luh mah?</div>
+  <div class="meaning">Have you eaten? (common greeting)</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">最近怎么样？</span> <span class="divider">|</span> <span class="trad">最近怎麼樣？</span></div>
+  <div class="pinyin"><span class="t4">zuì</span><span class="t4">jìn</span> <span class="t3">zěn</span><span class="t5">me</span><span class="t4">yàng</span>?</div>
+  <div class="approx">dzway jin dzun muh yahng?</div>
+  <div class="meaning">How have things been lately?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">还好</span> <span class="divider">|</span> <span class="trad">還好</span></div>
+  <div class="pinyin"><span class="t2">hái</span> <span class="t3">hǎo</span></div>
+  <div class="approx">hi how</div>
+  <div class="meaning">Not bad / OK</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">忙</span> <span class="divider">|</span> <span class="trad">忙</span></div>
+  <div class="pinyin"><span class="t2">máng</span></div>
+  <div class="approx">mahng</div>
+  <div class="meaning">Busy</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">累</span> <span class="divider">|</span> <span class="trad">累</span></div>
+  <div class="pinyin"><span class="t4">lèi</span></div>
+  <div class="approx">lay</div>
+  <div class="meaning">Tired</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">开心</span> <span class="divider">|</span> <span class="trad">開心</span></div>
+  <div class="pinyin"><span class="t1">kāi</span><span class="t1">xīn</span></div>
+  <div class="approx">kai shin</div>
+  <div class="meaning">Happy</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">旅游</span> <span class="divider">|</span> <span class="trad">旅遊</span></div>
+  <div class="pinyin"><span class="t3">lǚ</span><span class="t2">yóu</span></div>
+  <div class="approx">loo yo</div>
+  <div class="meaning">Travel / Tourism</div>
+</div>
+
+</div>
+
+<div class="cultural-note">
+"你吃了吗？" (<span class="t3">nǐ</span> <span class="t1">chī</span> <span class="t5">le</span> <span class="t5">ma</span>? - "Have you eaten?") is a <strong>common greeting</strong>, not a literal question about food. It's like asking "How are you?" The typical answer is 吃了 (<span class="t1">chī</span> <span class="t5">le</span> - "I've eaten") even if you haven't. Don't actually describe your meal. This greeting reflects China's historical relationship with food scarcity and community care.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: Adjectives ARE Verbs</h4>
+<p>In Mandarin, adjectives work like verbs. You don't need "is":</p>
+<p>今天<strong>很热</strong> = Today very-hot (Today is very hot)</p>
+<p>我<strong>很忙</strong> = I very-busy (I'm very busy)</p>
+<p>The 很 (<span class="t3">hěn</span>) isn't really "very" here - it's just a connector. Without it, the sentence sounds like a comparison.</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">Today is very cold. <span class="exercise-blank"></span></li>
+<li class="exercise-item">How have you been? <span class="exercise-blank"></span></li>
+<li class="exercise-item">I'm very busy. <span class="exercise-blank"></span></li>
+<li class="exercise-item">It's raining. <span class="exercise-blank"></span></li>
+<li class="exercise-item">I'm happy. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Respond to these greetings:</strong></p>
+<ol>
+<li class="exercise-item">你吃了吗？ → <span class="exercise-blank"></span></li>
+<li class="exercise-item">最近怎么样？ → <span class="exercise-blank"></span></li>
+</ol>
+<p><strong>Translate:</strong></p>
+<ol start="3">
+<li class="exercise-item">天气很好 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">我很累 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">今天很冷 = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 12 ==================== -->
+<div class="lesson">
+<h2 id="lesson-12">Lesson 12: Friends &amp; Family</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 11</h4>
+<p>Say these out loud: <span class="t1">jīn</span><span class="t1">tiān</span> <span class="t3">hěn</span> <span class="t4">rè</span> (today is hot) | <span class="t2">hái</span> <span class="t3">hǎo</span> (not bad) | <span class="t3">hěn</span> <span class="t2">máng</span> (very busy)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can talk about your family, friends, and hobbies.</div>
+
+<h3>Essential Phrases</h3>
+<div class="phrase-list">
+
+<div class="phrase">
+  <div class="chars"><span class="simp">家人</span> <span class="divider">|</span> <span class="trad">家人</span></div>
+  <div class="pinyin"><span class="t1">jiā</span><span class="t2">rén</span></div>
+  <div class="approx">jee-ah ren</div>
+  <div class="meaning">Family</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">爸爸</span> <span class="divider">|</span> <span class="trad">爸爸</span></div>
+  <div class="pinyin"><span class="t4">bà</span><span class="t5">ba</span></div>
+  <div class="approx">bah bah</div>
+  <div class="meaning">Dad</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">妈妈</span> <span class="divider">|</span> <span class="trad">媽媽</span></div>
+  <div class="pinyin"><span class="t1">mā</span><span class="t5">ma</span></div>
+  <div class="approx">mah mah</div>
+  <div class="meaning">Mom</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">哥哥</span> <span class="divider">|</span> <span class="trad">哥哥</span></div>
+  <div class="pinyin"><span class="t1">gē</span><span class="t5">ge</span></div>
+  <div class="approx">guh guh</div>
+  <div class="meaning">Older brother</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">姐姐</span> <span class="divider">|</span> <span class="trad">姐姐</span></div>
+  <div class="pinyin"><span class="t3">jiě</span><span class="t5">jie</span></div>
+  <div class="approx">jee-eh jee-eh</div>
+  <div class="meaning">Older sister</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">弟弟</span> <span class="divider">|</span> <span class="trad">弟弟</span></div>
+  <div class="pinyin"><span class="t4">dì</span><span class="t5">di</span></div>
+  <div class="approx">dee dee</div>
+  <div class="meaning">Younger brother</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">妹妹</span> <span class="divider">|</span> <span class="trad">妹妹</span></div>
+  <div class="pinyin"><span class="t4">mèi</span><span class="t5">mei</span></div>
+  <div class="approx">may may</div>
+  <div class="meaning">Younger sister</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">朋友</span> <span class="divider">|</span> <span class="trad">朋友</span></div>
+  <div class="pinyin"><span class="t2">péng</span><span class="t5">you</span></div>
+  <div class="approx">pung yo</div>
+  <div class="meaning">Friend</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">你有孩子吗？</span> <span class="divider">|</span> <span class="trad">你有孩子嗎？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">yǒu</span> <span class="t2">hái</span><span class="t5">zi</span> <span class="t5">ma</span>?</div>
+  <div class="approx">nee yo hi dzuh mah?</div>
+  <div class="meaning">Do you have children?</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">我喜欢...</span> <span class="divider">|</span> <span class="trad">我喜歡...</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t3">xǐ</span><span class="t1">huān</span>...</div>
+  <div class="approx">waw shee hwahn...</div>
+  <div class="meaning">I like...</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">看电影</span> <span class="divider">|</span> <span class="trad">看電影</span></div>
+  <div class="pinyin"><span class="t4">kàn</span> <span class="t4">diàn</span><span class="t3">yǐng</span></div>
+  <div class="approx">kahn dee-en ying</div>
+  <div class="meaning">Watch movies</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">听音乐</span> <span class="divider">|</span> <span class="trad">聽音樂</span></div>
+  <div class="pinyin"><span class="t1">tīng</span> <span class="t1">yīn</span><span class="t4">yuè</span></div>
+  <div class="approx">ting yin yoo-eh</div>
+  <div class="meaning">Listen to music</div>
+</div>
+
+</div>
+
+<div class="cultural-note">
+Chinese family terms are <strong>extremely specific</strong> - there are different words for older brother vs. younger brother, maternal vs. paternal grandmother, and so on. For basic conversation, the terms in this lesson are enough. Asking about family is common small talk in China and is not considered intrusive. People may directly ask "Are you married?" or "Do you have kids?" - this is friendly curiosity, not nosiness.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: 有 (yǒu) and 没有 (méiyǒu)</h4>
+<p><span class="t3">yǒu</span> = have. <span class="t2">méi</span><span class="t3">yǒu</span> = don't have.</p>
+<p>Note: 没 (<span class="t2">méi</span>) is used for negating 有, NOT 不 (<span class="t4">bù</span>).</p>
+<p><span class="t3">wǒ</span> <span class="t3">yǒu</span> <span class="t1">gē</span><span class="t5">ge</span> = I have an older brother</p>
+<p><span class="t3">wǒ</span> <span class="t2">méi</span><span class="t3">yǒu</span> <span class="t4">mèi</span><span class="t5">mei</span> = I don't have a younger sister</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">I have two older brothers. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Do you have children? <span class="exercise-blank"></span></li>
+<li class="exercise-item">I like watching movies. <span class="exercise-blank"></span></li>
+<li class="exercise-item">She is my friend. <span class="exercise-blank"></span></li>
+<li class="exercise-item">I don't have younger sisters. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Family terms - translate:</strong></p>
+<ol>
+<li class="exercise-item">爸爸 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">妈妈 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">哥哥 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">妹妹 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">朋友 = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 13 ==================== -->
+<div class="lesson">
+<h2 id="lesson-13">Lesson 13: Putting It Together</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 12</h4>
+<p>Say these out loud: <span class="t3">wǒ</span> <span class="t3">xǐ</span><span class="t1">huān</span>... (I like...) | <span class="t3">wǒ</span> <span class="t3">yǒu</span>... (I have...) | <span class="t2">péng</span><span class="t5">you</span> (friend)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can hold longer multi-turn conversations combining everything you've learned.</div>
+
+<h3>Connecting Words</h3>
+<div class="phrase-list">
+<div class="phrase">
+  <div class="chars"><span class="simp">然后</span> <span class="divider">|</span> <span class="trad">然後</span></div>
+  <div class="pinyin"><span class="t2">rán</span><span class="t4">hòu</span></div>
+  <div class="approx">rahn ho</div>
+  <div class="meaning">Then / After that</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">因为...所以...</span> <span class="divider">|</span> <span class="trad">因為...所以...</span></div>
+  <div class="pinyin"><span class="t1">yīn</span><span class="t4">wèi</span>...<span class="t3">suǒ</span><span class="t3">yǐ</span>...</div>
+  <div class="approx">een way...swaw yee...</div>
+  <div class="meaning">Because...therefore...</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">但是</span> <span class="divider">|</span> <span class="trad">但是</span></div>
+  <div class="pinyin"><span class="t4">dàn</span><span class="t4">shì</span></div>
+  <div class="approx">dahn shir</div>
+  <div class="meaning">But / However</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">也</span> <span class="divider">|</span> <span class="trad">也</span></div>
+  <div class="pinyin"><span class="t3">yě</span></div>
+  <div class="approx">yeh</div>
+  <div class="meaning">Also / Too</div>
+</div>
+
+<div class="phrase">
+  <div class="chars"><span class="simp">和</span> <span class="divider">|</span> <span class="trad">和</span></div>
+  <div class="pinyin"><span class="t2">hé</span></div>
+  <div class="approx">huh</div>
+  <div class="meaning">And</div>
+</div>
+</div>
+
+<h3>Longer Conversation: Meeting a Friend</h3>
+<p><em>At a milk tea shop near Wangfujing, Beijing.</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好！我叫 Jonathan，你呢？</span> <span class="divider">|</span> <span class="trad">你好！我叫 Jonathan，你呢？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>! <span class="t3">wǒ</span> <span class="t4">jiào</span> Jonathan, <span class="t3">nǐ</span> <span class="t5">ne</span>?</div>
+  <div class="meaning">Hello! I'm Jonathan, and you?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Wei:</span>
+  <div class="chars"><span class="simp">我叫王伟。你是哪国人？</span> <span class="divider">|</span> <span class="trad">我叫王偉。你是哪國人？</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">jiào</span> <span class="t2">wáng</span> <span class="t3">wěi</span>. <span class="t3">nǐ</span> <span class="t4">shì</span> <span class="t3">nǎ</span> <span class="t2">guó</span> <span class="t2">rén</span>?</div>
+  <div class="meaning">I'm Wang Wei. Where are you from?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">我是美国人。我在北京旅游。你呢？</span> <span class="divider">|</span> <span class="trad">我是美國人。我在北京旅遊。你呢？</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">shì</span> <span class="t3">měi</span><span class="t2">guó</span><span class="t2">rén</span>. <span class="t3">wǒ</span> <span class="t4">zài</span> <span class="t3">běi</span><span class="t1">jīng</span> <span class="t3">lǚ</span><span class="t2">yóu</span>. <span class="t3">nǐ</span> <span class="t5">ne</span>?</div>
+  <div class="meaning">I'm American. I'm traveling in Beijing. And you?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Wei:</span>
+  <div class="chars"><span class="simp">我是北京人！你喜欢北京吗？</span> <span class="divider">|</span> <span class="trad">我是北京人！你喜歡北京嗎？</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t4">shì</span> <span class="t3">běi</span><span class="t1">jīng</span><span class="t2">rén</span>! <span class="t3">nǐ</span> <span class="t3">xǐ</span><span class="t1">huān</span> <span class="t3">běi</span><span class="t1">jīng</span> <span class="t5">ma</span>?</div>
+  <div class="meaning">I'm from Beijing! Do you like Beijing?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">很喜欢！北京很好玩。我明天要去长城。</span> <span class="divider">|</span> <span class="trad">很喜歡！北京很好玩。我明天要去長城。</span></div>
+  <div class="pinyin"><span class="t3">hěn</span> <span class="t3">xǐ</span><span class="t1">huān</span>! <span class="t3">běi</span><span class="t1">jīng</span> <span class="t3">hěn</span> <span class="t3">hǎo</span><span class="t2">wán</span>. <span class="t3">wǒ</span> <span class="t2">míng</span><span class="t1">tiān</span> <span class="t4">yào</span> <span class="t4">qù</span> <span class="t2">cháng</span><span class="t2">chéng</span>.</div>
+  <div class="meaning">Really like it! Beijing is really fun. I want to go to the Great Wall tomorrow.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Wei:</span>
+  <div class="chars"><span class="simp">太好了！我们加个微信吧。</span> <span class="divider">|</span> <span class="trad">太好了！我們加個微信吧。</span></div>
+  <div class="pinyin"><span class="t4">tài</span> <span class="t3">hǎo</span> <span class="t5">le</span>! <span class="t3">wǒ</span><span class="t5">men</span> <span class="t1">jiā</span> <span class="t5">ge</span> <span class="t1">wēi</span><span class="t4">xìn</span> <span class="t5">ba</span>.</div>
+  <div class="meaning">Great! Let's add each other on WeChat.</div>
+</div>
+</div>
+
+<div class="cultural-note">
+<strong>Exchanging WeChat</strong> (<span class="t1">jiā</span> <span class="t1">wēi</span><span class="t4">xìn</span>) is the Chinese equivalent of exchanging phone numbers. WeChat (微信) is used for everything - messaging, payments, social media, ride-hailing. When someone says "let's add WeChat," they're offering to stay in touch. You scan each other's QR codes in the app.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: Building Longer Sentences</h4>
+<p>Use 然后 (<span class="t2">rán</span><span class="t4">hòu</span>) to chain actions:</p>
+<p>我先吃饭，然后去长城 = I'll eat first, then go to the Great Wall</p>
+<p>Use 因为...所以 for reasons:</p>
+<p>因为今天下雨，所以我不去了 = Because it's raining today, I'm not going</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">I like Beijing because the food is delicious. <span class="exercise-blank"></span></li>
+<li class="exercise-item">First eat, then go to the subway station. <span class="exercise-blank"></span></li>
+<li class="exercise-item">I also want to go to the Great Wall. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Let's add WeChat. <span class="exercise-blank"></span></li>
+<li class="exercise-item">I want to go but I'm very tired. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Fill in the connector:</strong></p>
+<ol>
+<li class="exercise-item">先吃饭，<span class="exercise-blank"></span>去商店。(first eat, ___ go shopping)</li>
+<li class="exercise-item"><span class="exercise-blank"></span>太贵了，<span class="exercise-blank"></span>我不买。(___too expensive, ___I won't buy)</li>
+<li class="exercise-item">我喜欢北京，<span class="exercise-blank"></span>喜欢上海。(I like Beijing, ___ like Shanghai)</li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== LESSON 14 ==================== -->
+<div class="lesson">
+<h2 id="lesson-14">Lesson 14: Final Conversation Practice</h2>
+
+<div class="warmup">
+<h4>Warm-up: Review Lesson 13</h4>
+<p>Say these out loud: <span class="t2">rán</span><span class="t4">hòu</span> (then) | <span class="t4">dàn</span><span class="t4">shì</span> (but) | <span class="t3">yě</span> (also) | <span class="t1">yīn</span><span class="t4">wèi</span>...<span class="t3">suǒ</span><span class="t3">yǐ</span> (because...so)</p>
+</div>
+
+<div class="goal">By the end of this lesson, you can navigate real-world situations from arriving in China to saying goodbye to new friends.</div>
+
+<h3>Scenario 1: From Airport to Hotel</h3>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">请问，出租车在哪里？</span> <span class="divider">|</span> <span class="trad">請問，出租車在哪裡？</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span><span class="t4">wèn</span>, <span class="t1">chū</span><span class="t1">zū</span><span class="t1">chē</span> <span class="t4">zài</span> <span class="t3">nǎ</span><span class="t3">lǐ</span>?</div>
+  <div class="meaning">Excuse me, where are the taxis?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Staff:</span>
+  <div class="chars"><span class="simp">出去以后左转。</span> <span class="divider">|</span> <span class="trad">出去以後左轉。</span></div>
+  <div class="pinyin"><span class="t1">chū</span><span class="t5">qu</span> <span class="t3">yǐ</span><span class="t4">hòu</span> <span class="t3">zuǒ</span> <span class="t3">zhuǎn</span>.</div>
+  <div class="meaning">Go out then turn left.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好，我要去北京饭店。多长时间？</span> <span class="divider">|</span> <span class="trad">你好，我要去北京飯店。多長時間？</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>, <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t4">qù</span> <span class="t3">běi</span><span class="t1">jīng</span> <span class="t4">fàn</span><span class="t4">diàn</span>. <span class="t1">duō</span> <span class="t2">cháng</span> <span class="t2">shí</span><span class="t1">jiān</span>?</div>
+  <div class="meaning">Hello, I want to go to Beijing Hotel. How long?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Driver:</span>
+  <div class="chars"><span class="simp">大概四十分钟。</span> <span class="divider">|</span> <span class="trad">大概四十分鐘。</span></div>
+  <div class="pinyin"><span class="t4">dà</span><span class="t4">gài</span> <span class="t4">sì</span><span class="t2">shí</span> <span class="t1">fēn</span><span class="t1">zhōng</span>.</div>
+  <div class="meaning">About 40 minutes.</div>
+</div>
+</div>
+
+<h3>Scenario 2: Full Restaurant Experience</h3>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好，两个人。</span> <span class="divider">|</span> <span class="trad">你好，兩個人。</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>, <span class="t3">liǎng</span> <span class="t4">gè</span> <span class="t2">rén</span>.</div>
+  <div class="meaning">Hello, table for two.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Server:</span>
+  <div class="chars"><span class="simp">好的，这边请。要点什么？</span> <span class="divider">|</span> <span class="trad">好的，這邊請。要點什麼？</span></div>
+  <div class="pinyin"><span class="t3">hǎo</span> <span class="t5">de</span>, <span class="t4">zhè</span><span class="t1">biān</span> <span class="t3">qǐng</span>. <span class="t4">yào</span> <span class="t3">diǎn</span> <span class="t2">shén</span><span class="t5">me</span>?</div>
+  <div class="meaning">OK, this way please. What would you like to order?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">请给我饺子、一个青菜、和两个啤酒。不要辣。</span> <span class="divider">|</span> <span class="trad">請給我餃子、一個青菜、和兩個啤酒。不要辣。</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span> <span class="t3">gěi</span> <span class="t3">wǒ</span> <span class="t3">jiǎo</span><span class="t5">zi</span>, <span class="t2">yí</span> <span class="t4">gè</span> <span class="t1">qīng</span><span class="t4">cài</span>, <span class="t2">hé</span> <span class="t3">liǎng</span> <span class="t4">gè</span> <span class="t2">pí</span><span class="t3">jiǔ</span>. <span class="t2">bú</span> <span class="t4">yào</span> <span class="t4">là</span>.</div>
+  <div class="meaning">Please give me dumplings, a vegetable dish, and two beers. No spice.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">很好吃！买单，谢谢。</span> <span class="divider">|</span> <span class="trad">很好吃！買單，謝謝。</span></div>
+  <div class="pinyin"><span class="t3">hěn</span> <span class="t3">hǎo</span><span class="t1">chī</span>! <span class="t3">mǎi</span><span class="t1">dān</span>, <span class="t4">xiè</span><span class="t5">xie</span>.</div>
+  <div class="meaning">Delicious! Bill, please.</div>
+</div>
+</div>
+
+<h3>Scenario 3: Saying Goodbye</h3>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">我明天要走了。谢谢你！</span> <span class="divider">|</span> <span class="trad">我明天要走了。謝謝你！</span></div>
+  <div class="pinyin"><span class="t3">wǒ</span> <span class="t2">míng</span><span class="t1">tiān</span> <span class="t4">yào</span> <span class="t3">zǒu</span> <span class="t5">le</span>. <span class="t4">xiè</span><span class="t5">xie</span> <span class="t3">nǐ</span>!</div>
+  <div class="meaning">I'm leaving tomorrow. Thank you!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Wei:</span>
+  <div class="chars"><span class="simp">欢迎你下次再来！</span> <span class="divider">|</span> <span class="trad">歡迎你下次再來！</span></div>
+  <div class="pinyin"><span class="t1">huān</span><span class="t2">yíng</span> <span class="t3">nǐ</span> <span class="t4">xià</span><span class="t4">cì</span> <span class="t4">zài</span> <span class="t2">lái</span>!</div>
+  <div class="meaning">Welcome to come again next time!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">一定！在微信上联系。再见！</span> <span class="divider">|</span> <span class="trad">一定！在微信上聯繫。再見！</span></div>
+  <div class="pinyin"><span class="t2">yí</span><span class="t4">dìng</span>! <span class="t4">zài</span> <span class="t1">wēi</span><span class="t4">xìn</span> <span class="t4">shàng</span> <span class="t2">lián</span><span class="t4">xì</span>. <span class="t4">zài</span><span class="t4">jiàn</span>!</div>
+  <div class="meaning">Definitely! We'll keep in touch on WeChat. Goodbye!</div>
+</div>
+</div>
+
+<div class="cultural-note">
+<strong>Gift-giving taboos in China:</strong> Never give a <strong>clock</strong> (送钟 <span class="t4">sòng</span> <span class="t1">zhōng</span> sounds like 送终 "attending a funeral"). Avoid <strong>pears</strong> as gifts (梨 <span class="t2">lí</span> sounds like 离 "separation"). Don't wrap gifts in <strong>white or black</strong> - use red or gold. Never give <strong>umbrellas</strong> (伞 <span class="t3">sǎn</span> sounds like 散 "to separate"). When receiving a gift, it's polite to refuse at first, then accept graciously.
+</div>
+
+<div class="tiny-grammar">
+<h4>Tiny Grammar: Sentence-Final Particles</h4>
+<p>These small words at the end of sentences add mood:</p>
+<p><strong>吗</strong> (<span class="t5">ma</span>) - turns a statement into a yes/no question</p>
+<p><strong>呢</strong> (<span class="t5">ne</span>) - "and you?" / "what about...?" (你呢？= And you?)</p>
+<p><strong>吧</strong> (<span class="t5">ba</span>) - suggestion or "let's" (走吧 = Let's go!)</p>
+<p><strong>了</strong> (<span class="t5">le</span>) - something changed or happened (到了 = arrived!)</p>
+<p><strong>啊</strong> (<span class="t5">a</span>) - softens a statement, makes it friendlier (好啊 = Sure!)</p>
+</div>
+
+<h3>Speaking Drill</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">I'm leaving tomorrow. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Thank you for everything. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Let's keep in touch on WeChat. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Welcome to come again! <span class="exercise-blank"></span></li>
+<li class="exercise-item">Table for two, please. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Review</h3>
+<div class="review-box">
+<p><strong>Which particle would you use?</strong></p>
+<ol>
+<li class="exercise-item">Turn a statement into a question: <span class="exercise-blank"></span></li>
+<li class="exercise-item">Ask "and you?": <span class="exercise-blank"></span></li>
+<li class="exercise-item">Suggest "let's go": <span class="exercise-blank"></span></li>
+<li class="exercise-item">Express that something just happened: <span class="exercise-blank"></span></li>
+</ol>
+</div>
+</div>
+
+<!-- ==================== WEEK 1 QUIZ ==================== -->
+<div class="quiz page-break">
+<h2 id="quiz-1">Week 1 Quiz (Lessons 1-7)</h2>
+
+<h3>Vocabulary (Match Mandarin to English)</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">谢谢 <span class="exercise-blank"></span> (a. goodbye b. thank you c. hello)</li>
+<li class="exercise-item">多少钱 <span class="exercise-blank"></span> (a. too expensive b. how much c. discount)</li>
+<li class="exercise-item">饺子 <span class="exercise-blank"></span> (a. noodles b. rice c. dumplings)</li>
+<li class="exercise-item">地铁站 <span class="exercise-blank"></span> (a. airport b. subway station c. bus)</li>
+<li class="exercise-item">护照 <span class="exercise-blank"></span> (a. key b. ticket c. passport)</li>
+<li class="exercise-item">左 <span class="exercise-blank"></span> (a. right b. straight c. left)</li>
+<li class="exercise-item">房间 <span class="exercise-blank"></span> (a. hotel b. room c. key)</li>
+<li class="exercise-item">买单 <span class="exercise-blank"></span> (a. menu b. the bill c. order food)</li>
+<li class="exercise-item">请问 <span class="exercise-blank"></span> (a. please b. excuse me, may I ask c. sorry)</li>
+<li class="exercise-item">再见 <span class="exercise-blank"></span> (a. hello b. thank you c. goodbye)</li>
+</ol>
+</div>
+
+<h3>Speaking - How Would You Say...</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">Hello (polite form) <span class="exercise-blank"></span></li>
+<li class="exercise-item">I want to go to the airport. <span class="exercise-blank"></span></li>
+<li class="exercise-item">How much does this cost? <span class="exercise-blank"></span></li>
+<li class="exercise-item">I have a reservation. <span class="exercise-blank"></span></li>
+<li class="exercise-item">Go straight then turn right. <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Translation (Mandarin to English)</h3>
+<div class="exercise">
+<ol>
+<li class="exercise-item">我是美国人 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">不要辣 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">WiFi密码是什么 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">太贵了 = <span class="exercise-blank"></span></li>
+<li class="exercise-item">远吗 = <span class="exercise-blank"></span></li>
+</ol>
+</div>
+
+<h3>Mini Dialogue - Fill In Your Lines</h3>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">Server:</span>
+  <div class="meaning">Hello, what would you like to order?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Order dumplings and tea) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Server:</span>
+  <div class="meaning">Do you want it spicy?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(No spice, thanks) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Ask for the bill) <span class="exercise-blank"></span></div>
+</div>
+</div>
+</div>
+
+<!-- ==================== WEEK 2 QUIZ ==================== -->
+<div class="quiz page-break">
+<h2 id="quiz-2">Week 2 Quiz (Lessons 8-14)</h2>
+
+<h3>Restaurant Simulation</h3>
+<p><em>Complete your side of the conversation:</em></p>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Say hello, table for 3) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Server:</span>
+  <div class="meaning">This way please. What would you like?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Order noodles, vegetables, and 3 beers, no spice) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Say it's delicious, ask for bill) <span class="exercise-blank"></span></div>
+</div>
+</div>
+
+<h3>Hotel Simulation</h3>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Say you have a reservation, single room, 3 nights) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Ask for WiFi password) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Ask what time breakfast is) <span class="exercise-blank"></span></div>
+</div>
+</div>
+
+<h3>Shopping Simulation</h3>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Ask how much this costs) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Seller:</span>
+  <div class="meaning">200 yuan.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Say too expensive, offer 100) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Ask to try it on) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Ask for a bigger size) <span class="exercise-blank"></span></div>
+</div>
+</div>
+
+<h3>Taxi Simulation</h3>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Tell driver: go to the train station) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Ask how long it takes) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Ask: are we there yet?) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Say: please stop here) <span class="exercise-blank"></span></div>
+</div>
+</div>
+
+<h3>Emergency Simulation</h3>
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Say you don't feel well) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Pharmacist:</span>
+  <div class="meaning">What's wrong?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Say you have a headache and a stomachache) <span class="exercise-blank"></span></div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="meaning">(Say you have an allergy) <span class="exercise-blank"></span></div>
+</div>
+</div>
+</div>
+
+<!-- ==================== CHEAT SHEETS ==================== -->
+<div class="page-break"></div>
+<h1 id="cheat-sheets">Cheat Sheets</h1>
+
+<div class="cheat-sheet">
+<h3>Greetings &amp; Polite Phrases</h3>
+<div class="cheat-grid">
+<div class="phrase"><div class="chars"><span class="simp">你好</span> <span class="divider">|</span> <span class="trad">你好</span></div><div class="pinyin"><span class="t3">nǐ</span><span class="t3">hǎo</span></div><div class="meaning">Hello</div></div>
+<div class="phrase"><div class="chars"><span class="simp">您好</span> <span class="divider">|</span> <span class="trad">您好</span></div><div class="pinyin"><span class="t2">nín</span><span class="t3">hǎo</span></div><div class="meaning">Hello (polite)</div></div>
+<div class="phrase"><div class="chars"><span class="simp">谢谢</span> <span class="divider">|</span> <span class="trad">謝謝</span></div><div class="pinyin"><span class="t4">xiè</span><span class="t5">xie</span></div><div class="meaning">Thank you</div></div>
+<div class="phrase"><div class="chars"><span class="simp">不客气</span> <span class="divider">|</span> <span class="trad">不客氣</span></div><div class="pinyin"><span class="t2">bú</span><span class="t4">kè</span><span class="t5">qi</span></div><div class="meaning">You're welcome</div></div>
+<div class="phrase"><div class="chars"><span class="simp">对不起</span> <span class="divider">|</span> <span class="trad">對不起</span></div><div class="pinyin"><span class="t4">duì</span><span class="t5">bu</span><span class="t3">qǐ</span></div><div class="meaning">Sorry</div></div>
+<div class="phrase"><div class="chars"><span class="simp">没关系</span> <span class="divider">|</span> <span class="trad">沒關係</span></div><div class="pinyin"><span class="t2">méi</span><span class="t1">guān</span><span class="t5">xi</span></div><div class="meaning">No problem</div></div>
+<div class="phrase"><div class="chars"><span class="simp">请</span> <span class="divider">|</span> <span class="trad">請</span></div><div class="pinyin"><span class="t3">qǐng</span></div><div class="meaning">Please</div></div>
+<div class="phrase"><div class="chars"><span class="simp">请问</span> <span class="divider">|</span> <span class="trad">請問</span></div><div class="pinyin"><span class="t3">qǐng</span><span class="t4">wèn</span></div><div class="meaning">Excuse me</div></div>
+<div class="phrase"><div class="chars"><span class="simp">再见</span> <span class="divider">|</span> <span class="trad">再見</span></div><div class="pinyin"><span class="t4">zài</span><span class="t4">jiàn</span></div><div class="meaning">Goodbye</div></div>
+<div class="phrase"><div class="chars"><span class="simp">早上好</span> <span class="divider">|</span> <span class="trad">早上好</span></div><div class="pinyin"><span class="t3">zǎo</span><span class="t5">shang</span><span class="t3">hǎo</span></div><div class="meaning">Good morning</div></div>
+<div class="phrase"><div class="chars"><span class="simp">晚安</span> <span class="divider">|</span> <span class="trad">晚安</span></div><div class="pinyin"><span class="t3">wǎn</span><span class="t1">ān</span></div><div class="meaning">Good night</div></div>
+<div class="phrase"><div class="chars"><span class="simp">请再说一遍</span> <span class="divider">|</span> <span class="trad">請再說一遍</span></div><div class="pinyin"><span class="t3">qǐng</span><span class="t4">zài</span><span class="t1">shuō</span><span class="t2">yí</span><span class="t4">biàn</span></div><div class="meaning">Please say it again</div></div>
+</div>
+</div>
+
+<div class="cheat-sheet">
+<h3>Restaurant &amp; Food</h3>
+<div class="cheat-grid">
+<div class="phrase"><div class="chars"><span class="simp">菜单</span> <span class="divider">|</span> <span class="trad">菜單</span></div><div class="pinyin"><span class="t4">cài</span><span class="t1">dān</span></div><div class="meaning">Menu</div></div>
+<div class="phrase"><div class="chars"><span class="simp">我要...</span> <span class="divider">|</span> <span class="trad">我要...</span></div><div class="pinyin"><span class="t3">wǒ</span><span class="t4">yào</span></div><div class="meaning">I want...</div></div>
+<div class="phrase"><div class="chars"><span class="simp">买单</span> <span class="divider">|</span> <span class="trad">買單</span></div><div class="pinyin"><span class="t3">mǎi</span><span class="t1">dān</span></div><div class="meaning">The bill</div></div>
+<div class="phrase"><div class="chars"><span class="simp">好吃</span> <span class="divider">|</span> <span class="trad">好吃</span></div><div class="pinyin"><span class="t3">hǎo</span><span class="t1">chī</span></div><div class="meaning">Delicious</div></div>
+<div class="phrase"><div class="chars"><span class="simp">不要辣</span> <span class="divider">|</span> <span class="trad">不要辣</span></div><div class="pinyin"><span class="t2">bú</span><span class="t4">yào</span><span class="t4">là</span></div><div class="meaning">No spice</div></div>
+<div class="phrase"><div class="chars"><span class="simp">水</span> <span class="divider">|</span> <span class="trad">水</span></div><div class="pinyin"><span class="t3">shuǐ</span></div><div class="meaning">Water</div></div>
+<div class="phrase"><div class="chars"><span class="simp">茶</span> <span class="divider">|</span> <span class="trad">茶</span></div><div class="pinyin"><span class="t2">chá</span></div><div class="meaning">Tea</div></div>
+<div class="phrase"><div class="chars"><span class="simp">啤酒</span> <span class="divider">|</span> <span class="trad">啤酒</span></div><div class="pinyin"><span class="t2">pí</span><span class="t3">jiǔ</span></div><div class="meaning">Beer</div></div>
+<div class="phrase"><div class="chars"><span class="simp">米饭</span> <span class="divider">|</span> <span class="trad">米飯</span></div><div class="pinyin"><span class="t3">mǐ</span><span class="t4">fàn</span></div><div class="meaning">Rice</div></div>
+<div class="phrase"><div class="chars"><span class="simp">面条</span> <span class="divider">|</span> <span class="trad">麵條</span></div><div class="pinyin"><span class="t4">miàn</span><span class="t2">tiáo</span></div><div class="meaning">Noodles</div></div>
+<div class="phrase"><div class="chars"><span class="simp">饺子</span> <span class="divider">|</span> <span class="trad">餃子</span></div><div class="pinyin"><span class="t3">jiǎo</span><span class="t5">zi</span></div><div class="meaning">Dumplings</div></div>
+<div class="phrase"><div class="chars"><span class="simp">鸡</span> <span class="divider">|</span> <span class="trad">雞</span></div><div class="pinyin"><span class="t1">jī</span></div><div class="meaning">Chicken</div></div>
+<div class="phrase"><div class="chars"><span class="simp">牛肉</span> <span class="divider">|</span> <span class="trad">牛肉</span></div><div class="pinyin"><span class="t2">niú</span><span class="t4">ròu</span></div><div class="meaning">Beef</div></div>
+<div class="phrase"><div class="chars"><span class="simp">鱼</span> <span class="divider">|</span> <span class="trad">魚</span></div><div class="pinyin"><span class="t2">yú</span></div><div class="meaning">Fish</div></div>
+<div class="phrase"><div class="chars"><span class="simp">蛋</span> <span class="divider">|</span> <span class="trad">蛋</span></div><div class="pinyin"><span class="t4">dàn</span></div><div class="meaning">Egg</div></div>
+<div class="phrase"><div class="chars"><span class="simp">汤</span> <span class="divider">|</span> <span class="trad">湯</span></div><div class="pinyin"><span class="t1">tāng</span></div><div class="meaning">Soup</div></div>
+<div class="phrase"><div class="chars"><span class="simp">我吃素</span> <span class="divider">|</span> <span class="trad">我吃素</span></div><div class="pinyin"><span class="t3">wǒ</span><span class="t1">chī</span><span class="t4">sù</span></div><div class="meaning">I'm vegetarian</div></div>
+<div class="phrase"><div class="chars"><span class="simp">咖啡</span> <span class="divider">|</span> <span class="trad">咖啡</span></div><div class="pinyin"><span class="t1">kā</span><span class="t1">fēi</span></div><div class="meaning">Coffee</div></div>
+</div>
+</div>
+
+<div class="cheat-sheet">
+<h3>Numbers</h3>
+<table>
+<tr><th>Number</th><th>Hanzi</th><th>Pinyin</th><th>Number</th><th>Hanzi</th><th>Pinyin</th></tr>
+<tr><td>0</td><td>零</td><td><span class="t2">líng</span></td><td>10</td><td>十</td><td><span class="t2">shí</span></td></tr>
+<tr><td>1</td><td>一</td><td><span class="t1">yī</span></td><td>20</td><td>二十</td><td><span class="t4">èr</span><span class="t2">shí</span></td></tr>
+<tr><td>2</td><td>二</td><td><span class="t4">èr</span></td><td>30</td><td>三十</td><td><span class="t1">sān</span><span class="t2">shí</span></td></tr>
+<tr><td>3</td><td>三</td><td><span class="t1">sān</span></td><td>40</td><td>四十</td><td><span class="t4">sì</span><span class="t2">shí</span></td></tr>
+<tr><td>4</td><td>四</td><td><span class="t4">sì</span></td><td>50</td><td>五十</td><td><span class="t3">wǔ</span><span class="t2">shí</span></td></tr>
+<tr><td>5</td><td>五</td><td><span class="t3">wǔ</span></td><td>60</td><td>六十</td><td><span class="t4">liù</span><span class="t2">shí</span></td></tr>
+<tr><td>6</td><td>六</td><td><span class="t4">liù</span></td><td>70</td><td>七十</td><td><span class="t1">qī</span><span class="t2">shí</span></td></tr>
+<tr><td>7</td><td>七</td><td><span class="t1">qī</span></td><td>80</td><td>八十</td><td><span class="t1">bā</span><span class="t2">shí</span></td></tr>
+<tr><td>8</td><td>八</td><td><span class="t1">bā</span></td><td>90</td><td>九十</td><td><span class="t3">jiǔ</span><span class="t2">shí</span></td></tr>
+<tr><td>9</td><td>九</td><td><span class="t3">jiǔ</span></td><td>100</td><td>一百</td><td><span class="t4">yì</span><span class="t3">bǎi</span></td></tr>
+</table>
+</div>
+
+<div class="cheat-sheet">
+<h3>Transportation</h3>
+<div class="cheat-grid">
+<div class="phrase"><div class="chars"><span class="simp">地铁站</span> <span class="divider">|</span> <span class="trad">地鐵站</span></div><div class="pinyin"><span class="t4">dì</span><span class="t3">tiě</span><span class="t4">zhàn</span></div><div class="meaning">Subway station</div></div>
+<div class="phrase"><div class="chars"><span class="simp">火车站</span> <span class="divider">|</span> <span class="trad">火車站</span></div><div class="pinyin"><span class="t3">huǒ</span><span class="t1">chē</span><span class="t4">zhàn</span></div><div class="meaning">Train station</div></div>
+<div class="phrase"><div class="chars"><span class="simp">机场</span> <span class="divider">|</span> <span class="trad">機場</span></div><div class="pinyin"><span class="t1">jī</span><span class="t3">chǎng</span></div><div class="meaning">Airport</div></div>
+<div class="phrase"><div class="chars"><span class="simp">出租车</span> <span class="divider">|</span> <span class="trad">出租車</span></div><div class="pinyin"><span class="t1">chū</span><span class="t1">zū</span><span class="t1">chē</span></div><div class="meaning">Taxi</div></div>
+<div class="phrase"><div class="chars"><span class="simp">高铁</span> <span class="divider">|</span> <span class="trad">高鐵</span></div><div class="pinyin"><span class="t1">gāo</span><span class="t3">tiě</span></div><div class="meaning">High-speed train</div></div>
+<div class="phrase"><div class="chars"><span class="simp">票</span> <span class="divider">|</span> <span class="trad">票</span></div><div class="pinyin"><span class="t4">piào</span></div><div class="meaning">Ticket</div></div>
+<div class="phrase"><div class="chars"><span class="simp">我要去...</span> <span class="divider">|</span> <span class="trad">我要去...</span></div><div class="pinyin"><span class="t3">wǒ</span><span class="t4">yào</span><span class="t4">qù</span></div><div class="meaning">I want to go to...</div></div>
+<div class="phrase"><div class="chars"><span class="simp">到了吗</span> <span class="divider">|</span> <span class="trad">到了嗎</span></div><div class="pinyin"><span class="t4">dào</span><span class="t5">le</span><span class="t5">ma</span></div><div class="meaning">Are we there?</div></div>
+<div class="phrase"><div class="chars"><span class="simp">请在这里停</span> <span class="divider">|</span> <span class="trad">請在這裡停</span></div><div class="pinyin"><span class="t3">qǐng</span><span class="t4">zài</span><span class="t4">zhè</span><span class="t3">lǐ</span><span class="t2">tíng</span></div><div class="meaning">Please stop here</div></div>
+<div class="phrase"><div class="chars"><span class="simp">多长时间</span> <span class="divider">|</span> <span class="trad">多長時間</span></div><div class="pinyin"><span class="t1">duō</span><span class="t2">cháng</span><span class="t2">shí</span><span class="t1">jiān</span></div><div class="meaning">How long?</div></div>
+</div>
+</div>
+
+<div class="cheat-sheet">
+<h3>Emergency &amp; Health</h3>
+<div class="cheat-grid">
+<div class="phrase"><div class="chars"><span class="simp">救命</span> <span class="divider">|</span> <span class="trad">救命</span></div><div class="pinyin"><span class="t4">jiù</span><span class="t4">mìng</span></div><div class="meaning">Help!</div></div>
+<div class="phrase"><div class="chars"><span class="simp">警察</span> <span class="divider">|</span> <span class="trad">警察</span></div><div class="pinyin"><span class="t3">jǐng</span><span class="t2">chá</span></div><div class="meaning">Police (call 110)</div></div>
+<div class="phrase"><div class="chars"><span class="simp">医院</span> <span class="divider">|</span> <span class="trad">醫院</span></div><div class="pinyin"><span class="t1">yī</span><span class="t4">yuàn</span></div><div class="meaning">Hospital</div></div>
+<div class="phrase"><div class="chars"><span class="simp">药房</span> <span class="divider">|</span> <span class="trad">藥房</span></div><div class="pinyin"><span class="t4">yào</span><span class="t2">fáng</span></div><div class="meaning">Pharmacy</div></div>
+<div class="phrase"><div class="chars"><span class="simp">我不舒服</span> <span class="divider">|</span> <span class="trad">我不舒服</span></div><div class="pinyin"><span class="t3">wǒ</span><span class="t4">bù</span><span class="t1">shū</span><span class="t5">fu</span></div><div class="meaning">I don't feel well</div></div>
+<div class="phrase"><div class="chars"><span class="simp">头疼</span> <span class="divider">|</span> <span class="trad">頭疼</span></div><div class="pinyin"><span class="t2">tóu</span><span class="t2">téng</span></div><div class="meaning">Headache</div></div>
+<div class="phrase"><div class="chars"><span class="simp">肚子疼</span> <span class="divider">|</span> <span class="trad">肚子疼</span></div><div class="pinyin"><span class="t4">dù</span><span class="t5">zi</span><span class="t2">téng</span></div><div class="meaning">Stomachache</div></div>
+<div class="phrase"><div class="chars"><span class="simp">发烧</span> <span class="divider">|</span> <span class="trad">發燒</span></div><div class="pinyin"><span class="t1">fā</span><span class="t1">shāo</span></div><div class="meaning">Fever</div></div>
+<div class="phrase"><div class="chars"><span class="simp">过敏</span> <span class="divider">|</span> <span class="trad">過敏</span></div><div class="pinyin"><span class="t4">guò</span><span class="t3">mǐn</span></div><div class="meaning">Allergy</div></div>
+<div class="phrase"><div class="chars"><span class="simp">护照丢了</span> <span class="divider">|</span> <span class="trad">護照丟了</span></div><div class="pinyin"><span class="t4">hù</span><span class="t4">zhào</span><span class="t1">diū</span><span class="t5">le</span></div><div class="meaning">Lost passport</div></div>
+<div class="phrase"><div class="chars"><span class="simp">大使馆</span> <span class="divider">|</span> <span class="trad">大使館</span></div><div class="pinyin"><span class="t4">dà</span><span class="t3">shǐ</span><span class="t3">guǎn</span></div><div class="meaning">Embassy</div></div>
+</div>
+</div>
+
+<div class="cheat-sheet">
+<h3>Question Words</h3>
+<div class="cheat-grid">
+<div class="phrase"><div class="chars"><span class="simp">什么</span> <span class="divider">|</span> <span class="trad">什麼</span></div><div class="pinyin"><span class="t2">shén</span><span class="t5">me</span></div><div class="meaning">What</div></div>
+<div class="phrase"><div class="chars"><span class="simp">哪里</span> <span class="divider">|</span> <span class="trad">哪裡</span></div><div class="pinyin"><span class="t3">nǎ</span><span class="t3">lǐ</span></div><div class="meaning">Where</div></div>
+<div class="phrase"><div class="chars"><span class="simp">什么时候</span> <span class="divider">|</span> <span class="trad">什麼時候</span></div><div class="pinyin"><span class="t2">shén</span><span class="t5">me</span><span class="t2">shí</span><span class="t5">hou</span></div><div class="meaning">When</div></div>
+<div class="phrase"><div class="chars"><span class="simp">谁</span> <span class="divider">|</span> <span class="trad">誰</span></div><div class="pinyin"><span class="t2">shéi</span></div><div class="meaning">Who</div></div>
+<div class="phrase"><div class="chars"><span class="simp">为什么</span> <span class="divider">|</span> <span class="trad">為什麼</span></div><div class="pinyin"><span class="t4">wèi</span><span class="t2">shén</span><span class="t5">me</span></div><div class="meaning">Why</div></div>
+<div class="phrase"><div class="chars"><span class="simp">怎么</span> <span class="divider">|</span> <span class="trad">怎麼</span></div><div class="pinyin"><span class="t3">zěn</span><span class="t5">me</span></div><div class="meaning">How</div></div>
+<div class="phrase"><div class="chars"><span class="simp">多少</span> <span class="divider">|</span> <span class="trad">多少</span></div><div class="pinyin"><span class="t1">duō</span><span class="t5">shao</span></div><div class="meaning">How much/many</div></div>
+<div class="phrase"><div class="chars"><span class="simp">几</span> <span class="divider">|</span> <span class="trad">幾</span></div><div class="pinyin"><span class="t3">jǐ</span></div><div class="meaning">How many (small)</div></div>
+<div class="phrase"><div class="chars"><span class="simp">哪</span> <span class="divider">|</span> <span class="trad">哪</span></div><div class="pinyin"><span class="t3">nǎ</span></div><div class="meaning">Which</div></div>
+<div class="phrase"><div class="chars"><span class="simp">多长</span> <span class="divider">|</span> <span class="trad">多長</span></div><div class="pinyin"><span class="t1">duō</span><span class="t2">cháng</span></div><div class="meaning">How long</div></div>
+</div>
+</div>
+
+<div class="cheat-sheet">
+<h3>Days &amp; Months</h3>
+<table>
+<tr><th>Day</th><th>Hanzi</th><th>Pinyin</th></tr>
+<tr><td>Monday</td><td>星期一</td><td><span class="t1">xīng</span><span class="t1">qī</span><span class="t1">yī</span></td></tr>
+<tr><td>Tuesday</td><td>星期二</td><td><span class="t1">xīng</span><span class="t1">qī</span><span class="t4">èr</span></td></tr>
+<tr><td>Wednesday</td><td>星期三</td><td><span class="t1">xīng</span><span class="t1">qī</span><span class="t1">sān</span></td></tr>
+<tr><td>Thursday</td><td>星期四</td><td><span class="t1">xīng</span><span class="t1">qī</span><span class="t4">sì</span></td></tr>
+<tr><td>Friday</td><td>星期五</td><td><span class="t1">xīng</span><span class="t1">qī</span><span class="t3">wǔ</span></td></tr>
+<tr><td>Saturday</td><td>星期六</td><td><span class="t1">xīng</span><span class="t1">qī</span><span class="t4">liù</span></td></tr>
+<tr><td>Sunday</td><td>星期日</td><td><span class="t1">xīng</span><span class="t1">qī</span><span class="t4">rì</span></td></tr>
+</table>
+<p>Months: number + 月 (<span class="t4">yuè</span>). 一月 = January ... 十二月 = December.</p>
+<p>Day of month: number + 号 (<span class="t4">hào</span>). 五号 = the 5th.</p>
+</div>
+
+<div class="cheat-sheet">
+<h3>Colors</h3>
+<div class="cheat-grid">
+<div class="phrase"><div class="chars"><span class="simp">红色</span> <span class="divider">|</span> <span class="trad">紅色</span></div><div class="pinyin"><span class="t2">hóng</span><span class="t4">sè</span></div><div class="meaning">Red</div></div>
+<div class="phrase"><div class="chars"><span class="simp">蓝色</span> <span class="divider">|</span> <span class="trad">藍色</span></div><div class="pinyin"><span class="t2">lán</span><span class="t4">sè</span></div><div class="meaning">Blue</div></div>
+<div class="phrase"><div class="chars"><span class="simp">绿色</span> <span class="divider">|</span> <span class="trad">綠色</span></div><div class="pinyin"><span class="t4">lǜ</span><span class="t4">sè</span></div><div class="meaning">Green</div></div>
+<div class="phrase"><div class="chars"><span class="simp">黄色</span> <span class="divider">|</span> <span class="trad">黃色</span></div><div class="pinyin"><span class="t2">huáng</span><span class="t4">sè</span></div><div class="meaning">Yellow</div></div>
+<div class="phrase"><div class="chars"><span class="simp">白色</span> <span class="divider">|</span> <span class="trad">白色</span></div><div class="pinyin"><span class="t2">bái</span><span class="t4">sè</span></div><div class="meaning">White</div></div>
+<div class="phrase"><div class="chars"><span class="simp">黑色</span> <span class="divider">|</span> <span class="trad">黑色</span></div><div class="pinyin"><span class="t1">hēi</span><span class="t4">sè</span></div><div class="meaning">Black</div></div>
+<div class="phrase"><div class="chars"><span class="simp">粉色</span> <span class="divider">|</span> <span class="trad">粉色</span></div><div class="pinyin"><span class="t3">fěn</span><span class="t4">sè</span></div><div class="meaning">Pink</div></div>
+<div class="phrase"><div class="chars"><span class="simp">灰色</span> <span class="divider">|</span> <span class="trad">灰色</span></div><div class="pinyin"><span class="t1">huī</span><span class="t4">sè</span></div><div class="meaning">Gray</div></div>
+</div>
+</div>
+
+<!-- ==================== ANSWER KEY ==================== -->
+<div class="page-break"></div>
+<h1 id="answer-key">Answer Key</h1>
+
+<div class="answer-section">
+<h3>Lesson 1 Answers</h3>
+<h4>Speaking Drill</h4>
+<ol>
+<li>您好 <span class="t2">nín</span> <span class="t3">hǎo</span></li>
+<li>谢谢 <span class="t4">xiè</span><span class="t5">xie</span></li>
+<li>对不起 <span class="t4">duì</span><span class="t5">bu</span><span class="t3">qǐ</span></li>
+<li>再见 <span class="t4">zài</span><span class="t4">jiàn</span></li>
+<li>不客气 <span class="t2">bú</span> <span class="t4">kè</span><span class="t5">qi</span></li>
+</ol>
+<h4>Review</h4>
+<ol>
+<li><span class="t3">hǎo</span></li>
+<li><span class="t4">xiè</span></li>
+<li><span class="t4">jiàn</span></li>
+<li><span class="t5">bu</span></li>
+<li><span class="t3">qǐng</span></li>
+<li>b. You're welcome</li>
+<li>c. No problem</li>
+<li>b. Yes/is</li>
+</ol>
+</div>
+
+<div class="answer-section">
+<h3>Lesson 2 Answers</h3>
+<h4>Speaking Drill</h4>
+<ol>
+<li>你叫什么名字？ <span class="t3">nǐ</span> <span class="t4">jiào</span> <span class="t2">shén</span><span class="t5">me</span> <span class="t2">míng</span><span class="t5">zi</span>?</li>
+<li>我是美国人。 <span class="t3">wǒ</span> <span class="t4">shì</span> <span class="t3">měi</span><span class="t2">guó</span><span class="t2">rén</span></li>
+<li>认识你很高兴。 <span class="t4">rèn</span><span class="t5">shi</span> <span class="t3">nǐ</span> <span class="t3">hěn</span> <span class="t1">gāo</span><span class="t4">xìng</span></li>
+<li>你会说英文吗？ <span class="t3">nǐ</span> <span class="t4">huì</span> <span class="t1">shuō</span> <span class="t1">yīng</span><span class="t2">wén</span> <span class="t5">ma</span>?</li>
+<li>我会说一点点。 <span class="t3">wǒ</span> <span class="t4">huì</span> <span class="t1">shuō</span> <span class="t4">yì</span><span class="t3">diǎn</span><span class="t3">diǎn</span></li>
+</ol>
+<h4>Review</h4>
+<ol>
+<li><span class="t4">jiào</span></li>
+<li><span class="t4">shì</span></li>
+<li><span class="t5">ma</span></li>
+<li><span class="t4">zài</span></li>
+<li>I can speak a tiny bit</li>
+<li>Nice to meet you</li>
+</ol>
+</div>
+
+<div class="answer-section">
+<h3>Lesson 3 Answers</h3>
+<h4>Speaking Drill</h4>
+<ol>
+<li>这个多少钱？ <span class="t4">zhè</span><span class="t5">ge</span> <span class="t1">duō</span><span class="t5">shao</span> <span class="t2">qián</span>?</li>
+<li>太贵了！ <span class="t4">tài</span> <span class="t4">guì</span> <span class="t5">le</span>!</li>
+<li>我要这个。 <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t4">zhè</span><span class="t5">ge</span></li>
+<li>二十五块 <span class="t4">èr</span><span class="t2">shí</span><span class="t3">wǔ</span> <span class="t4">kuài</span></li>
+<li>可以 <span class="t3">kě</span><span class="t3">yǐ</span></li>
+</ol>
+<h4>Review</h4>
+<ol>
+<li>十七 <span class="t2">shí</span><span class="t1">qī</span></li>
+<li>四十二 <span class="t4">sì</span><span class="t2">shí</span><span class="t4">èr</span></li>
+<li>八十八 <span class="t1">bā</span><span class="t2">shí</span><span class="t1">bā</span></li>
+<li>一百 <span class="t4">yì</span><span class="t3">bǎi</span></li>
+<li>Too expensive!</li>
+<li>How much money?</li>
+<li>A little cheaper</li>
+</ol>
+</div>
+
+<div class="answer-section">
+<h3>Lesson 4 Answers</h3>
+<h4>Speaking Drill</h4>
+<ol>
+<li>我要饺子。 <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t3">jiǎo</span><span class="t5">zi</span></li>
+<li>不要辣，谢谢。 <span class="t2">bú</span> <span class="t4">yào</span> <span class="t4">là</span>, <span class="t4">xiè</span><span class="t5">xie</span></li>
+<li>买单。 <span class="t3">mǎi</span><span class="t1">dān</span></li>
+<li>很好吃！ <span class="t3">hěn</span> <span class="t3">hǎo</span><span class="t1">chī</span>!</li>
+<li>我吃素。 <span class="t3">wǒ</span> <span class="t1">chī</span> <span class="t4">sù</span></li>
+</ol>
+<h4>Review</h4>
+<ol>
+<li>b. menu</li>
+<li>a. rice</li>
+<li>c. beer</li>
+<li>a. delicious</li>
+<li>我要茶和水。 <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t2">chá</span> <span class="t2">hé</span> <span class="t3">shuǐ</span></li>
+<li>请给我菜单。 <span class="t3">qǐng</span> <span class="t3">gěi</span> <span class="t3">wǒ</span> <span class="t4">cài</span><span class="t1">dān</span></li>
+</ol>
+</div>
+
+<div class="answer-section">
+<h3>Lesson 5 Answers</h3>
+<h4>Speaking Drill</h4>
+<ol>
+<li>我要去机场。 <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t4">qù</span> <span class="t1">jī</span><span class="t3">chǎng</span></li>
+<li>地铁站在哪里？ <span class="t4">dì</span><span class="t3">tiě</span><span class="t4">zhàn</span> <span class="t4">zài</span> <span class="t3">nǎ</span><span class="t3">lǐ</span>?</li>
+<li>多长时间？ <span class="t1">duō</span> <span class="t2">cháng</span> <span class="t2">shí</span><span class="t1">jiān</span>?</li>
+<li>请在这里停。 <span class="t3">qǐng</span> <span class="t4">zài</span> <span class="t4">zhè</span><span class="t3">lǐ</span> <span class="t2">tíng</span></li>
+<li>请给我一张票。 <span class="t3">qǐng</span> <span class="t3">gěi</span> <span class="t3">wǒ</span> <span class="t4">yì</span> <span class="t1">zhāng</span> <span class="t4">piào</span></li>
+</ol>
+<h4>Review</h4>
+<ol>
+<li>b. high-speed train</li>
+<li>c. airport</li>
+<li>b. get off</li>
+<li>b. ticket</li>
+<li><span class="t4">yào</span> <span class="t4">qù</span></li>
+</ol>
+</div>
+
+<div class="answer-section">
+<h3>Lesson 6 Answers</h3>
+<h4>Speaking Drill</h4>
+<ol>
+<li>我有预订。 <span class="t3">wǒ</span> <span class="t3">yǒu</span> <span class="t4">yù</span><span class="t4">dìng</span></li>
+<li>WiFi密码是什么？WiFi <span class="t4">mì</span><span class="t3">mǎ</span> <span class="t4">shì</span> <span class="t2">shén</span><span class="t5">me</span>?</li>
+<li>早餐几点？ <span class="t3">zǎo</span><span class="t1">cān</span> <span class="t3">jǐ</span> <span class="t3">diǎn</span>?</li>
+<li>我要退房。 <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t4">tuì</span><span class="t2">fáng</span></li>
+<li>三天。 <span class="t1">sān</span> <span class="t1">tiān</span></li>
+</ol>
+<h4>Review</h4>
+<ol>
+<li>Room</li>
+<li>Key</li>
+<li>Hot water</li>
+<li>Air conditioning</li>
+<li>Check out</li>
+</ol>
+</div>
+
+<div class="answer-section">
+<h3>Lesson 7 Answers</h3>
+<h4>Speaking Drill</h4>
+<ol>
+<li>机场怎么走？ <span class="t1">jī</span><span class="t3">chǎng</span> <span class="t3">zěn</span><span class="t5">me</span> <span class="t3">zǒu</span>?</li>
+<li>左转。 <span class="t3">zuǒ</span> <span class="t3">zhuǎn</span></li>
+<li>直走。 <span class="t2">zhí</span> <span class="t3">zǒu</span></li>
+<li>远吗？ <span class="t3">yuǎn</span> <span class="t5">ma</span>?</li>
+<li>在饭店旁边。 <span class="t4">zài</span> <span class="t4">fàn</span><span class="t4">diàn</span> <span class="t2">páng</span><span class="t1">biān</span></li>
+</ol>
+<h4>Review</h4>
+<ol>
+<li><span class="t3">zuǒ</span></li>
+<li><span class="t4">yòu</span></li>
+<li><span class="t2">zhí</span> <span class="t3">zǒu</span></li>
+<li><span class="t4">jìn</span></li>
+<li><span class="t3">yuǎn</span></li>
+<li><span class="t3">zěn</span><span class="t5">me</span></li>
+</ol>
+</div>
+
+<div class="answer-section">
+<h3>Lesson 8-14 Answers</h3>
+<h4>Lesson 8 Speaking Drill</h4>
+<ol>
+<li>我可以试试吗？ <span class="t3">wǒ</span> <span class="t3">kě</span><span class="t3">yǐ</span> <span class="t4">shì</span><span class="t5">shi</span> <span class="t5">ma</span>?</li>
+<li>大一号。 <span class="t4">dà</span> <span class="t1">yī</span> <span class="t4">hào</span></li>
+<li>有蓝色的吗？ <span class="t3">yǒu</span> <span class="t2">lán</span><span class="t4">sè</span> <span class="t5">de</span> <span class="t5">ma</span>?</li>
+<li>太贵了！ <span class="t4">tài</span> <span class="t4">guì</span> <span class="t5">le</span>!</li>
+<li>打折吗？ <span class="t3">dǎ</span><span class="t2">zhé</span> <span class="t5">ma</span>?</li>
+</ol>
+<h4>Lesson 9 Speaking Drill</h4>
+<ol>
+<li>我不舒服。 <span class="t3">wǒ</span> <span class="t4">bù</span> <span class="t1">shū</span><span class="t5">fu</span></li>
+<li>我头疼。 <span class="t3">wǒ</span> <span class="t2">tóu</span> <span class="t2">téng</span></li>
+<li>医院在哪里？ <span class="t1">yī</span><span class="t4">yuàn</span> <span class="t4">zài</span> <span class="t3">nǎ</span><span class="t3">lǐ</span>?</li>
+<li>我的护照丢了。 <span class="t3">wǒ</span> <span class="t5">de</span> <span class="t4">hù</span><span class="t4">zhào</span> <span class="t1">diū</span> <span class="t5">le</span></li>
+<li>帮帮我！ <span class="t1">bāng</span><span class="t5">bang</span> <span class="t3">wǒ</span>!</li>
+</ol>
+<h4>Lesson 10 Speaking Drill</h4>
+<ol>
+<li>现在几点？ <span class="t4">xiàn</span><span class="t4">zài</span> <span class="t3">jǐ</span> <span class="t3">diǎn</span>?</li>
+<li>今天星期一。 <span class="t1">jīn</span><span class="t1">tiān</span> <span class="t1">xīng</span><span class="t1">qī</span><span class="t1">yī</span></li>
+<li>我明天上午去。 <span class="t3">wǒ</span> <span class="t2">míng</span><span class="t1">tiān</span> <span class="t4">shàng</span><span class="t3">wǔ</span> <span class="t4">qù</span></li>
+<li>下午两点半。 <span class="t4">xià</span><span class="t3">wǔ</span> <span class="t3">liǎng</span> <span class="t3">diǎn</span> <span class="t4">bàn</span></li>
+<li>今天星期几？ <span class="t1">jīn</span><span class="t1">tiān</span> <span class="t1">xīng</span><span class="t1">qī</span><span class="t3">jǐ</span>?</li>
+</ol>
+<h4>Lesson 11 Speaking Drill</h4>
+<ol>
+<li>今天很冷。 <span class="t1">jīn</span><span class="t1">tiān</span> <span class="t3">hěn</span> <span class="t3">lěng</span></li>
+<li>最近怎么样？ <span class="t4">zuì</span><span class="t4">jìn</span> <span class="t3">zěn</span><span class="t5">me</span><span class="t4">yàng</span>?</li>
+<li>我很忙。 <span class="t3">wǒ</span> <span class="t3">hěn</span> <span class="t2">máng</span></li>
+<li>下雨了。 <span class="t4">xià</span> <span class="t3">yǔ</span> <span class="t5">le</span></li>
+<li>我很开心。 <span class="t3">wǒ</span> <span class="t3">hěn</span> <span class="t1">kāi</span><span class="t1">xīn</span></li>
+</ol>
+<h4>Lesson 12 Speaking Drill</h4>
+<ol>
+<li>我有两个哥哥。 <span class="t3">wǒ</span> <span class="t3">yǒu</span> <span class="t3">liǎng</span> <span class="t4">gè</span> <span class="t1">gē</span><span class="t5">ge</span></li>
+<li>你有孩子吗？ <span class="t3">nǐ</span> <span class="t3">yǒu</span> <span class="t2">hái</span><span class="t5">zi</span> <span class="t5">ma</span>?</li>
+<li>我喜欢看电影。 <span class="t3">wǒ</span> <span class="t3">xǐ</span><span class="t1">huān</span> <span class="t4">kàn</span> <span class="t4">diàn</span><span class="t3">yǐng</span></li>
+<li>她是我的朋友。 <span class="t1">tā</span> <span class="t4">shì</span> <span class="t3">wǒ</span> <span class="t5">de</span> <span class="t2">péng</span><span class="t5">you</span></li>
+<li>我没有妹妹。 <span class="t3">wǒ</span> <span class="t2">méi</span><span class="t3">yǒu</span> <span class="t4">mèi</span><span class="t5">mei</span></li>
+</ol>
+<h4>Lesson 13 Review</h4>
+<ol>
+<li>然后 <span class="t2">rán</span><span class="t4">hòu</span></li>
+<li>因为 <span class="t1">yīn</span><span class="t4">wèi</span> ... 所以 <span class="t3">suǒ</span><span class="t3">yǐ</span></li>
+<li>也 <span class="t3">yě</span></li>
+</ol>
+<h4>Lesson 14 Review</h4>
+<ol>
+<li>吗 <span class="t5">ma</span></li>
+<li>呢 <span class="t5">ne</span></li>
+<li>吧 <span class="t5">ba</span> (走吧！)</li>
+<li>了 <span class="t5">le</span></li>
+</ol>
+</div>
+
+<div class="answer-section">
+<h3>Week 1 Quiz Answers</h3>
+<h4>Vocabulary</h4>
+<ol>
+<li>b. thank you</li>
+<li>b. how much</li>
+<li>c. dumplings</li>
+<li>b. subway station</li>
+<li>c. passport</li>
+<li>c. left</li>
+<li>b. room</li>
+<li>b. the bill</li>
+<li>b. excuse me, may I ask</li>
+<li>c. goodbye</li>
+</ol>
+<h4>Speaking</h4>
+<ol>
+<li>您好 <span class="t2">nín</span> <span class="t3">hǎo</span></li>
+<li>我要去机场。 <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t4">qù</span> <span class="t1">jī</span><span class="t3">chǎng</span></li>
+<li>这个多少钱？ <span class="t4">zhè</span><span class="t5">ge</span> <span class="t1">duō</span><span class="t5">shao</span> <span class="t2">qián</span>?</li>
+<li>我有预订。 <span class="t3">wǒ</span> <span class="t3">yǒu</span> <span class="t4">yù</span><span class="t4">dìng</span></li>
+<li>直走，然后右转。 <span class="t2">zhí</span> <span class="t3">zǒu</span>, <span class="t2">rán</span><span class="t4">hòu</span> <span class="t4">yòu</span> <span class="t3">zhuǎn</span></li>
+</ol>
+<h4>Translation</h4>
+<ol>
+<li>I am American</li>
+<li>No spice please</li>
+<li>What is the WiFi password?</li>
+<li>Too expensive!</li>
+<li>Is it far?</li>
+</ol>
+<h4>Mini Dialogue</h4>
+<ol>
+<li>我要饺子和茶。 <span class="t3">wǒ</span> <span class="t4">yào</span> <span class="t3">jiǎo</span><span class="t5">zi</span> <span class="t2">hé</span> <span class="t2">chá</span></li>
+<li>不要辣，谢谢。 <span class="t2">bú</span> <span class="t4">yào</span> <span class="t4">là</span>, <span class="t4">xiè</span><span class="t5">xie</span></li>
+<li>买单。 <span class="t3">mǎi</span><span class="t1">dān</span></li>
+</ol>
+</div>
+
+<div class="answer-section">
+<h3>Week 2 Quiz Answers</h3>
+<h4>Restaurant</h4>
+<ol>
+<li>你好，三个人。 <span class="t3">nǐ</span> <span class="t3">hǎo</span>, <span class="t1">sān</span> <span class="t4">gè</span> <span class="t2">rén</span></li>
+<li>请给我面条、一个青菜、和三个啤酒。不要辣。</li>
+<li>很好吃！买单，谢谢。</li>
+</ol>
+<h4>Hotel</h4>
+<ol>
+<li>我有预订。单人间，住三天。</li>
+<li>WiFi密码是什么？</li>
+<li>早餐几点？</li>
+</ol>
+<h4>Shopping</h4>
+<ol>
+<li>这个多少钱？</li>
+<li>太贵了！一百块可以吗？</li>
+<li>我可以试试吗？</li>
+<li>大一号。</li>
+</ol>
+<h4>Taxi</h4>
+<ol>
+<li>我要去火车站。</li>
+<li>多长时间？</li>
+<li>到了吗？</li>
+<li>请在这里停。</li>
+</ol>
+<h4>Emergency</h4>
+<ol>
+<li>我不舒服。</li>
+<li>我头疼，肚子也疼。</li>
+<li>我过敏。</li>
+</ol>
+</div>
+
+<div class="page-break"></div>
+<p style="text-align:center; color:#95A5A6; margin-top:4rem; font-style:italic;">End of workbook. Keep practicing, and remember - even trying to speak a little Mandarin will open doors and earn smiles throughout China. 加油！(jiāyóu! - You can do it!)</p>
+
+</body>
+</html>

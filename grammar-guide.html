@@ -1,0 +1,1600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Pattern Guide - Mandarin Chinese</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rice-paper: #F5F0E8;
+  --card-bg: #FFFDF8;
+  --ink: #1a1a2e;
+  --vermillion: #C41E3A;
+  --sage: #7D8471;
+  --ink-wash: #6B7B8D;
+  --warm-border: #E8E0D4;
+  --amber-bg: #FFF8E7;
+  --amber-border: #D4A853;
+}
+
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC',
+    'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: var(--rice-paper);
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    );
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+  animation: pageLoad 0.5s ease-out;
+}
+
+@keyframes pageLoad {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+/* -- Page Header -- */
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+.page-header h1 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--vermillion);
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.page-header .subtitle {
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.page-header .deco {
+  font-size: 1.8rem;
+  color: var(--vermillion);
+  opacity: 0.25;
+  margin-bottom: 8px;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 12px;
+}
+
+/* -- Table of Contents -- */
+
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 36px;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.toc h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--warm-border);
+}
+
+.toc ol {
+  list-style: none;
+  counter-reset: toc-counter;
+  padding: 0;
+}
+
+.toc ol li {
+  counter-increment: toc-counter;
+  margin-bottom: 6px;
+}
+
+.toc ol li a {
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 1.05rem;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.toc ol li a::before {
+  content: counter(toc-counter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(196, 30, 58, 0.08);
+  color: var(--vermillion);
+  font-size: 0.85rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.toc ol li a:hover {
+  background: rgba(196, 30, 58, 0.05);
+  color: var(--vermillion);
+}
+
+.toc ol li a .toc-chinese {
+  color: var(--ink-wash);
+  font-size: 0.95rem;
+  margin-left: 4px;
+}
+
+/* -- Pattern Card -- */
+
+.pattern-card {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  padding: 32px 28px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.pattern-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vermillion);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.pattern-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--vermillion);
+  display: inline-block;
+}
+
+/* -- Formula Pill -- */
+
+.formula-row {
+  margin: 20px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.formula-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-wash);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-right: 4px;
+}
+
+.formula-pill {
+  display: inline-block;
+  background: var(--vermillion);
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 50px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(196, 30, 58, 0.2);
+}
+
+.formula-pill-alt {
+  display: inline-block;
+  background: var(--vermillion);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 50px;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 8px rgba(196, 30, 58, 0.2);
+}
+
+/* -- Explanation -- */
+
+.explanation {
+  font-size: 1.05rem;
+  color: var(--ink);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.explanation strong {
+  color: var(--vermillion);
+  font-weight: 600;
+}
+
+/* -- Example List -- */
+
+.examples-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink-wash);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.example-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.example-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.7);
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 0 12px;
+}
+
+.example-item:last-child {
+  border-bottom: none;
+}
+
+.example-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--vermillion);
+  opacity: 0.5;
+  padding-top: 4px;
+}
+
+.example-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.example-chinese {
+  font-size: 1.4rem;
+  color: var(--ink);
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.example-chinese .trad { }
+.example-chinese .sep {
+  color: var(--warm-border);
+  margin: 0 6px;
+  font-weight: 400;
+}
+.example-chinese .simp {
+  color: var(--ink);
+  opacity: 0.65;
+}
+
+.example-pinyin {
+  font-size: 1rem;
+  color: var(--sage);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.example-english {
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  line-height: 1.4;
+}
+
+/* -- Tip Box -- */
+
+.tip-box {
+  background: var(--amber-bg);
+  border-left: 4px solid var(--amber-border);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin-top: 20px;
+}
+
+.tip-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--amber-border);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 4px;
+}
+
+.tip-box p {
+  font-size: 1rem;
+  color: #5C4A32;
+  line-height: 1.6;
+}
+
+.tip-box code {
+  background: rgba(212, 168, 83, 0.15);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: 'PingFang TC', 'Noto Sans TC', sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+}
+
+/* -- Sub-section for Pattern 6 -- */
+
+.sub-section {
+  margin: 16px 0;
+  padding: 16px 20px;
+  background: rgba(245, 240, 232, 0.5);
+  border-radius: 8px;
+  border: 1px solid rgba(232, 224, 212, 0.6);
+}
+
+.sub-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.sub-heading .zh {
+  color: var(--vermillion);
+}
+
+.sub-heading .pinyin-label {
+  color: var(--sage);
+  font-weight: 400;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.sub-meaning {
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.sub-example {
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.5);
+}
+
+.sub-example:last-child { border-bottom: none; }
+
+/* -- Footer -- */
+
+.page-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--warm-border);
+  color: var(--ink-wash);
+  font-size: 0.9rem;
+}
+
+.page-footer .deco {
+  color: var(--vermillion);
+  opacity: 0.3;
+  font-size: 1.2rem;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 8px;
+  margin-bottom: 8px;
+}
+
+/* -- Responsive -- */
+
+@media (max-width: 600px) {
+  .container { padding: 24px 14px 60px; }
+  .page-header h1 { font-size: 2rem; }
+  .pattern-card { padding: 24px 18px; }
+  .pattern-title { font-size: 1.4rem; }
+  .formula-pill { font-size: 0.95rem; padding: 6px 14px; }
+  .example-chinese { font-size: 1.2rem; }
+  .example-item { grid-template-columns: 22px 1fr; gap: 0 8px; }
+}
+
+/* smooth scroll */
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="deco">文 法 句 型</div>
+    <h1>Grammar Patterns</h1>
+    <p class="subtitle">Core patterns for conversational Mandarin</p>
+  </header>
+
+  <!-- Table of Contents -->
+  <nav class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#pattern-1">Basic Word Order <span class="toc-chinese">S + T + V + O</span></a></li>
+      <li><a href="#pattern-2">是...的 Construction <span class="toc-chinese">Emphasis on circumstances</span></a></li>
+      <li><a href="#pattern-3">了 Particle <span class="toc-chinese">Completed action &amp; change of state</span></a></li>
+      <li><a href="#pattern-4">在 + Verb <span class="toc-chinese">Ongoing action</span></a></li>
+      <li><a href="#pattern-5">过 Particle <span class="toc-chinese">Past experience</span></a></li>
+      <li><a href="#pattern-6">想 / 要 / 會 / 能 / 可以 <span class="toc-chinese">The 5 "can/want" words</span></a></li>
+      <li><a href="#pattern-7">把 Construction <span class="toc-chinese">Disposal / doing something to an object</span></a></li>
+      <li><a href="#pattern-8">被 Passive <span class="toc-chinese">Something was done to the subject</span></a></li>
+      <li><a href="#pattern-9">的 Particle <span class="toc-chinese">Possession &amp; description</span></a></li>
+      <li><a href="#pattern-10">得 Complement <span class="toc-chinese">Degree &amp; result</span></a></li>
+      <li><a href="#pattern-11">地 Particle <span class="toc-chinese">Adverb marker</span></a></li>
+      <li><a href="#pattern-12">比 Comparisons <span class="toc-chinese">A is more X than B</span></a></li>
+      <li><a href="#pattern-13">Clause Connectors <span class="toc-chinese">因為...所以, 雖然...但是, 如果...就</span></a></li>
+      <li><a href="#pattern-14">越來越 <span class="toc-chinese">More and more</span></a></li>
+      <li><a href="#pattern-15">一邊...一邊 <span class="toc-chinese">Doing two things at once</span></a></li>
+    </ol>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 1: Basic Word Order -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-1">
+    <div class="pattern-number">Pattern 1</div>
+    <h2 class="pattern-title">Basic Word Order (S + T + V + O)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Subject + Time + Verb + Object</span>
+    </div>
+
+    <p class="explanation">
+      Chinese sentences follow a strict order. Time always comes <strong>before</strong> the verb, not after like English. You say "I yesterday ate" rather than "I ate yesterday."
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我昨天吃了餃子</span><span class="sep">|</span><span class="simp">我昨天吃了饺子</span></div>
+          <div class="example-pinyin">w&#466; zu&#243;ti&#257;n ch&#299; le ji&#462;ozi</div>
+          <div class="example-english">"I ate dumplings yesterday"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她每天喝茶</span><span class="sep">|</span><span class="simp">她每天喝茶</span></div>
+          <div class="example-pinyin">t&#257; m&#283;iti&#257;n h&#275; ch&#225;</div>
+          <div class="example-english">"She drinks tea every day"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我們明天去機場</span><span class="sep">|</span><span class="simp">我们明天去机场</span></div>
+          <div class="example-pinyin">w&#466;men m&#237;ngti&#257;n q&#249; j&#299;ch&#462;ng</div>
+          <div class="example-english">"We're going to the airport tomorrow"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他昨天晚上看了電影</span><span class="sep">|</span><span class="simp">他昨天晚上看了电影</span></div>
+          <div class="example-pinyin">t&#257; zu&#243;ti&#257;n w&#462;nshang k&#224;n le di&#224;ny&#464;ng</div>
+          <div class="example-english">"He watched a movie last night"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">你今天想吃什麼？</span><span class="sep">|</span><span class="simp">你今天想吃什么？</span></div>
+          <div class="example-pinyin">n&#464; j&#299;nti&#257;n xi&#462;ng ch&#299; sh&#233;nme?</div>
+          <div class="example-english">"What do you want to eat today?"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>If you remember one rule, remember this: time goes <strong>before</strong> the verb. "I yesterday ate" not "I ate yesterday."</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 2: 是...的 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-2">
+    <div class="pattern-number">Pattern 2</div>
+    <h2 class="pattern-title">是...的 (Emphasis on Circumstances)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Subject + 是 + Detail + 的</span>
+    </div>
+
+    <p class="explanation">
+      Used to emphasize <strong>when</strong>, <strong>where</strong>, <strong>how</strong>, or <strong>who</strong> did something (not what happened). The action is already known; you're highlighting the circumstances.
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我是昨天來的</span><span class="sep">|</span><span class="simp">我是昨天来的</span></div>
+          <div class="example-pinyin">w&#466; sh&#236; zu&#243;ti&#257;n l&#225;i de</div>
+          <div class="example-english">"I came YESTERDAY" (emphasizing when)</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她是在台北學中文的</span><span class="sep">|</span><span class="simp">她是在台北学中文的</span></div>
+          <div class="example-pinyin">t&#257; sh&#236; z&#224;i T&#225;ib&#283;i xu&#233; zh&#333;ngw&#233;n de</div>
+          <div class="example-english">"She learned Chinese IN TAIPEI" (where)</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">你是怎麼來的？</span><span class="sep">|</span><span class="simp">你是怎么来的？</span></div>
+          <div class="example-pinyin">n&#464; sh&#236; z&#283;nme l&#225;i de?</div>
+          <div class="example-english">"HOW did you get here?" (how)</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">這本書是誰買的？</span><span class="sep">|</span><span class="simp">这本书是谁买的？</span></div>
+          <div class="example-pinyin">zh&#232; b&#283;n sh&#363; sh&#236; sh&#233;i m&#462;i de?</div>
+          <div class="example-english">"WHO bought this book?" (who)</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我是坐高鐵來的</span><span class="sep">|</span><span class="simp">我是坐高铁来的</span></div>
+          <div class="example-pinyin">w&#466; sh&#236; zu&#242; g&#257;oti&#283; l&#225;i de</div>
+          <div class="example-english">"I came BY high-speed train" (how)</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>Think of <code>是...的</code> as a spotlight - the action already happened, you're just shining a light on one detail.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 3: 了 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-3">
+    <div class="pattern-number">Pattern 3</div>
+    <h2 class="pattern-title">了 (Completed Action &amp; Change of State)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula A</span>
+      <span class="formula-pill">Verb + 了</span>
+    </div>
+    <div class="formula-row">
+      <span class="formula-label">Formula B</span>
+      <span class="formula-pill-alt">Adjective / Situation + 了</span>
+    </div>
+
+    <p class="explanation">
+      <code>了</code> has <strong>two</strong> different uses. After a verb = "did it, done." At the end of a sentence = "things have changed." Many learners confuse these.
+    </p>
+
+    <div class="examples-heading">Completed Action (Verb + 了)</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我吃了飯</span><span class="sep">|</span><span class="simp">我吃了饭</span></div>
+          <div class="example-pinyin">w&#466; ch&#299; le f&#224;n</div>
+          <div class="example-english">"I ate" (action completed)</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他買了三本書</span><span class="sep">|</span><span class="simp">他买了三本书</span></div>
+          <div class="example-pinyin">t&#257; m&#462;i le s&#257;n b&#283;n sh&#363;</div>
+          <div class="example-english">"He bought three books"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我已經到了</span><span class="sep">|</span><span class="simp">我已经到了</span></div>
+          <div class="example-pinyin">w&#466; y&#464;j&#299;ng d&#224;o le</div>
+          <div class="example-english">"I've already arrived"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="examples-heading">Change of State (Sentence + 了)</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">天氣冷了</span><span class="sep">|</span><span class="simp">天气冷了</span></div>
+          <div class="example-pinyin">ti&#257;nq&#236; l&#283;ng le</div>
+          <div class="example-english">"It's gotten cold" (it wasn't cold before)</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我不想吃了</span><span class="sep">|</span><span class="simp">我不想吃了</span></div>
+          <div class="example-pinyin">w&#466; b&#249; xi&#462;ng ch&#299; le</div>
+          <div class="example-english">"I don't want to eat anymore" (I did before, now I don't)</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>Verb + <code>了</code> = "did it." Sentence + <code>了</code> = "now it's different." When both appear (<code>我吃了飯了</code>), it means "I've eaten now" - completed AND new situation.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 4: 在 + Verb -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-4">
+    <div class="pattern-number">Pattern 4</div>
+    <h2 class="pattern-title">在 + Verb (Ongoing Action)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Subject + 在 + Verb</span>
+    </div>
+
+    <p class="explanation">
+      Like English "-ing." Describes what's happening <strong>right now</strong>.
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我在吃飯</span><span class="sep">|</span><span class="simp">我在吃饭</span></div>
+          <div class="example-pinyin">w&#466; z&#224;i ch&#299;f&#224;n</div>
+          <div class="example-english">"I'm eating"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她在睡覺</span><span class="sep">|</span><span class="simp">她在睡觉</span></div>
+          <div class="example-pinyin">t&#257; z&#224;i shu&#236;ji&#224;o</div>
+          <div class="example-english">"She's sleeping"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">你在做什麼？</span><span class="sep">|</span><span class="simp">你在做什么？</span></div>
+          <div class="example-pinyin">n&#464; z&#224;i zu&#242; sh&#233;nme?</div>
+          <div class="example-english">"What are you doing?"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他們在看電影</span><span class="sep">|</span><span class="simp">他们在看电影</span></div>
+          <div class="example-pinyin">t&#257;men z&#224;i k&#224;n di&#224;ny&#464;ng</div>
+          <div class="example-english">"They're watching a movie"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">外面在下雨</span><span class="sep">|</span><span class="simp">外面在下雨</span></div>
+          <div class="example-pinyin">w&#224;imi&#224;n z&#224;i xi&#224;y&#468;</div>
+          <div class="example-english">"It's raining outside"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>Don't confuse <code>在</code> (doing now) with <code>了</code> (did it). <code>我在吃</code> = "I'm eating." <code>我吃了</code> = "I ate."</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 5: 过 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-5">
+    <div class="pattern-number">Pattern 5</div>
+    <h2 class="pattern-title">过 (Past Experience)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Verb + 过</span>
+    </div>
+
+    <p class="explanation">
+      "Have you ever...?" Describes whether you've had the <strong>experience</strong> before, not when it happened.
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">你去過中國嗎？</span><span class="sep">|</span><span class="simp">你去过中国吗？</span></div>
+          <div class="example-pinyin">n&#464; q&#249; guo zh&#333;nggu&#243; ma?</div>
+          <div class="example-english">"Have you ever been to China?"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我吃過餃子</span><span class="sep">|</span><span class="simp">我吃过饺子</span></div>
+          <div class="example-pinyin">w&#466; ch&#299; guo ji&#462;ozi</div>
+          <div class="example-english">"I've had dumplings before"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她沒有學過中文</span><span class="sep">|</span><span class="simp">她没有学过中文</span></div>
+          <div class="example-pinyin">t&#257; m&#233;iy&#466;u xu&#233; guo zh&#333;ngw&#233;n</div>
+          <div class="example-english">"She has never studied Chinese"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">你看過這部電影嗎？</span><span class="sep">|</span><span class="simp">你看过这部电影吗？</span></div>
+          <div class="example-pinyin">n&#464; k&#224;n guo zh&#232; b&#249; di&#224;ny&#464;ng ma?</div>
+          <div class="example-english">"Have you seen this movie?"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我沒坐過高鐵</span><span class="sep">|</span><span class="simp">我没坐过高铁</span></div>
+          <div class="example-pinyin">w&#466; m&#233;i zu&#242; guo g&#257;oti&#283;</div>
+          <div class="example-english">"I've never taken the high-speed train"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p><code>过</code> vs <code>了</code>: <code>我吃了餃子</code> = "I ate dumplings (just now)." <code>我吃過餃子</code> = "I've had dumplings (at some point in my life)."</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 6: 想/要/會/能/可以 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-6">
+    <div class="pattern-number">Pattern 6</div>
+    <h2 class="pattern-title">想 / 要 / 會 / 能 / 可以 (The 5 "Can/Want" Words)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Subject + [想/要/會/能/可以] + Verb</span>
+    </div>
+
+    <p class="explanation">
+      These five words all translate to "want" or "can" in English but are <strong>not</strong> interchangeable. Each carries a distinct shade of meaning.
+    </p>
+
+    <!-- 想 -->
+    <div class="sub-section">
+      <div class="sub-heading"><span class="zh">想</span> <span class="pinyin-label">(xi&#462;ng)</span></div>
+      <div class="sub-meaning">"want to" / "thinking of" - softer, polite</div>
+      <ul class="example-list">
+        <li class="example-item">
+          <span class="example-num">1</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">我想吃麵</span><span class="sep">|</span><span class="simp">我想吃面</span></div>
+            <div class="example-pinyin">w&#466; xi&#462;ng ch&#299; mi&#224;n</div>
+            <div class="example-english">"I'd like to eat noodles"</div>
+          </div>
+        </li>
+        <li class="example-item">
+          <span class="example-num">2</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">我想去台北</span><span class="sep">|</span><span class="simp">我想去台北</span></div>
+            <div class="example-pinyin">w&#466; xi&#462;ng q&#249; T&#225;ib&#283;i</div>
+            <div class="example-english">"I'm thinking of going to Taipei"</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 要 -->
+    <div class="sub-section">
+      <div class="sub-heading"><span class="zh">要</span> <span class="pinyin-label">(y&#224;o)</span></div>
+      <div class="sub-meaning">"want to" / "going to" - stronger, definite</div>
+      <ul class="example-list">
+        <li class="example-item">
+          <span class="example-num">1</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">我要一杯茶</span><span class="sep">|</span><span class="simp">我要一杯茶</span></div>
+            <div class="example-pinyin">w&#466; y&#224;o y&#236; b&#275;i ch&#225;</div>
+            <div class="example-english">"I want a cup of tea"</div>
+          </div>
+        </li>
+        <li class="example-item">
+          <span class="example-num">2</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">我要去了</span><span class="sep">|</span><span class="simp">我要去了</span></div>
+            <div class="example-pinyin">w&#466; y&#224;o q&#249; le</div>
+            <div class="example-english">"I'm about to go"</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 會 -->
+    <div class="sub-section">
+      <div class="sub-heading"><span class="zh">會 / 会</span> <span class="pinyin-label">(hu&#236;)</span></div>
+      <div class="sub-meaning">"know how to" / "will" - learned skill or future prediction</div>
+      <ul class="example-list">
+        <li class="example-item">
+          <span class="example-num">1</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">你會說中文嗎？</span><span class="sep">|</span><span class="simp">你会说中文吗？</span></div>
+            <div class="example-pinyin">n&#464; hu&#236; shu&#333; zh&#333;ngw&#233;n ma?</div>
+            <div class="example-english">"Can you speak Chinese?" (skill)</div>
+          </div>
+        </li>
+        <li class="example-item">
+          <span class="example-num">2</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">明天會下雨</span><span class="sep">|</span><span class="simp">明天会下雨</span></div>
+            <div class="example-pinyin">m&#237;ngti&#257;n hu&#236; xi&#224;y&#468;</div>
+            <div class="example-english">"It will rain tomorrow" (prediction)</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 能 -->
+    <div class="sub-section">
+      <div class="sub-heading"><span class="zh">能</span> <span class="pinyin-label">(n&#233;ng)</span></div>
+      <div class="sub-meaning">"can" - physical ability or circumstances allow</div>
+      <ul class="example-list">
+        <li class="example-item">
+          <span class="example-num">1</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">你能幫我嗎？</span><span class="sep">|</span><span class="simp">你能帮我吗？</span></div>
+            <div class="example-pinyin">n&#464; n&#233;ng b&#257;ng w&#466; ma?</div>
+            <div class="example-english">"Can you help me?" (are you able to)</div>
+          </div>
+        </li>
+        <li class="example-item">
+          <span class="example-num">2</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">我今天不能去</span><span class="sep">|</span><span class="simp">我今天不能去</span></div>
+            <div class="example-pinyin">w&#466; j&#299;nti&#257;n b&#249; n&#233;ng q&#249;</div>
+            <div class="example-english">"I can't go today" (circumstances)</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 可以 -->
+    <div class="sub-section">
+      <div class="sub-heading"><span class="zh">可以</span> <span class="pinyin-label">(k&#283;y&#464;)</span></div>
+      <div class="sub-meaning">"may" / "allowed to" - permission</div>
+      <ul class="example-list">
+        <li class="example-item">
+          <span class="example-num">1</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">我可以坐這裡嗎？</span><span class="sep">|</span><span class="simp">我可以坐这里吗？</span></div>
+            <div class="example-pinyin">w&#466; k&#283;y&#464; zu&#242; zh&#232;l&#464; ma?</div>
+            <div class="example-english">"May I sit here?"</div>
+          </div>
+        </li>
+        <li class="example-item">
+          <span class="example-num">2</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">這裡不可以抽煙</span><span class="sep">|</span><span class="simp">这里不可以抽烟</span></div>
+            <div class="example-pinyin">zh&#232;l&#464; b&#249; k&#283;y&#464; ch&#333;uy&#257;n</div>
+            <div class="example-english">"No smoking here" (not allowed)</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>Quick test: "Can you swim?" = <code>你會游泳嗎</code> (skill). "Can you swim today?" = <code>你今天能游泳嗎</code> (circumstance). "May I swim here?" = <code>我可以在這裡游泳嗎</code> (permission).</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 7: 把 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-7">
+    <div class="pattern-number">Pattern 7</div>
+    <h2 class="pattern-title">把 (Disposal Construction)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Subject + 把 + Object + Verb + Result</span>
+    </div>
+
+    <p class="explanation">
+      The <strong>把</strong> construction moves the object <strong>before</strong> the verb to emphasize what was done to it. Use it when the action changes, moves, or disposes of the object in some way.
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">請把門關上</span><span class="sep">|</span><span class="simp">请把门关上</span></div>
+          <div class="example-pinyin">qǐng bǎ mén guān shàng</div>
+          <div class="example-english">"Please close the door"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他把書放在桌子上</span><span class="sep">|</span><span class="simp">他把书放在桌子上</span></div>
+          <div class="example-pinyin">tā bǎ shū fàng zài zhuōzi shàng</div>
+          <div class="example-english">"He put the book on the table"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我把功課做完了</span><span class="sep">|</span><span class="simp">我把功课做完了</span></div>
+          <div class="example-pinyin">wǒ bǎ gōngkè zuò wán le</div>
+          <div class="example-english">"I finished my homework"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她把咖啡喝完了</span><span class="sep">|</span><span class="simp">她把咖啡喝完了</span></div>
+          <div class="example-pinyin">tā bǎ kāfēi hē wán le</div>
+          <div class="example-english">"She finished drinking the coffee"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">你把名字寫在這裡</span><span class="sep">|</span><span class="simp">你把名字写在这里</span></div>
+          <div class="example-pinyin">nǐ bǎ míngzì xiě zài zhèlǐ</div>
+          <div class="example-english">"Write your name here"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p><code>把</code> needs a result - you can't just say <code>把門關</code>. You need <code>把門關上</code> (close-up). The verb alone isn't enough; something must happen <strong>to</strong> the object.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 8: 被 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-8">
+    <div class="pattern-number">Pattern 8</div>
+    <h2 class="pattern-title">被 (Passive Voice)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Subject + 被 + (Agent) + Verb</span>
+    </div>
+
+    <p class="explanation">
+      <strong>被</strong> marks the passive - "was done to." Traditionally used for <strong>unfortunate</strong> events (things happening to you), though modern usage has expanded.
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我的手機被偷了</span><span class="sep">|</span><span class="simp">我的手机被偷了</span></div>
+          <div class="example-pinyin">wǒ de shǒujī bèi tōu le</div>
+          <div class="example-english">"My phone was stolen"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">蛋糕被他吃了</span><span class="sep">|</span><span class="simp">蛋糕被他吃了</span></div>
+          <div class="example-pinyin">dàngāo bèi tā chī le</div>
+          <div class="example-english">"The cake was eaten by him"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">那本書被借走了</span><span class="sep">|</span><span class="simp">那本书被借走了</span></div>
+          <div class="example-pinyin">nà běn shū bèi jiè zǒu le</div>
+          <div class="example-english">"That book was borrowed (taken away)"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他被老師罵了</span><span class="sep">|</span><span class="simp">他被老师骂了</span></div>
+          <div class="example-pinyin">tā bèi lǎoshī mà le</div>
+          <div class="example-english">"He was scolded by the teacher"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">這首歌被很多人喜歡</span><span class="sep">|</span><span class="simp">这首歌被很多人喜欢</span></div>
+          <div class="example-pinyin">zhè shǒu gē bèi hěn duō rén xǐhuān</div>
+          <div class="example-english">"This song is liked by many people"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p><code>把</code> and <code>被</code> are mirrors. <code>我把蛋糕吃了</code> = "I ate the cake" (I did it to the cake). <code>蛋糕被我吃了</code> = "The cake was eaten by me" (it happened to the cake).</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 9: 的 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-9">
+    <div class="pattern-number">Pattern 9</div>
+    <h2 class="pattern-title">的 (Possession &amp; Description)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula A</span>
+      <span class="formula-pill">Noun + 的 + Noun</span>
+    </div>
+    <div class="formula-row">
+      <span class="formula-label">Formula B</span>
+      <span class="formula-pill-alt">Adjective + 的 + Noun</span>
+    </div>
+
+    <p class="explanation">
+      <strong>的</strong> (de) is the most common Chinese particle. It links a modifier to a noun - either showing <strong>possession</strong> (like English "'s") or <strong>describing</strong> the noun (like "the red car" = <code>紅的車</code>).
+    </p>
+
+    <div class="examples-heading">Possession</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">這是我的書</span><span class="sep">|</span><span class="simp">这是我的书</span></div>
+          <div class="example-pinyin">zhè shì wǒ de shū</div>
+          <div class="example-english">"This is my book"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">老師的名字叫什麼？</span><span class="sep">|</span><span class="simp">老师的名字叫什么？</span></div>
+          <div class="example-pinyin">lǎoshī de míngzì jiào shénme?</div>
+          <div class="example-english">"What is the teacher's name?"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="examples-heading">Description</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">好看的電影</span><span class="sep">|</span><span class="simp">好看的电影</span></div>
+          <div class="example-pinyin">hǎokàn de diànyǐng</div>
+          <div class="example-english">"a good-looking movie"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">穿紅色衣服的女生</span><span class="sep">|</span><span class="simp">穿红色衣服的女生</span></div>
+          <div class="example-pinyin">chuān hóngsè yīfú de nǚshēng</div>
+          <div class="example-english">"the girl wearing red clothes"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">昨天買的那個</span><span class="sep">|</span><span class="simp">昨天买的那个</span></div>
+          <div class="example-pinyin">zuótiān mǎi de nàge</div>
+          <div class="example-english">"the one (I) bought yesterday"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>For close relationships, <code>的</code> is often dropped: <code>我媽</code> (my mom), <code>我家</code> (my home). But for emphasis or clarity, keep it: <code>這是我的</code> ("This is mine!").</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 10: 得 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-10">
+    <div class="pattern-number">Pattern 10</div>
+    <h2 class="pattern-title">得 (Degree &amp; Result Complement)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Verb + 得 + Description</span>
+    </div>
+
+    <p class="explanation">
+      <strong>得</strong> (de) goes <strong>after</strong> a verb to describe <strong>how well</strong> or <strong>to what degree</strong> the action was performed. It answers "how did you do it?"
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">你說得很好</span><span class="sep">|</span><span class="simp">你说得很好</span></div>
+          <div class="example-pinyin">nǐ shuō de hěn hǎo</div>
+          <div class="example-english">"You speak very well"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他跑得很快</span><span class="sep">|</span><span class="simp">他跑得很快</span></div>
+          <div class="example-pinyin">tā pǎo de hěn kuài</div>
+          <div class="example-english">"He runs very fast"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她唱得不好聽</span><span class="sep">|</span><span class="simp">她唱得不好听</span></div>
+          <div class="example-pinyin">tā chàng de bù hǎotīng</div>
+          <div class="example-english">"She doesn't sing well"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我吃得太飽了</span><span class="sep">|</span><span class="simp">我吃得太饱了</span></div>
+          <div class="example-pinyin">wǒ chī de tài bǎo le</div>
+          <div class="example-english">"I ate too much (I'm too full)"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">你寫得真漂亮</span><span class="sep">|</span><span class="simp">你写得真漂亮</span></div>
+          <div class="example-pinyin">nǐ xiě de zhēn piàoliang</div>
+          <div class="example-english">"Your writing is really beautiful"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>If the verb has an object, repeat the verb: <code>他說中文說得很好</code> (He speaks Chinese speaks-well). You can't put <code>得</code> between the verb and its object.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 11: 地 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-11">
+    <div class="pattern-number">Pattern 11</div>
+    <h2 class="pattern-title">地 (Adverb Marker)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Adverb/Adj + 地 + Verb</span>
+    </div>
+
+    <p class="explanation">
+      <strong>地</strong> (de) goes <strong>before</strong> a verb to turn an adjective into an adverb - describing <strong>how</strong> the action is performed. Think of it as the Chinese "-ly" suffix.
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她慢慢地走</span><span class="sep">|</span><span class="simp">她慢慢地走</span></div>
+          <div class="example-pinyin">tā mànmàn de zǒu</div>
+          <div class="example-english">"She walks slowly"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他高興地笑了</span><span class="sep">|</span><span class="simp">他高兴地笑了</span></div>
+          <div class="example-pinyin">tā gāoxìng de xiào le</div>
+          <div class="example-english">"He laughed happily"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">請認真地聽</span><span class="sep">|</span><span class="simp">请认真地听</span></div>
+          <div class="example-pinyin">qǐng rènzhēn de tīng</div>
+          <div class="example-english">"Please listen carefully"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她安靜地看書</span><span class="sep">|</span><span class="simp">她安静地看书</span></div>
+          <div class="example-pinyin">tā ānjìng de kànshū</div>
+          <div class="example-english">"She reads quietly"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">孩子們快樂地玩</span><span class="sep">|</span><span class="simp">孩子们快乐地玩</span></div>
+          <div class="example-pinyin">háizimen kuàilè de wán</div>
+          <div class="example-english">"The children play happily"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>The three <code>de</code> particles: <code>的</code> modifies nouns (beautiful <strong>的</strong> girl), <code>得</code> follows verbs (runs <strong>得</strong> fast), <code>地</code> precedes verbs (slowly <strong>地</strong> walks). Position is the key.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 12: 比 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-12">
+    <div class="pattern-number">Pattern 12</div>
+    <h2 class="pattern-title">比 (Comparisons)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">A + 比 + B + Adjective</span>
+    </div>
+
+    <p class="explanation">
+      <strong>比</strong> (bǐ) means "compared to." The thing being compared goes <strong>first</strong>, followed by what it's compared to, then the adjective. No word for "more" needed - <code>比</code> already implies it.
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他比我高</span><span class="sep">|</span><span class="simp">他比我高</span></div>
+          <div class="example-pinyin">tā bǐ wǒ gāo</div>
+          <div class="example-english">"He is taller than me"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">今天比昨天冷</span><span class="sep">|</span><span class="simp">今天比昨天冷</span></div>
+          <div class="example-pinyin">jīntiān bǐ zuótiān lěng</div>
+          <div class="example-english">"Today is colder than yesterday"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">中文比英文難</span><span class="sep">|</span><span class="simp">中文比英文难</span></div>
+          <div class="example-pinyin">zhōngwén bǐ yīngwén nán</div>
+          <div class="example-english">"Chinese is harder than English"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">坐高鐵比開車快</span><span class="sep">|</span><span class="simp">坐高铁比开车快</span></div>
+          <div class="example-pinyin">zuò gāotiě bǐ kāichē kuài</div>
+          <div class="example-english">"Taking the HSR is faster than driving"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她比我大三歲</span><span class="sep">|</span><span class="simp">她比我大三岁</span></div>
+          <div class="example-pinyin">tā bǐ wǒ dà sān suì</div>
+          <div class="example-english">"She is three years older than me"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>Don't add <code>很</code> (very) after <code>比</code>. Say <code>他比我高</code> not <code>他比我很高</code>. For emphasis, use <code>多</code>: <code>他比我高多了</code> ("He's much taller than me").</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 13: Clause Connectors -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-13">
+    <div class="pattern-number">Pattern 13</div>
+    <h2 class="pattern-title">Clause Connectors</h2>
+
+    <p class="explanation">
+      Chinese uses <strong>paired connectors</strong> to link clauses. Unlike English where one conjunction is enough ("because X, Y"), Chinese typically uses <strong>both halves</strong> of the pair.
+    </p>
+
+    <!-- 因為...所以 -->
+    <div class="sub-section">
+      <div class="sub-heading"><span class="zh">因為...所以</span> <span class="pinyin-label">(yīnwèi...suǒyǐ)</span></div>
+      <div class="sub-meaning">"because...therefore" - cause and effect</div>
+      <ul class="example-list">
+        <li class="example-item">
+          <span class="example-num">1</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">因為下雨，所以我沒出去</span><span class="sep">|</span><span class="simp">因为下雨，所以我没出去</span></div>
+            <div class="example-pinyin">yīnwèi xiàyǔ, suǒyǐ wǒ méi chūqù</div>
+            <div class="example-english">"Because it rained, I didn't go out"</div>
+          </div>
+        </li>
+        <li class="example-item">
+          <span class="example-num">2</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">因為太貴了，所以我沒買</span><span class="sep">|</span><span class="simp">因为太贵了，所以我没买</span></div>
+            <div class="example-pinyin">yīnwèi tài guì le, suǒyǐ wǒ méi mǎi</div>
+            <div class="example-english">"Because it was too expensive, I didn't buy it"</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 雖然...但是 -->
+    <div class="sub-section">
+      <div class="sub-heading"><span class="zh">雖然...但是 / 虽然...但是</span> <span class="pinyin-label">(suīrán...dànshì)</span></div>
+      <div class="sub-meaning">"although...but" - concession</div>
+      <ul class="example-list">
+        <li class="example-item">
+          <span class="example-num">1</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">雖然很累，但是我很開心</span><span class="sep">|</span><span class="simp">虽然很累，但是我很开心</span></div>
+            <div class="example-pinyin">suīrán hěn lèi, dànshì wǒ hěn kāixīn</div>
+            <div class="example-english">"Although I'm tired, I'm happy"</div>
+          </div>
+        </li>
+        <li class="example-item">
+          <span class="example-num">2</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">雖然他很忙，但是他還是來了</span><span class="sep">|</span><span class="simp">虽然他很忙，但是他还是来了</span></div>
+            <div class="example-pinyin">suīrán tā hěn máng, dànshì tā háishì lái le</div>
+            <div class="example-english">"Although he was busy, he still came"</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 如果...就 -->
+    <div class="sub-section">
+      <div class="sub-heading"><span class="zh">如果...就</span> <span class="pinyin-label">(rúguǒ...jiù)</span></div>
+      <div class="sub-meaning">"if...then" - conditional</div>
+      <ul class="example-list">
+        <li class="example-item">
+          <span class="example-num">1</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">如果明天下雨，我就不去</span><span class="sep">|</span><span class="simp">如果明天下雨，我就不去</span></div>
+            <div class="example-pinyin">rúguǒ míngtiān xiàyǔ, wǒ jiù bú qù</div>
+            <div class="example-english">"If it rains tomorrow, I won't go"</div>
+          </div>
+        </li>
+        <li class="example-item">
+          <span class="example-num">2</span>
+          <div class="example-content">
+            <div class="example-chinese"><span class="trad">如果你喜歡，就買吧</span><span class="sep">|</span><span class="simp">如果你喜欢，就买吧</span></div>
+            <div class="example-pinyin">rúguǒ nǐ xǐhuān, jiù mǎi ba</div>
+            <div class="example-english">"If you like it, then buy it"</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>In casual speech, one half can be dropped: <code>因為下雨我沒出去</code> or <code>下雨所以我沒出去</code>. But using both halves is always correct and clearer.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 14: 越來越 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-14">
+    <div class="pattern-number">Pattern 14</div>
+    <h2 class="pattern-title">越來越 (More and More)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">越來越 / 越来越 + Adjective/Verb</span>
+    </div>
+
+    <p class="explanation">
+      <strong>越來越</strong> (yuè lái yuè) expresses something <strong>increasing over time</strong> - "more and more," "increasingly." It's one of the most useful patterns for describing change.
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">天氣越來越冷了</span><span class="sep">|</span><span class="simp">天气越来越冷了</span></div>
+          <div class="example-pinyin">tiānqì yuè lái yuè lěng le</div>
+          <div class="example-english">"The weather is getting colder and colder"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">你的中文越來越好了</span><span class="sep">|</span><span class="simp">你的中文越来越好了</span></div>
+          <div class="example-pinyin">nǐ de zhōngwén yuè lái yuè hǎo le</div>
+          <div class="example-english">"Your Chinese is getting better and better"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">生活越來越貴</span><span class="sep">|</span><span class="simp">生活越来越贵</span></div>
+          <div class="example-pinyin">shēnghuó yuè lái yuè guì</div>
+          <div class="example-english">"Life is getting more and more expensive"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他越來越喜歡台灣了</span><span class="sep">|</span><span class="simp">他越来越喜欢台湾了</span></div>
+          <div class="example-pinyin">tā yuè lái yuè xǐhuān Táiwān le</div>
+          <div class="example-english">"He likes Taiwan more and more"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我越來越忙了</span><span class="sep">|</span><span class="simp">我越来越忙了</span></div>
+          <div class="example-pinyin">wǒ yuè lái yuè máng le</div>
+          <div class="example-english">"I'm getting busier and busier"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>Related pattern: <code>越 A 越 B</code> = "the more A, the more B." Example: <code>越吃越胖</code> (the more you eat, the fatter you get).</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PATTERN 15: 一邊...一邊 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="pattern-15">
+    <div class="pattern-number">Pattern 15</div>
+    <h2 class="pattern-title">一邊...一邊 (Doing Two Things at Once)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">一邊 + Verb A + 一邊 + Verb B</span>
+    </div>
+
+    <p class="explanation">
+      <strong>一邊...一邊</strong> (yì biān...yì biān) means "while doing X, also doing Y" - two actions happening <strong>simultaneously</strong>.
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她一邊吃飯一邊看電視</span><span class="sep">|</span><span class="simp">她一边吃饭一边看电视</span></div>
+          <div class="example-pinyin">tā yì biān chīfàn yì biān kàn diànshì</div>
+          <div class="example-english">"She eats while watching TV"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">他一邊走路一邊聽音樂</span><span class="sep">|</span><span class="simp">他一边走路一边听音乐</span></div>
+          <div class="example-pinyin">tā yì biān zǒulù yì biān tīng yīnyuè</div>
+          <div class="example-english">"He walks while listening to music"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">我們一邊喝茶一邊聊天</span><span class="sep">|</span><span class="simp">我们一边喝茶一边聊天</span></div>
+          <div class="example-pinyin">wǒmen yì biān hēchá yì biān liáotiān</div>
+          <div class="example-english">"We chat while drinking tea"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">不要一邊開車一邊用手機</span><span class="sep">|</span><span class="simp">不要一边开车一边用手机</span></div>
+          <div class="example-pinyin">bú yào yì biān kāichē yì biān yòng shǒujī</div>
+          <div class="example-english">"Don't use your phone while driving"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="trad">她一邊唱歌一邊跳舞</span><span class="sep">|</span><span class="simp">她一边唱歌一边跳舞</span></div>
+          <div class="example-pinyin">tā yì biān chànggē yì biān tiàowǔ</div>
+          <div class="example-english">"She sings while dancing"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>Both actions must be happening at the same time. You can't use <code>一邊...一邊</code> for sequential events. For "first X then Y," use <code>先...再</code> instead.</p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <div class="deco">學 而 時 習 之</div>
+    <p>Grammar Pattern Guide</p>
+  </footer>
+
+</div>
+
+</body>
+</html>

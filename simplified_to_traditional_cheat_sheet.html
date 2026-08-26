@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simplified → Traditional Mental Conversion Cheat Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page {
+    size: A4;
+    margin: 12mm 10mm;
+    background-color: #F5F0E8;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+    color: #1a1a2e;
+    line-height: 1.45;
+    font-size: 0.8rem;
+    background-color: #F5F0E8;
+    background-image:
+      repeating-linear-gradient(
+        0deg, transparent, transparent 40px,
+        rgba(184, 134, 11, 0.03) 40px,
+        rgba(184, 134, 11, 0.03) 41px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 40px,
+        rgba(184, 134, 11, 0.03) 40px,
+        rgba(184, 134, 11, 0.03) 41px
+      );
+}
+
+.header {
+    text-align: center;
+    color: #1a1a2e;
+    padding: 16px 20px 24px;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #E8E0D4;
+    position: relative;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: #C41E3A;
+}
+
+.header h1 {
+    margin: 0 0 4px 0;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #C41E3A;
+    font-family: "Cormorant Garamond", "Noto Serif CJK TC", "Noto Sans CJK TC", serif;
+}
+
+.header p {
+    margin: 0;
+    font-size: 9.5pt;
+    color: #5C4A32;
+}
+
+.section {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(139, 119, 75, 0.06);
+}
+
+.section-title {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #C41E3A;
+    margin: 0 0 6px 0;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #D4A853;
+    display: block;
+    font-family: "Cormorant Garamond", "Noto Serif CJK TC", "Noto Sans CJK TC", serif;
+    background-image: linear-gradient(90deg, #C41E3A22 0%, transparent 100%);
+    background-size: 100% 2px;
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+
+.sub-desc {
+    margin: 0 0 8px 0;
+    color: #5C4A32;
+    font-size: 8.5pt;
+}
+
+table.dense-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 8.5pt;
+    margin-top: 4px;
+}
+
+table.dense-table th {
+    background-color: #F5EDE0;
+    color: #3D2B1F;
+    font-weight: 700;
+    text-align: left;
+    padding: 4px 8px;
+    border: 1px solid #D8CCBB;
+    font-family: "Cormorant Garamond", "Noto Sans CJK TC", serif;
+}
+
+table.dense-table td {
+    padding: 3px 8px;
+    border: 1px solid #E8E0D4;
+}
+
+table.dense-table tr:nth-child(even) {
+    background-color: #FAF5EC;
+}
+
+table.dense-table tr:nth-child(odd) {
+    background-color: #FFFDF8;
+}
+
+.simp { color: #C41E3A; font-weight: bold; font-size: 10pt; }
+.trad { color: #2D5016; font-weight: bold; font-size: 10pt; }
+
+.grid-2col {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.grid-2col td {
+    width: 50%;
+    vertical-align: top;
+    padding: 0 4px;
+}
+
+.rad-box {
+    background: #FAF5EC;
+    border: 1px solid #E8E0D4;
+    border-left: 3px solid #D4A853;
+    border-radius: 4px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    page-break-inside: avoid;
+}
+
+.rad-title {
+    font-weight: bold;
+    font-size: 9.5pt;
+    color: #3D2B1F;
+    font-family: "Cormorant Garamond", "Noto Sans CJK TC", serif;
+}
+
+.rad-ex {
+    font-size: 8.5pt;
+    color: #5C4A32;
+    margin-top: 2px;
+}
+
+.warn-box {
+    background: #FFF8E7;
+    border: 1px solid #E8C84A;
+    border-left: 3px solid #D4A020;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-bottom: 6px;
+    page-break-inside: avoid;
+}
+
+.warn-title {
+    font-weight: bold;
+    color: #8B6914;
+    font-size: 9.5pt;
+    font-family: "Cormorant Garamond", "Noto Sans CJK TC", serif;
+}
+
+.step-box {
+    background: #F5F0E5;
+    border-radius: 4px;
+    padding: 6px 10px;
+    margin-top: 4px;
+    font-size: 8.5pt;
+    border: 1px solid #E8E0D4;
+}
+
+.badge-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+}
+
+.badge-item {
+    background: #FAF5EC;
+    border: 1px solid #E0D5C0;
+    color: #5C4A32;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 8.5pt;
+    font-weight: 600;
+}
+
+.alert-text {
+    color: #C41E3A;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Simplified → Traditional Mental Conversion Cheat Sheet</h1>
+    <p>Visual substitution rules for instant orthographic normalization without rote learning.</p>
+</div>
+
+<div class="section">
+    <div class="section-title">1. High-Value Radical Substitutions (The Core Engine)</div>
+    <div class="sub-desc">Master these core component rules to immediately unlock hundreds of characters:</div>
+    <table class="grid-2col">
+        <tr>
+            <td>
+                <div class="rad-box">
+                    <div class="rad-title">讠 → 言 (Speech)</div>
+                    <div class="rad-ex">说→說 | 话→話 | 语→語 | 读→讀 | 讲→講 | 试→試 | 请→請</div>
+                </div>
+                <div class="rad-box">
+                    <div class="rad-title">钅 → 金 (Metal)</div>
+                    <div class="rad-ex">钱→錢 | 铁→鐵 | 银→銀 | 错→錯 | 钟→鐘 | 镜→鏡 | 钢→鋼</div>
+                </div>
+                <div class="rad-box">
+                    <div class="rad-title">门 → 門 (Gate)</div>
+                    <div class="rad-ex">问→問 | 间→間 | 闭→閉 | 开→開 | 闻→聞 | 闲→閒 | 阅→閱</div>
+                </div>
+                <div class="rad-box">
+                    <div class="rad-title">贝 → 貝 (Value/Money)</div>
+                    <div class="rad-ex">费→費 | 贵→貴 | 货→貨 | 购→購 | 贸→貿 | 资→資 | 赔→賠</div>
+                </div>
+                <div class="rad-box">
+                    <div class="rad-title">见 → 見 (See)</div>
+                    <div class="rad-ex">现→現 | 视→視 | 觉→覺 | 观→觀 | 规→規 | 览→覽 | 亲→親</div>
+                </div>
+                <div class="rad-box">
+                    <div class="rad-title">马 → 馬 (Horse)</div>
+                    <div class="rad-ex">妈→媽 | 骂→罵 | 驾→駕 | 验→驗 | 骑→騎 | 驱→驅 | 骗→騙</div>
+                </div>
+            </td>
+            <td>
+                <div class="rad-box">
+                    <div class="rad-title">纟 → 絲/糹 (Silk)</div>
+                    <div class="rad-ex">红→紅 | 纸→紙 | 线→線 | 级→級 | 经→經 | 统→統 | 继→繼</div>
+                </div>
+                <div class="rad-box">
+                    <div class="rad-title">饣 → 食 (Food)</div>
+                    <div class="rad-ex">饭→飯 | 饮→飲 | 饿→餓 | 饱→飽 | 馆→館 | 饼→餅 | 饺→餃</div>
+                </div>
+                <div class="rad-box">
+                    <div class="rad-title">车 → 車 (Vehicle)</div>
+                    <div class="rad-ex">轻→輕 | 转→轉 | 轮→輪 | 辆→輛 | 较→較 | 载→載 | 软→軟</div>
+                </div>
+                <div class="rad-box">
+                    <div class="rad-title">页 → 頁 (Page/Head)</div>
+                    <div class="rad-ex">题→題 | 顶→頂 | 领→領 | 颜→顏 | 顾→顧 | 额→額 | 顺→順</div>
+                </div>
+                <div class="rad-box">
+                    <div class="rad-title">鸟 / 鱼 → 鳥 / 魚</div>
+                    <div class="rad-ex">鸡→雞 | 鸭→鴨 | 鸣→鳴 &nbsp;|&nbsp; 鲜→鮮 | 鲁→魯</div>
+                </div>
+                <div class="rad-box" style="border-left-color: #C41E3A;">
+                    <div class="rad-title alert-text">⚠️ 阝 Exceptions</div>
+                    <div class="rad-ex">阝 represents different historical radicals based on position (院, 附, 降). Do not apply a blanket radical rule!</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <div class="section-title">2. Essential Component & "Whole Character" Pairs</div>
+    <table class="dense-table">
+        <thead>
+            <tr>
+                <th>Simplified</th>
+                <th>Traditional</th>
+                <th>Examples</th>
+                <th>Simplified</th>
+                <th>Traditional</th>
+                <th>Examples</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="simp">长 / 东</span></td>
+                <td><span class="trad">長 / 東</span></td>
+                <td>张→張, 冻→凍, 陈→陳</td>
+                <td><span class="simp">专 / 云</span></td>
+                <td><span class="trad">專 / 雲</span></td>
+                <td>传→傳, 砖→磚, 运→運</td>
+            </tr>
+            <tr>
+                <td><span class="simp">关 / 开</span></td>
+                <td><span class="trad">關 / 開</span></td>
+                <td>关→關, 联→聯, 闭→閉</td>
+                <td><span class="simp">广 / 厂</span></td>
+                <td><span class="trad">廣 / 廠</span></td>
+                <td>矿→礦, 库→庫, 厂→廠</td>
+            </tr>
+            <tr>
+                <td><span class="simp">业 / 书</span></td>
+                <td><span class="trad">業 / 書</span></td>
+                <td>亚→亞, 画→畫, 昼→晝</td>
+                <td><span class="simp">头 / 还</span></td>
+                <td><span class="trad">頭 / 還</span></td>
+                <td>实→實, 买→買, 环→環</td>
+            </tr>
+            <tr>
+                <td><span class="simp">过 / 义</span></td>
+                <td><span class="trad">過 / 義</span></td>
+                <td>锅→鍋, 仪→儀, 议→議</td>
+                <td><span class="simp">录 / 争</span></td>
+                <td><span class="trad">錄 / 爭</span></td>
+                <td>绿→綠, 净→淨, 睁→睜</td>
+            </tr>
+            <tr>
+                <td><span class="simp">亲 / 产</span></td>
+                <td><span class="trad">親 / 產</span></td>
+                <td>新→新 (Unchanged)</td>
+                <td><span class="simp">尔 / 当</span></td>
+                <td><span class="trad">爾 / 當</span></td>
+                <td>你→你, 档→檔</td>
+            </tr>
+            <tr>
+                <td><span class="simp">国 / 学</span></td>
+                <td><span class="trad">國 / 學</span></td>
+                <td>中国→中國, 学生→學生</td>
+                <td><span class="simp">体 / 电</span></td>
+                <td><span class="trad">體 / 電</span></td>
+                <td>身体→身體, 电视→電視</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <div class="section-title">3. Dangerous Traps: One-to-Many Contextual Merges</div>
+    <div class="sub-desc">Store these as word units rather than attempting mechanical character swaps:</div>
+    <div class="warn-box">
+        <div class="warn-title">发 → 發 (Emit/Develop) vs 髮 (Hair)</div>
+        <div>发展 → <strong>發展</strong> &nbsp;|&nbsp; 发现 → <strong>發現</strong> &nbsp;|&nbsp; 头发 → <strong>頭髮</strong></div>
+    </div>
+    <div class="warn-box">
+        <div class="warn-title">后 → 後 (Behind/Later) vs 后 (Empress/Queen)</div>
+        <div>后来 → <strong>後來</strong> &nbsp;|&nbsp; 以后 → <strong>以後</strong> &nbsp;|&nbsp; 皇后 → <strong>皇后</strong></div>
+    </div>
+    <div class="warn-box">
+        <div class="warn-title">复 → 復 (Return/Restore) vs 複 (Complex/Duplicate)</div>
+        <div>恢复 → <strong>恢復</strong> &nbsp;|&nbsp; 回复 → <strong>回覆</strong> &nbsp;|&nbsp; 复杂 → <strong>複雜</strong> &nbsp;|&nbsp; 复习 → <strong>複習</strong></div>
+    </div>
+    <div class="warn-box">
+        <div class="warn-title">台 → 臺 (Platform/Taiwan) vs 台 (Stage/Desk) vs 颱 (Typhoon)</div>
+        <div>台湾 → <strong>臺灣</strong> &nbsp;|&nbsp; 舞台 → <strong>舞臺</strong> &nbsp;|&nbsp; 台北 → <strong>臺北</strong> &nbsp;|&nbsp; 台风 → <strong>颱風</strong></div>
+    </div>
+    <div class="warn-box">
+        <div class="warn-title">只 → 只 (Only) vs 隻 (Measure word for animals)</div>
+        <div>只有 → <strong>只有</strong> &nbsp;|&nbsp; 一只猫 → <strong>一隻貓</strong></div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">4. Optimal Mental Processing Hierarchy</div>
+    <div class="step-box">
+        <strong>Level 1:</strong> Is it unchanged? (e.g., 我今天很忙 → 我今天很忙)<br>
+        <strong>Level 2:</strong> Recognize obvious radical substitution (e.g., 学生 → 學生)<br>
+        <strong>Level 3:</strong> Recognize familiar whole-character pair (e.g., 时间 → 時間)<br>
+        <strong>Level 4:</strong> Check for context-dependent ambiguous character (e.g., 发 → check meaning: 發展 vs 頭髮)
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">5. Priority 40 Conversions to Master First</div>
+    <div class="badge-grid">
+        <div class="badge-item">讠→言</div> <div class="badge-item">纟→糹</div> <div class="badge-item">钅→金</div> <div class="badge-item">饣→食</div>
+        <div class="badge-item">门→門</div> <div class="badge-item">贝→貝</div> <div class="badge-item">页→頁</div> <div class="badge-item">见→見</div>
+        <div class="badge-item">车→車</div> <div class="badge-item">马→馬</div> <div class="badge-item">长→長</div> <div class="badge-item">东→東</div>
+        <div class="badge-item">专→專</div> <div class="badge-item">关→關</div> <div class="badge-item">开→開</div> <div class="badge-item">广→廣</div>
+        <div class="badge-item">业→業</div> <div class="badge-item">书→書</div> <div class="badge-item">头→頭</div> <div class="badge-item">还→還</div>
+        <div class="badge-item">学→學</div> <div class="badge-item">国→國</div> <div class="badge-item">体→體</div> <div class="badge-item">电→電</div>
+        <div class="badge-item">时→時</div> <div class="badge-item">实→實</div> <div class="badge-item">会→會</div> <div class="badge-item">为→為</div>
+        <div class="badge-item">个→個</div> <div class="badge-item">从→從</div> <div class="badge-item">们→們</div> <div class="badge-item">这→這</div>
+        <div class="badge-item">无→無</div> <div class="badge-item">来→來</div> <div class="badge-item">听→聽</div> <div class="badge-item">风→風</div>
+        <div class="badge-item">气→氣</div> <div class="badge-item">进→進</div> <div class="badge-item">过→過</div> <div class="badge-item">对→對</div>
+    </div>
+</div>
+
+</body>
+</html>

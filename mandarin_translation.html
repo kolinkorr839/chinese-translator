@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chinese Translator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3/dist/index.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', Georgia, serif;
+    background: #F5F0E8;
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: #1a1a2e;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .container {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .columns {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .column {
+    flex: 1;
+    max-width: 260px;
+    text-align: center;
+  }
+
+  .column-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  .card {
+    background: #FFFDF8;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(139, 115, 72, 0.1), 0 1px 4px rgba(139, 115, 72, 0.06);
+    padding: 24px 16px;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.2s;
+    border: 1px solid #E8E0D4;
+  }
+
+  .card:hover {
+    box-shadow: 0 6px 24px rgba(139, 115, 72, 0.15), 0 2px 8px rgba(139, 115, 72, 0.08);
+  }
+
+  .card-input {
+    cursor: text;
+  }
+
+  #english-input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    text-align: center;
+    background: transparent;
+    color: #1a1a2e;
+    font-family: 'Crimson Pro', Georgia, serif;
+  }
+
+  #english-input::placeholder {
+    color: #C4B9A8;
+  }
+
+  .chinese-text {
+    font-size: 40px;
+    line-height: 1.3;
+    min-height: 52px;
+    color: #1a1a2e;
+  }
+
+  .pinyin {
+    font-size: 14px;
+    color: #7D8471;
+    margin-top: 10px;
+    min-height: 20px;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .pinyin:hover {
+    color: #5C6352;
+  }
+
+  .breakdown {
+    margin-top: 40px;
+    background: #FFFDF8;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(139, 115, 72, 0.1);
+    padding: 24px 28px;
+    display: none;
+    border: 1px solid #E8E0D4;
+  }
+
+  .breakdown-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+
+  .breakdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid #E8E0D4;
+    font-size: 16px;
+  }
+
+  .breakdown-item:last-child {
+    border-bottom: none;
+  }
+
+  .breakdown-char {
+    font-size: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .breakdown-arrow {
+    color: #B8860B;
+    font-size: 20px;
+  }
+
+  .breakdown-pinyin {
+    color: #1a1a2e;
+    font-size: 14px;
+    margin-left: 4px;
+  }
+
+  .breakdown-meaning {
+    color: #6B7B8D;
+  }
+
+  .components {
+    margin-left: 40px;
+    padding: 8px 0 4px;
+  }
+
+  .component-item {
+    font-size: 14px;
+    color: #6B7B8D;
+    padding: 4px 0;
+  }
+
+  .component-char {
+    font-size: 22px;
+  }
+
+  .component-arrow {
+    color: #B8860B;
+  }
+
+  .component-meaning {
+    color: #6B7B8D;
+  }
+
+  .loading {
+    color: #B8860B;
+    font-size: 14px;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* API key bar - only visible when no key saved */
+  .api-key-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: #6B7B8D;
+  }
+
+  .api-key-bar:empty {
+    display: none;
+    margin: 0;
+  }
+
+  .api-key-bar input[type="text"] {
+    border: 1px solid #E8E0D4;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-family: 'Crimson Pro', Georgia, serif;
+    width: 320px;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #FFFDF8;
+    color: #1a1a2e;
+  }
+
+  .api-key-bar input[type="text"]:focus {
+    border-color: #C41E3A;
+  }
+
+  .api-key-bar button {
+    background: #C41E3A;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-family: 'Crimson Pro', Georgia, serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .api-key-bar button:hover {
+    background: #a01830;
+  }
+
+  /* Etymology section */
+  .etymology {
+    margin-top: 20px;
+    background: #FFFDF8;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(139, 115, 72, 0.1);
+    padding: 24px 28px;
+    display: none;
+    border: 1px solid #E8E0D4;
+  }
+
+  .etymology-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .etymology-key-link {
+    font-size: 11px;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s;
+    color: #C41E3A;
+  }
+
+  .etymology-title:hover .etymology-key-link {
+    opacity: 1;
+  }
+
+  .etymology-char-heading {
+    font-size: 24px;
+    font-weight: 400;
+    color: #1a1a2e;
+    margin-top: 20px;
+    margin-bottom: 12px;
+    padding-top: 16px;
+    border-top: 1px solid #E8E0D4;
+  }
+
+  .etymology-char-heading:first-of-type {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .etymology-section-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  .etymology-section-heading:first-child {
+    margin-top: 0;
+  }
+
+  .etymology-components {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .component-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  .component-badge.semantic {
+    background: #EDE8DC;
+    color: #5C6352;
+    border: 1px solid #D5CDBD;
+  }
+
+  .component-badge.phonetic {
+    background: #E8EAF0;
+    color: #4A6278;
+    border: 1px solid #CDD3DE;
+  }
+
+  .component-badge .badge-char {
+    font-size: 22px;
+  }
+
+  .component-badge .badge-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    opacity: 0.7;
+  }
+
+  .etymology-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+  }
+
+  .mnemonic-box {
+    background: #FBF6EE;
+    border-left: 3px solid #C41E3A;
+    border-radius: 0 10px 10px 0;
+    padding: 12px 16px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #1a1a2e;
+    margin-top: 8px;
+  }
+
+  .related-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .related-word-pill {
+    background: #F5F0E8;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #1a1a2e;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid #E8E0D4;
+  }
+
+  .related-word-pill .rw-char {
+    font-size: 18px;
+  }
+
+  .related-word-pill .rw-pinyin {
+    color: #7D8471;
+    font-size: 12px;
+  }
+
+  .related-word-pill .rw-meaning {
+    color: #6B7B8D;
+    font-size: 12px;
+  }
+
+  .etymology-loading {
+    color: #B8860B;
+    font-size: 14px;
+    animation: pulse 1.5s ease-in-out infinite;
+    padding: 12px 0;
+  }
+
+  /* Chat box */
+  .chat-box {
+    margin-top: 24px;
+    background: #FFFDF8;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(139, 115, 72, 0.1);
+    overflow: hidden;
+    border: 1px solid #E8E0D4;
+  }
+
+  .chat-box.hidden {
+    display: none;
+  }
+
+  .chat-header {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 16px 20px 0;
+  }
+
+  .chat-messages {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .chat-msg {
+    max-width: 80%;
+    padding: 8px 14px;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-wrap: break-word;
+  }
+
+  .chat-msg.user {
+    align-self: flex-end;
+    background: #C41E3A;
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+
+  .chat-msg.ai {
+    align-self: flex-start;
+    max-width: 100%;
+    background: #F5F0E8;
+    color: #1a1a2e;
+    border-bottom-left-radius: 4px;
+    border: 1px solid #E8E0D4;
+  }
+
+  .chat-msg.ai.typing {
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  .chat-input-bar {
+    display: flex;
+    gap: 8px;
+    padding: 12px 20px 16px;
+    border-top: 1px solid #E8E0D4;
+  }
+
+  .chat-input-bar input {
+    flex: 1;
+    border: 1px solid #E8E0D4;
+    border-radius: 10px;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-family: 'Crimson Pro', Georgia, serif;
+    outline: none;
+    transition: border-color 0.2s;
+    background: #FFFDF8;
+    color: #1a1a2e;
+  }
+
+  .chat-input-bar input:focus {
+    border-color: #C41E3A;
+  }
+
+  .chat-input-bar button {
+    background: #C41E3A;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-family: 'Crimson Pro', Georgia, serif;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .chat-input-bar button:hover {
+    background: #a01830;
+  }
+
+  .chat-input-bar button:disabled {
+    background: #D5CDBD;
+    cursor: default;
+  }
+
+  /* Draw panel */
+  .main-layout {
+    display: flex;
+    gap: 20px;
+    max-width: 1100px;
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .draw-panel {
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .draw-panel-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .draw-card {
+    background: #FFFDF8;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(139, 115, 72, 0.1);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #E8E0D4;
+  }
+
+  .draw-canvas-wrapper {
+    position: relative;
+  }
+
+  #draw-canvas {
+    border: 2px solid #E8E0D4;
+    border-radius: 12px;
+    cursor: crosshair;
+    display: block;
+    touch-action: none;
+    background: #FFFDF8;
+  }
+
+  .draw-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    color: #C4B9A8;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+  }
+
+  .draw-candidates {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 38px;
+    align-items: center;
+  }
+
+  .draw-candidates-placeholder {
+    font-size: 12px;
+    color: #C4B9A8;
+  }
+
+  .draw-candidate-btn {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #E8E0D4;
+    border-radius: 10px;
+    background: #FFFDF8;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    color: #1a1a2e;
+  }
+
+  .draw-candidate-btn:hover {
+    background: #C41E3A;
+    color: #fff;
+    border-color: #C41E3A;
+  }
+
+  .draw-controls {
+    display: flex;
+    gap: 8px;
+  }
+
+  .draw-controls button {
+    font-size: 12px;
+    padding: 4px 12px;
+    border: 1px solid #E8E0D4;
+    border-radius: 8px;
+    background: #FFFDF8;
+    color: #6B7B8D;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: all 0.15s;
+  }
+
+  .draw-controls button:hover {
+    border-color: #C41E3A;
+    color: #C41E3A;
+  }
+
+  @media (max-width: 700px) {
+    .main-layout { flex-direction: column; }
+    .draw-panel { width: 100%; }
+    .draw-card { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    .columns { flex-direction: column; align-items: center; }
+    .column { max-width: 100%; width: 100%; }
+    .api-key-bar input[type="text"] { width: 200px; }
+  }
+</style>
+</head>
+<body>
+<div style="width:100%; max-width:1100px;">
+<h1 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:#C41E3A; text-align:center; margin-bottom:0.3rem; letter-spacing:0.02em;">Translator</h1>
+<p style="text-align:center; color:#8B7D6B; font-size:0.95rem; font-family:'Crimson Pro',serif; font-weight:400; letter-spacing:0.04em; margin-bottom:16px;">Type, draw, or ask about any word</p>
+<div class="main-layout">
+  <div class="draw-panel">
+    <div class="draw-panel-label">Draw</div>
+    <div class="draw-card">
+      <div class="draw-canvas-wrapper">
+        <canvas id="draw-canvas" width="176" height="176"></canvas>
+        <div class="draw-hint" id="draw-hint">Draw here</div>
+      </div>
+      <div class="draw-candidates" id="draw-candidates">
+              </div>
+      <div class="draw-controls">
+        <button onclick="undoDrawStroke()">Undo</button>
+        <button onclick="clearDrawCanvas()">Clear</button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+  <div class="api-key-bar" id="api-key-bar"></div>
+  <div class="columns">
+    <div class="column">
+      <div class="column-label">English</div>
+      <div class="card card-input" onclick="document.getElementById('english-input').focus()">
+        <input type="text" id="english-input" placeholder="Type a word..." autofocus>
+      </div>
+    </div>
+    <div class="column">
+      <div class="column-label">Simplified</div>
+      <div class="card">
+        <div class="chinese-text" id="simplified-text"></div>
+      </div>
+      <div class="pinyin" id="simplified-pinyin"></div>
+    </div>
+    <div class="column">
+      <div class="column-label">Traditional</div>
+      <div class="card">
+        <div class="chinese-text" id="traditional-text"></div>
+      </div>
+      <div class="pinyin" id="traditional-pinyin"></div>
+    </div>
+  </div>
+  <div class="chat-box hidden" id="chat-box">
+    <div class="chat-header">Ask about this</div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input-bar">
+      <input type="text" id="chat-input" placeholder="">
+      <button id="chat-send" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+  <div class="breakdown" id="breakdown">
+    <div class="breakdown-title">Character Breakdown</div>
+    <div id="breakdown-content"></div>
+  </div>
+  <div class="etymology" id="etymology">
+    <div class="etymology-title">
+      <span>Etymology</span>
+      <span class="etymology-key-link" onclick="clearApiKey(); renderApiKeyBar();">change API key</span>
+    </div>
+    <div id="etymology-content"></div>
+  </div>
+  </div>
+</div>
+</div>
+
+<script>
+const HANDWRITING_DELAY_MS = 1200;
+const GEMINI_MODELS = [
+  'gemini-3.5-flash-lite',
+  'gemini-3.1-flash-lite',
+  'gemini-3-flash-preview',
+  'gemini-2.5-flash-lite',
+];
+
+async function callGemini(apiKey, body) {
+  for (let i = 0; i < GEMINI_MODELS.length; i++) {
+    const model = GEMINI_MODELS[i];
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (resp.status === 429 && i < GEMINI_MODELS.length - 1) {
+      console.warn(`Gemini ${model} returned 429, falling back...`);
+      continue;
+    }
+    return { resp, model };
+  }
+}
+
+// API key bar setup
+function renderApiKeyBar() {
+  const bar = document.getElementById('api-key-bar');
+  const chatBox = document.getElementById('chat-box');
+  const saved = localStorage.getItem('gemini_api_key');
+  if (saved) {
+    bar.innerHTML = '';
+    chatBox.classList.remove('hidden');
+  } else {
+    bar.innerHTML = `
+      <input type="text" id="gemini-key-input" placeholder="Gemini API key for etymology">
+      <button onclick="saveApiKey()">Save</button>
+    `;
+    chatBox.classList.add('hidden');
+  }
+}
+
+function saveApiKey() {
+  const key = document.getElementById('gemini-key-input').value.trim();
+  if (!key) return;
+  localStorage.setItem('gemini_api_key', key);
+  renderApiKeyBar();
+}
+
+function clearApiKey() {
+  localStorage.removeItem('gemini_api_key');
+  renderApiKeyBar();
+}
+
+renderApiKeyBar();
+
+const DECOMPOSITION = {
+  '說': { components: [['言','讠','speech, words'],['兌','兑','exchange']], type: 'lr' },
+  '話': { components: [['言','讠','speech, words'],['舌','舌','tongue']], type: 'lr' },
+  '語': { components: [['言','讠','speech, words'],['吾','吾','I, my']], type: 'lr' },
+  '請': { components: [['言','讠','speech, words'],['青','青','blue, green']], type: 'lr' },
+  '讀': { components: [['言','讠','speech, words'],['賣','卖','sell']], type: 'lr' },
+  '認': { components: [['言','讠','speech, words'],['忍','忍','endure']], type: 'lr' },
+  '記': { components: [['言','讠','speech, words'],['己','己','self']], type: 'lr' },
+  '許': { components: [['言','讠','speech, words'],['午','午','noon']], type: 'lr' },
+  '設': { components: [['言','讠','speech, words'],['殳','殳','weapon']], type: 'lr' },
+  '試': { components: [['言','讠','speech, words'],['式','式','style']], type: 'lr' },
+  '課': { components: [['言','讠','speech, words'],['果','果','fruit']], type: 'lr' },
+  '調': { components: [['言','讠','speech, words'],['周','周','cycle']], type: 'lr' },
+  '論': { components: [['言','讠','speech, words'],['侖','仑','logical']], type: 'lr' },
+  '議': { components: [['言','讠','speech, words'],['義','义','righteousness']], type: 'lr' },
+  '頭': { components: [['豆','豆','bean'],['頁','页','page, head']], type: 'lr' },
+  '髮': { components: [['髟','髟','long hair'],['犮','犮','remove']], type: 'tb' },
+  '門': { components: [['門','门','gate']], type: 'single' },
+  '開': { components: [['門','门','gate'],['开','开','open']], type: 'tb' },
+  '關': { components: [['門','门','gate'],['丱','丱','young']], type: 'surround' },
+  '閱': { components: [['門','门','gate'],['兌','兑','exchange']], type: 'surround' },
+  '間': { components: [['門','门','gate'],['日','日','sun']], type: 'surround' },
+  '問': { components: [['門','门','gate'],['口','口','mouth']], type: 'surround' },
+  '聞': { components: [['門','门','gate'],['耳','耳','ear']], type: 'surround' },
+  '車': { components: [['車','车','vehicle']], type: 'single' },
+  '馬': { components: [['馬','马','horse']], type: 'single' },
+  '魚': { components: [['魚','鱼','fish']], type: 'single' },
+  '鳥': { components: [['鳥','鸟','bird']], type: 'single' },
+  '龍': { components: [['龍','龙','dragon']], type: 'single' },
+  '風': { components: [['風','风','wind']], type: 'single' },
+  '飛': { components: [['飛','飞','fly']], type: 'single' },
+  '見': { components: [['見','见','see']], type: 'single' },
+  '貝': { components: [['貝','贝','shell, money']], type: 'single' },
+  '長': { components: [['長','长','long']], type: 'single' },
+  '東': { components: [['東','东','east']], type: 'single' },
+  '書': { components: [['書','书','book, write']], type: 'single' },
+  '學': { components: [['學','学','study']], type: 'single' },
+  '國': { components: [['囗','囗','enclosure'],['或','或','or, nation']], type: 'surround' },
+  '電': { components: [['雨','雨','rain'],['电','电','electric']], type: 'tb' },
+  '時': { components: [['日','日','sun, time'],['寺','寺','temple']], type: 'lr' },
+  '會': { components: [['會','会','meet, able']], type: 'single' },
+  '實': { components: [['宀','宀','roof'],['貫','贯','pierce']], type: 'tb' },
+  '體': { components: [['骨','骨','bone'],['豊','丰','abundant']], type: 'lr' },
+  '廣': { components: [['广','广','cliff, wide'],['黃','黄','yellow']], type: 'surround' },
+  '業': { components: [['業','业','business']], type: 'single' },
+  '來': { components: [['來','来','come']], type: 'single' },
+  '聽': { components: [['耳','耳','ear'],['壬','壬','endure'],['心','心','heart']], type: 'lr' },
+  '氣': { components: [['气','气','vapor'],['米','米','rice']], type: 'surround' },
+  '進': { components: [['辶','辶','walk'],['隹','隹','short-tailed bird']], type: 'surround' },
+  '過': { components: [['辶','辶','walk'],['咼','呙','mouth, slant']], type: 'surround' },
+  '對': { components: [['對','对','correct, pair']], type: 'single' },
+  '從': { components: [['從','从','follow']], type: 'single' },
+  '們': { components: [['亻','亻','person'],['門','门','gate']], type: 'lr' },
+  '這': { components: [['辶','辶','walk'],['言','言','speech']], type: 'surround' },
+  '無': { components: [['無','无','without']], type: 'single' },
+  '還': { components: [['辶','辶','walk'],['睘','睘','stare']], type: 'surround' },
+  '環': { components: [['王','王','jade'],['睘','睘','surround']], type: 'lr' },
+  '愛': { components: [['爫','爫','claw'],['冖','冖','cover'],['心','心','heart'],['夂','夂','go']], type: 'tb' },
+  '飯': { components: [['食','饣','eat, food'],['反','反','reverse']], type: 'lr' },
+  '銀': { components: [['金','钅','metal'],['艮','艮','tough']], type: 'lr' },
+  '鐵': { components: [['金','钅','metal'],['鉄','铁','iron']], type: 'lr' },
+  '錢': { components: [['金','钅','metal'],['戔','戋','small']], type: 'lr' },
+  '紅': { components: [['糹','纟','silk, thread'],['工','工','work']], type: 'lr' },
+  '給': { components: [['糹','纟','silk, thread'],['合','合','combine']], type: 'lr' },
+  '線': { components: [['糹','纟','silk, thread'],['泉','泉','spring']], type: 'lr' },
+  '經': { components: [['糹','纟','silk, thread'],['巠','巠','stream']], type: 'lr' },
+  '紙': { components: [['糹','纟','silk, thread'],['氏','氏','clan']], type: 'lr' },
+  '買': { components: [['買','买','buy']], type: 'single' },
+  '賣': { components: [['賣','卖','sell']], type: 'single' },
+  '貓': { components: [['豸','豸','beast'],['苗','苗','sprout']], type: 'lr' },
+  '機': { components: [['木','木','tree'],['幾','几','how many']], type: 'lr' },
+  '雞': { components: [['奚','奚','where'],['隹','隹','short-tailed bird']], type: 'lr' },
+  '漢': { components: [['氵','氵','water'],['廿','廿','twenty'],['中','中','middle'],['口','口','mouth']], type: 'lr' },
+  '寫': { components: [['宀','宀','roof'],['舄','舄','shoe']], type: 'tb' },
+  '華': { components: [['華','华','magnificent, China']], type: 'single' },
+  '麵': { components: [['麥','麦','wheat'],['面','面','face, surface']], type: 'lr' },
+  '麥': { components: [['麥','麦','wheat']], type: 'single' },
+};
+
+function isChinese(text) {
+  return /[一-鿿㐀-䶿]/.test(text);
+}
+
+async function googleTranslate(text, sourceLang, targetLang) {
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+  const resp = await fetch(url);
+  const data = await resp.json();
+  return data[0].map(s => s[0]).join('');
+}
+
+function getPinyin(chinese) {
+  if (typeof pinyinPro === 'undefined') return '';
+  return pinyinPro.pinyin(chinese, { toneType: 'num', type: 'array' }).join(' ');
+}
+
+function speak(chinese) {
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  new Audio(url).play();
+}
+
+async function getCharMeaning(char) {
+  try {
+    const result = await googleTranslate(char, 'zh-CN', 'en');
+    return result.toLowerCase();
+  } catch {
+    return '';
+  }
+}
+
+async function translate() {
+  const input = document.getElementById('english-input').value.trim();
+  if (!input) return;
+
+  const tradEl = document.getElementById('traditional-text');
+  const simpEl = document.getElementById('simplified-text');
+  const tradPinEl = document.getElementById('traditional-pinyin');
+  const simpPinEl = document.getElementById('simplified-pinyin');
+  const breakdownEl = document.getElementById('breakdown');
+  const breakdownContent = document.getElementById('breakdown-content');
+
+  tradEl.innerHTML = '<span class="loading">...</span>';
+  simpEl.innerHTML = '<span class="loading">...</span>';
+  tradPinEl.textContent = '';
+  simpPinEl.textContent = '';
+  const etymologyEl = document.getElementById('etymology');
+  const etymologyContent = document.getElementById('etymology-content');
+
+  breakdownEl.style.display = 'none';
+  breakdownContent.innerHTML = '';
+  etymologyEl.style.display = 'none';
+  etymologyContent.innerHTML = '';
+  document.getElementById('chat-messages').innerHTML = '';
+  chatHistory = [];
+  currentTranslation = null;
+
+  try {
+    let traditional, simplified, english;
+
+    if (isChinese(input)) {
+      const asSimplified = await googleTranslate(input, 'zh-TW', 'zh-CN');
+      const asTraditional = await googleTranslate(input, 'zh-CN', 'zh-TW');
+
+      if (asSimplified === input || input === asTraditional) {
+        traditional = asTraditional === input ? input : asTraditional;
+        simplified = asSimplified;
+      } else {
+        traditional = asTraditional;
+        simplified = asSimplified;
+      }
+
+      english = await googleTranslate(input, 'auto', 'en');
+      document.getElementById('english-input').value = english.toLowerCase();
+    } else {
+      english = input;
+      traditional = await googleTranslate(input, 'en', 'zh-TW');
+      simplified = await googleTranslate(traditional, 'zh-TW', 'zh-CN');
+    }
+
+    tradEl.textContent = traditional;
+    simpEl.textContent = simplified;
+
+    const tradPinyin = getPinyin(traditional);
+    const simpPinyin = getPinyin(simplified);
+
+    tradPinEl.textContent = tradPinyin;
+    tradPinEl.onclick = () => speak(traditional);
+    simpPinEl.textContent = simpPinyin;
+    simpPinEl.onclick = () => speak(simplified);
+
+    currentTranslation = { traditional, simplified, english, pinyin: tradPinyin };
+
+    await buildBreakdown(traditional, simplified, breakdownContent);
+    breakdownEl.style.display = 'block';
+
+    if (localStorage.getItem('gemini_api_key')) {
+      etymologyEl.style.display = 'block';
+      etymologyContent.innerHTML = '<div class="etymology-loading">Loading etymology...</div>';
+      const tradChars = [...traditional];
+      const simpChars = [...simplified];
+      const allEtymData = [];
+      for (let i = 0; i < tradChars.length; i++) {
+        const tc = tradChars[i];
+        const sc = simpChars[i] || tc;
+        const charMeaning = await getCharMeaning(sc);
+        const data = await getEtymology(tc, sc, charMeaning);
+        if (data && data._error) {
+          renderEtymologyError(data._error);
+          break;
+        }
+        if (data) allEtymData.push({ char: tc, data });
+      }
+      if (allEtymData.length > 0) renderEtymology(allEtymData);
+    }
+
+
+  } catch (err) {
+    tradEl.textContent = '';
+    simpEl.textContent = '';
+    console.error('Translation error:', err);
+  }
+}
+
+async function buildBreakdown(traditional, simplified, container) {
+  const tradChars = [...traditional];
+  const simpChars = [...simplified];
+  const isSingleChar = tradChars.length === 1;
+
+  for (let i = 0; i < tradChars.length; i++) {
+    const tc = tradChars[i];
+    const sc = simpChars[i] || tc;
+    const pinyin = getPinyin(sc);
+    const meaning = await getCharMeaning(sc);
+    const isDifferent = tc !== sc;
+
+    const item = document.createElement('div');
+    item.className = 'breakdown-item';
+
+    let charDisplay;
+    if (isDifferent) {
+      charDisplay = `<span class="breakdown-char">${tc} <span class="breakdown-arrow">&rarr;</span> ${sc}</span>`;
+    } else {
+      charDisplay = `<span class="breakdown-char">${tc}</span>`;
+    }
+
+    item.innerHTML = `
+      ${charDisplay}
+      <span class="breakdown-pinyin">${pinyin}</span>
+      <span class="breakdown-meaning">= ${meaning}</span>
+    `;
+    container.appendChild(item);
+
+    if (isSingleChar && DECOMPOSITION[tc]) {
+      const decomp = DECOMPOSITION[tc];
+      const compDiv = document.createElement('div');
+      compDiv.className = 'components';
+
+      for (const [tradComp, simpComp, compMeaning] of decomp.components) {
+        const compItem = document.createElement('div');
+        compItem.className = 'component-item';
+
+        if (tradComp !== simpComp) {
+          compItem.innerHTML = `
+            <span class="component-char">${tradComp}</span>
+            <span class="component-arrow">&rarr;</span>
+            <span class="component-char">${simpComp}</span>
+            <span class="component-meaning">= ${compMeaning}</span>
+          `;
+        } else {
+          compItem.innerHTML = `
+            <span class="component-char">${tradComp}</span>
+            <span class="component-meaning">= ${compMeaning}</span>
+          `;
+        }
+        compDiv.appendChild(compItem);
+      }
+      container.appendChild(compDiv);
+    }
+  }
+}
+
+function getEtymologyCache(key) {
+  try {
+    const cache = JSON.parse(localStorage.getItem('etymology_cache') || '{}');
+    return cache[key] || null;
+  } catch { return null; }
+}
+
+function setEtymologyCache(key, data) {
+  try {
+    const cache = JSON.parse(localStorage.getItem('etymology_cache') || '{}');
+    cache[key] = data;
+    localStorage.setItem('etymology_cache', JSON.stringify(cache));
+  } catch {}
+}
+
+async function getEtymology(traditional, simplified, english) {
+  const apiKey = localStorage.getItem('gemini_api_key');
+  if (!apiKey) return null;
+
+  const cached = getEtymologyCache(traditional);
+  if (cached) return cached;
+
+  const pinyin = getPinyin(simplified);
+  const prompt = `You are a Chinese etymology expert. Analyze the character ${traditional}${traditional !== simplified ? ' (simplified: ' + simplified + ')' : ''}, pinyin: ${pinyin}, English meaning: "${english}".
+
+Return JSON with this exact structure:
+{
+  "components": [
+    {
+      "char": "the component character",
+      "traditional": "traditional form if different",
+      "type": "semantic or phonetic",
+      "meaning": "core meaning of this component",
+      "explanation": "why this component is in this character"
+    }
+  ],
+  "meaning_logic": "explain how the components combine to create the character's meaning",
+  "historical_context": "cultural, historical, or linguistic background - make it a compelling story",
+  "mnemonic": "a vivid memory aid that helps remember this character by reading its visual components as a scene or story",
+  "related_words": [
+    { "word": "a common word using this character", "pinyin": "pinyin", "meaning": "English meaning" }
+  ]
+}
+
+Be specific and insightful. For the mnemonic, describe how to "read the drawing" of the character. For related_words, give 3-5 common examples. Keep historical_context to 2-3 sentences.`;
+
+  try {
+    const { resp, model } = await callGemini(apiKey, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        response_mime_type: 'application/json',
+        temperature: 0.7
+      }
+    });
+
+    if (!resp.ok) {
+      const msg = resp.status === 404 ? `Model ${model} not found` : `API error ${resp.status} (${model})`;
+      console.error('Gemini API error:', resp.status, model);
+      return { _error: msg };
+    }
+
+    const data = await resp.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) return { _error: 'Empty response from Gemini' };
+
+    const result = JSON.parse(text);
+    setEtymologyCache(traditional, result);
+    return result;
+  } catch (err) {
+    console.error('Etymology error:', err);
+    return { _error: err.message || 'Network error' };
+  }
+}
+
+function renderEtymologyError(msg) {
+  const container = document.getElementById('etymology-content');
+  const section = document.getElementById('etymology');
+  container.innerHTML = `<div class="etymology-text" style="color:#6B7B8D;">Could not load etymology: ${msg}</div>`;
+  section.style.display = 'block';
+}
+
+function renderEtymology(entries) {
+  const container = document.getElementById('etymology-content');
+  const section = document.getElementById('etymology');
+  container.innerHTML = '';
+
+  if (!entries || entries.length === 0) {
+    section.style.display = 'none';
+    return;
+  }
+
+  let html = '';
+  const multiChar = entries.length > 1;
+
+  for (const entry of entries) {
+    const data = entry.data;
+
+    if (multiChar) {
+      html += `<div class="etymology-char-heading">${entry.char}</div>`;
+    }
+
+    if (data.components && data.components.length > 0) {
+      html += '<div class="etymology-section-heading">Components</div>';
+      html += '<div class="etymology-components">';
+      for (const comp of data.components) {
+        const typeClass = comp.type === 'phonetic' ? 'phonetic' : 'semantic';
+        html += `<div class="component-badge ${typeClass}">
+          <span class="badge-char">${comp.char}</span>
+          <div>
+            <div>${comp.meaning}</div>
+            <div class="badge-label">${comp.type}</div>
+          </div>
+        </div>`;
+      }
+      html += '</div>';
+      if (data.components.some(c => c.explanation)) {
+        for (const comp of data.components) {
+          if (comp.explanation) {
+            html += `<div class="etymology-text" style="font-size:13px; color:#6B7B8D; margin-top:4px;">${comp.char} - ${comp.explanation}</div>`;
+          }
+        }
+      }
+    }
+
+    if (data.meaning_logic) {
+      html += '<div class="etymology-section-heading">How it works</div>';
+      html += `<div class="etymology-text">${data.meaning_logic}</div>`;
+    }
+
+    if (data.historical_context) {
+      html += '<div class="etymology-section-heading">History</div>';
+      html += `<div class="etymology-text">${data.historical_context}</div>`;
+    }
+
+    if (data.mnemonic) {
+      html += '<div class="etymology-section-heading">Memory aid</div>';
+      html += `<div class="mnemonic-box">${data.mnemonic}</div>`;
+    }
+
+    if (data.related_words && data.related_words.length > 0) {
+      html += '<div class="etymology-section-heading">Related words</div>';
+      html += '<div class="related-words">';
+      for (const rw of data.related_words) {
+        html += `<div class="related-word-pill">
+          <span class="rw-char">${rw.word}</span>
+          <span class="rw-pinyin">${rw.pinyin}</span>
+          <span class="rw-meaning">${rw.meaning}</span>
+        </div>`;
+      }
+      html += '</div>';
+    }
+  }
+
+  container.innerHTML = html;
+  section.style.display = 'block';
+}
+
+let chatHistory = [];
+let currentTranslation = null;
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  const apiKey = localStorage.getItem('gemini_api_key');
+  if (!apiKey) return;
+
+  input.value = '';
+  const messagesEl = document.getElementById('chat-messages');
+  const sendBtn = document.getElementById('chat-send');
+
+  messagesEl.innerHTML += `<div class="chat-msg user">${escapeHtml(msg)}</div>`;
+  messagesEl.innerHTML += `<div class="chat-msg ai typing" id="chat-typing">...</div>`;
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  sendBtn.disabled = true;
+
+  let systemInstruction = 'You are a helpful Chinese language tutor. Answer concisely. Use Chinese characters with pinyin when relevant. Keep answers under 3 paragraphs.';
+  if (currentTranslation) {
+    const t = currentTranslation;
+    systemInstruction = `You are a helpful Chinese language tutor. The user is studying this word/character:
+- Traditional: ${t.traditional}
+- Simplified: ${t.simplified}
+- Pinyin: ${t.pinyin}
+- English: ${t.english}
+
+Answer concisely. Use Chinese characters with pinyin when relevant. Keep answers under 3 paragraphs.`;
+  }
+
+  chatHistory.push({ role: 'user', parts: [{ text: msg }] });
+
+  try {
+    const { resp, model } = await callGemini(apiKey, {
+      system_instruction: { parts: [{ text: systemInstruction }] },
+      contents: chatHistory,
+      generationConfig: { temperature: 0.7 }
+    });
+
+    const typing = document.getElementById('chat-typing');
+
+    if (!resp.ok) {
+      const errBody = await resp.text();
+      console.error('Chat API error:', resp.status, model, errBody);
+      typing.classList.remove('typing');
+      typing.textContent = `API error ${resp.status} (${model})`;
+      chatHistory.pop();
+      sendBtn.disabled = false;
+      return;
+    }
+
+    const data = await resp.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
+
+    chatHistory.push({ role: 'model', parts: [{ text: reply }] });
+
+    typing.id = '';
+    typing.classList.remove('typing');
+    typing.innerHTML = formatChat(reply);
+  } catch (err) {
+    const typing = document.getElementById('chat-typing');
+    if (typing) {
+      typing.classList.remove('typing');
+      typing.textContent = `Error: ${err.message}`;
+    }
+    chatHistory.pop();
+  }
+
+  sendBtn.disabled = false;
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function formatChat(text) {
+  return escapeHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+}
+
+document.getElementById('chat-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    sendChat();
+  }
+});
+
+document.getElementById('english-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    translate();
+  }
+});
+
+// Handwriting recognition
+const drawCanvas = document.getElementById('draw-canvas');
+const drawCtx = drawCanvas.getContext('2d');
+const drawHint = document.getElementById('draw-hint');
+const drawCandidatesEl = document.getElementById('draw-candidates');
+
+drawCtx.strokeStyle = '#1a1a2e';
+drawCtx.lineWidth = 3;
+drawCtx.lineCap = 'round';
+drawCtx.lineJoin = 'round';
+
+let drawStrokes = [];
+let drawCurrentStroke = null;
+let drawIsDrawing = false;
+let drawRecognizeTimer = null;
+
+function getDrawPos(e) {
+  const rect = drawCanvas.getBoundingClientRect();
+  const scaleX = drawCanvas.width / rect.width;
+  const scaleY = drawCanvas.height / rect.height;
+  if (e.touches) {
+    return [
+      (e.touches[0].clientX - rect.left) * scaleX,
+      (e.touches[0].clientY - rect.top) * scaleY
+    ];
+  }
+  return [
+    (e.clientX - rect.left) * scaleX,
+    (e.clientY - rect.top) * scaleY
+  ];
+}
+
+function startDrawStroke(e) {
+  e.preventDefault();
+  drawIsDrawing = true;
+  const [x, y] = getDrawPos(e);
+  drawCurrentStroke = { xs: [x], ys: [y], ts: [Date.now()] };
+  drawCtx.beginPath();
+  drawCtx.moveTo(x, y);
+  drawHint.style.opacity = '0';
+}
+
+function moveDrawStroke(e) {
+  if (!drawIsDrawing || !drawCurrentStroke) return;
+  e.preventDefault();
+  const [x, y] = getDrawPos(e);
+  drawCurrentStroke.xs.push(x);
+  drawCurrentStroke.ys.push(y);
+  drawCurrentStroke.ts.push(Date.now());
+  drawCtx.lineTo(x, y);
+  drawCtx.stroke();
+  drawCtx.beginPath();
+  drawCtx.moveTo(x, y);
+}
+
+function endDrawStroke(e) {
+  if (!drawIsDrawing || !drawCurrentStroke) return;
+  e.preventDefault();
+  drawIsDrawing = false;
+  drawStrokes.push(drawCurrentStroke);
+  drawCurrentStroke = null;
+  clearTimeout(drawRecognizeTimer);
+  drawRecognizeTimer = setTimeout(recognizeDrawing, HANDWRITING_DELAY_MS);
+}
+
+drawCanvas.addEventListener('mousedown', startDrawStroke);
+drawCanvas.addEventListener('mousemove', moveDrawStroke);
+drawCanvas.addEventListener('mouseup', endDrawStroke);
+drawCanvas.addEventListener('mouseleave', endDrawStroke);
+drawCanvas.addEventListener('touchstart', startDrawStroke, { passive: false });
+drawCanvas.addEventListener('touchmove', moveDrawStroke, { passive: false });
+drawCanvas.addEventListener('touchend', endDrawStroke);
+
+async function recognizeDrawing() {
+  if (drawStrokes.length === 0) return;
+
+  const ink = drawStrokes.map(s => {
+    const t0 = s.ts[0];
+    return [
+      s.xs.map(Math.round),
+      s.ys.map(Math.round),
+      s.ts.map(t => t - t0)
+    ];
+  });
+
+  try {
+    const resp = await fetch(
+      'https://inputtools.google.com/request?itc=zh-t-i0-handwrit&app=translate',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          options: 'enable_pre_space',
+          requests: [{
+            writing_guide: {
+              writing_area_width: drawCanvas.width,
+              writing_area_height: drawCanvas.height
+            },
+            ink: ink,
+            pre_context: '',
+            max_num_results: 8,
+            max_completions: 0
+          }]
+        })
+      }
+    );
+    const data = await resp.json();
+
+    if (data[0] === 'SUCCESS' && data[1] && data[1][0]) {
+      const chars = data[1][0][1].filter(ch => /[一-鿿㐀-䶿]/.test(ch));
+      renderDrawCandidates(chars);
+    } else {
+      drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">no matches</span>';
+    }
+  } catch (err) {
+    drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">error - try serving via HTTP</span>';
+  }
+}
+
+function renderDrawCandidates(chars) {
+  drawCandidatesEl.innerHTML = '';
+  for (const ch of chars) {
+    const btn = document.createElement('button');
+    btn.className = 'draw-candidate-btn';
+    btn.textContent = ch;
+    btn.onclick = () => selectDrawCandidate(ch);
+    drawCandidatesEl.appendChild(btn);
+  }
+}
+
+function selectDrawCandidate(ch) {
+  const input = document.getElementById('english-input');
+  input.value += ch;
+  clearDrawCanvas();
+  input.focus();
+}
+
+function undoDrawStroke() {
+  if (drawStrokes.length === 0) return;
+  drawStrokes.pop();
+  redrawAllStrokes();
+  if (drawStrokes.length > 0) {
+    clearTimeout(drawRecognizeTimer);
+    drawRecognizeTimer = setTimeout(recognizeDrawing, HANDWRITING_DELAY_MS);
+  } else {
+    drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">candidates appear here</span>';
+    drawHint.style.opacity = '1';
+  }
+}
+
+function clearDrawCanvas() {
+  drawStrokes = [];
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">candidates appear here</span>';
+  drawHint.style.opacity = '1';
+}
+
+function redrawAllStrokes() {
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  for (const s of drawStrokes) {
+    drawCtx.beginPath();
+    drawCtx.moveTo(s.xs[0], s.ys[0]);
+    for (let i = 1; i < s.xs.length; i++) {
+      drawCtx.lineTo(s.xs[i], s.ys[i]);
+    }
+    drawCtx.stroke();
+  }
+}
+</script>
+</body>
+</html>

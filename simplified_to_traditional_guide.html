@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simplified to Traditional Chinese Mental Conversion Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@page {
+    size: A4;
+    margin: 14mm 12mm;
+    background-color: #F5F0E8;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+    color: #1a1a2e;
+    line-height: 1.5;
+    font-size: 0.875rem;
+    background-color: #F5F0E8;
+    background-image:
+      repeating-linear-gradient(
+        0deg, transparent, transparent 40px,
+        rgba(184, 134, 11, 0.03) 40px,
+        rgba(184, 134, 11, 0.03) 41px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 40px,
+        rgba(184, 134, 11, 0.03) 40px,
+        rgba(184, 134, 11, 0.03) 41px
+      );
+}
+
+.header {
+    text-align: center;
+    color: #1a1a2e;
+    padding: 20px 24px 28px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #E8E0D4;
+    position: relative;
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: #C41E3A;
+}
+
+.header h1 {
+    margin: 0 0 6px 0;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #C41E3A;
+    font-family: "Cormorant Garamond", "Noto Serif CJK TC", "Noto Sans CJK TC", serif;
+}
+
+.header p {
+    margin: 0;
+    font-size: 10.5pt;
+    color: #5C4A32;
+    line-height: 1.4;
+}
+
+.section {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 1px 4px rgba(139, 119, 75, 0.06);
+}
+
+.section-title {
+    font-size: 12.5pt;
+    font-weight: 700;
+    color: #C41E3A;
+    margin: 0 0 10px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #D4A853;
+    display: block;
+    font-family: "Cormorant Garamond", "Noto Serif CJK TC", "Noto Sans CJK TC", serif;
+    background-image: linear-gradient(90deg, #C41E3A22 0%, transparent 100%);
+    background-size: 100% 2px;
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+
+.sub-desc {
+    margin: 0 0 10px 0;
+    color: #5C4A32;
+    font-size: 10pt;
+}
+
+table.char-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+    font-size: 10pt;
+}
+
+table.char-table th {
+    background-color: #F5EDE0;
+    color: #3D2B1F;
+    font-weight: 600;
+    text-align: left;
+    padding: 6px 10px;
+    border: 1px solid #D8CCBB;
+    font-family: "Cormorant Garamond", "Noto Sans CJK TC", serif;
+}
+
+table.char-table td {
+    padding: 6px 10px;
+    border: 1px solid #E8E0D4;
+}
+
+table.char-table tr:nth-child(even) {
+    background-color: #FAF5EC;
+}
+
+table.char-table tr:nth-child(odd) {
+    background-color: #FFFDF8;
+}
+
+.char-hl {
+    font-weight: bold;
+    font-size: 11pt;
+}
+
+.simp {
+    color: #C41E3A;
+}
+
+.trad {
+    color: #2D5016;
+}
+
+.grid-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.grid-table td {
+    width: 50%;
+    vertical-align: top;
+    padding: 4px 6px;
+}
+
+.component-box {
+    background: #FAF5EC;
+    border: 1px solid #E8E0D4;
+    border-left: 4px solid #D4A853;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+}
+
+.component-title {
+    font-weight: bold;
+    font-size: 11pt;
+    color: #3D2B1F;
+    margin-bottom: 4px;
+    font-family: "Cormorant Garamond", "Noto Sans CJK TC", serif;
+}
+
+.examples {
+    font-size: 9.5pt;
+    color: #5C4A32;
+}
+
+.warn-card {
+    background: #FFF8E7;
+    border: 1px solid #E8C84A;
+    border-left: 4px solid #D4A020;
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    page-break-inside: avoid;
+}
+
+.warn-title {
+    font-weight: bold;
+    color: #8B6914;
+    font-size: 10.5pt;
+    margin-bottom: 4px;
+    font-family: "Cormorant Garamond", "Noto Sans CJK TC", serif;
+}
+
+.ex-box {
+    background: #F5F0E5;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    border: 1px solid #E8E0D4;
+}
+
+.ex-line {
+    margin: 3px 0;
+    font-family: inherit;
+}
+
+.tag {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 8.5pt;
+    font-weight: bold;
+    margin-right: 6px;
+}
+
+.tag-simp {
+    background-color: #FADBD8;
+    color: #8B1A2B;
+}
+
+.tag-trad {
+    background-color: #D5E8D0;
+    color: #2D5016;
+}
+
+.high-freq-list {
+    display: table;
+    width: 100%;
+    margin-top: 6px;
+}
+
+.high-freq-item {
+    display: table-cell;
+    width: 33.33%;
+    padding: 4px;
+}
+
+.badge {
+    background: #FAF5EC;
+    border: 1px solid #E0D5C0;
+    color: #5C4A32;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 9.5pt;
+    display: block;
+    text-align: center;
+    font-weight: 500;
+}
+
+</style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Simplified → Traditional Mental Conversion Guide</h1>
+    <p>A systematic pattern-based approach for Traditional Chinese readers to effortlessly read Simplified text without rote memorization.</p>
+</div>
+
+<div class="section">
+    <div class="section-title">1. High-Frequency One-to-One Character Changes</div>
+    <div class="sub-desc">A small core group of Simplified forms accounts for a massive percentage of everyday reading. Master these first:</div>
+
+    <table class="char-table">
+        <thead>
+            <tr>
+                <th>Simplified</th>
+                <th>Traditional</th>
+                <th>Example Context</th>
+                <th>Simplified</th>
+                <th>Traditional</th>
+                <th>Example Context</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="char-hl simp">国</span></td>
+                <td><span class="char-hl trad">國</span></td>
+                <td>中国 → 中國</td>
+                <td><span class="char-hl simp">见</span></td>
+                <td><span class="char-hl trad">見</span></td>
+                <td>看见 → 看見</td>
+            </tr>
+            <tr>
+                <td><span class="char-hl simp">学</span></td>
+                <td><span class="char-hl trad">學</span></td>
+                <td>学生 → 學生</td>
+                <td><span class="char-hl simp">时</span></td>
+                <td><span class="char-hl trad">時</span></td>
+                <td>时间 → 時間</td>
+            </tr>
+            <tr>
+                <td><span class="char-hl simp">体</span></td>
+                <td><span class="char-hl trad">體</span></td>
+                <td>身体 → 身體</td>
+                <td><span class="char-hl simp">电</span></td>
+                <td><span class="char-hl trad">電</span></td>
+                <td>电视 → 電視</td>
+            </tr>
+            <tr>
+                <td><span class="char-hl simp">书</span></td>
+                <td><span class="char-hl trad">書</span></td>
+                <td>书店 → 書店</td>
+                <td><span class="char-hl simp">语</span></td>
+                <td><span class="char-hl trad">語</span></td>
+                <td>语言 → 語言</td>
+            </tr>
+            <tr>
+                <td><span class="char-hl simp">车</span></td>
+                <td><span class="char-hl trad">車</span></td>
+                <td>汽车 → 汽車</td>
+                <td><span class="char-hl simp">说</span></td>
+                <td><span class="char-hl trad">說</span></td>
+                <td>说明 → 說明</td>
+            </tr>
+            <tr>
+                <td><span class="char-hl simp">门</span></td>
+                <td><span class="char-hl trad">門</span></td>
+                <td>大门 → 大門</td>
+                <td><span class="char-hl simp">长</span></td>
+                <td><span class="char-hl trad">長</span></td>
+                <td>长大 → 長大</td>
+            </tr>
+            <tr>
+                <td><span class="char-hl simp">开</span></td>
+                <td><span class="char-hl trad">開</span></td>
+                <td>开始 → 開始</td>
+                <td><span class="char-hl simp">东</span></td>
+                <td><span class="char-hl trad">東</span></td>
+                <td>东方 → 東方</td>
+            </tr>
+            <tr>
+                <td><span class="char-hl simp">问</span></td>
+                <td><span class="char-hl trad">問</span></td>
+                <td>问题 → 問題</td>
+                <td><span class="char-hl simp">来</span></td>
+                <td><span class="char-hl trad">來</span></td>
+                <td>来自 → 來自</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="section">
+    <div class="section-title">2. Component System Recognition (The Key Rule)</div>
+    <div class="sub-desc">Simplification usually alters entire components. Learning component rules instantly unlocks hundreds of characters:</div>
+
+    <table class="grid-table">
+        <tr>
+            <td>
+                <div class="component-box">
+                    <div class="component-title">讠 → 言 (Speech Radical)</div>
+                    <div class="examples">
+                        说 → 說 &nbsp;|&nbsp; 话 → 話 &nbsp;|&nbsp; 语 → 語<br>
+                        读 → 讀 &nbsp;|&nbsp; 讲 → 講 &nbsp;|&nbsp; 词 → 詞
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="component-box">
+                    <div class="component-title">饣 → 食 (Food/Eat Radical)</div>
+                    <div class="examples">
+                        饭 → 飯 &nbsp;|&nbsp; 饮 → 飲 &nbsp;|&nbsp; 馆 → 館<br>
+                        饿 → 餓 &nbsp;|&nbsp; 饱 → 飽 &nbsp;|&nbsp; 饼 → 餅
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="component-box">
+                    <div class="component-title">钅 → 金 (Metal Radical)</div>
+                    <div class="examples">
+                        钱 → 錢 &nbsp;|&nbsp; 银 → 銀 &nbsp;|&nbsp; 铁 → 鐵<br>
+                        钟 → 鐘 &nbsp;|&nbsp; 错 → 錯 &nbsp;|&nbsp; 镜 → 鏡
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div class="component-box">
+                    <div class="component-title">纟 → 糸 (Silk/Thread Radical)</div>
+                    <div class="examples">
+                        红 → 紅 &nbsp;|&nbsp; 纸 → 紙 &nbsp;|&nbsp; 级 → 級<br>
+                        细 → 細 &nbsp;|&nbsp; 练 → 練 &nbsp;|&nbsp; 经 → 經
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <div class="section-title">3. Universal / Unchanged Characters & Dual Mode Reading</div>
+    <div class="sub-desc">Many common characters remain 100% identical. Train your brain to only trigger conversion on simplified components:</div>
+
+    <p style="margin: 4px 0 8px 0; font-size: 9.5pt; color: #334155;">
+        <strong>Unchanged Forms:</strong> 人、我、你、他、日、月、山、天、中、大、小、好、明、去、今、校
+    </p>
+
+    <div class="ex-box">
+        <div class="ex-line"><span class="tag tag-simp">Simplified</span> 我今天去学校。</div>
+        <div class="ex-line"><span class="tag tag-trad">Mental Map</span> 我今天去<strong style="color:#1e3a8a;">學</strong>校。 <em>(Only 学 triggers mental conversion!)</em></div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">4. Watch Out: "Dangerous" One-to-Many Merges</div>
+    <div class="sub-desc">Some Simplified characters represent multiple Traditional characters depending on context. Learn these as word units:</div>
+
+    <div class="warn-card">
+        <div class="warn-title">后 → 後 (After/Behind) vs 后 (Queen)</div>
+        <div class="examples">后来 → <strong>後來</strong> &nbsp;|&nbsp; 皇后 → <strong>皇后</strong></div>
+    </div>
+
+    <div class="warn-card">
+        <div class="warn-title">发 → 發 (Emit/Develop) vs 髮 (Hair)</div>
+        <div class="examples">发展 → <strong>發展</strong> &nbsp;|&nbsp; 头发 → <strong>頭髮</strong> &nbsp;|&nbsp; 发现 → <strong>發現</strong></div>
+    </div>
+
+    <div class="warn-card">
+        <div class="warn-title">台 → 臺 (Platform/Taiwan) vs 台 (Stage/Desk) vs 颱 (Typhoon)</div>
+        <div class="examples">台湾 → <strong>臺灣</strong> &nbsp;|&nbsp; 舞台 → <strong>舞臺</strong> &nbsp;|&nbsp; 台风 → <strong>颱風</strong></div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="section-title">5. Practice Exercise & High-Frequency Compound Recognition</div>
+    <div class="sub-desc">Test your mental conversion speed without looking at the traditional text first:</div>
+
+    <div class="ex-box">
+        <div class="ex-line"><span class="tag tag-simp">Practice</span> 我们已经学了很多东西，但是还需要继续练习。</div>
+        <div class="ex-line"><span class="tag tag-trad">Target</span> 我們已經學了很多東西，但是還需要繼續練習。</div>
+    </div>
+
+    <p style="margin: 10px 0 6px 0; font-weight: bold; font-size: 10pt;">Essential High-Value Recognition Vocabulary:</p>
+
+    <table style="width: 100%; border-collapse: collapse; font-size: 9.5pt;">
+        <tr>
+            <td style="padding: 3px;"><div class="badge">学习 → 學習</div></td>
+            <td style="padding: 3px;"><div class="badge">环境 → 環境</div></td>
+            <td style="padding: 3px;"><div class="badge">经济 → 經濟</div></td>
+        </tr>
+        <tr>
+            <td style="padding: 3px;"><div class="badge">发现 → 發現</div></td>
+            <td style="padding: 3px;"><div class="badge">解决 → 解決</div></td>
+            <td style="padding: 3px;"><div class="badge">继续 → 繼續</div></td>
+        </tr>
+        <tr>
+            <td style="padding: 3px;"><div class="badge">关系 → 關係</div></td>
+            <td style="padding: 3px;"><div class="badge">准备 → 準備</div></td>
+            <td style="padding: 3px;"><div class="badge">选择 → 選擇</div></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grammar Pattern Flashcards - Recall Mode</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', Georgia, serif;
+    background: #F5F0E8;
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: #1a1a2e;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    user-select: none;
+  }
+
+  .container {
+    max-width: 750px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .progress-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .pattern-selector {
+    margin-bottom: 20px;
+  }
+
+  .selector-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .sel-btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .sel-btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+  }
+
+  .sel-btn.active {
+    background: #C41E3A;
+    color: #fff;
+    border-color: #C41E3A;
+  }
+
+  .prompt-area {
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+
+  .english {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #1a1a2e;
+    line-height: 1.35;
+    max-width: 600px;
+  }
+
+  .pattern-badge {
+    display: inline-block;
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #C41E3A;
+    background: #FFFDF8;
+    border: 1px solid #C41E3A;
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-top: 4px;
+  }
+
+  .answer-area {
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+
+  .answer-area.revealed {
+    opacity: 1;
+    transform: translateY(0);
+    cursor: pointer;
+  }
+
+  .chinese-line {
+    font-size: 2rem;
+    line-height: 1.4;
+    color: #1a1a2e;
+  }
+
+  .chinese-simp {
+    font-size: 1.3rem;
+    color: #6B7B8D;
+    margin-top: 2px;
+  }
+
+  .grammar-highlight {
+    color: #C41E3A;
+    text-decoration: underline;
+    text-decoration-color: rgba(196, 30, 58, 0.35);
+    text-underline-offset: 4px;
+  }
+
+  .pinyin {
+    font-size: 1.1rem;
+    color: #7D8471;
+    margin-top: 6px;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .pinyin:hover {
+    color: #5C6352;
+  }
+
+  .controls {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s;
+    box-shadow: 0 1px 4px rgba(139, 115, 72, 0.06);
+  }
+
+  .btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+  }
+
+  .btn.active {
+    background: #C41E3A;
+    color: #fff;
+    border-color: #C41E3A;
+  }
+
+  @media (max-width: 520px) {
+    .english { font-size: 22px; }
+    .chinese-line { font-size: 1.6rem; }
+    .chinese-simp { font-size: 1.1rem; }
+    .pinyin { font-size: 1rem; }
+    .pattern-badge { font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:#C41E3A; text-align:center; margin-bottom:4px; letter-spacing:0.02em;">Grammar Flashcards</h1>
+  <p style="text-align:center; color:#8B7D6B; font-size:0.95rem; font-family:'Crimson Pro',serif; font-weight:400; letter-spacing:0.04em; margin-bottom:16px;">Recall the grammar pattern</p>
+  <div class="progress-label" id="progress"></div>
+  <div class="pattern-selector" id="pattern-selector">
+    <div class="selector-row" id="selector-row"></div>
+  </div>
+  <div class="prompt-area">
+    <div class="english" id="english"></div>
+    <div class="pattern-badge" id="pattern-badge"></div>
+  </div>
+  <div class="answer-area" id="answer-area">
+    <div class="chinese-line" id="trad-line"></div>
+    <div class="chinese-simp" id="simp-line"></div>
+    <div class="pinyin" id="pinyin"></div>
+  </div>
+  <div class="controls">
+    <button class="btn active" id="btn-pause" onclick="togglePause()">Resume</button>
+    <button class="btn" id="btn-prev" onclick="goBack()">&larr; Prev</button>
+    <button class="btn" id="btn-next" onclick="goNext()">Next &rarr;</button>
+    <button class="btn" id="btn-shuffle" onclick="toggleShuffle()">Shuffle: On</button>
+    <button class="btn" id="btn-sound" onclick="toggleSound()">Sound: On</button>
+  </div>
+</div>
+
+<script>
+const PATTERNS = [
+  {
+    name: "Basic Word Order",
+    formula: "S + Time + V + O",
+    cards: [
+      {
+        english: "I ate dumplings yesterday",
+        trad: "我昨天吃了餃子",
+        simp: "我昨天吃了饺子",
+        pinyin: "wǒ zuótiān chī le jiǎozi",
+        highlight: ["昨天"]
+      },
+      {
+        english: "She drinks tea every day",
+        trad: "她每天喝茶",
+        simp: "她每天喝茶",
+        pinyin: "tā měitiān hē chá",
+        highlight: ["每天"]
+      },
+      {
+        english: "We're going to the airport tomorrow",
+        trad: "我們明天去機場",
+        simp: "我们明天去机场",
+        pinyin: "wǒmen míngtiān qù jīchǎng",
+        highlight: ["明天"]
+      },
+      {
+        english: "He watched a movie last night",
+        trad: "他昨天晚上看了電影",
+        simp: "他昨天晚上看了电影",
+        pinyin: "tā zuótiān wǎnshang kàn le diànyǐng",
+        highlight: ["昨天晚上"]
+      },
+      {
+        english: "What do you want to eat today?",
+        trad: "你今天想吃什麼？",
+        simp: "你今天想吃什么？",
+        pinyin: "nǐ jīntiān xiǎng chī shénme?",
+        highlight: ["今天"]
+      }
+    ]
+  },
+  {
+    name: "是...的 (Emphasis)",
+    formula: "是 + [emphasized element] + V + 的",
+    cards: [
+      {
+        english: "I came YESTERDAY (emphasizing when)",
+        trad: "我是昨天來的",
+        simp: "我是昨天来的",
+        pinyin: "wǒ shì zuótiān lái de",
+        highlight: ["是", "的"]
+      },
+      {
+        english: "She learned Chinese IN TAIPEI",
+        trad: "她是在台北學中文的",
+        simp: "她是在台北学中文的",
+        pinyin: "tā shì zài Táiběi xué zhōngwén de",
+        highlight: ["是", "的"]
+      },
+      {
+        english: "HOW did you get here?",
+        trad: "你是怎麼來的？",
+        simp: "你是怎么来的？",
+        pinyin: "nǐ shì zěnme lái de?",
+        highlight: ["是", "的"]
+      },
+      {
+        english: "WHO bought this book?",
+        trad: "這本書是誰買的？",
+        simp: "这本书是谁买的？",
+        pinyin: "zhè běn shū shì shéi mǎi de?",
+        highlight: ["是", "的"]
+      },
+      {
+        english: "I came BY high-speed train",
+        trad: "我是坐高鐵來的",
+        simp: "我是坐高铁来的",
+        pinyin: "wǒ shì zuò gāotiě lái de",
+        highlight: ["是", "的"]
+      }
+    ]
+  },
+  {
+    name: "了 (Completed / Change)",
+    formula: "V + 了 (completed) / Adj + 了 (change)",
+    cards: [
+      {
+        english: "I ate (completed action)",
+        trad: "我吃了飯",
+        simp: "我吃了饭",
+        pinyin: "wǒ chī le fàn",
+        highlight: ["了"]
+      },
+      {
+        english: "He bought three books",
+        trad: "他買了三本書",
+        simp: "他买了三本书",
+        pinyin: "tā mǎi le sān běn shū",
+        highlight: ["了"]
+      },
+      {
+        english: "I've already arrived",
+        trad: "我已經到了",
+        simp: "我已经到了",
+        pinyin: "wǒ yǐjīng dào le",
+        highlight: ["了"]
+      },
+      {
+        english: "It's gotten cold (change of state)",
+        trad: "天氣冷了",
+        simp: "天气冷了",
+        pinyin: "tiānqì lěng le",
+        highlight: ["了"]
+      },
+      {
+        english: "I don't want to eat anymore (changed mind)",
+        trad: "我不想吃了",
+        simp: "我不想吃了",
+        pinyin: "wǒ bù xiǎng chī le",
+        highlight: ["了"]
+      }
+    ]
+  },
+  {
+    name: "在 + Verb (Ongoing)",
+    formula: "S + 在 + V",
+    cards: [
+      {
+        english: "I'm eating",
+        trad: "我在吃飯",
+        simp: "我在吃饭",
+        pinyin: "wǒ zài chīfàn",
+        highlight: ["在"]
+      },
+      {
+        english: "She's sleeping",
+        trad: "她在睡覺",
+        simp: "她在睡觉",
+        pinyin: "tā zài shuìjiào",
+        highlight: ["在"]
+      },
+      {
+        english: "What are you doing?",
+        trad: "你在做什麼？",
+        simp: "你在做什么？",
+        pinyin: "nǐ zài zuò shénme?",
+        highlight: ["在"]
+      },
+      {
+        english: "They're watching a movie",
+        trad: "他們在看電影",
+        simp: "他们在看电影",
+        pinyin: "tāmen zài kàn diànyǐng",
+        highlight: ["在"]
+      },
+      {
+        english: "It's raining outside",
+        trad: "外面在下雨",
+        simp: "外面在下雨",
+        pinyin: "wàimiàn zài xiàyǔ",
+        highlight: ["在"]
+      }
+    ]
+  },
+  {
+    name: "過 (Experience)",
+    formula: "V + 過/过",
+    cards: [
+      {
+        english: "Have you ever been to China?",
+        trad: "你去過中國嗎？",
+        simp: "你去过中国吗？",
+        pinyin: "nǐ qù guo zhōngguó ma?",
+        highlight: ["過", "过"]
+      },
+      {
+        english: "I've had dumplings before",
+        trad: "我吃過餃子",
+        simp: "我吃过饺子",
+        pinyin: "wǒ chī guo jiǎozi",
+        highlight: ["過", "过"]
+      },
+      {
+        english: "She has never studied Chinese",
+        trad: "她沒有學過中文",
+        simp: "她没有学过中文",
+        pinyin: "tā méiyǒu xué guo zhōngwén",
+        highlight: ["過", "过"]
+      },
+      {
+        english: "Have you seen this movie?",
+        trad: "你看過這部電影嗎？",
+        simp: "你看过这部电影吗？",
+        pinyin: "nǐ kàn guo zhè bù diànyǐng ma?",
+        highlight: ["過", "过"]
+      },
+      {
+        english: "I've never taken the high-speed train",
+        trad: "我沒坐過高鐵",
+        simp: "我没坐过高铁",
+        pinyin: "wǒ méi zuò guo gāotiě",
+        highlight: ["過", "过"]
+      }
+    ]
+  },
+  {
+    name: "想/要/會/能/可以 (Want/Can)",
+    formula: "S + Modal + V",
+    cards: [
+      {
+        english: "I'd like to eat noodles (polite want)",
+        trad: "我想吃麵",
+        simp: "我想吃面",
+        pinyin: "wǒ xiǎng chī miàn",
+        highlight: ["想"]
+      },
+      {
+        english: "I want a cup of tea (definite)",
+        trad: "我要一杯茶",
+        simp: "我要一杯茶",
+        pinyin: "wǒ yào yì bēi chá",
+        highlight: ["要"]
+      },
+      {
+        english: "Can you speak Chinese? (skill)",
+        trad: "你會說中文嗎？",
+        simp: "你会说中文吗？",
+        pinyin: "nǐ huì shuō zhōngwén ma?",
+        highlight: ["會", "会"]
+      },
+      {
+        english: "Can you help me? (ability)",
+        trad: "你能幫我嗎？",
+        simp: "你能帮我吗？",
+        pinyin: "nǐ néng bāng wǒ ma?",
+        highlight: ["能"]
+      },
+      {
+        english: "May I sit here? (permission)",
+        trad: "我可以坐這裡嗎？",
+        simp: "我可以坐这里吗？",
+        pinyin: "wǒ kěyǐ zuò zhèlǐ ma?",
+        highlight: ["可以"]
+      }
+    ]
+  },
+  {
+    name: "把 (Disposal)",
+    formula: "S + 把 + Object + V + Result",
+    cards: [
+      {
+        english: "Please close the door",
+        trad: "請把門關上",
+        simp: "请把门关上",
+        pinyin: "qǐng bǎ mén guān shàng",
+        highlight: ["把"]
+      },
+      {
+        english: "He put the book on the table",
+        trad: "他把書放在桌子上",
+        simp: "他把书放在桌子上",
+        pinyin: "tā bǎ shū fàng zài zhuōzi shàng",
+        highlight: ["把"]
+      },
+      {
+        english: "I finished my homework",
+        trad: "我把功課做完了",
+        simp: "我把功课做完了",
+        pinyin: "wǒ bǎ gōngkè zuò wán le",
+        highlight: ["把"]
+      },
+      {
+        english: "She finished drinking the coffee",
+        trad: "她把咖啡喝完了",
+        simp: "她把咖啡喝完了",
+        pinyin: "tā bǎ kāfēi hē wán le",
+        highlight: ["把"]
+      },
+      {
+        english: "Write your name here",
+        trad: "你把名字寫在這裡",
+        simp: "你把名字写在这里",
+        pinyin: "nǐ bǎ míngzì xiě zài zhèlǐ",
+        highlight: ["把"]
+      }
+    ]
+  },
+  {
+    name: "被 (Passive)",
+    formula: "S + 被 + (Agent) + V",
+    cards: [
+      {
+        english: "My phone was stolen",
+        trad: "我的手機被偷了",
+        simp: "我的手机被偷了",
+        pinyin: "wǒ de shǒujī bèi tōu le",
+        highlight: ["被"]
+      },
+      {
+        english: "The cake was eaten by him",
+        trad: "蛋糕被他吃了",
+        simp: "蛋糕被他吃了",
+        pinyin: "dàngāo bèi tā chī le",
+        highlight: ["被"]
+      },
+      {
+        english: "That book was borrowed (taken away)",
+        trad: "那本書被借走了",
+        simp: "那本书被借走了",
+        pinyin: "nà běn shū bèi jiè zǒu le",
+        highlight: ["被"]
+      },
+      {
+        english: "He was scolded by the teacher",
+        trad: "他被老師罵了",
+        simp: "他被老师骂了",
+        pinyin: "tā bèi lǎoshī mà le",
+        highlight: ["被"]
+      },
+      {
+        english: "This song is liked by many people",
+        trad: "這首歌被很多人喜歡",
+        simp: "这首歌被很多人喜欢",
+        pinyin: "zhè shǒu gē bèi hěn duō rén xǐhuān",
+        highlight: ["被"]
+      }
+    ]
+  },
+  {
+    name: "的 (Possession/Description)",
+    formula: "Modifier + 的 + Noun",
+    cards: [
+      {
+        english: "This is my book",
+        trad: "這是我的書",
+        simp: "这是我的书",
+        pinyin: "zhè shì wǒ de shū",
+        highlight: ["的"]
+      },
+      {
+        english: "What is the teacher's name?",
+        trad: "老師的名字叫什麼？",
+        simp: "老师的名字叫什么？",
+        pinyin: "lǎoshī de míngzì jiào shénme?",
+        highlight: ["的"]
+      },
+      {
+        english: "a good-looking movie",
+        trad: "好看的電影",
+        simp: "好看的电影",
+        pinyin: "hǎokàn de diànyǐng",
+        highlight: ["的"]
+      },
+      {
+        english: "the girl wearing red clothes",
+        trad: "穿紅色衣服的女生",
+        simp: "穿红色衣服的女生",
+        pinyin: "chuān hóngsè yīfú de nǚshēng",
+        highlight: ["的"]
+      },
+      {
+        english: "the one I bought yesterday",
+        trad: "昨天買的那個",
+        simp: "昨天买的那个",
+        pinyin: "zuótiān mǎi de nàge",
+        highlight: ["的"]
+      }
+    ]
+  },
+  {
+    name: "得 (Degree/Result)",
+    formula: "V + 得 + Description",
+    cards: [
+      {
+        english: "You speak very well",
+        trad: "你說得很好",
+        simp: "你说得很好",
+        pinyin: "nǐ shuō de hěn hǎo",
+        highlight: ["得"]
+      },
+      {
+        english: "He runs very fast",
+        trad: "他跑得很快",
+        simp: "他跑得很快",
+        pinyin: "tā pǎo de hěn kuài",
+        highlight: ["得"]
+      },
+      {
+        english: "She doesn't sing well",
+        trad: "她唱得不好聽",
+        simp: "她唱得不好听",
+        pinyin: "tā chàng de bù hǎotīng",
+        highlight: ["得"]
+      },
+      {
+        english: "I ate too much (I'm too full)",
+        trad: "我吃得太飽了",
+        simp: "我吃得太饱了",
+        pinyin: "wǒ chī de tài bǎo le",
+        highlight: ["得"]
+      },
+      {
+        english: "Your writing is really beautiful",
+        trad: "你寫得真漂亮",
+        simp: "你写得真漂亮",
+        pinyin: "nǐ xiě de zhēn piàoliang",
+        highlight: ["得"]
+      }
+    ]
+  },
+  {
+    name: "地 (Adverb Marker)",
+    formula: "Adj + 地 + V",
+    cards: [
+      {
+        english: "She walks slowly",
+        trad: "她慢慢地走",
+        simp: "她慢慢地走",
+        pinyin: "tā mànmàn de zǒu",
+        highlight: ["地"]
+      },
+      {
+        english: "He laughed happily",
+        trad: "他高興地笑了",
+        simp: "他高兴地笑了",
+        pinyin: "tā gāoxìng de xiào le",
+        highlight: ["地"]
+      },
+      {
+        english: "Please listen carefully",
+        trad: "請認真地聽",
+        simp: "请认真地听",
+        pinyin: "qǐng rènzhēn de tīng",
+        highlight: ["地"]
+      },
+      {
+        english: "She reads quietly",
+        trad: "她安靜地看書",
+        simp: "她安静地看书",
+        pinyin: "tā ānjìng de kànshū",
+        highlight: ["地"]
+      },
+      {
+        english: "The children play happily",
+        trad: "孩子們快樂地玩",
+        simp: "孩子们快乐地玩",
+        pinyin: "háizimen kuàilè de wán",
+        highlight: ["地"]
+      }
+    ]
+  },
+  {
+    name: "比 (Comparisons)",
+    formula: "A + 比 + B + Adj",
+    cards: [
+      {
+        english: "He is taller than me",
+        trad: "他比我高",
+        simp: "他比我高",
+        pinyin: "tā bǐ wǒ gāo",
+        highlight: ["比"]
+      },
+      {
+        english: "Today is colder than yesterday",
+        trad: "今天比昨天冷",
+        simp: "今天比昨天冷",
+        pinyin: "jīntiān bǐ zuótiān lěng",
+        highlight: ["比"]
+      },
+      {
+        english: "Chinese is harder than English",
+        trad: "中文比英文難",
+        simp: "中文比英文难",
+        pinyin: "zhōngwén bǐ yīngwén nán",
+        highlight: ["比"]
+      },
+      {
+        english: "Taking the HSR is faster than driving",
+        trad: "坐高鐵比開車快",
+        simp: "坐高铁比开车快",
+        pinyin: "zuò gāotiě bǐ kāichē kuài",
+        highlight: ["比"]
+      },
+      {
+        english: "She is three years older than me",
+        trad: "她比我大三歲",
+        simp: "她比我大三岁",
+        pinyin: "tā bǐ wǒ dà sān suì",
+        highlight: ["比"]
+      }
+    ]
+  },
+  {
+    name: "Clause Connectors",
+    formula: "因為...所以 / 雖然...但是 / 如果...就",
+    cards: [
+      {
+        english: "Because it rained, I didn't go out",
+        trad: "因為下雨，所以我沒出去",
+        simp: "因为下雨，所以我没出去",
+        pinyin: "yīnwèi xiàyǔ, suǒyǐ wǒ méi chūqù",
+        highlight: ["因為", "因为", "所以"]
+      },
+      {
+        english: "Because it was too expensive, I didn't buy it",
+        trad: "因為太貴了，所以我沒買",
+        simp: "因为太贵了，所以我没买",
+        pinyin: "yīnwèi tài guì le, suǒyǐ wǒ méi mǎi",
+        highlight: ["因為", "因为", "所以"]
+      },
+      {
+        english: "Although I'm tired, I'm happy",
+        trad: "雖然很累，但是我很開心",
+        simp: "虽然很累，但是我很开心",
+        pinyin: "suīrán hěn lèi, dànshì wǒ hěn kāixīn",
+        highlight: ["雖然", "虽然", "但是"]
+      },
+      {
+        english: "If it rains tomorrow, I won't go",
+        trad: "如果明天下雨，我就不去",
+        simp: "如果明天下雨，我就不去",
+        pinyin: "rúguǒ míngtiān xiàyǔ, wǒ jiù bú qù",
+        highlight: ["如果", "就"]
+      },
+      {
+        english: "If you like it, then buy it",
+        trad: "如果你喜歡，就買吧",
+        simp: "如果你喜欢，就买吧",
+        pinyin: "rúguǒ nǐ xǐhuān, jiù mǎi ba",
+        highlight: ["如果", "就"]
+      }
+    ]
+  },
+  {
+    name: "越來越 (More & More)",
+    formula: "越來越/越来越 + Adj/V",
+    cards: [
+      {
+        english: "The weather is getting colder and colder",
+        trad: "天氣越來越冷了",
+        simp: "天气越来越冷了",
+        pinyin: "tiānqì yuè lái yuè lěng le",
+        highlight: ["越來越", "越来越"]
+      },
+      {
+        english: "Your Chinese is getting better and better",
+        trad: "你的中文越來越好了",
+        simp: "你的中文越来越好了",
+        pinyin: "nǐ de zhōngwén yuè lái yuè hǎo le",
+        highlight: ["越來越", "越来越"]
+      },
+      {
+        english: "Life is getting more and more expensive",
+        trad: "生活越來越貴",
+        simp: "生活越来越贵",
+        pinyin: "shēnghuó yuè lái yuè guì",
+        highlight: ["越來越", "越来越"]
+      },
+      {
+        english: "He likes Taiwan more and more",
+        trad: "他越來越喜歡台灣了",
+        simp: "他越来越喜欢台湾了",
+        pinyin: "tā yuè lái yuè xǐhuān Táiwān le",
+        highlight: ["越來越", "越来越"]
+      },
+      {
+        english: "I'm getting busier and busier",
+        trad: "我越來越忙了",
+        simp: "我越来越忙了",
+        pinyin: "wǒ yuè lái yuè máng le",
+        highlight: ["越來越", "越来越"]
+      }
+    ]
+  },
+  {
+    name: "一邊...一邊 (Simultaneous)",
+    formula: "一邊 + V₁ + 一邊 + V₂",
+    cards: [
+      {
+        english: "She eats while watching TV",
+        trad: "她一邊吃飯一邊看電視",
+        simp: "她一边吃饭一边看电视",
+        pinyin: "tā yì biān chīfàn yì biān kàn diànshì",
+        highlight: ["一邊", "一边"]
+      },
+      {
+        english: "He walks while listening to music",
+        trad: "他一邊走路一邊聽音樂",
+        simp: "他一边走路一边听音乐",
+        pinyin: "tā yì biān zǒulù yì biān tīng yīnyuè",
+        highlight: ["一邊", "一边"]
+      },
+      {
+        english: "We chat while drinking tea",
+        trad: "我們一邊喝茶一邊聊天",
+        simp: "我们一边喝茶一边聊天",
+        pinyin: "wǒmen yì biān hēchá yì biān liáotiān",
+        highlight: ["一邊", "一边"]
+      },
+      {
+        english: "Don't use your phone while driving",
+        trad: "不要一邊開車一邊用手機",
+        simp: "不要一边开车一边用手机",
+        pinyin: "bú yào yì biān kāichē yì biān yòng shǒujī",
+        highlight: ["一邊", "一边"]
+      },
+      {
+        english: "She sings while dancing",
+        trad: "她一邊唱歌一邊跳舞",
+        simp: "她一边唱歌一边跳舞",
+        pinyin: "tā yì biān chànggē yì biān tiàowǔ",
+        highlight: ["一邊", "一边"]
+      }
+    ]
+  }
+];
+
+/* Flatten all cards with pattern metadata */
+const ALL_CARDS = [];
+const PATTERN_RANGES = [];
+PATTERNS.forEach((pat, pi) => {
+  const start = ALL_CARDS.length;
+  pat.cards.forEach(card => {
+    ALL_CARDS.push({ ...card, patternIdx: pi, patternName: pat.name, formula: pat.formula });
+  });
+  PATTERN_RANGES.push({ start, end: ALL_CARDS.length, name: pat.name });
+});
+
+let order = [];
+let pool = [];
+let idx = 0;
+let paused = true;
+let shuffled = true;
+let revealed = false;
+let timer = null;
+let soundOn = true;
+let selectedPattern = -1; // -1 = All
+
+let zhVoice = null;
+
+function initVoice() {
+  const pick = () => {
+    const voices = speechSynthesis.getVoices();
+    zhVoice = voices.find(v => v.lang.startsWith('zh-CN'))
+      || voices.find(v => v.lang.startsWith('zh'))
+      || null;
+  };
+  pick();
+  if (!zhVoice) speechSynthesis.addEventListener('voiceschanged', pick);
+}
+
+function speak(chinese) {
+  if (!soundOn) return;
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(chinese);
+  utt.lang = 'zh-CN';
+  utt.rate = 0.75;
+  if (zhVoice) utt.voice = zhVoice;
+  speechSynthesis.speak(utt);
+}
+
+function shuffleArr(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function buildPool() {
+  pool = [];
+  if (selectedPattern === -1) {
+    pool = ALL_CARDS.map((_, i) => i);
+  } else {
+    const r = PATTERN_RANGES[selectedPattern];
+    for (let i = r.start; i < r.end; i++) pool.push(i);
+  }
+}
+
+function buildOrder() {
+  order = [...pool];
+  if (shuffled) shuffleArr(order);
+}
+
+function highlightText(text, highlights) {
+  if (!highlights || highlights.length === 0) return escHtml(text);
+
+  /* For multi-char highlights like "昨天晚上", sort longest first
+     so we match the longest substring before shorter ones */
+  const sorted = [...highlights].sort((a, b) => b.length - a.length);
+
+  /* Build a list of ranges to highlight */
+  const chars = [...text];
+  const marked = new Array(chars.length).fill(false);
+
+  sorted.forEach(h => {
+    const hChars = [...h];
+    for (let i = 0; i <= chars.length - hChars.length; i++) {
+      let match = true;
+      for (let j = 0; j < hChars.length; j++) {
+        if (chars[i + j] !== hChars[j]) { match = false; break; }
+      }
+      if (match) {
+        for (let j = 0; j < hChars.length; j++) marked[i + j] = true;
+      }
+    }
+  });
+
+  let result = '';
+  let inHighlight = false;
+  chars.forEach((ch, i) => {
+    if (marked[i] && !inHighlight) {
+      result += '<span class="grammar-highlight">';
+      inHighlight = true;
+    } else if (!marked[i] && inHighlight) {
+      result += '</span>';
+      inHighlight = false;
+    }
+    result += escHtml(ch);
+  });
+  if (inHighlight) result += '</span>';
+  return result;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function showCard() {
+  clearTimeout(timer);
+  revealed = false;
+
+  const card = ALL_CARDS[order[idx]];
+
+  document.getElementById('progress').textContent = (idx + 1) + ' / ' + order.length;
+  document.getElementById('english').textContent = card.english;
+  document.getElementById('pattern-badge').textContent = 'Pattern: ' + card.formula;
+
+  /* Reset answer area */
+  const answerArea = document.getElementById('answer-area');
+  answerArea.classList.remove('revealed');
+
+  /* Prepare answer content (hidden until reveal) */
+  const tradLine = document.getElementById('trad-line');
+  const simpLine = document.getElementById('simp-line');
+  const pinyinEl = document.getElementById('pinyin');
+
+  tradLine.innerHTML = highlightText(card.trad, card.highlight);
+
+  if (card.trad !== card.simp) {
+    simpLine.innerHTML = highlightText(card.simp, card.highlight);
+    simpLine.style.display = 'block';
+  } else {
+    simpLine.style.display = 'none';
+  }
+
+  pinyinEl.textContent = card.pinyin;
+
+  /* Auto-reveal after 1.5s */
+  if (!paused) {
+    timer = setTimeout(() => {
+      revealAnswer();
+    }, 1500);
+  }
+}
+
+function revealAnswer() {
+  revealed = true;
+  const answerArea = document.getElementById('answer-area');
+  answerArea.classList.add('revealed');
+
+  const card = ALL_CARDS[order[idx]];
+  if (soundOn) speak(card.simp);
+
+  /* Auto-advance after 3s viewing */
+  if (!paused) {
+    timer = setTimeout(() => {
+      advance();
+    }, 3000);
+  }
+}
+
+function advance() {
+  idx = (idx + 1) % order.length;
+  showCard();
+}
+
+function goNext() {
+  clearTimeout(timer);
+  advance();
+}
+
+function goBack() {
+  clearTimeout(timer);
+  idx = (idx - 1 + order.length) % order.length;
+  showCard();
+}
+
+function togglePause() {
+  paused = !paused;
+  const btn = document.getElementById('btn-pause');
+  btn.textContent = paused ? 'Resume' : 'Pause';
+  btn.classList.toggle('active', paused);
+
+  if (!paused) {
+    if (!revealed) {
+      timer = setTimeout(revealAnswer, 1500);
+    } else {
+      timer = setTimeout(advance, 3000);
+    }
+  } else {
+    clearTimeout(timer);
+  }
+}
+
+function toggleShuffle() {
+  shuffled = !shuffled;
+  document.getElementById('btn-shuffle').textContent = 'Shuffle: ' + (shuffled ? 'On' : 'Off');
+  document.getElementById('btn-shuffle').classList.toggle('active', shuffled);
+  buildOrder();
+  idx = 0;
+  showCard();
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('btn-sound').textContent = 'Sound: ' + (soundOn ? 'On' : 'Off');
+  document.getElementById('btn-sound').classList.toggle('active', !soundOn);
+  if (!soundOn) speechSynthesis.cancel();
+}
+
+function selectPattern(pi) {
+  selectedPattern = pi;
+  buildPool();
+  buildOrder();
+  idx = 0;
+  updateSelectorButtons();
+  showCard();
+}
+
+function updateSelectorButtons() {
+  const btns = document.querySelectorAll('.sel-btn');
+  btns.forEach(btn => {
+    const val = parseInt(btn.dataset.pattern);
+    if (isNaN(val)) {
+      /* "All" button */
+      btn.classList.toggle('active', selectedPattern === -1);
+    } else {
+      btn.classList.toggle('active', selectedPattern === val);
+    }
+  });
+}
+
+function buildSelectorUI() {
+  const row = document.getElementById('selector-row');
+
+  const allBtn = document.createElement('button');
+  allBtn.className = 'sel-btn active';
+  allBtn.textContent = 'All';
+  allBtn.dataset.pattern = 'all';
+  allBtn.onclick = () => selectPattern(-1);
+  row.appendChild(allBtn);
+
+  PATTERNS.forEach((pat, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'sel-btn';
+    btn.textContent = (i + 1) + '. ' + pat.name;
+    btn.dataset.pattern = i;
+    btn.onclick = () => selectPattern(i);
+    row.appendChild(btn);
+  });
+}
+
+/* Click answer area to speak */
+document.getElementById('answer-area').addEventListener('click', () => {
+  if (revealed) {
+    const card = ALL_CARDS[order[idx]];
+    speak(card.simp);
+  }
+});
+
+/* Click pinyin to speak */
+document.getElementById('pinyin').addEventListener('click', (e) => {
+  e.stopPropagation();
+  const card = ALL_CARDS[order[idx]];
+  speak(card.simp);
+});
+
+/* Keyboard controls */
+document.addEventListener('keydown', e => {
+  if (e.key === ' ' || e.code === 'Space') {
+    e.preventDefault();
+    togglePause();
+  } else if (e.key === 'ArrowRight') {
+    goNext();
+  } else if (e.key === 'ArrowLeft') {
+    goBack();
+  }
+});
+
+/* Init */
+initVoice();
+buildSelectorUI();
+buildPool();
+buildOrder();
+document.getElementById('btn-shuffle').classList.add('active');
+showCard();
+</script>
+</body>
+</html>

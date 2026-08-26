@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simplified → Traditional Flashcards</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3/dist/index.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Crimson Pro', 'PingFang SC', 'Noto Sans SC', serif;
+    background: #F5F0E8;
+    color: #1a1a2e;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    user-select: none;
+  }
+
+  .container {
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .progress-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+  }
+
+  .cards {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+  }
+
+  .card {
+    background: #FFFDF8;
+    border-radius: 20px;
+    box-shadow: 0 2px 16px rgba(120, 100, 60, 0.10),
+                0 1px 4px rgba(120, 100, 60, 0.06);
+    border: 1px solid #E8E0D4;
+    padding: 32px 24px;
+    width: 220px;
+    transition: box-shadow 0.3s, opacity 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    box-shadow: 0 6px 24px rgba(120, 100, 60, 0.16),
+                0 2px 8px rgba(120, 100, 60, 0.08);
+  }
+
+  .card-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+  }
+
+  .card-simp .card-label { color: #C41E3A; }
+  .card-trad .card-label { color: #2D5016; }
+
+  .card-char {
+    font-size: 72px;
+    line-height: 1.2;
+  }
+
+  .card-simp .card-char { color: #C41E3A; }
+  .card-trad .card-char { color: #2D5016; }
+
+  .card-pinyin {
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+    color: #7D8471;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .card-meaning {
+    font-family: 'Crimson Pro', serif;
+    font-size: 14px;
+    color: #8a8478;
+    margin-top: 4px;
+  }
+
+  .card-context {
+    font-size: 14px;
+    color: #8a8478;
+    margin-top: 12px;
+    min-height: 20px;
+  }
+
+  .card-trad {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  .card-trad.revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .arrow {
+    font-size: 28px;
+    color: #B8860B;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .arrow.revealed {
+    opacity: 1;
+  }
+
+  .timer-bar {
+    margin-top: 32px;
+    height: 4px;
+    background: #E8E0D4;
+    border-radius: 2px;
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  .timer-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #C41E3A, #B8860B);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  .controls {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 10px;
+    padding: 8px 20px;
+    font-family: 'Crimson Pro', serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .btn:hover {
+    background: #F5F0E8;
+    box-shadow: 0 2px 8px rgba(120, 100, 60, 0.10);
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid #C41E3A;
+    outline-offset: 2px;
+  }
+
+  .btn.active {
+    background: #C41E3A;
+    color: #FFFDF8;
+    border-color: #C41E3A;
+  }
+
+  @media (max-width: 520px) {
+    .card { width: 140px; padding: 24px 16px; }
+    .card-char { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:#C41E3A; text-align:center; margin-bottom:4px; letter-spacing:0.02em;">S/T Flashcards</h1>
+  <p style="text-align:center; color:#8B7D6B; font-size:0.95rem; font-family:'Crimson Pro',serif; font-weight:400; letter-spacing:0.04em; margin-bottom:16px;">Simplified to Traditional</p>
+  <div class="progress-label" id="progress"></div>
+  <div class="cards">
+    <div class="card card-simp">
+      <div class="card-char" id="simp-char"></div>
+      <div class="card-pinyin" id="simp-pinyin"></div>
+      <div class="card-meaning" id="simp-meaning"></div>
+    </div>
+    <div class="arrow" id="arrow">&rarr;</div>
+    <div class="card card-trad" id="trad-card">
+      <div class="card-char" id="trad-char"></div>
+    </div>
+  </div>
+<div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+<div class="controls">
+    <button class="btn active" id="btn-pause" onclick="togglePause()">Resume</button>
+    <button class="btn" id="btn-prev" onclick="goBack()">&larr; Prev</button>
+    <button class="btn" id="btn-next" onclick="goNext()">Next &rarr;</button>
+    <button class="btn" id="btn-shuffle" onclick="toggleShuffle()">Shuffle: On</button>
+    <button class="btn" id="btn-sound" onclick="toggleSound()">Sound: On</button>
+  </div>
+</div>
+
+<script>
+const PAIRS = [
+  { s: '国', t: '國', m: 'country' },
+  { s: '见', t: '見', m: 'see' },
+  { s: '学', t: '學', m: 'study' },
+  { s: '时', t: '時', m: 'time' },
+  { s: '体', t: '體', m: 'body' },
+  { s: '电', t: '電', m: 'electric' },
+  { s: '书', t: '書', m: 'book' },
+  { s: '语', t: '語', m: 'language' },
+  { s: '车', t: '車', m: 'vehicle' },
+  { s: '说', t: '說', m: 'speak' },
+  { s: '门', t: '門', m: 'gate' },
+  { s: '长', t: '長', m: 'long' },
+  { s: '开', t: '開', m: 'open' },
+  { s: '东', t: '東', m: 'east' },
+  { s: '问', t: '問', m: 'ask' },
+  { s: '来', t: '來', m: 'come' },
+  { s: '话', t: '話', m: 'speech' },
+  { s: '读', t: '讀', m: 'read' },
+  { s: '讲', t: '講', m: 'speak, explain' },
+  { s: '词', t: '詞', m: 'word' },
+  { s: '饭', t: '飯', m: 'rice, meal' },
+  { s: '饮', t: '飲', m: 'drink' },
+  { s: '馆', t: '館', m: 'hall, building' },
+  { s: '饿', t: '餓', m: 'hungry' },
+  { s: '饱', t: '飽', m: 'full (eaten)' },
+  { s: '饼', t: '餅', m: 'cake, pastry' },
+  { s: '钱', t: '錢', m: 'money' },
+  { s: '银', t: '銀', m: 'silver' },
+  { s: '铁', t: '鐵', m: 'iron' },
+  { s: '钟', t: '鐘', m: 'clock, bell' },
+  { s: '错', t: '錯', m: 'wrong, mistake' },
+  { s: '镜', t: '鏡', m: 'mirror' },
+  { s: '红', t: '紅', m: 'red' },
+  { s: '纸', t: '紙', m: 'paper' },
+  { s: '级', t: '級', m: 'level, grade' },
+  { s: '细', t: '細', m: 'thin, fine' },
+  { s: '练', t: '練', m: 'practice' },
+  { s: '经', t: '經', m: 'pass through' },
+  { s: '后', t: '後', m: 'after, behind' },
+  { s: '发', t: '發', m: 'emit, develop' },
+  { s: '发', t: '髮', m: 'hair' },
+  { s: '台', t: '臺', m: 'platform' },
+  { s: '习', t: '習', m: 'practice' },
+  { s: '环', t: '環', m: 'ring, surround' },
+  { s: '济', t: '濟', m: 'aid, economy' },
+  { s: '现', t: '現', m: 'appear, present' },
+  { s: '决', t: '決', m: 'decide' },
+  { s: '继', t: '繼', m: 'continue' },
+  { s: '续', t: '續', m: 'continue, resume' },
+  { s: '关', t: '關', m: 'close, relate' },
+  { s: '准', t: '準', m: 'accurate, allow' },
+  { s: '备', t: '備', m: 'prepare' },
+  { s: '选', t: '選', m: 'choose' },
+  { s: '择', t: '擇', m: 'select' },
+  { s: '头', t: '頭', m: 'head' },
+  { s: '马', t: '馬', m: 'horse' },
+  { s: '鱼', t: '魚', m: 'fish' },
+  { s: '鸟', t: '鳥', m: 'bird' },
+  { s: '龙', t: '龍', m: 'dragon' },
+  { s: '风', t: '風', m: 'wind' },
+  { s: '飞', t: '飛', m: 'fly' },
+  { s: '贝', t: '貝', m: 'shell, money' },
+  { s: '买', t: '買', m: 'buy' },
+  { s: '卖', t: '賣', m: 'sell' },
+  { s: '机', t: '機', m: 'machine' },
+  { s: '鸡', t: '雞', m: 'chicken' },
+  { s: '汉', t: '漢', m: 'Han, Chinese' },
+  { s: '写', t: '寫', m: 'write' },
+  { s: '华', t: '華', m: 'magnificent' },
+  { s: '面', t: '麵', m: 'noodles' },
+  { s: '无', t: '無', m: 'without' },
+  { s: '爱', t: '愛', m: 'love' },
+  { s: '会', t: '會', m: 'meet, able' },
+  { s: '实', t: '實', m: 'real, solid' },
+  { s: '广', t: '廣', m: 'wide' },
+  { s: '业', t: '業', m: 'business' },
+  { s: '听', t: '聽', m: 'listen' },
+  { s: '气', t: '氣', m: 'air, energy' },
+  { s: '进', t: '進', m: 'enter, advance' },
+  { s: '过', t: '過', m: 'pass, cross' },
+  { s: '对', t: '對', m: 'correct, pair' },
+  { s: '从', t: '從', m: 'follow, from' },
+  { s: '们', t: '們', m: 'plural marker' },
+  { s: '这', t: '這', m: 'this' },
+  { s: '还', t: '還', m: 'still, return' },
+  { s: '给', t: '給', m: 'give' },
+  { s: '线', t: '線', m: 'line, thread' },
+  { s: '猫', t: '貓', m: 'cat' },
+  { s: '间', t: '間', m: 'between, room' },
+  { s: '闻', t: '聞', m: 'hear, news' },
+];
+
+let order = [];
+let idx = 0;
+let paused = true;
+let shuffled = true;
+let revealed = false;
+let timer = null;
+let timerStart = 0;
+let timerDuration = 0;
+let soundOn = true;
+
+let zhVoice = null;
+
+function initVoice() {
+  const pick = () => {
+    const voices = speechSynthesis.getVoices();
+    zhVoice = voices.find(v => v.lang.startsWith('zh-CN'))
+      || voices.find(v => v.lang.startsWith('zh'))
+      || null;
+  };
+  pick();
+  if (!zhVoice) speechSynthesis.addEventListener('voiceschanged', pick);
+}
+
+function speak(chinese) {
+  if (!soundOn) return;
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(chinese);
+  utt.lang = 'zh-CN';
+  utt.rate = 0.8;
+  if (zhVoice) utt.voice = zhVoice;
+  speechSynthesis.speak(utt);
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function buildOrder() {
+  order = PAIRS.map((_, i) => i);
+  if (shuffled) shuffle(order);
+}
+
+function showCard() {
+  const pair = PAIRS[order[idx]];
+  document.getElementById('simp-char').textContent = pair.s;
+  document.getElementById('simp-pinyin').textContent = typeof pinyinPro !== 'undefined' ? pinyinPro.pinyin(pair.s, { toneType: 'num' }) : '';
+  document.getElementById('simp-meaning').textContent = pair.m;
+  document.getElementById('trad-char').textContent = pair.t;
+  if (!paused) speak(pair.s);
+
+  document.getElementById('trad-card').classList.remove('revealed');
+  document.getElementById('arrow').classList.remove('revealed');
+
+  document.getElementById('progress').textContent = `${idx + 1} / ${PAIRS.length}`;
+  revealed = false;
+
+  startTimer(1000, () => {
+    document.getElementById('trad-card').classList.add('revealed');
+    document.getElementById('arrow').classList.add('revealed');
+    revealed = true;
+    startTimer(1000, advance);
+  });
+}
+
+function startTimer(ms, cb) {
+  clearInterval(timer);
+  timerStart = Date.now();
+  timerDuration = ms;
+  const fill = document.getElementById('timer-fill');
+
+  timer = setInterval(() => {
+    if (paused) return;
+    const elapsed = Date.now() - timerStart;
+    const pct = Math.min(elapsed / timerDuration * 100, 100);
+
+    if (!revealed) {
+      fill.style.width = (pct / 100 * 28.6) + '%';
+    } else {
+      fill.style.width = (28.6 + pct / 100 * 71.4) + '%';
+    }
+
+    if (elapsed >= timerDuration) {
+      clearInterval(timer);
+      cb();
+    }
+  }, 50);
+}
+
+function advance() {
+  idx = (idx + 1) % order.length;
+  if (idx === 0 && shuffled) shuffle(order);
+  document.getElementById('timer-fill').style.width = '0%';
+  showCard();
+}
+
+function togglePause() {
+  paused = !paused;
+  const btn = document.getElementById('btn-pause');
+  btn.textContent = paused ? 'Resume' : 'Pause';
+  btn.classList.toggle('active', paused);
+  if (!paused) {
+    timerStart = Date.now() - (timerDuration - (timerDuration - (Date.now() - timerStart)));
+  }
+}
+
+function goNext() {
+  clearInterval(timer);
+  document.getElementById('timer-fill').style.width = '0%';
+  advance();
+}
+
+function goBack() {
+  clearInterval(timer);
+  document.getElementById('timer-fill').style.width = '0%';
+  idx = (idx - 1 + order.length) % order.length;
+  showCard();
+}
+
+function toggleShuffle() {
+  shuffled = !shuffled;
+  document.getElementById('btn-shuffle').textContent = shuffled ? 'Shuffle: On' : 'Shuffle: Off';
+  buildOrder();
+  idx = 0;
+  clearInterval(timer);
+  document.getElementById('timer-fill').style.width = '0%';
+  showCard();
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('btn-sound').textContent = soundOn ? 'Sound: On' : 'Sound: Off';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ') { e.preventDefault(); togglePause(); }
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goBack();
+});
+
+buildOrder();
+initVoice();
+showCard();
+</script>
+</body>
+</html>

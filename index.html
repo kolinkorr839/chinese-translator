@@ -3,518 +3,492 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#1d1d1f">
-<title>Chinese Translator</title>
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3/dist/index.js"></script>
+<title>Mandarin Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #f5f5f7;
-    color: #1d1d1f;
-    min-height: 100vh;
+:root {
+  --rice-paper: #F5F0E8;
+  --ink: #1a1a2e;
+  --vermillion: #C41E3A;
+  --ink-wash: #6B7B8D;
+  --warm-highlight: rgba(196, 30, 58, 0.06);
+  --active-highlight: rgba(196, 30, 58, 0.10);
+  --sidebar-width: 220px;
+}
+
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC',
+    'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: var(--rice-paper);
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    );
+  color: var(--ink);
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  animation: pageLoad 0.6s ease-out;
+}
+
+@keyframes pageLoad {
+  from { opacity: 0; }
+  to { opacity: 1; }
+
+}
+
+/* -- Sidebar --------------------------------- */
+
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--rice-paper);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  border-right: 1px solid rgba(26, 26, 46, 0.08);
+  overflow-y: auto;
+  position: relative;
+  z-index: 200;
+  transition: left 0.3s ease;
+}
+
+/* Brand */
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 28px 16px 20px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.brand:hover { opacity: 0.75; }
+
+.brand-character {
+  font-size: 52px;
+  line-height: 1;
+}
+
+.brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 0.3px;
+  margin-top: 6px;
+}
+
+.brand-subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--ink-wash);
+  margin-top: 2px;
+}
+
+/* Section divider */
+.section-divider {
+  height: 1px;
+  margin: 4px 20px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(26, 26, 46, 0.12) 50%,
+    transparent 100%
+  );
+}
+
+/* Section label */
+.section-label {
+  font-family: 'Crimson Pro', serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--ink-wash);
+  padding: 12px 20px 6px;
+  user-select: none;
+}
+
+/* Nav group */
+.nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 8px;
+}
+
+/* Nav item */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 4px;
+  border-left: 3px solid transparent;
+  font-family: 'Crimson Pro', serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  text-align: left;
+  width: 100%;
+  transition: all 0.15s ease;
+  line-height: 1.3;
+}
+
+.nav-item:hover {
+  background: var(--warm-highlight);
+}
+
+.nav-item:hover .nav-icon {
+  opacity: 1;
+}
+
+.nav-item.active {
+  background: var(--active-highlight);
+  border-left-color: var(--vermillion);
+  font-weight: 600;
+}
+
+.nav-item.active .nav-icon {
+  opacity: 1;
+}
+
+.nav-icon {
+  font-size: 16px;
+  color: var(--vermillion);
+  opacity: 0.6;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+  font-family: "PingFang TC", "Noto Serif TC",
+    "Noto Sans TC", "Microsoft YaHei", serif;
+  transition: opacity 0.15s ease;
+}
+
+.nav-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 20px 16px 16px;
+  display: flex;
+  justify-content: center;
+  opacity: 0.08;
+}
+
+.sidebar-footer svg {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+}
+
+/* -- Content area ---------------------------- */
+
+.content {
+  flex: 1;
+  position: relative;
+  background: #fff;
+  margin: 12px 12px 12px 0;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.04),
+    0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+}
+
+/* -- Hamburger ------------------------------- */
+
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 300;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 6px;
+  background: var(--rice-paper);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+}
+
+.hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 1px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* -- Overlay --------------------------------- */
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 150;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.overlay.active {
+  display: block;
+}
+
+.overlay.visible {
+  opacity: 1;
+}
+
+/* -- Responsive ------------------------------ */
+
+@media (max-width: 768px) {
+  .hamburger {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
   }
 
-  .container {
-    max-width: 900px;
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    width: var(--sidebar-width);
+    z-index: 200;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .content {
     width: 100%;
+    margin: 0;
+    border-radius: 0;
   }
-
-  .offline-banner {
-    display: none;
-    background: #ff9500;
-    color: #fff;
-    text-align: center;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    margin-bottom: 16px;
-  }
-
-  .columns {
-    display: flex;
-    gap: 24px;
-    justify-content: center;
-    align-items: flex-start;
-  }
-
-  .column {
-    flex: 1;
-    max-width: 260px;
-    text-align: center;
-  }
-
-  .column-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #86868b;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 8px;
-  }
-
-  .card {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    padding: 24px 16px;
-    min-height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: box-shadow 0.2s;
-  }
-
-  .card:hover {
-    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
-  }
-
-  .card-input {
-    cursor: text;
-  }
-
-  #english-input {
-    width: 100%;
-    border: none;
-    outline: none;
-    font-size: 20px;
-    text-align: center;
-    background: transparent;
-    color: #1d1d1f;
-    font-family: inherit;
-  }
-
-  #english-input::placeholder {
-    color: #c7c7cc;
-  }
-
-  .chinese-text {
-    font-size: 40px;
-    line-height: 1.3;
-    min-height: 52px;
-    color: #1d1d1f;
-  }
-
-  .pinyin {
-    font-size: 14px;
-    color: #34c759;
-    margin-top: 10px;
-    min-height: 20px;
-    letter-spacing: 0.3px;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
-
-  .pinyin:hover {
-    color: #248a3d;
-  }
-
-  .breakdown {
-    margin-top: 40px;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    padding: 24px 28px;
-    display: none;
-  }
-
-  .breakdown-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: #86868b;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 16px;
-  }
-
-  .breakdown-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f2;
-    font-size: 16px;
-  }
-
-  .breakdown-item:last-child {
-    border-bottom: none;
-  }
-
-  .breakdown-char {
-    font-size: 28px;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .breakdown-arrow {
-    color: #86868b;
-    font-size: 20px;
-  }
-
-  .breakdown-pinyin {
-    color: #1d1d1f;
-    font-size: 14px;
-    margin-left: 4px;
-  }
-
-  .breakdown-meaning {
-    color: #515154;
-  }
-
-  .components {
-    margin-left: 40px;
-    padding: 8px 0 4px;
-  }
-
-  .component-item {
-    font-size: 14px;
-    color: #515154;
-    padding: 4px 0;
-  }
-
-  .component-char {
-    font-size: 22px;
-  }
-
-  .component-arrow {
-    color: #86868b;
-  }
-
-  .component-meaning {
-    color: #86868b;
-  }
-
-  .loading {
-    color: #86868b;
-    font-size: 14px;
-    animation: pulse 1.5s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  @media (max-width: 700px) {
-    .columns { flex-direction: column; align-items: center; }
-    .column { max-width: 100%; width: 100%; }
-  }
+}
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="offline-banner" id="offline-banner">Offline - translation requires internet</div>
-  <div class="columns">
-    <div class="column">
-      <div class="column-label">English</div>
-      <form id="translate-form" class="card card-input" onclick="document.getElementById('english-input').focus()">
-        <input type="text" id="english-input" placeholder="Type a word..." autofocus enterkeyhint="search">
-      </form>
-    </div>
-    <div class="column">
-      <div class="column-label">Traditional</div>
-      <div class="card">
-        <div class="chinese-text" id="traditional-text"></div>
-      </div>
-      <div class="pinyin" id="traditional-pinyin"></div>
-    </div>
-    <div class="column">
-      <div class="column-label">Simplified</div>
-      <div class="card">
-        <div class="chinese-text" id="simplified-text"></div>
-      </div>
-      <div class="pinyin" id="simplified-pinyin"></div>
-    </div>
+
+<!-- Hamburger (mobile) -->
+<button class="hamburger" id="hamburger">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+
+<!-- Overlay (mobile) -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+
+  <div class="brand" id="brand">
+    <span class="brand-character">&#x1F42F;</span>
+    <span class="brand-name">Mandarin Hub</span>
   </div>
-  <div class="breakdown" id="breakdown">
-    <div class="breakdown-title">Character Breakdown</div>
-    <div id="breakdown-content"></div>
+
+  <div class="section-divider"></div>
+
+  <!-- Practice -->
+  <div class="section-label">Practice</div>
+  <div class="nav-group">
+    <button class="nav-item" data-page="mandarin-flashcards.html">
+      <span class="nav-icon">闪</span>
+      <span class="nav-label">Flashcards</span>
+    </button>
+    <button class="nav-item" data-page="mandarin-flashcards-2.html">
+      <span class="nav-icon">识</span>
+      <span class="nav-label">Recall Mode</span>
+    </button>
   </div>
-</div>
+
+  <div class="section-divider"></div>
+
+  <!-- Pronunciation -->
+  <div class="section-label">Pronunciation</div>
+  <div class="nav-group">
+    <button class="nav-item" data-page="pinyin-chart.html">
+      <span class="nav-icon">拼</span>
+      <span class="nav-label">Pinyin Chart</span>
+    </button>
+    <button class="nav-item" data-page="Pinyin.html">
+      <span class="nav-icon">音</span>
+      <span class="nav-label">Pinyin Guide</span>
+    </button>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Grammar -->
+  <div class="section-label">Grammar</div>
+  <div class="nav-group">
+    <button class="nav-item" data-page="grammar-guide.html">
+      <span class="nav-icon">文</span>
+      <span class="nav-label">Grammar Guide</span>
+    </button>
+    <button class="nav-item" data-page="grammar-flashcards.html">
+      <span class="nav-icon">练</span>
+      <span class="nav-label">Grammar Flashcards</span>
+    </button>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Courses -->
+  <div class="section-label">Courses</div>
+  <div class="nav-group">
+    <button class="nav-item" data-page="mandarin-in-14-days.html">
+      <span class="nav-icon">课</span>
+      <span class="nav-label">14-Day Course</span>
+    </button>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Simplified / Traditional -->
+  <div class="section-label">Simplified / Traditional</div>
+  <div class="nav-group">
+    <button class="nav-item" data-page="simplified_to_traditional_guide.html">
+      <span class="nav-icon">繁</span>
+      <span class="nav-label">S/T Guide</span>
+    </button>
+    <button class="nav-item" data-page="simplified_to_traditional_cheat_sheet.html">
+      <span class="nav-icon">表</span>
+      <span class="nav-label">S/T Cheat Sheet</span>
+    </button>
+    <button class="nav-item" data-page="simplified_traditional_flashcards.html">
+      <span class="nav-icon">卡</span>
+      <span class="nav-label">S/T Flashcards</span>
+    </button>
+  </div>
+
+  <!-- Footer with ink wash mountains -->
+  <div class="sidebar-footer">
+    <svg viewBox="0 0 180 60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 60 L0 45 Q15 20 30 35 Q40 15 55 30 Q65 10 80 25 Q90 5 105 20 Q115 8 130 22 Q140 12 155 28 Q165 18 180 35 L180 60 Z" fill="#1a1a2e"/>
+      <path d="M0 60 L0 50 Q20 30 40 42 Q55 25 70 38 Q85 20 100 33 Q115 22 130 36 Q145 28 160 40 Q170 32 180 42 L180 60 Z" fill="#1a1a2e" opacity="0.5"/>
+    </svg>
+  </div>
+
+</nav>
+
+<!-- Content -->
+<div class="content" id="content"></div>
 
 <script>
-const DECOMPOSITION = {
-  '說': { components: [['言','讠','speech, words'],['兌','兑','exchange']], type: 'lr' },
-  '話': { components: [['言','讠','speech, words'],['舌','舌','tongue']], type: 'lr' },
-  '語': { components: [['言','讠','speech, words'],['吾','吾','I, my']], type: 'lr' },
-  '請': { components: [['言','讠','speech, words'],['青','青','blue, green']], type: 'lr' },
-  '讀': { components: [['言','讠','speech, words'],['賣','卖','sell']], type: 'lr' },
-  '認': { components: [['言','讠','speech, words'],['忍','忍','endure']], type: 'lr' },
-  '記': { components: [['言','讠','speech, words'],['己','己','self']], type: 'lr' },
-  '許': { components: [['言','讠','speech, words'],['午','午','noon']], type: 'lr' },
-  '設': { components: [['言','讠','speech, words'],['殳','殳','weapon']], type: 'lr' },
-  '試': { components: [['言','讠','speech, words'],['式','式','style']], type: 'lr' },
-  '課': { components: [['言','讠','speech, words'],['果','果','fruit']], type: 'lr' },
-  '調': { components: [['言','讠','speech, words'],['周','周','cycle']], type: 'lr' },
-  '論': { components: [['言','讠','speech, words'],['侖','仑','logical']], type: 'lr' },
-  '議': { components: [['言','讠','speech, words'],['義','义','righteousness']], type: 'lr' },
-  '頭': { components: [['豆','豆','bean'],['頁','页','page, head']], type: 'lr' },
-  '髮': { components: [['髟','髟','long hair'],['犮','犮','remove']], type: 'tb' },
-  '門': { components: [['門','门','gate']], type: 'single' },
-  '開': { components: [['門','门','gate'],['开','开','open']], type: 'tb' },
-  '關': { components: [['門','门','gate'],['丱','丱','young']], type: 'surround' },
-  '閱': { components: [['門','门','gate'],['兌','兑','exchange']], type: 'surround' },
-  '間': { components: [['門','门','gate'],['日','日','sun']], type: 'surround' },
-  '問': { components: [['門','门','gate'],['口','口','mouth']], type: 'surround' },
-  '聞': { components: [['門','门','gate'],['耳','耳','ear']], type: 'surround' },
-  '車': { components: [['車','车','vehicle']], type: 'single' },
-  '馬': { components: [['馬','马','horse']], type: 'single' },
-  '魚': { components: [['魚','鱼','fish']], type: 'single' },
-  '鳥': { components: [['鳥','鸟','bird']], type: 'single' },
-  '龍': { components: [['龍','龙','dragon']], type: 'single' },
-  '風': { components: [['風','风','wind']], type: 'single' },
-  '飛': { components: [['飛','飞','fly']], type: 'single' },
-  '見': { components: [['見','见','see']], type: 'single' },
-  '貝': { components: [['貝','贝','shell, money']], type: 'single' },
-  '長': { components: [['長','长','long']], type: 'single' },
-  '東': { components: [['東','东','east']], type: 'single' },
-  '書': { components: [['書','书','book, write']], type: 'single' },
-  '學': { components: [['學','学','study']], type: 'single' },
-  '國': { components: [['囗','囗','enclosure'],['或','或','or, nation']], type: 'surround' },
-  '電': { components: [['雨','雨','rain'],['电','电','electric']], type: 'tb' },
-  '時': { components: [['日','日','sun, time'],['寺','寺','temple']], type: 'lr' },
-  '會': { components: [['會','会','meet, able']], type: 'single' },
-  '實': { components: [['宀','宀','roof'],['貫','贯','pierce']], type: 'tb' },
-  '體': { components: [['骨','骨','bone'],['豊','丰','abundant']], type: 'lr' },
-  '廣': { components: [['广','广','cliff, wide'],['黃','黄','yellow']], type: 'surround' },
-  '業': { components: [['業','业','business']], type: 'single' },
-  '來': { components: [['來','来','come']], type: 'single' },
-  '聽': { components: [['耳','耳','ear'],['壬','壬','endure'],['心','心','heart']], type: 'lr' },
-  '氣': { components: [['气','气','vapor'],['米','米','rice']], type: 'surround' },
-  '進': { components: [['辶','辶','walk'],['隹','隹','short-tailed bird']], type: 'surround' },
-  '過': { components: [['辶','辶','walk'],['咼','呙','mouth, slant']], type: 'surround' },
-  '對': { components: [['對','对','correct, pair']], type: 'single' },
-  '從': { components: [['從','从','follow']], type: 'single' },
-  '們': { components: [['亻','亻','person'],['門','门','gate']], type: 'lr' },
-  '這': { components: [['辶','辶','walk'],['言','言','speech']], type: 'surround' },
-  '無': { components: [['無','无','without']], type: 'single' },
-  '還': { components: [['辶','辶','walk'],['睘','睘','stare']], type: 'surround' },
-  '環': { components: [['王','王','jade'],['睘','睘','surround']], type: 'lr' },
-  '愛': { components: [['爫','爫','claw'],['冖','冖','cover'],['心','心','heart'],['夂','夂','go']], type: 'tb' },
-  '飯': { components: [['食','饣','eat, food'],['反','反','reverse']], type: 'lr' },
-  '銀': { components: [['金','钅','metal'],['艮','艮','tough']], type: 'lr' },
-  '鐵': { components: [['金','钅','metal'],['鉄','铁','iron']], type: 'lr' },
-  '錢': { components: [['金','钅','metal'],['戔','戋','small']], type: 'lr' },
-  '紅': { components: [['糹','纟','silk, thread'],['工','工','work']], type: 'lr' },
-  '給': { components: [['糹','纟','silk, thread'],['合','合','combine']], type: 'lr' },
-  '線': { components: [['糹','纟','silk, thread'],['泉','泉','spring']], type: 'lr' },
-  '經': { components: [['糹','纟','silk, thread'],['巠','巠','stream']], type: 'lr' },
-  '紙': { components: [['糹','纟','silk, thread'],['氏','氏','clan']], type: 'lr' },
-  '買': { components: [['買','买','buy']], type: 'single' },
-  '賣': { components: [['賣','卖','sell']], type: 'single' },
-  '貓': { components: [['豸','豸','beast'],['苗','苗','sprout']], type: 'lr' },
-  '機': { components: [['木','木','tree'],['幾','几','how many']], type: 'lr' },
-  '雞': { components: [['奚','奚','where'],['隹','隹','short-tailed bird']], type: 'lr' },
-  '漢': { components: [['氵','氵','water'],['廿','廿','twenty'],['中','中','middle'],['口','口','mouth']], type: 'lr' },
-  '寫': { components: [['宀','宀','roof'],['舄','舄','shoe']], type: 'tb' },
-  '華': { components: [['華','华','magnificent, China']], type: 'single' },
-  '麵': { components: [['麥','麦','wheat'],['面','面','face, surface']], type: 'lr' },
-  '麥': { components: [['麥','麦','wheat']], type: 'single' },
-};
+const content = document.getElementById('content');
+const tabs = document.querySelectorAll('.nav-item');
+const iframes = {};
+let activePage = null;
 
-function isChinese(text) {
-  return /[一-鿿㐀-䶿]/.test(text);
-}
+const HOME = 'mandarin_translation.html';
 
-async function googleTranslate(text, sourceLang, targetLang) {
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
-  const resp = await fetch(url);
-  const data = await resp.json();
-  return data[0].map(s => s[0]).join('');
-}
+function loadPage(page) {
+  tabs.forEach(t => t.classList.toggle('active', t.dataset.page === page && page !== HOME));
 
-function getPinyin(chinese) {
-  if (typeof pinyinPro === 'undefined') return '';
-  return pinyinPro.pinyin(chinese, { toneType: 'num', type: 'array' }).join(' ');
-}
-
-function speak(chinese, el) {
-  if (el) {
-    el.style.color = '#248a3d';
-    setTimeout(() => el.style.color = '', 300);
+  if (activePage && iframes[activePage]) {
+    iframes[activePage].style.display = 'none';
   }
-  const voices = speechSynthesis.getVoices();
-  const femaleVoice = voices.find(v => v.lang.startsWith('zh') && /ting-ting|female|lili|meijia/i.test(v.name))
-    || voices.find(v => v.lang.startsWith('zh'));
-  if (femaleVoice) {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(chinese);
-    u.lang = 'zh-CN';
-    u.rate = 0.8;
-    u.voice = femaleVoice;
-    speechSynthesis.speak(u);
-  } else {
-    const audio = new Audio(
-      `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`
-    );
-    audio.play().catch(() => {});
+
+  if (!iframes[page]) {
+    const f = document.createElement('iframe');
+    f.src = page;
+    content.appendChild(f);
+    iframes[page] = f;
+  }
+
+  iframes[page].style.display = 'block';
+  activePage = page;
+  localStorage.setItem('mandarin-hub-last', page);
+
+  // Close sidebar on mobile
+  if (window.innerWidth <= 768) {
+    closeSidebar();
   }
 }
 
-async function getCharMeaning(char) {
-  try {
-    const result = await googleTranslate(char, 'zh-CN', 'en');
-    return result.toLowerCase();
-  } catch {
-    return '';
-  }
+// Brand click -> HOME
+const brand = document.querySelector('.brand');
+brand.addEventListener('click', () => loadPage(HOME));
+
+// Tab clicks
+tabs.forEach(tab => tab.addEventListener('click', () => loadPage(tab.dataset.page)));
+
+// Mobile menu
+const hamburger = document.getElementById('hamburger');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+
+function openSidebar() {
+  sidebar.classList.add('open');
+  overlay.classList.add('active');
+  hamburger.classList.add('active');
+  requestAnimationFrame(() => overlay.classList.add('visible'));
 }
 
-async function translate() {
-  const input = document.getElementById('english-input').value.trim();
-  if (!input) return;
-
-  const tradEl = document.getElementById('traditional-text');
-  const simpEl = document.getElementById('simplified-text');
-  const tradPinEl = document.getElementById('traditional-pinyin');
-  const simpPinEl = document.getElementById('simplified-pinyin');
-  const breakdownEl = document.getElementById('breakdown');
-  const breakdownContent = document.getElementById('breakdown-content');
-
-  tradEl.innerHTML = '<span class="loading">...</span>';
-  simpEl.innerHTML = '<span class="loading">...</span>';
-  tradPinEl.textContent = '';
-  simpPinEl.textContent = '';
-  breakdownEl.style.display = 'none';
-  breakdownContent.innerHTML = '';
-
-  try {
-    let traditional, simplified, english;
-
-    if (isChinese(input)) {
-      const asSimplified = await googleTranslate(input, 'zh-TW', 'zh-CN');
-      const asTraditional = await googleTranslate(input, 'zh-CN', 'zh-TW');
-
-      if (asSimplified === input || input === asTraditional) {
-        traditional = asTraditional === input ? input : asTraditional;
-        simplified = asSimplified;
-      } else {
-        traditional = asTraditional;
-        simplified = asSimplified;
-      }
-
-      english = await googleTranslate(input, 'auto', 'en');
-      document.getElementById('english-input').value = english.toLowerCase();
-    } else {
-      english = input;
-      traditional = await googleTranslate(input, 'en', 'zh-TW');
-      simplified = await googleTranslate(traditional, 'zh-TW', 'zh-CN');
-    }
-
-    tradEl.textContent = traditional;
-    simpEl.textContent = simplified;
-
-    tradPinEl.textContent = getPinyin(traditional);
-    tradPinEl.onclick = () => speak(traditional, tradPinEl);
-    simpPinEl.textContent = getPinyin(simplified);
-    simpPinEl.onclick = () => speak(simplified, simpPinEl);
-
-    await buildBreakdown(traditional, simplified, breakdownContent);
-    breakdownEl.style.display = 'block';
-
-  } catch (err) {
-    tradEl.textContent = '';
-    simpEl.textContent = '';
-    console.error('Translation error:', err);
-  }
+function closeSidebar() {
+  sidebar.classList.remove('open');
+  overlay.classList.remove('visible');
+  hamburger.classList.remove('active');
+  setTimeout(() => overlay.classList.remove('active'), 250);
 }
 
-async function buildBreakdown(traditional, simplified, container) {
-  const tradChars = [...traditional];
-  const simpChars = [...simplified];
-  const isSingleChar = tradChars.length === 1;
-
-  for (let i = 0; i < tradChars.length; i++) {
-    const tc = tradChars[i];
-    const sc = simpChars[i] || tc;
-    const pinyin = getPinyin(sc);
-    const meaning = await getCharMeaning(sc);
-    const isDifferent = tc !== sc;
-
-    const item = document.createElement('div');
-    item.className = 'breakdown-item';
-
-    let charDisplay;
-    if (isDifferent) {
-      charDisplay = `<span class="breakdown-char">${tc} <span class="breakdown-arrow">&rarr;</span> ${sc}</span>`;
-    } else {
-      charDisplay = `<span class="breakdown-char">${tc}</span>`;
-    }
-
-    item.innerHTML = `
-      ${charDisplay}
-      <span class="breakdown-pinyin">${pinyin}</span>
-      <span class="breakdown-meaning">= ${meaning}</span>
-    `;
-    container.appendChild(item);
-
-    if (isSingleChar && DECOMPOSITION[tc]) {
-      const decomp = DECOMPOSITION[tc];
-      const compDiv = document.createElement('div');
-      compDiv.className = 'components';
-
-      for (const [tradComp, simpComp, compMeaning] of decomp.components) {
-        const compItem = document.createElement('div');
-        compItem.className = 'component-item';
-
-        if (tradComp !== simpComp) {
-          compItem.innerHTML = `
-            <span class="component-char">${tradComp}</span>
-            <span class="component-arrow">&rarr;</span>
-            <span class="component-char">${simpComp}</span>
-            <span class="component-meaning">= ${compMeaning}</span>
-          `;
-        } else {
-          compItem.innerHTML = `
-            <span class="component-char">${tradComp}</span>
-            <span class="component-meaning">= ${compMeaning}</span>
-          `;
-        }
-        compDiv.appendChild(compItem);
-      }
-      container.appendChild(compDiv);
-    }
-  }
-}
-
-let lastInput = '';
-function translateIfNew() {
-  const val = document.getElementById('english-input').value.trim();
-  if (val && val !== lastInput) {
-    lastInput = val;
-    translate();
-  }
-}
-
-document.getElementById('translate-form').addEventListener('submit', (e) => {
-  e.preventDefault();
-  translateIfNew();
+hamburger.addEventListener('click', () => {
+  sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
 });
 
-document.getElementById('english-input').addEventListener('change', () => {
-  translateIfNew();
-});
+overlay.addEventListener('click', closeSidebar);
 
-window.addEventListener('online', () => {
-  document.getElementById('offline-banner').style.display = 'none';
-});
-window.addEventListener('offline', () => {
-  document.getElementById('offline-banner').style.display = 'block';
-});
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js');
-}
+// Restore last page
+const lastPage = localStorage.getItem('mandarin-hub-last');
+loadPage(lastPage || HOME);
 </script>
+
 </body>
 </html>

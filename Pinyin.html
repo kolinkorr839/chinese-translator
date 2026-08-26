@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yoyo Chinese Pinyin Cheat Sheet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #C41E3A;
+            --secondary-color: #FAF6EE;
+            --dark-color: #1a1a2e;
+            --accent-color: #B8860B;
+            --border-color: #E8E0D4;
+            --warm-gray: #6B7B8D;
+        }
+
+        body {
+            font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            background-color: #F5F0E8;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(184, 134, 11, 0.03) 40px,
+                    rgba(184, 134, 11, 0.03) 41px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(184, 134, 11, 0.03) 40px,
+                    rgba(184, 134, 11, 0.03) 41px
+                );
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            margin: 0;
+            background: #FFFDF8;
+            padding: 30px 4rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(26, 26, 46, 0.08), 0 1px 6px rgba(184, 134, 11, 0.06);
+            border: 1px solid #E8E0D4;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 5px 0;
+            font-size: 2rem;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin: 0;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+        }
+
+        .disclaimer {
+            background-color: #FDF8EE;
+            border-left: 4px solid var(--accent-color);
+            padding: 12px 16px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+            border-radius: 0 4px 4px 0;
+            color: #5A4A2A;
+        }
+
+        .disclaimer a {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .section-title {
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-weight: 700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-size: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        tr:nth-child(even) {
+            background-color: #FAF6EE;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #FFFDF8;
+        }
+
+        tr:hover {
+            background-color: #F0E8D8;
+        }
+
+        .pinyin {
+            font-weight: bold;
+            color: var(--primary-color);
+            width: 30%;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-size: 1.05rem;
+        }
+
+        .english {
+            color: var(--dark-color);
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+            background-color: var(--secondary-color);
+            border-radius: 6px;
+            border-top: 3px solid var(--primary-color);
+        }
+
+        footer h2 {
+            margin: 0 0 5px 0;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        footer p {
+            margin: 5px 0;
+            color: var(--dark-color);
+        }
+
+        footer a {
+            color: var(--accent-color);
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Yoyo Chinese</h1>
+        <p class="subtitle">Pinyin Pronunciation Cheat Sheet</p>
+    </header>
+
+    <div class="disclaimer">
+        Here is how each Mandarin sound is written in pinyin, with its approximate English equivalent. Remember, they are only <strong>APPROXIMATE</strong> equivalent sounds. Please refer to the Pinyin series on <a href="https://www.yoyochinese.com" target="_blank">www.yoyochinese.com</a> for correct pronunciation.
+    </div>
+
+    <div class="grid-container">
+        <section>
+            <h2 class="section-title">Consonants</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pinyin</th>
+                        <th>English Equivalent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="pinyin">b</td><td class="english">bear</td></tr>
+                    <tr><td class="pinyin">p</td><td class="english">poor</td></tr>
+                    <tr><td class="pinyin">m</td><td class="english">more</td></tr>
+                    <tr><td class="pinyin">f</td><td class="english">fake</td></tr>
+                    <tr><td class="pinyin">d</td><td class="english">dare</td></tr>
+                    <tr><td class="pinyin">t</td><td class="english">take</td></tr>
+                    <tr><td class="pinyin">n</td><td class="english">now</td></tr>
+                    <tr><td class="pinyin">l</td><td class="english">learn</td></tr>
+                    <tr><td class="pinyin">g</td><td class="english">get</td></tr>
+                    <tr><td class="pinyin">k</td><td class="english">king</td></tr>
+                    <tr><td class="pinyin">h</td><td class="english">help</td></tr>
+                    <tr><td class="pinyin">j</td><td class="english">jeep</td></tr>
+                    <tr><td class="pinyin">q</td><td class="english">cheese</td></tr>
+                    <tr><td class="pinyin">x</td><td class="english">sheep</td></tr>
+                    <tr><td class="pinyin">zh</td><td class="english">judge</td></tr>
+                    <tr><td class="pinyin">ch</td><td class="english">church</td></tr>
+                    <tr><td class="pinyin">sh</td><td class="english">shhhh</td></tr>
+                    <tr><td class="pinyin">r</td><td class="english">Jacque, Asia, measure</td></tr>
+                    <tr><td class="pinyin">z</td><td class="english">yards</td></tr>
+                    <tr><td class="pinyin">c</td><td class="english">its</td></tr>
+                    <tr><td class="pinyin">s</td><td class="english">sing</td></tr>
+                    <tr><td class="pinyin">w</td><td class="english">want</td></tr>
+                    <tr><td class="pinyin">y</td><td class="english">yes</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2 class="section-title">Vowels</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pinyin</th>
+                        <th>English Equivalent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="pinyin">a</td><td class="english">father</td></tr>
+                    <tr><td class="pinyin">ai</td><td class="english">my</td></tr>
+                    <tr><td class="pinyin">an</td><td class="english">sun</td></tr>
+                    <tr><td class="pinyin">ang</td><td class="english">ahng</td></tr>
+                    <tr><td class="pinyin">ao</td><td class="english">pout</td></tr>
+                    <tr><td class="pinyin">e</td><td class="english">serve</td></tr>
+                    <tr><td class="pinyin">ei</td><td class="english">day</td></tr>
+                    <tr><td class="pinyin">en</td><td class="english">taken</td></tr>
+                    <tr><td class="pinyin">eng</td><td class="english">mung or erng</td></tr>
+                    <tr><td class="pinyin">er</td><td class="english">are</td></tr>
+                    <tr><td class="pinyin">i</td><td class="english">see</td></tr>
+                    <tr><td class="pinyin">ia</td><td class="english">yah</td></tr>
+                    <tr><td class="pinyin">iao</td><td class="english">meow</td></tr>
+                    <tr><td class="pinyin">ian</td><td class="english">yen</td></tr>
+                    <tr><td class="pinyin">iang</td><td class="english">young</td></tr>
+                    <tr><td class="pinyin">ie</td><td class="english">yes</td></tr>
+                    <tr><td class="pinyin">in</td><td class="english">sin</td></tr>
+                    <tr><td class="pinyin">ing</td><td class="english">eeng</td></tr>
+                    <tr><td class="pinyin">iong</td><td class="english">ee + own</td></tr>
+                    <tr><td class="pinyin">iu (iou)</td><td class="english">yo-yo</td></tr>
+                    <tr><td class="pinyin">o</td><td class="english">awesome (British accent)</td></tr>
+                    <tr><td class="pinyin">ou</td><td class="english">boat</td></tr>
+                    <tr><td class="pinyin">ong</td><td class="english">loan</td></tr>
+                    <tr><td class="pinyin">u</td><td class="english">shoot</td></tr>
+                    <tr><td class="pinyin">ua</td><td class="english">suave</td></tr>
+                    <tr><td class="pinyin">uai</td><td class="english">wide</td></tr>
+                    <tr><td class="pinyin">uan</td><td class="english">won</td></tr>
+                    <tr><td class="pinyin">uang</td><td class="english">oo + ahng</td></tr>
+                    <tr><td class="pinyin">ui (uei)</td><td class="english">way</td></tr>
+                    <tr><td class="pinyin">un (uen)</td><td class="english">oo + taken</td></tr>
+                    <tr><td class="pinyin">uo</td><td class="english">wok</td></tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <footer>
+        <h2>YOYO CHINESE</h2>
+        <p>Chinese taught in plain English</p>
+        <p>For complete courses on Chinese pinyin and pronunciation please visit <a href="https://www.yoyochinese.com" target="_blank">www.yoyochinese.com</a></p>
+    </footer>
+</div>
+
+</body>
+</html>
