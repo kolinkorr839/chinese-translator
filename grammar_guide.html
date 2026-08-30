@@ -278,6 +278,12 @@ body {
   display: grid;
   grid-template-columns: 28px 1fr;
   gap: 0 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.example-item:hover {
+  background: rgba(196, 30, 58, 0.04);
 }
 
 .example-item:last-child {
@@ -306,13 +312,13 @@ body {
   font-weight: 500;
 }
 
-.example-chinese .trad { }
+.example-chinese .simp { }
 .example-chinese .sep {
   color: var(--warm-border);
   margin: 0 6px;
   font-weight: 400;
 }
-.example-chinese .simp {
+.example-chinese .trad {
   color: var(--ink);
   opacity: 0.65;
 }
@@ -461,16 +467,16 @@ html { scroll-behavior: smooth; }
       <li><a href="#pattern-3">了 Particle <span class="toc-chinese">Completed action &amp; change of state</span></a></li>
       <li><a href="#pattern-4">在 + Verb <span class="toc-chinese">Ongoing action</span></a></li>
       <li><a href="#pattern-5">过 Particle <span class="toc-chinese">Past experience</span></a></li>
-      <li><a href="#pattern-6">想 / 要 / 會 / 能 / 可以 <span class="toc-chinese">The 5 "can/want" words</span></a></li>
+      <li><a href="#pattern-6">想 / 要 / 会 / 能 / 可以 <span class="toc-chinese">The 5 "can/want" words</span></a></li>
       <li><a href="#pattern-7">把 Construction <span class="toc-chinese">Disposal / doing something to an object</span></a></li>
       <li><a href="#pattern-8">被 Passive <span class="toc-chinese">Something was done to the subject</span></a></li>
       <li><a href="#pattern-9">的 Particle <span class="toc-chinese">Possession &amp; description</span></a></li>
       <li><a href="#pattern-10">得 Complement <span class="toc-chinese">Degree &amp; result</span></a></li>
       <li><a href="#pattern-11">地 Particle <span class="toc-chinese">Adverb marker</span></a></li>
       <li><a href="#pattern-12">比 Comparisons <span class="toc-chinese">A is more X than B</span></a></li>
-      <li><a href="#pattern-13">Clause Connectors <span class="toc-chinese">因為...所以, 雖然...但是, 如果...就</span></a></li>
-      <li><a href="#pattern-14">越來越 <span class="toc-chinese">More and more</span></a></li>
-      <li><a href="#pattern-15">一邊...一邊 <span class="toc-chinese">Doing two things at once</span></a></li>
+      <li><a href="#pattern-13">Clause Connectors <span class="toc-chinese">因为...所以, 虽然...但是, 如果...就</span></a></li>
+      <li><a href="#pattern-14">越来越 <span class="toc-chinese">More and more</span></a></li>
+      <li><a href="#pattern-15">一边...一边 <span class="toc-chinese">Doing two things at once</span></a></li>
     </ol>
   </nav>
 
@@ -495,7 +501,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我昨天吃了餃子</span><span class="sep">|</span><span class="simp">我昨天吃了饺子</span></div>
+          <div class="example-chinese"><span class="simp">我昨天吃了饺子</span><span class="sep">|</span><span class="trad">我昨天吃了餃子</span></div>
           <div class="example-pinyin">w&#466; zu&#243;ti&#257;n ch&#299; le ji&#462;ozi</div>
           <div class="example-english">"I ate dumplings yesterday"</div>
         </div>
@@ -503,7 +509,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她每天喝茶</span><span class="sep">|</span><span class="simp">她每天喝茶</span></div>
+          <div class="example-chinese"><span class="simp">她每天喝茶</span><span class="sep">|</span><span class="trad">她每天喝茶</span></div>
           <div class="example-pinyin">t&#257; m&#283;iti&#257;n h&#275; ch&#225;</div>
           <div class="example-english">"She drinks tea every day"</div>
         </div>
@@ -511,7 +517,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我們明天去機場</span><span class="sep">|</span><span class="simp">我们明天去机场</span></div>
+          <div class="example-chinese"><span class="simp">我们明天去机场</span><span class="sep">|</span><span class="trad">我們明天去機場</span></div>
           <div class="example-pinyin">w&#466;men m&#237;ngti&#257;n q&#249; j&#299;ch&#462;ng</div>
           <div class="example-english">"We're going to the airport tomorrow"</div>
         </div>
@@ -519,7 +525,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他昨天晚上看了電影</span><span class="sep">|</span><span class="simp">他昨天晚上看了电影</span></div>
+          <div class="example-chinese"><span class="simp">他昨天晚上看了电影</span><span class="sep">|</span><span class="trad">他昨天晚上看了電影</span></div>
           <div class="example-pinyin">t&#257; zu&#243;ti&#257;n w&#462;nshang k&#224;n le di&#224;ny&#464;ng</div>
           <div class="example-english">"He watched a movie last night"</div>
         </div>
@@ -527,7 +533,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">你今天想吃什麼？</span><span class="sep">|</span><span class="simp">你今天想吃什么？</span></div>
+          <div class="example-chinese"><span class="simp">你今天想吃什么？</span><span class="sep">|</span><span class="trad">你今天想吃什麼？</span></div>
           <div class="example-pinyin">n&#464; j&#299;nti&#257;n xi&#462;ng ch&#299; sh&#233;nme?</div>
           <div class="example-english">"What do you want to eat today?"</div>
         </div>
@@ -561,7 +567,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我是昨天來的</span><span class="sep">|</span><span class="simp">我是昨天来的</span></div>
+          <div class="example-chinese"><span class="simp">我是昨天来的</span><span class="sep">|</span><span class="trad">我是昨天來的</span></div>
           <div class="example-pinyin">w&#466; sh&#236; zu&#243;ti&#257;n l&#225;i de</div>
           <div class="example-english">"I came YESTERDAY" (emphasizing when)</div>
         </div>
@@ -569,7 +575,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她是在台北學中文的</span><span class="sep">|</span><span class="simp">她是在台北学中文的</span></div>
+          <div class="example-chinese"><span class="simp">她是在台北学中文的</span><span class="sep">|</span><span class="trad">她是在台北學中文的</span></div>
           <div class="example-pinyin">t&#257; sh&#236; z&#224;i T&#225;ib&#283;i xu&#233; zh&#333;ngw&#233;n de</div>
           <div class="example-english">"She learned Chinese IN TAIPEI" (where)</div>
         </div>
@@ -577,7 +583,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">你是怎麼來的？</span><span class="sep">|</span><span class="simp">你是怎么来的？</span></div>
+          <div class="example-chinese"><span class="simp">你是怎么来的？</span><span class="sep">|</span><span class="trad">你是怎麼來的？</span></div>
           <div class="example-pinyin">n&#464; sh&#236; z&#283;nme l&#225;i de?</div>
           <div class="example-english">"HOW did you get here?" (how)</div>
         </div>
@@ -585,7 +591,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">這本書是誰買的？</span><span class="sep">|</span><span class="simp">这本书是谁买的？</span></div>
+          <div class="example-chinese"><span class="simp">这本书是谁买的？</span><span class="sep">|</span><span class="trad">這本書是誰買的？</span></div>
           <div class="example-pinyin">zh&#232; b&#283;n sh&#363; sh&#236; sh&#233;i m&#462;i de?</div>
           <div class="example-english">"WHO bought this book?" (who)</div>
         </div>
@@ -593,7 +599,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我是坐高鐵來的</span><span class="sep">|</span><span class="simp">我是坐高铁来的</span></div>
+          <div class="example-chinese"><span class="simp">我是坐高铁来的</span><span class="sep">|</span><span class="trad">我是坐高鐵來的</span></div>
           <div class="example-pinyin">w&#466; sh&#236; zu&#242; g&#257;oti&#283; l&#225;i de</div>
           <div class="example-english">"I came BY high-speed train" (how)</div>
         </div>
@@ -631,7 +637,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我吃了飯</span><span class="sep">|</span><span class="simp">我吃了饭</span></div>
+          <div class="example-chinese"><span class="simp">我吃了饭</span><span class="sep">|</span><span class="trad">我吃了飯</span></div>
           <div class="example-pinyin">w&#466; ch&#299; le f&#224;n</div>
           <div class="example-english">"I ate" (action completed)</div>
         </div>
@@ -639,7 +645,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他買了三本書</span><span class="sep">|</span><span class="simp">他买了三本书</span></div>
+          <div class="example-chinese"><span class="simp">他买了三本书</span><span class="sep">|</span><span class="trad">他買了三本書</span></div>
           <div class="example-pinyin">t&#257; m&#462;i le s&#257;n b&#283;n sh&#363;</div>
           <div class="example-english">"He bought three books"</div>
         </div>
@@ -647,7 +653,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我已經到了</span><span class="sep">|</span><span class="simp">我已经到了</span></div>
+          <div class="example-chinese"><span class="simp">我已经到了</span><span class="sep">|</span><span class="trad">我已經到了</span></div>
           <div class="example-pinyin">w&#466; y&#464;j&#299;ng d&#224;o le</div>
           <div class="example-english">"I've already arrived"</div>
         </div>
@@ -659,7 +665,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">天氣冷了</span><span class="sep">|</span><span class="simp">天气冷了</span></div>
+          <div class="example-chinese"><span class="simp">天气冷了</span><span class="sep">|</span><span class="trad">天氣冷了</span></div>
           <div class="example-pinyin">ti&#257;nq&#236; l&#283;ng le</div>
           <div class="example-english">"It's gotten cold" (it wasn't cold before)</div>
         </div>
@@ -667,7 +673,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我不想吃了</span><span class="sep">|</span><span class="simp">我不想吃了</span></div>
+          <div class="example-chinese"><span class="simp">我不想吃了</span><span class="sep">|</span><span class="trad">我不想吃了</span></div>
           <div class="example-pinyin">w&#466; b&#249; xi&#462;ng ch&#299; le</div>
           <div class="example-english">"I don't want to eat anymore" (I did before, now I don't)</div>
         </div>
@@ -676,7 +682,7 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p>Verb + <code>了</code> = "did it." Sentence + <code>了</code> = "now it's different." When both appear (<code>我吃了飯了</code>), it means "I've eaten now" - completed AND new situation.</p>
+      <p>Verb + <code>了</code> = "did it." Sentence + <code>了</code> = "now it's different." When both appear (<code>我吃了饭了</code>), it means "I've eaten now" - completed AND new situation.</p>
     </div>
   </section>
 
@@ -701,7 +707,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我在吃飯</span><span class="sep">|</span><span class="simp">我在吃饭</span></div>
+          <div class="example-chinese"><span class="simp">我在吃饭</span><span class="sep">|</span><span class="trad">我在吃飯</span></div>
           <div class="example-pinyin">w&#466; z&#224;i ch&#299;f&#224;n</div>
           <div class="example-english">"I'm eating"</div>
         </div>
@@ -709,7 +715,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她在睡覺</span><span class="sep">|</span><span class="simp">她在睡觉</span></div>
+          <div class="example-chinese"><span class="simp">她在睡觉</span><span class="sep">|</span><span class="trad">她在睡覺</span></div>
           <div class="example-pinyin">t&#257; z&#224;i shu&#236;ji&#224;o</div>
           <div class="example-english">"She's sleeping"</div>
         </div>
@@ -717,7 +723,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">你在做什麼？</span><span class="sep">|</span><span class="simp">你在做什么？</span></div>
+          <div class="example-chinese"><span class="simp">你在做什么？</span><span class="sep">|</span><span class="trad">你在做什麼？</span></div>
           <div class="example-pinyin">n&#464; z&#224;i zu&#242; sh&#233;nme?</div>
           <div class="example-english">"What are you doing?"</div>
         </div>
@@ -725,7 +731,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他們在看電影</span><span class="sep">|</span><span class="simp">他们在看电影</span></div>
+          <div class="example-chinese"><span class="simp">他们在看电影</span><span class="sep">|</span><span class="trad">他們在看電影</span></div>
           <div class="example-pinyin">t&#257;men z&#224;i k&#224;n di&#224;ny&#464;ng</div>
           <div class="example-english">"They're watching a movie"</div>
         </div>
@@ -733,7 +739,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">外面在下雨</span><span class="sep">|</span><span class="simp">外面在下雨</span></div>
+          <div class="example-chinese"><span class="simp">外面在下雨</span><span class="sep">|</span><span class="trad">外面在下雨</span></div>
           <div class="example-pinyin">w&#224;imi&#224;n z&#224;i xi&#224;y&#468;</div>
           <div class="example-english">"It's raining outside"</div>
         </div>
@@ -767,7 +773,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">你去過中國嗎？</span><span class="sep">|</span><span class="simp">你去过中国吗？</span></div>
+          <div class="example-chinese"><span class="simp">你去过中国吗？</span><span class="sep">|</span><span class="trad">你去過中國嗎？</span></div>
           <div class="example-pinyin">n&#464; q&#249; guo zh&#333;nggu&#243; ma?</div>
           <div class="example-english">"Have you ever been to China?"</div>
         </div>
@@ -775,7 +781,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我吃過餃子</span><span class="sep">|</span><span class="simp">我吃过饺子</span></div>
+          <div class="example-chinese"><span class="simp">我吃过饺子</span><span class="sep">|</span><span class="trad">我吃過餃子</span></div>
           <div class="example-pinyin">w&#466; ch&#299; guo ji&#462;ozi</div>
           <div class="example-english">"I've had dumplings before"</div>
         </div>
@@ -783,7 +789,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她沒有學過中文</span><span class="sep">|</span><span class="simp">她没有学过中文</span></div>
+          <div class="example-chinese"><span class="simp">她没有学过中文</span><span class="sep">|</span><span class="trad">她沒有學過中文</span></div>
           <div class="example-pinyin">t&#257; m&#233;iy&#466;u xu&#233; guo zh&#333;ngw&#233;n</div>
           <div class="example-english">"She has never studied Chinese"</div>
         </div>
@@ -791,7 +797,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">你看過這部電影嗎？</span><span class="sep">|</span><span class="simp">你看过这部电影吗？</span></div>
+          <div class="example-chinese"><span class="simp">你看过这部电影吗？</span><span class="sep">|</span><span class="trad">你看過這部電影嗎？</span></div>
           <div class="example-pinyin">n&#464; k&#224;n guo zh&#232; b&#249; di&#224;ny&#464;ng ma?</div>
           <div class="example-english">"Have you seen this movie?"</div>
         </div>
@@ -799,7 +805,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我沒坐過高鐵</span><span class="sep">|</span><span class="simp">我没坐过高铁</span></div>
+          <div class="example-chinese"><span class="simp">我没坐过高铁</span><span class="sep">|</span><span class="trad">我沒坐過高鐵</span></div>
           <div class="example-pinyin">w&#466; m&#233;i zu&#242; guo g&#257;oti&#283;</div>
           <div class="example-english">"I've never taken the high-speed train"</div>
         </div>
@@ -808,7 +814,7 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p><code>过</code> vs <code>了</code>: <code>我吃了餃子</code> = "I ate dumplings (just now)." <code>我吃過餃子</code> = "I've had dumplings (at some point in my life)."</p>
+      <p><code>过</code> vs <code>了</code>: <code>我吃了饺子</code> = "I ate dumplings (just now)." <code>我吃过饺子</code> = "I've had dumplings (at some point in my life)."</p>
     </div>
   </section>
 
@@ -817,11 +823,11 @@ html { scroll-behavior: smooth; }
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-6">
     <div class="pattern-number">Pattern 6</div>
-    <h2 class="pattern-title">想 / 要 / 會 / 能 / 可以 (The 5 "Can/Want" Words)</h2>
+    <h2 class="pattern-title">想 / 要 / 会 / 能 / 可以 (The 5 "Can/Want" Words)</h2>
 
     <div class="formula-row">
       <span class="formula-label">Formula</span>
-      <span class="formula-pill">Subject + [想/要/會/能/可以] + Verb</span>
+      <span class="formula-pill">Subject + [想/要/会/能/可以] + Verb</span>
     </div>
 
     <p class="explanation">
@@ -836,7 +842,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">1</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">我想吃麵</span><span class="sep">|</span><span class="simp">我想吃面</span></div>
+            <div class="example-chinese"><span class="simp">我想吃面</span><span class="sep">|</span><span class="trad">我想吃麵</span></div>
             <div class="example-pinyin">w&#466; xi&#462;ng ch&#299; mi&#224;n</div>
             <div class="example-english">"I'd like to eat noodles"</div>
           </div>
@@ -844,7 +850,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">2</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">我想去台北</span><span class="sep">|</span><span class="simp">我想去台北</span></div>
+            <div class="example-chinese"><span class="simp">我想去台北</span><span class="sep">|</span><span class="trad">我想去台北</span></div>
             <div class="example-pinyin">w&#466; xi&#462;ng q&#249; T&#225;ib&#283;i</div>
             <div class="example-english">"I'm thinking of going to Taipei"</div>
           </div>
@@ -860,7 +866,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">1</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">我要一杯茶</span><span class="sep">|</span><span class="simp">我要一杯茶</span></div>
+            <div class="example-chinese"><span class="simp">我要一杯茶</span><span class="sep">|</span><span class="trad">我要一杯茶</span></div>
             <div class="example-pinyin">w&#466; y&#224;o y&#236; b&#275;i ch&#225;</div>
             <div class="example-english">"I want a cup of tea"</div>
           </div>
@@ -868,7 +874,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">2</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">我要去了</span><span class="sep">|</span><span class="simp">我要去了</span></div>
+            <div class="example-chinese"><span class="simp">我要去了</span><span class="sep">|</span><span class="trad">我要去了</span></div>
             <div class="example-pinyin">w&#466; y&#224;o q&#249; le</div>
             <div class="example-english">"I'm about to go"</div>
           </div>
@@ -878,13 +884,13 @@ html { scroll-behavior: smooth; }
 
     <!-- 會 -->
     <div class="sub-section">
-      <div class="sub-heading"><span class="zh">會 / 会</span> <span class="pinyin-label">(hu&#236;)</span></div>
+      <div class="sub-heading"><span class="zh">会 / 會</span> <span class="pinyin-label">(hu&#236;)</span></div>
       <div class="sub-meaning">"know how to" / "will" - learned skill or future prediction</div>
       <ul class="example-list">
         <li class="example-item">
           <span class="example-num">1</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">你會說中文嗎？</span><span class="sep">|</span><span class="simp">你会说中文吗？</span></div>
+            <div class="example-chinese"><span class="simp">你会说中文吗？</span><span class="sep">|</span><span class="trad">你會說中文嗎？</span></div>
             <div class="example-pinyin">n&#464; hu&#236; shu&#333; zh&#333;ngw&#233;n ma?</div>
             <div class="example-english">"Can you speak Chinese?" (skill)</div>
           </div>
@@ -892,7 +898,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">2</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">明天會下雨</span><span class="sep">|</span><span class="simp">明天会下雨</span></div>
+            <div class="example-chinese"><span class="simp">明天会下雨</span><span class="sep">|</span><span class="trad">明天會下雨</span></div>
             <div class="example-pinyin">m&#237;ngti&#257;n hu&#236; xi&#224;y&#468;</div>
             <div class="example-english">"It will rain tomorrow" (prediction)</div>
           </div>
@@ -908,7 +914,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">1</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">你能幫我嗎？</span><span class="sep">|</span><span class="simp">你能帮我吗？</span></div>
+            <div class="example-chinese"><span class="simp">你能帮我吗？</span><span class="sep">|</span><span class="trad">你能幫我嗎？</span></div>
             <div class="example-pinyin">n&#464; n&#233;ng b&#257;ng w&#466; ma?</div>
             <div class="example-english">"Can you help me?" (are you able to)</div>
           </div>
@@ -916,7 +922,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">2</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">我今天不能去</span><span class="sep">|</span><span class="simp">我今天不能去</span></div>
+            <div class="example-chinese"><span class="simp">我今天不能去</span><span class="sep">|</span><span class="trad">我今天不能去</span></div>
             <div class="example-pinyin">w&#466; j&#299;nti&#257;n b&#249; n&#233;ng q&#249;</div>
             <div class="example-english">"I can't go today" (circumstances)</div>
           </div>
@@ -932,7 +938,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">1</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">我可以坐這裡嗎？</span><span class="sep">|</span><span class="simp">我可以坐这里吗？</span></div>
+            <div class="example-chinese"><span class="simp">我可以坐这里吗？</span><span class="sep">|</span><span class="trad">我可以坐這裡嗎？</span></div>
             <div class="example-pinyin">w&#466; k&#283;y&#464; zu&#242; zh&#232;l&#464; ma?</div>
             <div class="example-english">"May I sit here?"</div>
           </div>
@@ -940,7 +946,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">2</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">這裡不可以抽煙</span><span class="sep">|</span><span class="simp">这里不可以抽烟</span></div>
+            <div class="example-chinese"><span class="simp">这里不可以抽烟</span><span class="sep">|</span><span class="trad">這裡不可以抽煙</span></div>
             <div class="example-pinyin">zh&#232;l&#464; b&#249; k&#283;y&#464; ch&#333;uy&#257;n</div>
             <div class="example-english">"No smoking here" (not allowed)</div>
           </div>
@@ -950,7 +956,7 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p>Quick test: "Can you swim?" = <code>你會游泳嗎</code> (skill). "Can you swim today?" = <code>你今天能游泳嗎</code> (circumstance). "May I swim here?" = <code>我可以在這裡游泳嗎</code> (permission).</p>
+      <p>Quick test: "Can you swim?" = <code>你会游泳吗</code> (skill). "Can you swim today?" = <code>你今天能游泳吗</code> (circumstance). "May I swim here?" = <code>我可以在这里游泳吗</code> (permission).</p>
     </div>
   </section>
 
@@ -975,7 +981,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">請把門關上</span><span class="sep">|</span><span class="simp">请把门关上</span></div>
+          <div class="example-chinese"><span class="simp">请把门关上</span><span class="sep">|</span><span class="trad">請把門關上</span></div>
           <div class="example-pinyin">qǐng bǎ mén guān shàng</div>
           <div class="example-english">"Please close the door"</div>
         </div>
@@ -983,7 +989,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他把書放在桌子上</span><span class="sep">|</span><span class="simp">他把书放在桌子上</span></div>
+          <div class="example-chinese"><span class="simp">他把书放在桌子上</span><span class="sep">|</span><span class="trad">他把書放在桌子上</span></div>
           <div class="example-pinyin">tā bǎ shū fàng zài zhuōzi shàng</div>
           <div class="example-english">"He put the book on the table"</div>
         </div>
@@ -991,7 +997,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我把功課做完了</span><span class="sep">|</span><span class="simp">我把功课做完了</span></div>
+          <div class="example-chinese"><span class="simp">我把功课做完了</span><span class="sep">|</span><span class="trad">我把功課做完了</span></div>
           <div class="example-pinyin">wǒ bǎ gōngkè zuò wán le</div>
           <div class="example-english">"I finished my homework"</div>
         </div>
@@ -999,7 +1005,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她把咖啡喝完了</span><span class="sep">|</span><span class="simp">她把咖啡喝完了</span></div>
+          <div class="example-chinese"><span class="simp">她把咖啡喝完了</span><span class="sep">|</span><span class="trad">她把咖啡喝完了</span></div>
           <div class="example-pinyin">tā bǎ kāfēi hē wán le</div>
           <div class="example-english">"She finished drinking the coffee"</div>
         </div>
@@ -1007,7 +1013,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">你把名字寫在這裡</span><span class="sep">|</span><span class="simp">你把名字写在这里</span></div>
+          <div class="example-chinese"><span class="simp">你把名字写在这里</span><span class="sep">|</span><span class="trad">你把名字寫在這裡</span></div>
           <div class="example-pinyin">nǐ bǎ míngzì xiě zài zhèlǐ</div>
           <div class="example-english">"Write your name here"</div>
         </div>
@@ -1016,7 +1022,7 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p><code>把</code> needs a result - you can't just say <code>把門關</code>. You need <code>把門關上</code> (close-up). The verb alone isn't enough; something must happen <strong>to</strong> the object.</p>
+      <p><code>把</code> needs a result - you can't just say <code>把门关</code>. You need <code>把门关上</code> (close-up). The verb alone isn't enough; something must happen <strong>to</strong> the object.</p>
     </div>
   </section>
 
@@ -1041,7 +1047,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我的手機被偷了</span><span class="sep">|</span><span class="simp">我的手机被偷了</span></div>
+          <div class="example-chinese"><span class="simp">我的手机被偷了</span><span class="sep">|</span><span class="trad">我的手機被偷了</span></div>
           <div class="example-pinyin">wǒ de shǒujī bèi tōu le</div>
           <div class="example-english">"My phone was stolen"</div>
         </div>
@@ -1049,7 +1055,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">蛋糕被他吃了</span><span class="sep">|</span><span class="simp">蛋糕被他吃了</span></div>
+          <div class="example-chinese"><span class="simp">蛋糕被他吃了</span><span class="sep">|</span><span class="trad">蛋糕被他吃了</span></div>
           <div class="example-pinyin">dàngāo bèi tā chī le</div>
           <div class="example-english">"The cake was eaten by him"</div>
         </div>
@@ -1057,7 +1063,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">那本書被借走了</span><span class="sep">|</span><span class="simp">那本书被借走了</span></div>
+          <div class="example-chinese"><span class="simp">那本书被借走了</span><span class="sep">|</span><span class="trad">那本書被借走了</span></div>
           <div class="example-pinyin">nà běn shū bèi jiè zǒu le</div>
           <div class="example-english">"That book was borrowed (taken away)"</div>
         </div>
@@ -1065,7 +1071,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他被老師罵了</span><span class="sep">|</span><span class="simp">他被老师骂了</span></div>
+          <div class="example-chinese"><span class="simp">他被老师骂了</span><span class="sep">|</span><span class="trad">他被老師罵了</span></div>
           <div class="example-pinyin">tā bèi lǎoshī mà le</div>
           <div class="example-english">"He was scolded by the teacher"</div>
         </div>
@@ -1073,7 +1079,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">這首歌被很多人喜歡</span><span class="sep">|</span><span class="simp">这首歌被很多人喜欢</span></div>
+          <div class="example-chinese"><span class="simp">这首歌被很多人喜欢</span><span class="sep">|</span><span class="trad">這首歌被很多人喜歡</span></div>
           <div class="example-pinyin">zhè shǒu gē bèi hěn duō rén xǐhuān</div>
           <div class="example-english">"This song is liked by many people"</div>
         </div>
@@ -1103,7 +1109,7 @@ html { scroll-behavior: smooth; }
     </div>
 
     <p class="explanation">
-      <strong>的</strong> (de) is the most common Chinese particle. It links a modifier to a noun - either showing <strong>possession</strong> (like English "'s") or <strong>describing</strong> the noun (like "the red car" = <code>紅的車</code>).
+      <strong>的</strong> (de) is the most common Chinese particle. It links a modifier to a noun - either showing <strong>possession</strong> (like English "'s") or <strong>describing</strong> the noun (like "the red car" = <code>红的车</code>).
     </p>
 
     <div class="examples-heading">Possession</div>
@@ -1111,7 +1117,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">這是我的書</span><span class="sep">|</span><span class="simp">这是我的书</span></div>
+          <div class="example-chinese"><span class="simp">这是我的书</span><span class="sep">|</span><span class="trad">這是我的書</span></div>
           <div class="example-pinyin">zhè shì wǒ de shū</div>
           <div class="example-english">"This is my book"</div>
         </div>
@@ -1119,7 +1125,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">老師的名字叫什麼？</span><span class="sep">|</span><span class="simp">老师的名字叫什么？</span></div>
+          <div class="example-chinese"><span class="simp">老师的名字叫什么？</span><span class="sep">|</span><span class="trad">老師的名字叫什麼？</span></div>
           <div class="example-pinyin">lǎoshī de míngzì jiào shénme?</div>
           <div class="example-english">"What is the teacher's name?"</div>
         </div>
@@ -1131,7 +1137,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">好看的電影</span><span class="sep">|</span><span class="simp">好看的电影</span></div>
+          <div class="example-chinese"><span class="simp">好看的电影</span><span class="sep">|</span><span class="trad">好看的電影</span></div>
           <div class="example-pinyin">hǎokàn de diànyǐng</div>
           <div class="example-english">"a good-looking movie"</div>
         </div>
@@ -1139,7 +1145,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">穿紅色衣服的女生</span><span class="sep">|</span><span class="simp">穿红色衣服的女生</span></div>
+          <div class="example-chinese"><span class="simp">穿红色衣服的女生</span><span class="sep">|</span><span class="trad">穿紅色衣服的女生</span></div>
           <div class="example-pinyin">chuān hóngsè yīfú de nǚshēng</div>
           <div class="example-english">"the girl wearing red clothes"</div>
         </div>
@@ -1147,7 +1153,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">昨天買的那個</span><span class="sep">|</span><span class="simp">昨天买的那个</span></div>
+          <div class="example-chinese"><span class="simp">昨天买的那个</span><span class="sep">|</span><span class="trad">昨天買的那個</span></div>
           <div class="example-pinyin">zuótiān mǎi de nàge</div>
           <div class="example-english">"the one (I) bought yesterday"</div>
         </div>
@@ -1156,7 +1162,7 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p>For close relationships, <code>的</code> is often dropped: <code>我媽</code> (my mom), <code>我家</code> (my home). But for emphasis or clarity, keep it: <code>這是我的</code> ("This is mine!").</p>
+      <p>For close relationships, <code>的</code> is often dropped: <code>我妈</code> (my mom), <code>我家</code> (my home). But for emphasis or clarity, keep it: <code>这是我的</code> ("This is mine!").</p>
     </div>
   </section>
 
@@ -1181,7 +1187,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">你說得很好</span><span class="sep">|</span><span class="simp">你说得很好</span></div>
+          <div class="example-chinese"><span class="simp">你说得很好</span><span class="sep">|</span><span class="trad">你說得很好</span></div>
           <div class="example-pinyin">nǐ shuō de hěn hǎo</div>
           <div class="example-english">"You speak very well"</div>
         </div>
@@ -1189,7 +1195,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他跑得很快</span><span class="sep">|</span><span class="simp">他跑得很快</span></div>
+          <div class="example-chinese"><span class="simp">他跑得很快</span><span class="sep">|</span><span class="trad">他跑得很快</span></div>
           <div class="example-pinyin">tā pǎo de hěn kuài</div>
           <div class="example-english">"He runs very fast"</div>
         </div>
@@ -1197,7 +1203,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她唱得不好聽</span><span class="sep">|</span><span class="simp">她唱得不好听</span></div>
+          <div class="example-chinese"><span class="simp">她唱得不好听</span><span class="sep">|</span><span class="trad">她唱得不好聽</span></div>
           <div class="example-pinyin">tā chàng de bù hǎotīng</div>
           <div class="example-english">"She doesn't sing well"</div>
         </div>
@@ -1205,7 +1211,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我吃得太飽了</span><span class="sep">|</span><span class="simp">我吃得太饱了</span></div>
+          <div class="example-chinese"><span class="simp">我吃得太饱了</span><span class="sep">|</span><span class="trad">我吃得太飽了</span></div>
           <div class="example-pinyin">wǒ chī de tài bǎo le</div>
           <div class="example-english">"I ate too much (I'm too full)"</div>
         </div>
@@ -1213,7 +1219,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">你寫得真漂亮</span><span class="sep">|</span><span class="simp">你写得真漂亮</span></div>
+          <div class="example-chinese"><span class="simp">你写得真漂亮</span><span class="sep">|</span><span class="trad">你寫得真漂亮</span></div>
           <div class="example-pinyin">nǐ xiě de zhēn piàoliang</div>
           <div class="example-english">"Your writing is really beautiful"</div>
         </div>
@@ -1222,7 +1228,7 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p>If the verb has an object, repeat the verb: <code>他說中文說得很好</code> (He speaks Chinese speaks-well). You can't put <code>得</code> between the verb and its object.</p>
+      <p>If the verb has an object, repeat the verb: <code>他说中文说得很好</code> (He speaks Chinese speaks-well). You can't put <code>得</code> between the verb and its object.</p>
     </div>
   </section>
 
@@ -1247,7 +1253,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她慢慢地走</span><span class="sep">|</span><span class="simp">她慢慢地走</span></div>
+          <div class="example-chinese"><span class="simp">她慢慢地走</span><span class="sep">|</span><span class="trad">她慢慢地走</span></div>
           <div class="example-pinyin">tā mànmàn de zǒu</div>
           <div class="example-english">"She walks slowly"</div>
         </div>
@@ -1255,7 +1261,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他高興地笑了</span><span class="sep">|</span><span class="simp">他高兴地笑了</span></div>
+          <div class="example-chinese"><span class="simp">他高兴地笑了</span><span class="sep">|</span><span class="trad">他高興地笑了</span></div>
           <div class="example-pinyin">tā gāoxìng de xiào le</div>
           <div class="example-english">"He laughed happily"</div>
         </div>
@@ -1263,7 +1269,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">請認真地聽</span><span class="sep">|</span><span class="simp">请认真地听</span></div>
+          <div class="example-chinese"><span class="simp">请认真地听</span><span class="sep">|</span><span class="trad">請認真地聽</span></div>
           <div class="example-pinyin">qǐng rènzhēn de tīng</div>
           <div class="example-english">"Please listen carefully"</div>
         </div>
@@ -1271,7 +1277,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她安靜地看書</span><span class="sep">|</span><span class="simp">她安静地看书</span></div>
+          <div class="example-chinese"><span class="simp">她安静地看书</span><span class="sep">|</span><span class="trad">她安靜地看書</span></div>
           <div class="example-pinyin">tā ānjìng de kànshū</div>
           <div class="example-english">"She reads quietly"</div>
         </div>
@@ -1279,7 +1285,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">孩子們快樂地玩</span><span class="sep">|</span><span class="simp">孩子们快乐地玩</span></div>
+          <div class="example-chinese"><span class="simp">孩子们快乐地玩</span><span class="sep">|</span><span class="trad">孩子們快樂地玩</span></div>
           <div class="example-pinyin">háizimen kuàilè de wán</div>
           <div class="example-english">"The children play happily"</div>
         </div>
@@ -1313,7 +1319,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他比我高</span><span class="sep">|</span><span class="simp">他比我高</span></div>
+          <div class="example-chinese"><span class="simp">他比我高</span><span class="sep">|</span><span class="trad">他比我高</span></div>
           <div class="example-pinyin">tā bǐ wǒ gāo</div>
           <div class="example-english">"He is taller than me"</div>
         </div>
@@ -1321,7 +1327,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">今天比昨天冷</span><span class="sep">|</span><span class="simp">今天比昨天冷</span></div>
+          <div class="example-chinese"><span class="simp">今天比昨天冷</span><span class="sep">|</span><span class="trad">今天比昨天冷</span></div>
           <div class="example-pinyin">jīntiān bǐ zuótiān lěng</div>
           <div class="example-english">"Today is colder than yesterday"</div>
         </div>
@@ -1329,7 +1335,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">中文比英文難</span><span class="sep">|</span><span class="simp">中文比英文难</span></div>
+          <div class="example-chinese"><span class="simp">中文比英文难</span><span class="sep">|</span><span class="trad">中文比英文難</span></div>
           <div class="example-pinyin">zhōngwén bǐ yīngwén nán</div>
           <div class="example-english">"Chinese is harder than English"</div>
         </div>
@@ -1337,7 +1343,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">坐高鐵比開車快</span><span class="sep">|</span><span class="simp">坐高铁比开车快</span></div>
+          <div class="example-chinese"><span class="simp">坐高铁比开车快</span><span class="sep">|</span><span class="trad">坐高鐵比開車快</span></div>
           <div class="example-pinyin">zuò gāotiě bǐ kāichē kuài</div>
           <div class="example-english">"Taking the HSR is faster than driving"</div>
         </div>
@@ -1345,7 +1351,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她比我大三歲</span><span class="sep">|</span><span class="simp">她比我大三岁</span></div>
+          <div class="example-chinese"><span class="simp">她比我大三岁</span><span class="sep">|</span><span class="trad">她比我大三歲</span></div>
           <div class="example-pinyin">tā bǐ wǒ dà sān suì</div>
           <div class="example-english">"She is three years older than me"</div>
         </div>
@@ -1377,7 +1383,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">1</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">因為下雨，所以我沒出去</span><span class="sep">|</span><span class="simp">因为下雨，所以我没出去</span></div>
+            <div class="example-chinese"><span class="simp">因为下雨，所以我没出去</span><span class="sep">|</span><span class="trad">因為下雨，所以我沒出去</span></div>
             <div class="example-pinyin">yīnwèi xiàyǔ, suǒyǐ wǒ méi chūqù</div>
             <div class="example-english">"Because it rained, I didn't go out"</div>
           </div>
@@ -1385,7 +1391,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">2</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">因為太貴了，所以我沒買</span><span class="sep">|</span><span class="simp">因为太贵了，所以我没买</span></div>
+            <div class="example-chinese"><span class="simp">因为太贵了，所以我没买</span><span class="sep">|</span><span class="trad">因為太貴了，所以我沒買</span></div>
             <div class="example-pinyin">yīnwèi tài guì le, suǒyǐ wǒ méi mǎi</div>
             <div class="example-english">"Because it was too expensive, I didn't buy it"</div>
           </div>
@@ -1395,13 +1401,13 @@ html { scroll-behavior: smooth; }
 
     <!-- 雖然...但是 -->
     <div class="sub-section">
-      <div class="sub-heading"><span class="zh">雖然...但是 / 虽然...但是</span> <span class="pinyin-label">(suīrán...dànshì)</span></div>
+      <div class="sub-heading"><span class="zh">虽然...但是 / 雖然...但是</span> <span class="pinyin-label">(suīrán...dànshì)</span></div>
       <div class="sub-meaning">"although...but" - concession</div>
       <ul class="example-list">
         <li class="example-item">
           <span class="example-num">1</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">雖然很累，但是我很開心</span><span class="sep">|</span><span class="simp">虽然很累，但是我很开心</span></div>
+            <div class="example-chinese"><span class="simp">虽然很累，但是我很开心</span><span class="sep">|</span><span class="trad">雖然很累，但是我很開心</span></div>
             <div class="example-pinyin">suīrán hěn lèi, dànshì wǒ hěn kāixīn</div>
             <div class="example-english">"Although I'm tired, I'm happy"</div>
           </div>
@@ -1409,7 +1415,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">2</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">雖然他很忙，但是他還是來了</span><span class="sep">|</span><span class="simp">虽然他很忙，但是他还是来了</span></div>
+            <div class="example-chinese"><span class="simp">虽然他很忙，但是他还是来了</span><span class="sep">|</span><span class="trad">雖然他很忙，但是他還是來了</span></div>
             <div class="example-pinyin">suīrán tā hěn máng, dànshì tā háishì lái le</div>
             <div class="example-english">"Although he was busy, he still came"</div>
           </div>
@@ -1425,7 +1431,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">1</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">如果明天下雨，我就不去</span><span class="sep">|</span><span class="simp">如果明天下雨，我就不去</span></div>
+            <div class="example-chinese"><span class="simp">如果明天下雨，我就不去</span><span class="sep">|</span><span class="trad">如果明天下雨，我就不去</span></div>
             <div class="example-pinyin">rúguǒ míngtiān xiàyǔ, wǒ jiù bú qù</div>
             <div class="example-english">"If it rains tomorrow, I won't go"</div>
           </div>
@@ -1433,7 +1439,7 @@ html { scroll-behavior: smooth; }
         <li class="example-item">
           <span class="example-num">2</span>
           <div class="example-content">
-            <div class="example-chinese"><span class="trad">如果你喜歡，就買吧</span><span class="sep">|</span><span class="simp">如果你喜欢，就买吧</span></div>
+            <div class="example-chinese"><span class="simp">如果你喜欢，就买吧</span><span class="sep">|</span><span class="trad">如果你喜歡，就買吧</span></div>
             <div class="example-pinyin">rúguǒ nǐ xǐhuān, jiù mǎi ba</div>
             <div class="example-english">"If you like it, then buy it"</div>
           </div>
@@ -1443,7 +1449,7 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p>In casual speech, one half can be dropped: <code>因為下雨我沒出去</code> or <code>下雨所以我沒出去</code>. But using both halves is always correct and clearer.</p>
+      <p>In casual speech, one half can be dropped: <code>因为下雨我没出去</code> or <code>下雨所以我没出去</code>. But using both halves is always correct and clearer.</p>
     </div>
   </section>
 
@@ -1452,15 +1458,15 @@ html { scroll-behavior: smooth; }
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-14">
     <div class="pattern-number">Pattern 14</div>
-    <h2 class="pattern-title">越來越 (More and More)</h2>
+    <h2 class="pattern-title">越来越 (More and More)</h2>
 
     <div class="formula-row">
       <span class="formula-label">Formula</span>
-      <span class="formula-pill">越來越 / 越来越 + Adjective/Verb</span>
+      <span class="formula-pill">越来越 / 越來越 + Adjective/Verb</span>
     </div>
 
     <p class="explanation">
-      <strong>越來越</strong> (yuè lái yuè) expresses something <strong>increasing over time</strong> - "more and more," "increasingly." It's one of the most useful patterns for describing change.
+      <strong>越来越</strong> (yuè lái yuè) expresses something <strong>increasing over time</strong> - "more and more," "increasingly." It's one of the most useful patterns for describing change.
     </p>
 
     <div class="examples-heading">Examples</div>
@@ -1468,7 +1474,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">天氣越來越冷了</span><span class="sep">|</span><span class="simp">天气越来越冷了</span></div>
+          <div class="example-chinese"><span class="simp">天气越来越冷了</span><span class="sep">|</span><span class="trad">天氣越來越冷了</span></div>
           <div class="example-pinyin">tiānqì yuè lái yuè lěng le</div>
           <div class="example-english">"The weather is getting colder and colder"</div>
         </div>
@@ -1476,7 +1482,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">你的中文越來越好了</span><span class="sep">|</span><span class="simp">你的中文越来越好了</span></div>
+          <div class="example-chinese"><span class="simp">你的中文越来越好了</span><span class="sep">|</span><span class="trad">你的中文越來越好了</span></div>
           <div class="example-pinyin">nǐ de zhōngwén yuè lái yuè hǎo le</div>
           <div class="example-english">"Your Chinese is getting better and better"</div>
         </div>
@@ -1484,7 +1490,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">生活越來越貴</span><span class="sep">|</span><span class="simp">生活越来越贵</span></div>
+          <div class="example-chinese"><span class="simp">生活越来越贵</span><span class="sep">|</span><span class="trad">生活越來越貴</span></div>
           <div class="example-pinyin">shēnghuó yuè lái yuè guì</div>
           <div class="example-english">"Life is getting more and more expensive"</div>
         </div>
@@ -1492,7 +1498,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他越來越喜歡台灣了</span><span class="sep">|</span><span class="simp">他越来越喜欢台湾了</span></div>
+          <div class="example-chinese"><span class="simp">他越来越喜欢台湾了</span><span class="sep">|</span><span class="trad">他越來越喜歡台灣了</span></div>
           <div class="example-pinyin">tā yuè lái yuè xǐhuān Táiwān le</div>
           <div class="example-english">"He likes Taiwan more and more"</div>
         </div>
@@ -1500,7 +1506,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我越來越忙了</span><span class="sep">|</span><span class="simp">我越来越忙了</span></div>
+          <div class="example-chinese"><span class="simp">我越来越忙了</span><span class="sep">|</span><span class="trad">我越來越忙了</span></div>
           <div class="example-pinyin">wǒ yuè lái yuè máng le</div>
           <div class="example-english">"I'm getting busier and busier"</div>
         </div>
@@ -1518,15 +1524,15 @@ html { scroll-behavior: smooth; }
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-15">
     <div class="pattern-number">Pattern 15</div>
-    <h2 class="pattern-title">一邊...一邊 (Doing Two Things at Once)</h2>
+    <h2 class="pattern-title">一边...一边 (Doing Two Things at Once)</h2>
 
     <div class="formula-row">
       <span class="formula-label">Formula</span>
-      <span class="formula-pill">一邊 + Verb A + 一邊 + Verb B</span>
+      <span class="formula-pill">一边 + Verb A + 一边 + Verb B</span>
     </div>
 
     <p class="explanation">
-      <strong>一邊...一邊</strong> (yì biān...yì biān) means "while doing X, also doing Y" - two actions happening <strong>simultaneously</strong>.
+      <strong>一边...一边</strong> (yì biān...yì biān) means "while doing X, also doing Y" - two actions happening <strong>simultaneously</strong>.
     </p>
 
     <div class="examples-heading">Examples</div>
@@ -1534,7 +1540,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">1</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她一邊吃飯一邊看電視</span><span class="sep">|</span><span class="simp">她一边吃饭一边看电视</span></div>
+          <div class="example-chinese"><span class="simp">她一边吃饭一边看电视</span><span class="sep">|</span><span class="trad">她一邊吃飯一邊看電視</span></div>
           <div class="example-pinyin">tā yì biān chīfàn yì biān kàn diànshì</div>
           <div class="example-english">"She eats while watching TV"</div>
         </div>
@@ -1542,7 +1548,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">2</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">他一邊走路一邊聽音樂</span><span class="sep">|</span><span class="simp">他一边走路一边听音乐</span></div>
+          <div class="example-chinese"><span class="simp">他一边走路一边听音乐</span><span class="sep">|</span><span class="trad">他一邊走路一邊聽音樂</span></div>
           <div class="example-pinyin">tā yì biān zǒulù yì biān tīng yīnyuè</div>
           <div class="example-english">"He walks while listening to music"</div>
         </div>
@@ -1550,7 +1556,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">3</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">我們一邊喝茶一邊聊天</span><span class="sep">|</span><span class="simp">我们一边喝茶一边聊天</span></div>
+          <div class="example-chinese"><span class="simp">我们一边喝茶一边聊天</span><span class="sep">|</span><span class="trad">我們一邊喝茶一邊聊天</span></div>
           <div class="example-pinyin">wǒmen yì biān hēchá yì biān liáotiān</div>
           <div class="example-english">"We chat while drinking tea"</div>
         </div>
@@ -1558,7 +1564,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">4</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">不要一邊開車一邊用手機</span><span class="sep">|</span><span class="simp">不要一边开车一边用手机</span></div>
+          <div class="example-chinese"><span class="simp">不要一边开车一边用手机</span><span class="sep">|</span><span class="trad">不要一邊開車一邊用手機</span></div>
           <div class="example-pinyin">bú yào yì biān kāichē yì biān yòng shǒujī</div>
           <div class="example-english">"Don't use your phone while driving"</div>
         </div>
@@ -1566,7 +1572,7 @@ html { scroll-behavior: smooth; }
       <li class="example-item">
         <span class="example-num">5</span>
         <div class="example-content">
-          <div class="example-chinese"><span class="trad">她一邊唱歌一邊跳舞</span><span class="sep">|</span><span class="simp">她一边唱歌一边跳舞</span></div>
+          <div class="example-chinese"><span class="simp">她一边唱歌一边跳舞</span><span class="sep">|</span><span class="trad">她一邊唱歌一邊跳舞</span></div>
           <div class="example-pinyin">tā yì biān chànggē yì biān tiàowǔ</div>
           <div class="example-english">"She sings while dancing"</div>
         </div>
@@ -1575,17 +1581,31 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p>Both actions must be happening at the same time. You can't use <code>一邊...一邊</code> for sequential events. For "first X then Y," use <code>先...再</code> instead.</p>
+      <p>Both actions must be happening at the same time. You can't use <code>一边...一边</code> for sequential events. For "first X then Y," use <code>先...再</code> instead.</p>
     </div>
   </section>
 
   <!-- Footer -->
   <footer class="page-footer">
-    <div class="deco">學 而 時 習 之</div>
+    <div class="deco">学 而 时 习 之</div>
     <p>Grammar Pattern Guide</p>
   </footer>
 
 </div>
+
+<script>
+function speak(chinese) {
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  new Audio(url).play();
+}
+
+document.querySelectorAll('.example-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const simp = item.querySelector('.example-chinese .simp');
+    if (simp) speak(simp.textContent);
+  });
+});
+</script>
 
 </body>
 </html>

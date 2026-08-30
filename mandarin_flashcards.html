@@ -133,6 +133,9 @@ body {
   transition: border-color 0.2s, box-shadow 0.2s;
   box-shadow: 0 1px 3px rgba(139,125,107,0.08);
 }
+.card {
+  cursor: pointer;
+}
 .card:hover {
   border-left-color: #C41E3A;
   box-shadow: 0 4px 12px rgba(139,125,107,0.12);
@@ -269,12 +272,13 @@ function showLesson(idx, skipPush) {
       card.className = "card";
       const isDiff = p.simp !== p.trad;
       const simpEsc = p.simp.replace(/'/g, "\\'");
+      card.addEventListener('click', () => speak(p.simp));
       card.innerHTML = `<div class="chars">
           <span class="simp">${p.simp}</span>
           <span class="divider${isDiff ? '' : ' same'}">|</span>
           <span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>
         </div>
-        <div class="pinyin" onclick="speak('${simpEsc}')">${p.pinyin}</div>
+        <div class="pinyin">${p.pinyin}</div>
         <div class="meaning">${p.meaning}</div>`;
       container.appendChild(card);
     });

@@ -190,6 +190,28 @@
     border-color: #C41E3A;
   }
 
+  .show-btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #B8860B;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(139, 115, 72, 0.06);
+    display: none;
+    margin-top: 24px;
+  }
+
+  .show-btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+    color: #C41E3A;
+  }
+
   @media (max-width: 520px) {
     .english { font-size: 22px; }
     .chinese-line { font-size: 1.6rem; }
@@ -212,10 +234,11 @@
     <div class="pattern-badge" id="pattern-badge"></div>
   </div>
   <div class="answer-area" id="answer-area">
-    <div class="chinese-line" id="trad-line"></div>
-    <div class="chinese-simp" id="simp-line"></div>
+    <div class="chinese-line" id="simp-line"></div>
+    <div class="chinese-simp" id="trad-line"></div>
     <div class="pinyin" id="pinyin"></div>
   </div>
+  <button class="show-btn" id="btn-show" onclick="revealAnswer()">Show</button>
   <div class="controls">
     <button class="btn active" id="btn-pause" onclick="togglePause()">Resume</button>
     <button class="btn" id="btn-prev" onclick="goBack()">&larr; Prev</button>
@@ -392,8 +415,8 @@ const PATTERNS = [
     ]
   },
   {
-    name: "過 (Experience)",
-    formula: "V + 過/过",
+    name: "过 (Experience)",
+    formula: "V + 过/過",
     cards: [
       {
         english: "Have you ever been to China?",
@@ -433,7 +456,7 @@ const PATTERNS = [
     ]
   },
   {
-    name: "想/要/會/能/可以 (Want/Can)",
+    name: "想/要/会/能/可以 (Want/Can)",
     formula: "S + Modal + V",
     cards: [
       {
@@ -721,7 +744,7 @@ const PATTERNS = [
   },
   {
     name: "Clause Connectors",
-    formula: "因為...所以 / 雖然...但是 / 如果...就",
+    formula: "因为...所以 / 虽然...但是 / 如果...就",
     cards: [
       {
         english: "Because it rained, I didn't go out",
@@ -761,8 +784,8 @@ const PATTERNS = [
     ]
   },
   {
-    name: "越來越 (More & More)",
-    formula: "越來越/越来越 + Adj/V",
+    name: "越来越 (More & More)",
+    formula: "越来越/越來越 + Adj/V",
     cards: [
       {
         english: "The weather is getting colder and colder",
@@ -802,8 +825,8 @@ const PATTERNS = [
     ]
   },
   {
-    name: "一邊...一邊 (Simultaneous)",
-    formula: "一邊 + V₁ + 一邊 + V₂",
+    name: "一边...一边 (Simultaneous)",
+    formula: "一边 + V₁ + 一边 + V₂",
     cards: [
       {
         english: "She eats while watching TV",
@@ -973,19 +996,21 @@ function showCard() {
   const simpLine = document.getElementById('simp-line');
   const pinyinEl = document.getElementById('pinyin');
 
-  tradLine.innerHTML = highlightText(card.trad, card.highlight);
+  simpLine.innerHTML = highlightText(card.simp, card.highlight);
 
   if (card.trad !== card.simp) {
-    simpLine.innerHTML = highlightText(card.simp, card.highlight);
-    simpLine.style.display = 'block';
+    tradLine.innerHTML = highlightText(card.trad, card.highlight);
+    tradLine.style.display = 'block';
   } else {
-    simpLine.style.display = 'none';
+    tradLine.style.display = 'none';
   }
 
   pinyinEl.textContent = card.pinyin;
 
-  /* Auto-reveal after 1.5s */
-  if (!paused) {
+  if (paused) {
+    document.getElementById('btn-show').style.display = 'inline-block';
+  } else {
+    document.getElementById('btn-show').style.display = 'none';
     timer = setTimeout(() => {
       revealAnswer();
     }, 1500);
@@ -994,6 +1019,7 @@ function showCard() {
 
 function revealAnswer() {
   revealed = true;
+  document.getElementById('btn-show').style.display = 'none';
   const answerArea = document.getElementById('answer-area');
   answerArea.classList.add('revealed');
 
@@ -1031,6 +1057,7 @@ function togglePause() {
   btn.classList.toggle('active', paused);
 
   if (!paused) {
+    document.getElementById('btn-show').style.display = 'none';
     if (!revealed) {
       timer = setTimeout(revealAnswer, 1500);
     } else {
@@ -1038,6 +1065,9 @@ function togglePause() {
     }
   } else {
     clearTimeout(timer);
+    if (!revealed) {
+      document.getElementById('btn-show').style.display = 'inline-block';
+    }
   }
 }
 
@@ -1123,6 +1153,8 @@ document.addEventListener('keydown', e => {
     goNext();
   } else if (e.key === 'ArrowLeft') {
     goBack();
+  } else if ((e.key === 'Enter' || e.key === 'r' || e.key === 'R') && paused && !revealed) {
+    revealAnswer();
   }
 });
 

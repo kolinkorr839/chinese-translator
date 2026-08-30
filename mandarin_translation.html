@@ -66,6 +66,10 @@
     box-shadow: 0 6px 24px rgba(139, 115, 72, 0.15), 0 2px 8px rgba(139, 115, 72, 0.08);
   }
 
+  .card-speak {
+    cursor: pointer;
+  }
+
   .card-input {
     cursor: text;
   }
@@ -695,14 +699,14 @@
     </div>
     <div class="column">
       <div class="column-label">Simplified</div>
-      <div class="card">
+      <div class="card card-speak" id="simplified-card">
         <div class="chinese-text" id="simplified-text"></div>
       </div>
       <div class="pinyin" id="simplified-pinyin"></div>
     </div>
     <div class="column">
       <div class="column-label">Traditional</div>
-      <div class="card">
+      <div class="card card-speak" id="traditional-card">
         <div class="chinese-text" id="traditional-text"></div>
       </div>
       <div class="pinyin" id="traditional-pinyin"></div>
@@ -958,6 +962,8 @@ async function translate() {
     tradPinEl.onclick = () => speak(traditional);
     simpPinEl.textContent = simpPinyin;
     simpPinEl.onclick = () => speak(simplified);
+    document.getElementById('simplified-card').onclick = () => speak(simplified);
+    document.getElementById('traditional-card').onclick = () => speak(traditional);
 
     currentTranslation = { traditional, simplified, english, pinyin: tradPinyin };
 
