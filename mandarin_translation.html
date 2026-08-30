@@ -184,6 +184,21 @@
     color: #6B7B8D;
   }
 
+  .error-msg {
+    text-align: center;
+    color: #C41E3A;
+    font-size: 14px;
+    margin-top: 16px;
+    padding: 12px 20px;
+    background: rgba(196, 30, 58, 0.06);
+    border-radius: 10px;
+    display: none;
+  }
+
+  .error-msg.visible {
+    display: block;
+  }
+
   .loading {
     color: #B8860B;
     font-size: 14px;
@@ -693,6 +708,7 @@
       <div class="pinyin" id="traditional-pinyin"></div>
     </div>
   </div>
+  <div class="error-msg" id="error-msg"></div>
   <div class="chat-box hidden" id="chat-box">
     <div class="chat-header">Ask about this</div>
     <div class="chat-messages" id="chat-messages"></div>
@@ -900,6 +916,7 @@ async function translate() {
   const etymologyEl = document.getElementById('etymology');
   const etymologyContent = document.getElementById('etymology-content');
 
+  document.getElementById('error-msg').classList.remove('visible');
   breakdownEl.style.display = 'none';
   breakdownContent.innerHTML = '';
   etymologyEl.style.display = 'none';
@@ -971,6 +988,13 @@ async function translate() {
   } catch (err) {
     tradEl.textContent = '';
     simpEl.textContent = '';
+    const errorEl = document.getElementById('error-msg');
+    if (!navigator.onLine) {
+      errorEl.textContent = 'You are offline. Translation requires an internet connection — try Flashcards or Grammar Guide instead.';
+    } else {
+      errorEl.textContent = 'Translation service unavailable. Try again in a moment.';
+    }
+    errorEl.classList.add('visible');
     console.error('Translation error:', err);
   }
 }

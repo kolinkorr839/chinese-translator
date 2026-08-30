@@ -1,9 +1,20 @@
-const CACHE_NAME = 'chinese-translator-v2';
+const CACHE_NAME = 'chinese-translator-v3';
 const STATIC_ASSETS = [
   './index.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
+  './mandarin_translation.html',
+  './mandarin_flashcards.html',
+  './mandarin_flashcards_2.html',
+  './pinyin_chart.html',
+  './pinyin_guide.html',
+  './grammar_guide.html',
+  './grammar_flashcards.html',
+  './mandarin_in_14_days.html',
+  './simplified_to_traditional_guide.html',
+  './simplified_to_traditional_cheat_sheet.html',
+  './simplified_traditional_flashcards.html',
   'https://cdn.jsdelivr.net/npm/pinyin-pro@3/dist/index.js'
 ];
 

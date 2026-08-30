@@ -181,6 +181,7 @@
     font-size: 64px;
     line-height: 1.2;
     color: #1a1a2e;
+    white-space: nowrap;
   }
 
   .divider {
@@ -194,6 +195,28 @@
   .divider.same { display: none; }
 
   .char-block.trad-block.same { display: none; }
+
+  .show-btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #B8860B;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(139, 115, 72, 0.06);
+    display: none;
+    margin-top: 24px;
+  }
+
+  .show-btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+    color: #C41E3A;
+  }
 
   .controls {
     margin-top: 32px;
@@ -267,6 +290,7 @@
       <div class="char" id="trad-char"></div>
     </div>
   </div>
+  <button class="show-btn" id="btn-show" onclick="revealAnswer()">Show</button>
   <div class="controls">
     <button class="btn active" id="btn-pause" onclick="togglePause()">Resume</button>
     <button class="btn" id="btn-prev" onclick="goBack()">&larr; Prev</button>
@@ -372,15 +396,20 @@ function showCard() {
 
   document.getElementById('answer-area').classList.remove('revealed');
   revealed = false;
-  if (!paused) speak(p.simp);
 
   document.getElementById('progress').textContent = `${idx + 1} / ${pool.length}`;
 
-  startTimer(1000, () => {
-    document.getElementById('answer-area').classList.add('revealed');
-    revealed = true;
-    startTimer(2000, advance);
-  });
+  if (paused) {
+    document.getElementById('btn-show').style.display = 'inline-block';
+  } else {
+    document.getElementById('btn-show').style.display = 'none';
+    speak(p.simp);
+    startTimer(1000, () => {
+      document.getElementById('answer-area').classList.add('revealed');
+      revealed = true;
+      startTimer(2000, advance);
+    });
+  }
 }
 
 function startTimer(ms, cb) {
@@ -404,13 +433,35 @@ function advance() {
   showCard();
 }
 
+function revealAnswer() {
+  document.getElementById('btn-show').style.display = 'none';
+  document.getElementById('answer-area').classList.add('revealed');
+  revealed = true;
+  const p = ALL_PHRASES[order[idx]];
+  if (soundOn) speak(p.simp);
+}
+
 function togglePause() {
   paused = !paused;
   const btn = document.getElementById('btn-pause');
   btn.textContent = paused ? 'Resume' : 'Pause';
   btn.classList.toggle('active', paused);
-  if (!paused) {
-    timerStart = Date.now() - (timerDuration - (timerDuration - (Date.now() - timerStart)));
+  if (paused) {
+    clearInterval(timer);
+    if (!revealed) {
+      document.getElementById('btn-show').style.display = 'inline-block';
+    }
+  } else {
+    document.getElementById('btn-show').style.display = 'none';
+    if (!revealed) {
+      startTimer(1000, () => {
+        document.getElementById('answer-area').classList.add('revealed');
+        revealed = true;
+        startTimer(2000, advance);
+      });
+    } else {
+      startTimer(2000, advance);
+    }
   }
 }
 
@@ -548,6 +599,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') goNext();
   if (e.key === 'ArrowLeft') goBack();
   if (e.key === 's' || e.key === 'S') toggleSound();
+  if ((e.key === 'Enter' || e.key === 'r' || e.key === 'R') && paused && !revealed) revealAnswer();
   if (e.key === 'l' || e.key === 'L') toggleLessonPicker();
 });
 
