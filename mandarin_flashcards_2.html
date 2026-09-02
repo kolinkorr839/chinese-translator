@@ -599,7 +599,10 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') goNext();
   if (e.key === 'ArrowLeft') goBack();
   if (e.key === 's' || e.key === 'S') toggleSound();
-  if ((e.key === 'Enter' || e.key === 'r' || e.key === 'R') && paused && !revealed) revealAnswer();
+  if (e.key === 'Enter' || e.key === 'r' || e.key === 'R') {
+    e.preventDefault();
+    if (paused && !revealed) revealAnswer();
+  }
   if (e.key === 'l' || e.key === 'L') toggleLessonPicker();
 });
 

@@ -1153,8 +1153,9 @@ document.addEventListener('keydown', e => {
     goNext();
   } else if (e.key === 'ArrowLeft') {
     goBack();
-  } else if ((e.key === 'Enter' || e.key === 'r' || e.key === 'R') && paused && !revealed) {
-    revealAnswer();
+  } else if (e.key === 'Enter' || e.key === 'r' || e.key === 'R') {
+    e.preventDefault();
+    if (paused && !revealed) revealAnswer();
   }
 });
 
