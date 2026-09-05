@@ -588,6 +588,27 @@ document.addEventListener('keydown', (e) => {
 
 initVoice();
 buildTable();
+
+// Idempotent stop. togglePause() cannot be used here: when the drill is not
+// running it calls start(), so asking it to "stop" would begin playback.
+function stopPlayback() {
+  clearTimeout(playTimer);
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  if (soloAudio) { soloAudio.pause(); soloAudio = null; }
+  if (window.speechSynthesis) speechSynthesis.cancel();
+  if (playing && !paused) {
+    paused = true;
+    const s = document.getElementById('status');
+    if (s) s.textContent = s.textContent.replace(' (paused)', '') + ' (paused)';
+  }
+}
+
+// The hub hides pages with display:none, which stops neither timers nor audio.
+window.addEventListener('message', e => {
+  if (e.source !== window.parent) return;
+  if (!e.data || e.data.type !== 'mandarin-hub:hidden') return;
+  stopPlayback();
+});
 </script>
 </body>
 </html>
