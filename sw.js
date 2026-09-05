@@ -1,4 +1,6 @@
-const CACHE_NAME = 'chinese-translator-v3';
+// Bump this whenever STATIC_ASSETS changes, to force a fresh precache.
+// HTML no longer needs a bump -- it is network-first (see the fetch handler).
+const CACHE_NAME = 'chinese-translator-v4';
 const STATIC_ASSETS = [
   './index.html',
   './manifest.json',
@@ -21,7 +23,10 @@ const STATIC_ASSETS = [
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(STATIC_ASSETS))
+      // Per-asset instead of addAll: addAll is all-or-nothing, so a single
+      // failure (the cross-origin CDN, say) would abort the install and leave
+      // the site with no service worker at all.
+      .then(cache => Promise.allSettled(STATIC_ASSETS.map(url => cache.add(url))))
       .then(() => self.skipWaiting())
   );
 });
@@ -35,6 +40,9 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  // Only GETs are cacheable; let anything else go straight to the network.
+  if (e.request.method !== 'GET') return;
+
   const url = new URL(e.request.url);
 
   if (url.hostname === 'translate.googleapis.com' || url.hostname === 'translate.google.com') {
@@ -42,13 +50,26 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  if (e.request.url.endsWith('/index.html') || e.request.url.endsWith('/')) {
+  // All HTML is network-first: a deploy is visible on the next load, and the
+  // cache is only an offline fallback. Cache-first here would pin every page
+  // until CACHE_NAME changed, so returning visitors would never see updates.
+  const isHTML = e.request.mode === 'navigate'
+    || url.pathname.endsWith('/')
+    || url.pathname.endsWith('.html');
+
+  if (isHTML) {
     e.respondWith(
       fetch(e.request).then(resp => {
-        const clone = resp.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+        if (resp.ok) {
+          const clone = resp.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+        }
         return resp;
-      }).catch(() => caches.match(e.request))
+      }).catch(() =>
+        // ignoreSearch so a cache-busting ?v= query still matches the cached page.
+        caches.match(e.request, { ignoreSearch: true })
+          .then(cached => cached || caches.match('./index.html'))
+      )
     );
     return;
   }
