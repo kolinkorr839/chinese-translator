@@ -103,6 +103,10 @@ li { margin: 0.3rem 0; }
   padding: 0.6rem 1rem;
   margin: 0.5rem 0;
   border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+.phrase:hover, .dialogue-line:hover {
+  background: #FBF6ED;
 }
 .phrase-list { margin: 1rem 0; }
 .phrase .chars { font-size: 1.3rem; margin-bottom: 0.2rem; }
@@ -121,6 +125,7 @@ li { margin: 0.3rem 0; }
   padding: 0.5rem 1rem;
   margin: 0.4rem 0;
   border-radius: 0 4px 4px 0;
+  cursor: pointer;
 }
 .dialogue-line .speaker {
   font-family: 'Cormorant Garamond', serif;
@@ -353,7 +358,7 @@ tr:nth-child(even) { background: #FFFDF8; }
   <div class="meaning">Hello</div>
 </div>
 
-<p><strong>Line 1:</strong> Traditional characters | Simplified characters</p>
+<p><strong>Line 1:</strong> Simplified characters | Traditional characters</p>
 <p><strong>Line 2:</strong> Pinyin (romanization with tone marks) - color-coded by tone</p>
 <p><strong>Line 3:</strong> English pronunciation guide (read this like English to approximate the sound)</p>
 <p><strong>Line 4:</strong> English meaning</p>
@@ -868,7 +873,7 @@ Use <span class="t2">nín</span> (您) instead of <span class="t3">nǐ</span> (�
 
 <div class="vocab-box">
 <h4>Countries</h4>
-<p><span class="t3">měi</span><span class="t2">guó</span> 美國|美国 = America | <span class="t1">yīng</span><span class="t2">guó</span> 英國|英国 = England | <span class="t2">fǎ</span><span class="t2">guó</span> 法國|法国 = France | <span class="t2">dé</span><span class="t2">guó</span> 德國|德国 = Germany | <span class="t4">rì</span><span class="t3">běn</span> 日本 = Japan | <span class="t2">hán</span><span class="t2">guó</span> 韓國|韩国 = Korea | <span class="t1">zhōng</span><span class="t2">guó</span> 中國|中国 = China</p>
+<p><span class="t3">měi</span><span class="t2">guó</span> 美国|美國 = America | <span class="t1">yīng</span><span class="t2">guó</span> 英国|英國 = England | <span class="t2">fǎ</span><span class="t2">guó</span> 法国|法國 = France | <span class="t2">dé</span><span class="t2">guó</span> 德国|德國 = Germany | <span class="t4">rì</span><span class="t3">běn</span> 日本 = Japan | <span class="t2">hán</span><span class="t2">guó</span> 韩国|韓國 = Korea | <span class="t1">zhōng</span><span class="t2">guó</span> 中国|中國 = China</p>
 <p>Pattern: country name + 人 (<span class="t2">rén</span>) = person from that country</p>
 </div>
 
@@ -1272,7 +1277,7 @@ Numbers 11-99 follow a simple pattern: 十一 <span class="t2">shí</span><span 
 
 <div class="vocab-box">
 <h4>More Food Words</h4>
-<p><span class="t1">jī</span> 雞|鸡 = chicken | <span class="t2">niú</span><span class="t4">ròu</span> 牛肉 = beef | <span class="t1">zhū</span><span class="t4">ròu</span> 豬肉|猪肉 = pork | <span class="t2">yú</span> 魚|鱼 = fish | <span class="t1">dàn</span> 蛋 = egg | <span class="t1">qīng</span><span class="t4">cài</span> 青菜 = vegetables | <span class="t1">tāng</span> 湯|汤 = soup</p>
+<p><span class="t1">jī</span> 鸡|雞 = chicken | <span class="t2">niú</span><span class="t4">ròu</span> 牛肉 = beef | <span class="t1">zhū</span><span class="t4">ròu</span> 猪肉|豬肉 = pork | <span class="t2">yú</span> 鱼|魚 = fish | <span class="t1">dàn</span> 蛋 = egg | <span class="t1">qīng</span><span class="t4">cài</span> 青菜 = vegetables | <span class="t1">tāng</span> 汤|湯 = soup</p>
 </div>
 
 <h3>Mini Dialogue</h3>
@@ -3474,6 +3479,20 @@ Chinese family terms are <strong>extremely specific</strong> - there are differe
 
 <div class="page-break"></div>
 <p style="text-align:center; color:#95A5A6; margin-top:4rem; font-style:italic;">End of workbook. Keep practicing, and remember - even trying to speak a little Mandarin will open doors and earn smiles throughout China. 加油！(jiāyóu! - You can do it!)</p>
+
+<script>
+function speak(chinese) {
+  const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  new Audio(url).play();
+}
+
+document.querySelectorAll('.phrase, .dialogue-line').forEach(item => {
+  item.addEventListener('click', () => {
+    const simp = item.querySelector('.simp');
+    if (simp) speak(simp.textContent);
+  });
+});
+</script>
 
 </body>
 </html>
