@@ -244,6 +244,7 @@
     <button class="btn" id="btn-prev" onclick="goBack()">&larr; Prev</button>
     <button class="btn" id="btn-next" onclick="goNext()">Next &rarr;</button>
     <button class="btn" id="btn-shuffle" onclick="toggleShuffle()">Shuffle: On</button>
+    <button class="btn" id="btn-speed" onclick="cycleSpeed()">Speed: 1&times;</button>
     <button class="btn" id="btn-sound" onclick="toggleSound()">Sound: On</button>
   </div>
 </div>
@@ -886,6 +887,35 @@ let shuffled = true;
 let revealed = false;
 let timer = null;
 let soundOn = true;
+
+// Pacing. These were hard-coded at the call sites, so there was no way to slow
+// the drill down; the shared speed factor is remembered across decks.
+const REVEAL_MS = 1500;
+const ADVANCE_MS = 3000;
+const SPEEDS = [0.5, 0.75, 1, 1.5, 2];
+const DEFAULT_SPEED_IDX = SPEEDS.indexOf(1);
+
+let speedIdx = (() => {
+  try {
+    const i = parseInt(localStorage.getItem('mandarin-hub-speed'), 10);
+    return Number.isInteger(i) && i >= 0 && i < SPEEDS.length ? i : DEFAULT_SPEED_IDX;
+  } catch { return DEFAULT_SPEED_IDX; }
+})();
+
+// Higher speed means less time on screen, so divide.
+const revealMs = () => Math.round(REVEAL_MS / SPEEDS[speedIdx]);
+const advanceMs = () => Math.round(ADVANCE_MS / SPEEDS[speedIdx]);
+
+function updateSpeedBtn() {
+  const b = document.getElementById('btn-speed');
+  if (b) b.textContent = 'Speed: ' + SPEEDS[speedIdx] + '\u00D7';
+}
+
+function cycleSpeed() {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  try { localStorage.setItem('mandarin-hub-speed', String(speedIdx)); } catch {}
+  updateSpeedBtn();
+}
 let selectedPattern = -1; // -1 = All
 
 let zhVoice = null;
@@ -1013,7 +1043,7 @@ function showCard() {
     document.getElementById('btn-show').style.display = 'none';
     timer = setTimeout(() => {
       revealAnswer();
-    }, 1500);
+    }, revealMs());
   }
 }
 
@@ -1030,7 +1060,7 @@ function revealAnswer() {
   if (!paused) {
     timer = setTimeout(() => {
       advance();
-    }, 3000);
+    }, advanceMs());
   }
 }
 
@@ -1059,9 +1089,9 @@ function togglePause() {
   if (!paused) {
     document.getElementById('btn-show').style.display = 'none';
     if (!revealed) {
-      timer = setTimeout(revealAnswer, 1500);
+      timer = setTimeout(revealAnswer, revealMs());
     } else {
-      timer = setTimeout(advance, 3000);
+      timer = setTimeout(advance, advanceMs());
     }
   } else {
     clearTimeout(timer);
@@ -1161,6 +1191,7 @@ document.addEventListener('keydown', e => {
 
 /* Init */
 initVoice();
+updateSpeedBtn();
 buildSelectorUI();
 buildPool();
 buildOrder();

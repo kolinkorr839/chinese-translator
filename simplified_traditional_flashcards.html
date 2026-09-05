@@ -206,6 +206,7 @@
     <button class="btn" id="btn-prev" onclick="goBack()">&larr; Prev</button>
     <button class="btn" id="btn-next" onclick="goNext()">Next &rarr;</button>
     <button class="btn" id="btn-shuffle" onclick="toggleShuffle()">Shuffle: On</button>
+    <button class="btn" id="btn-speed" onclick="cycleSpeed()">Speed: 1&times;</button>
     <button class="btn" id="btn-sound" onclick="toggleSound()">Sound: On</button>
   </div>
 </div>
@@ -314,6 +315,35 @@ let timerStart = 0;
 let timerDuration = 0;
 let soundOn = true;
 
+// Pacing. These were hard-coded at the call sites, so there was no way to slow
+// the drill down; the shared speed factor is remembered across decks.
+const REVEAL_MS = 1000;
+const ADVANCE_MS = 1000;
+const SPEEDS = [0.5, 0.75, 1, 1.5, 2];
+const DEFAULT_SPEED_IDX = SPEEDS.indexOf(1);
+
+let speedIdx = (() => {
+  try {
+    const i = parseInt(localStorage.getItem('mandarin-hub-speed'), 10);
+    return Number.isInteger(i) && i >= 0 && i < SPEEDS.length ? i : DEFAULT_SPEED_IDX;
+  } catch { return DEFAULT_SPEED_IDX; }
+})();
+
+// Higher speed means less time on screen, so divide.
+const revealMs = () => Math.round(REVEAL_MS / SPEEDS[speedIdx]);
+const advanceMs = () => Math.round(ADVANCE_MS / SPEEDS[speedIdx]);
+
+function updateSpeedBtn() {
+  const b = document.getElementById('btn-speed');
+  if (b) b.textContent = 'Speed: ' + SPEEDS[speedIdx] + '\u00D7';
+}
+
+function cycleSpeed() {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  try { localStorage.setItem('mandarin-hub-speed', String(speedIdx)); } catch {}
+  updateSpeedBtn();
+}
+
 let zhVoice = null;
 
 function initVoice() {
@@ -363,11 +393,11 @@ function showCard() {
   document.getElementById('progress').textContent = `${idx + 1} / ${PAIRS.length}`;
   revealed = false;
 
-  startTimer(1000, () => {
+  startTimer(revealMs(), () => {
     document.getElementById('trad-card').classList.add('revealed');
     document.getElementById('arrow').classList.add('revealed');
     revealed = true;
-    startTimer(1000, advance);
+    startTimer(advanceMs(), advance);
   });
 }
 
@@ -448,6 +478,7 @@ document.addEventListener('keydown', (e) => {
 
 buildOrder();
 initVoice();
+updateSpeedBtn();
 showCard();
 
 // The hub hides pages with display:none, which stops neither timers nor audio.
