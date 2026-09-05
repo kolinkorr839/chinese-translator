@@ -445,7 +445,31 @@ let activePage = null;
 
 const HOME = 'mandarin_translation.html';
 
-function loadPage(page) {
+// Whitelist of loadable pages. Everything that can set the iframe src -- the
+// URL hash, localStorage -- is checked against this. Without it, a crafted
+// #https://example.com would make the hub frame an arbitrary external site.
+const KNOWN_PAGES = new Set([HOME, ...[...tabs].map(t => t.dataset.page)]);
+
+function isKnownPage(page) {
+  return typeof page === 'string' && KNOWN_PAGES.has(page);
+}
+
+// Hash routing (not pushState): GitHub Pages has no rewrite rules, so a real
+// path would 404 on refresh. A hash also survives being opened from file://.
+function pageFromHash() {
+  const raw = decodeURIComponent(location.hash.replace(/^#/, ''));
+  return isKnownPage(raw) ? raw : null;
+}
+
+function loadPage(page, updateHash = true) {
+  if (!isKnownPage(page)) page = HOME;
+
+  // Writing the hash re-enters via hashchange; that call passes updateHash=false.
+  if (updateHash && pageFromHash() !== page) {
+    location.hash = page;
+    return;   // hashchange will call back in with the real work
+  }
+
   tabs.forEach(t => {
     const isActive = t.dataset.page === page;
     t.classList.toggle('active', isActive);
@@ -529,9 +553,15 @@ hamburger.addEventListener('click', () => {
 
 overlay.addEventListener('click', closeSidebar);
 
-// Restore last page
-const lastPage = localStorage.getItem('mandarin-hub-last');
-loadPage(lastPage || HOME);
+// Back/forward and hand-edited or shared URLs.
+window.addEventListener('hashchange', () => {
+  loadPage(pageFromHash() || HOME, false);
+});
+
+// Opening order: an explicit URL hash wins, then the last page you were on.
+const stored = localStorage.getItem('mandarin-hub-last');
+const initial = pageFromHash() || (isKnownPage(stored) ? stored : HOME);
+loadPage(initial);
 
 // Service worker: enables offline use and "Add to Home Screen".
 // Needs https:// or localhost -- silently unavailable over file://.
