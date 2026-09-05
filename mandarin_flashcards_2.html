@@ -624,6 +624,15 @@ if (voices.length > 0) {
   speechSynthesis.addEventListener('voiceschanged', startFirstCard, { once: true });
   setTimeout(startFirstCard, 1000);
 }
+
+// The hub hides pages with display:none, which stops neither timers nor audio.
+// Pause ourselves when it tells us we are no longer on screen.
+window.addEventListener('message', e => {
+  if (e.source !== window.parent) return;
+  if (!e.data || e.data.type !== 'mandarin-hub:hidden') return;
+  if (!paused) togglePause();
+  if (window.speechSynthesis) speechSynthesis.cancel();
+});
 </script>
 </body>
 </html>

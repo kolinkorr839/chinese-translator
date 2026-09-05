@@ -478,6 +478,14 @@ function loadPage(page, updateHash = true) {
   });
 
   if (activePage && iframes[activePage]) {
+    // display:none does not stop timers or audio, and pages are never unloaded,
+    // so a running deck would keep advancing and speaking from a hidden iframe.
+    // postMessage rather than reaching into contentDocument, so this still works
+    // over file://, where the frames are cross-origin. '*' for the same reason
+    // (file:// origins are opaque); the message carries nothing sensitive.
+    try {
+      iframes[activePage].contentWindow.postMessage({ type: 'mandarin-hub:hidden' }, '*');
+    } catch (e) { /* frame not ready yet */ }
     iframes[activePage].style.display = 'none';
   }
 

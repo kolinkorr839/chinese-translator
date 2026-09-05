@@ -231,7 +231,7 @@
     margin: 0;
   }
 
-  .api-key-bar input[type="text"] {
+  .api-key-bar input {
     border: 1px solid #E8E0D4;
     border-radius: 8px;
     padding: 6px 12px;
@@ -244,7 +244,7 @@
     color: #1a1a2e;
   }
 
-  .api-key-bar input[type="text"]:focus {
+  .api-key-bar input:focus {
     border-color: #C41E3A;
   }
 
@@ -665,7 +665,7 @@
     .draw-card { flex-direction: row; flex-wrap: wrap; justify-content: center; }
     .columns { flex-direction: column; align-items: center; }
     .column { max-width: 100%; width: 100%; }
-    .api-key-bar input[type="text"] { width: 200px; }
+    .api-key-bar input { width: 200px; }
   }
 </style>
 </head>
@@ -773,7 +773,8 @@ function renderApiKeyBar() {
     chatBox.classList.remove('hidden');
   } else {
     bar.innerHTML = `
-      <input type="text" id="gemini-key-input" placeholder="Gemini API key for etymology">
+      <input type="password" id="gemini-key-input" autocomplete="off" spellcheck="false"
+             placeholder="Gemini API key for etymology">
       <button onclick="saveApiKey()">Save</button>
     `;
     chatBox.classList.add('hidden');
