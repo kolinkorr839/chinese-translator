@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Chinese Translator</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
@@ -888,9 +889,19 @@ function getPinyin(chinese) {
   return pinyinPro.pinyin(chinese, { toneType: 'num', type: 'array' }).join(' ');
 }
 
+let ttsAudio = null;
+
 function speak(chinese) {
+  if (!chinese) return;
+
+  // Stop whatever is still playing, otherwise rapid clicks stack voices.
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
   const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
-  new Audio(url).play();
+  ttsAudio = new Audio(url);
+
+  // Offline or rate-limited: fail quietly instead of an unhandled rejection.
+  ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
 }
 
 async function getCharMeaning(char) {
