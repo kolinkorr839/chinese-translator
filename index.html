@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mandarin Hub</title>
+<meta name="theme-color" content="#1d1d1f">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐯</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -317,7 +320,7 @@ iframe {
 <body>
 
 <!-- Hamburger (mobile) -->
-<button class="hamburger" id="hamburger">
+<button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="sidebar">
   <span></span>
   <span></span>
   <span></span>
@@ -329,9 +332,21 @@ iframe {
 <!-- Sidebar -->
 <nav class="sidebar" id="sidebar">
 
-  <div class="brand" id="brand">
+  <div class="brand" id="brand" role="button" tabindex="0"
+       aria-label="Mandarin Hub — go to the Translator">
     <span class="brand-character">&#x1F42F;</span>
     <span class="brand-name">Mandarin Hub</span>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Translate -->
+  <div class="section-label">Translate</div>
+  <div class="nav-group">
+    <button class="nav-item" data-page="mandarin_translation.html">
+      <span class="nav-icon">译</span>
+      <span class="nav-label">Translator</span>
+    </button>
   </div>
 
   <div class="section-divider"></div>
@@ -431,7 +446,12 @@ let activePage = null;
 const HOME = 'mandarin_translation.html';
 
 function loadPage(page) {
-  tabs.forEach(t => t.classList.toggle('active', t.dataset.page === page && page !== HOME));
+  tabs.forEach(t => {
+    const isActive = t.dataset.page === page;
+    t.classList.toggle('active', isActive);
+    if (isActive) t.setAttribute('aria-current', 'page');
+    else t.removeAttribute('aria-current');
+  });
 
   if (activePage && iframes[activePage]) {
     iframes[activePage].style.display = 'none';
@@ -440,12 +460,19 @@ function loadPage(page) {
   if (!iframes[page]) {
     const f = document.createElement('iframe');
     f.src = page;
+    // First load: the iframe isn't ready yet, so focus it once it is -- but only
+    // if it's still the page being shown (a slow page must not steal focus later).
+    f.addEventListener('load', () => {
+      if (activePage === page) f.contentWindow.focus();
+    });
     content.appendChild(f);
     iframes[page] = f;
   }
 
   iframes[page].style.display = 'block';
   activePage = page;
+  // Hand keyboard focus to the page so its own shortcuts (space, arrows) reach it.
+  iframes[page].contentWindow.focus();
   localStorage.setItem('mandarin-hub-last', page);
 
   // Close sidebar on mobile
@@ -457,6 +484,13 @@ function loadPage(page) {
 // Brand click -> HOME
 const brand = document.querySelector('.brand');
 brand.addEventListener('click', () => loadPage(HOME));
+// It's a div, so it needs explicit keyboard activation to match the click.
+brand.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    loadPage(HOME);
+  }
+});
 
 // Tab clicks
 tabs.forEach(tab => tab.addEventListener('click', () => loadPage(tab.dataset.page)));
@@ -466,18 +500,27 @@ const hamburger = document.getElementById('hamburger');
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');
 
+// Tracks the pending "hide the overlay" timer from closeSidebar(). Without this,
+// close-then-reopen inside 250ms lets the stale timer strip .active from an overlay
+// that is open again -- the backdrop vanishes and tap-outside-to-close stops working.
+let overlayHideTimer = null;
+
 function openSidebar() {
+  clearTimeout(overlayHideTimer);
   sidebar.classList.add('open');
   overlay.classList.add('active');
   hamburger.classList.add('active');
+  hamburger.setAttribute('aria-expanded', 'true');
   requestAnimationFrame(() => overlay.classList.add('visible'));
 }
 
 function closeSidebar() {
+  clearTimeout(overlayHideTimer);
   sidebar.classList.remove('open');
   overlay.classList.remove('visible');
   hamburger.classList.remove('active');
-  setTimeout(() => overlay.classList.remove('active'), 250);
+  hamburger.setAttribute('aria-expanded', 'false');
+  overlayHideTimer = setTimeout(() => overlay.classList.remove('active'), 250);
 }
 
 hamburger.addEventListener('click', () => {
@@ -489,6 +532,15 @@ overlay.addEventListener('click', closeSidebar);
 // Restore last page
 const lastPage = localStorage.getItem('mandarin-hub-last');
 loadPage(lastPage || HOME);
+
+// Service worker: enables offline use and "Add to Home Screen".
+// Needs https:// or localhost -- silently unavailable over file://.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .catch(err => console.warn('Service worker registration failed:', err));
+  });
+}
 </script>
 
 </body>
