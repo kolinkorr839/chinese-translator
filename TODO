@@ -1,7 +1,259 @@
-Future additions we discussed (parking lot):
-  1. Patterns 7-15 (把, 被, 三个de, 比, clause connectors, etc.)
-  2. Short dialogue/story reader (bridges phrases to comprehension)
-  3. Stroke order watch-only animations
-  4. Spaced repetition tracking
-  5. Listening comprehension drills (for the Netflix goal)
-  6. HSK vocabulary sets
+MANDARIN HUB — TODO
+===================
+
+STUDENT PROFILE (read this first — it justifies every choice below)
+------------------------------------------------------------------
+  - Studied traditional characters for ~10 years, roughly 20 years ago.
+    RECOGNIZES a lot of characters. Does NOT know their meanings, any grammar,
+    or how to speak. Recognition is already strong; everything else is at zero.
+  - Learned sounds via zhuyin/bopomofo (ㄅㄆㄇㄈ), never pinyin.
+    Has not HEARD spoken Mandarin in ~20 years.
+  - Destination is MAINLAND CHINA.
+      Target script    = SIMPLIFIED
+      Target phonetics = PINYIN
+      Zhuyin is OUT OF SCOPE. Do not add zhuyin features. Do not add a zhuyin
+      column. This was considered and explicitly rejected.
+  - Traditional is kept for ONE reason only: as a recognition bridge. Seeing that
+    a simplified character maps to a traditional one he already knows makes it feel
+    familiar rather than brand-new. It does not give him meaning. So traditional is
+    a secondary/reference display, never the primary.
+  - GOAL: real conversation. Handle replies that weren't scripted. Recall the core
+    phrases instantly, spoken, without gesture. Longer term: watch Netflix in
+    Mandarin to re-train the ear.
+
+  DESIGN CONSEQUENCE: he already owns recognition (character -> sound/meaning).
+  Almost every existing drill trains that same direction, which is the muscle he
+  least needs. New work should run the OTHER directions: sound -> meaning, and
+  English -> spoken Chinese.
+
+
+SETTLED DECISIONS — do not re-litigate these
+--------------------------------------------
+  - ZHUYIN / BOPOMOFO: out of scope. Destination is mainland China; the target
+    notation is pinyin. Do not propose adding a zhuyin column or a zhuyin bridge.
+
+  - HANDWRITING ON PAPER: KEEP IT. It was questioned on time-cost grounds (he'll
+    type with a pinyin IME in China, so he may never handwrite in anger) and that
+    objection was considered and REJECTED, correctly. The reasoning:
+      Pinyin is a transcription, not a memory hook. In English or Spanish you see a
+      word and the shape carries the meaning; a romanization of a sound carries
+      nothing to hang meaning on. For this student the character IS the anchor —
+      he already recognizes thousands of shapes, he just has no meaning attached
+      to them. Writing the character is what binds meaning to a shape he already
+      half-knows. Take that away and there is nothing left to remember the word BY.
+    So the paper step stays. Any future "make it faster" proposal must preserve it.
+
+  - TRADITIONAL: display-only, secondary. Bridge for recognition, never primary.
+
+
+PRIORITY 1 — flip the direction of practice
+-------------------------------------------
+
+1. LISTENING-FIRST MODE   (new page: listening_drill.html)
+   Why: he has never trained hear -> understand. This is the wall for both travel
+   and the Netflix goal. Highest-value item on this list.
+
+   Behaviour:
+     - Play audio for a phrase FIRST. Render no Chinese text, no pinyin, no English
+       until the user answers. (Critical: if text renders first it silently becomes
+       another recognition drill and the whole point is lost.)
+     - Show 4 English meanings; user picks one. Then reveal simplified + pinyin +
+       English together, and replay the audio once on reveal.
+     - Replay button, always available, unlimited replays before answering.
+     - Wrong answers get pushed back into the queue ~5 cards later.
+     - Second sub-mode, "tone drill": play a single word, ask which tone (1/2/3/4/neutral).
+       Build minimal pairs from the existing phrase set where possible (mā/má/mǎ/mà).
+
+   Implementation:
+     - Audio: reuse the existing TTS approach — Audio() against
+       translate.google.com/translate_tts (see speak() in mandarin_translation.html).
+       The page MUST carry <meta name="referrer" content="no-referrer"> or Google
+       returns 404. This is verified: with a Referer it 404s, without one it 200s.
+     - Distractors: pull the 3 wrong options from the same lesson so they're
+       plausible, not random.
+     - Reuse the control bar from mandarin_flashcards_2.html (shuffle / speed /
+       sound toggle) so it feels like the rest of the site.
+     - Listen for the hub's postMessage {type:'mandarin-hub:hidden'} and stop audio,
+       same as the other decks already do.
+     - Add to index.html nav under "Practice", and to sw.js STATIC_ASSETS (bump CACHE_NAME).
+
+2. PRODUCTION MODE   (UPGRADE mandarin_flashcards_2.html — do not build a new page)
+   Note: Recall Mode ALREADY does this direction. Its header literally reads
+   "English prompt - recall the Chinese", with a Show button calling revealAnswer().
+   So prompted production exists. What's missing is the feedback loop and the grading.
+
+   Why: he currently does English -> say aloud -> write on paper by hand, then hits
+   Show. He never hears whether what he said was right. Closing that loop is the work.
+
+   Behaviour to ADD:
+     - On reveal, play the audio automatically so he can compare what he said to
+       what it should sound like. (Today reveal is silent unless he clicks.)
+     - Self-grade after reveal: [Again] / [Hard] / [Good]. Store the grades — this
+       is the hook that spaced repetition (parking-lot item) will later read.
+     - Optional "no pinyin" toggle so he can force himself off the crutch.
+
+   Implementation:
+     - Grades in localStorage under key `mandarin-production-grades`, shape
+       { [phraseId]: {seen, again, hard, good, lastSeen} }.
+     - Needs stable phrase IDs -> depends on item 3 below. Do item 3 first.
+
+
+2B. TRANSFORM & GENERATE DRILLS  (the missing levels of production)
+   Why: production has three levels. He only trains level 1.
+     Level 1 RECALL    — English cue -> the one memorized phrase. = Recall Mode. Exists.
+     Level 2 TRANSFORM — take a phrase he knows and bend it with grammar. MISSING.
+     Level 3 GENERATE  — build a sentence he has never seen, fast, in response to
+                         something unexpected. MISSING.
+   Conversation happens at level 3. Level 1 alone produces the exact failure he
+   described: knows the phrase, gets a reply off-script, freezes. The grammar guide
+   explains all 15 patterns but never makes him USE one to build something new —
+   that gap is what these two drills close.
+
+   TRANSFORM DRILL (new page: transform_drill.html)
+     - Show a phrase he already knows + one instruction. He says the transformed
+       version aloud, then reveals.
+         我要这个     "make it negative"      -> 我不要这个
+         我要这个     "make it a question"    -> 我要这个吗? / 你要哪个?
+         我去北京     "say you already went"  -> 我去过北京 / 我去了北京
+         他是老师     "say he isn't"          -> 他不是老师
+         这个好       "compare with that one" -> 这个比那个好
+     - Instruction set maps 1:1 onto the 15 patterns already written up in
+       grammar_guide.html (是...的, 了, 在+verb, 过, 想/要/会/能/可以, 把, 被,
+       的/得/地, 比, connectors, 越来越, 一边...一边). Reuse those, do not invent new grammar.
+     - Data: a transformations table { baseId, instruction, answer, patternRef }.
+       baseId points into window.PHRASES (item 3), patternRef links to the anchor in
+       grammar_guide.html so he can jump to the explanation when he gets it wrong.
+     - Reveal plays audio + self-grade, same as the Recall Mode upgrade in item 2.
+
+   GENERATE DRILL (new page: generate_drill.html)
+     - Give an English SITUATION that is deliberately NOT in the phrase list, plus
+       3-4 words he already knows. He builds a sentence from scratch, out loud.
+         "The waiter asks if you want it spicy. You want it a little spicy."
+           given: 要 / 一点 / 辣 / 不太
+     - Reveal a MODEL answer, clearly labelled as one valid answer, not the only one.
+       Plus audio. Self-graded — there is no way to auto-mark this and that is fine.
+     - Timed variant: 5-second cap before reveal, to push toward automaticity.
+       Speed is the whole point at level 3; a correct sentence after 20 seconds of
+       assembly is not conversation.
+     - Situations should be drawn from the same travel contexts as Course 1 so the
+       vocabulary is already in place and only the assembly is new.
+
+
+PRIORITY 2 — consistency and plumbing
+-------------------------------------
+
+3. SINGLE SOURCE OF TRUTH FOR PHRASE DATA
+   Problem: the 227 phrases exist as `const DATA = [...]` inside
+   mandarin_flashcards.html AND again inside mandarin_flashcards_2.html, and the
+   14-day course re-states the same content as hand-written HTML tables. Three
+   copies that drift.
+
+   Fix:
+     - Create data/phrases.js containing:  window.PHRASES = [ ... ];
+       Shape per phrase: { id, lesson, section, simp, trad, pinyin, meaning }
+       Add a stable `id` (e.g. "L01-005") — production mode and SRS both need it.
+     - IMPORTANT: it must be a CLASSIC .js file that assigns a global. Do NOT make
+       it a .json loaded with fetch() — fetch of a local file is blocked under
+       file:// (CORS), which would break local use.
+     - Update mandarin_flashcards.html and mandarin_flashcards_2.html to read
+       window.PHRASES instead of their own DATA.
+     - Add data/phrases.js to sw.js STATIC_ASSETS and bump CACHE_NAME.
+
+4. GLOBAL SIMPLIFIED / TRADITIONAL SWITCH
+   Problem: mandarin_flashcards_2.html and grammar_flashcards.html have a
+   trad/simp toggle. mandarin_flashcards.html, mandarin_in_14_days.html and
+   grammar_guide.html do NOT. So the script the student sees is inconsistent
+   depending on which page he's on.
+
+   Fix:
+     - One control in the hub sidebar. Default SIMPLIFIED (that's the target script).
+     - Store in localStorage as `mandarin-hub-script` = 'simp' | 'trad'.
+     - Broadcast to pages via postMessage {type:'mandarin-hub:script', value:'simp'},
+       mirroring the existing 'mandarin-hub:hidden' message. Each page listens and
+       re-renders from the trad/simp fields it already has.
+     - Use postMessage as the transport, NOT shared localStorage. Under file:// the
+       iframes are cross-origin/opaque, and it is not confirmed they share the hub's
+       localStorage (observed: `mandarin-hub-speed` was present on the https origin
+       but absent on file://). postMessage works on both.
+     - Also send the current value on iframe load, so a newly-opened page starts correct.
+
+5. FIX THE 14-DAY COURSE
+   Problems found:
+     - Mixed scripts in one document: 這 x6 vs 这 x12, 說 x5 vs 说 x8, 個 x8 vs 个 x18.
+       Same drift in grammar_guide.html (這 x7 / 这 x9, 說 x2 / 说 x4, 會 x5 / 会 x7).
+       For a student whose only foothold is character shape, this is actively confusing.
+     - The course is hand-written HTML tables, so it can't participate in item 4 and
+       drifts from the flashcard data.
+   Fix:
+     - Normalize to SIMPLIFIED as the printed script throughout.
+     - Then render the lesson phrase tables from window.PHRASES (item 3) so the
+       course, the deck and Recall Mode can never disagree again, and so the global
+       script switch (item 4) reaches the course too.
+     - Keep the prose/explanations as hand-written HTML — only the phrase tables
+       become data-driven.
+
+
+PRIORITY 3 — structure
+----------------------
+
+6. SIDEBAR REORDER
+   Current order (index.html): Translate / Practice (Flashcards, Recall Mode) /
+   Pronunciation (Pinyin Chart, Pinyin Guide) / Grammar (Guide, Flashcards) /
+   Courses (14-Day) / Simplified-Traditional (Guide, Cheat Sheet, Flashcards).
+   Intent: most-used items at the top so they're the shortest click.
+   Open: decide the real usage order before moving anything. Candidate order is
+   Translate -> Practice -> Courses -> Grammar -> Pronunciation -> S/T, on the
+   theory that S/T is reference material consulted rarely, while Courses is daily.
+   Do not reorder on a guess; confirm first.
+
+
+PRIORITY 4 — new content
+------------------------
+
+7. COURSE 2 — "HANDLING THE REPLY"   (was: "Next 14-Day Course")
+   STATUS: AGREED. Course 2 is the same travel situations taught from the OTHER side
+   of the conversation — what he HEARS back — not deeper vocabulary on the same topics.
+
+   The failure it fixes, concretely:
+     Him:    我要这个            ("I want this one")  <- Course 1 taught him this. Perfect.
+     Waiter: 在这儿吃还是带走?    ("eat here or take away?")
+     Him:    ...frozen.
+   His Mandarin didn't fail. Course 1 taught him every sentence he SAYS and not one
+   sentence he HEARS. Course 2 closes that.
+
+   Context: Course 1 answers "can he survive 14 days in China with just this book?"
+   It teaches him to SPEAK first — 200-odd phrases he initiates. The gap is that in
+   a real exchange the other person answers, and nothing prepares him for that.
+   His stated goal is exactly this: handle replies that weren't scripted.
+
+   So Course 2 should NOT be "the same lessons but harder vocabulary". It should be
+   the same situations from the OTHER side of the counter.
+
+   Per topic (start with the highest-traffic three: Ordering Food, Shopping,
+   Directions), each lesson covers:
+     - The 5-10 replies he will actually hear, as audio-first drills. e.g. for food:
+       几位? / 在这儿吃还是带走? / 要不要辣? / 还要别的吗? / 扫码点单
+     - The 2-3 ways each reply gets phrased, because real people vary the wording.
+     - His response options for each.
+     - Repair phrases — the highest-value item in the whole course and currently
+       absent everywhere:
+         请再说一遍  (please say it again)
+         说慢一点    (slower please)
+         我听不懂    (I don't understand)
+         这个用中文怎么说? (how do you say this in Chinese?)
+       These are what convert a dead-end into a conversation. They should arguably
+       be pulled forward into Course 1 as well.
+     - A branching mini-dialogue: his line -> one of 2-3 possible replies -> his
+       next line. Even a simple scripted branch beats a linear dialogue for teaching
+       him that replies vary.
+   Format: audio-first, matching item 1. He should hear the reply before seeing it.
+
+
+PARKING LOT (unchanged, lower priority)
+---------------------------------------
+  - Patterns 7-15 for the grammar guide (把, 被, three 的/得/地, 比, clause connectors)
+  - Short dialogue/story reader (bridges phrases to comprehension)
+  - Stroke order watch-only animations
+  - Spaced repetition tracking (reads the grades written by item 2)
+  - HSK vocabulary sets
+  - Netflix bridge: a page of listening strategies + which shows suit a beginner ear
