@@ -16,8 +16,8 @@ BILINGUAL_BY_DESIGN = {
     "simplified_to_traditional_guide.html",
     "simplified_to_traditional_cheat_sheet.html",
     "simplified_traditional_flashcards.html",
-    "mandarin_flashcards.html",
-    "mandarin_flashcards_2.html",
+    "phrase_reference.html",
+    "flashcards.html",
     "grammar_flashcards.html",
     "mandarin_translation.html",
 }

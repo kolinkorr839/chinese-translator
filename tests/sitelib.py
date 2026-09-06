@@ -67,17 +67,17 @@ def phrase_data():
     """
     The lesson/phrase data powering the flashcards.
 
-    Lives as `const DATA = [...]` inside mandarin_flashcards.html. It is valid
+    Lives as `const DATA = [...]` inside phrase_reference.html. It is valid
     JSON today; if that ever stops being true this raises and the content tests
     fail loudly, which is the point.
 
     NOTE: once TODO item 3 lands (single source of truth in data/phrases.js),
     point this at that file instead — it is the only place that needs changing.
     """
-    src = read("mandarin_flashcards.html")
+    src = read("phrase_reference.html")
     m = re.search(r"const DATA = (\[.*?\]);\n", src, re.S)
     if not m:
-        raise AssertionError("could not find `const DATA = [...]` in mandarin_flashcards.html")
+        raise AssertionError("could not find `const DATA = [...]` in phrase_reference.html")
     return json.loads(m.group(1))
 
 
