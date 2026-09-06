@@ -7,6 +7,7 @@
 <title>Chinese Translator</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3.29.3/dist/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.7.3/dist/hanzi-writer.min.js"></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -666,6 +667,24 @@
     color: #C41E3A;
   }
 
+  .stroke-char {
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .stroke-char:hover {
+    color: #C41E3A;
+  }
+
+  #stroke-order-target {
+    width: 176px;
+    height: 176px;
+    border: 2px solid #E8E0D4;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #FFFDF8;
+  }
+
   @media (max-width: 700px) {
     .main-layout { flex-direction: column; }
     .draw-panel { width: 100%; }
@@ -689,15 +708,22 @@
   <div class="draw-panel">
     <div class="draw-panel-label">Draw</div>
     <div class="draw-card">
-      <div class="draw-canvas-wrapper">
+      <div class="draw-canvas-wrapper" id="draw-canvas-wrapper">
         <canvas id="draw-canvas" width="176" height="176"></canvas>
         <div class="draw-hint" id="draw-hint">Draw here</div>
       </div>
+      <div id="stroke-order-wrapper" style="display:none">
+        <div id="stroke-order-target"></div>
+      </div>
       <div class="draw-candidates" id="draw-candidates">
               </div>
-      <div class="draw-controls">
+      <div class="draw-controls" id="draw-controls">
         <button onclick="undoDrawStroke()">Undo</button>
         <button onclick="clearDrawCanvas()">Clear</button>
+      </div>
+      <div class="draw-controls" id="stroke-controls" style="display:none">
+        <button onclick="replayStrokeOrder()">Replay</button>
+        <button onclick="hideStrokeOrder()">Clear</button>
       </div>
     </div>
   </div>
@@ -1025,8 +1051,8 @@ async function translate() {
       simplified = await googleTranslate(traditional, 'zh-TW', 'zh-CN');
     }
 
-    tradEl.textContent = traditional;
-    simpEl.textContent = simplified;
+    renderClickableChars(tradEl, traditional);
+    renderClickableChars(simpEl, simplified);
     // From here the translation is on screen. Anything that fails after this
     // point is enrichment (breakdown, etymology) and must not wipe the result.
     rendered = true;
@@ -1510,7 +1536,7 @@ async function recognizeDrawing() {
     const data = await resp.json();
 
     if (data[0] === 'SUCCESS' && data[1] && data[1][0]) {
-      const chars = data[1][0][1].filter(ch => /[一-鿿㐀-䶿]/.test(ch));
+      const chars = data[1][0][1].filter(ch => ch.length === 1 && /[一-鿿㐀-䶿]/.test(ch));
       renderDrawCandidates(chars);
     } else {
       drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">no matches</span>';
@@ -1568,6 +1594,71 @@ function redrawAllStrokes() {
     }
     drawCtx.stroke();
   }
+}
+
+// Stroke order animation
+let strokeWriter = null;
+const drawPanelLabel = document.querySelector('.draw-panel-label');
+const drawCanvasWrapper = document.getElementById('draw-canvas-wrapper');
+const strokeOrderWrapper = document.getElementById('stroke-order-wrapper');
+const strokeControls = document.getElementById('stroke-controls');
+const drawControlsEl = document.getElementById('draw-controls');
+
+function renderClickableChars(el, text) {
+  el.innerHTML = '';
+  for (const ch of text) {
+    if (/[一-鿿㐀-䶿]/.test(ch)) {
+      const span = document.createElement('span');
+      span.className = 'stroke-char';
+      span.textContent = ch;
+      span.onclick = () => showStrokeOrder(ch);
+      el.appendChild(span);
+    } else {
+      el.appendChild(document.createTextNode(ch));
+    }
+  }
+}
+
+function showStrokeOrder(char) {
+  if (strokeWriter) {
+    strokeWriter.hideCharacter();
+    strokeWriter = null;
+  }
+  document.getElementById('stroke-order-target').innerHTML = '';
+
+  strokeWriter = HanziWriter.create('stroke-order-target', char, {
+    width: 176,
+    height: 176,
+    padding: 10,
+    strokeColor: '#1a1a2e',
+    radicalColor: '#C41E3A',
+    delayBetweenStrokes: 150,
+    strokeAnimationSpeed: 1.5
+  });
+  strokeWriter.animateCharacter();
+
+  drawCanvasWrapper.style.display = 'none';
+  strokeOrderWrapper.style.display = 'block';
+  drawControlsEl.style.display = 'none';
+  strokeControls.style.display = 'flex';
+  drawCandidatesEl.innerHTML = '';
+  drawPanelLabel.textContent = 'Stroke Order';
+}
+
+function hideStrokeOrder() {
+  drawCanvasWrapper.style.display = 'block';
+  strokeOrderWrapper.style.display = 'none';
+  drawControlsEl.style.display = 'flex';
+  strokeControls.style.display = 'none';
+  drawPanelLabel.textContent = 'Draw';
+  if (drawStrokes.length === 0) {
+    drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">candidates appear here</span>';
+    drawHint.style.opacity = '1';
+  }
+}
+
+function replayStrokeOrder() {
+  if (strokeWriter) strokeWriter.animateCharacter();
 }
 </script>
 </body>
