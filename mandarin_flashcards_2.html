@@ -113,6 +113,15 @@
     color: #1a1a2e;
     background: #F5F0E8;
   }
+  .trouble-badge {
+    font-size: 11px;
+    color: #8a8478;
+    margin-left: 2px;
+  }
+  .sel-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 
   .prompt-area {
     min-height: 160px;
@@ -144,6 +153,7 @@
   }
 
   .answer-area {
+    position: relative;
     min-height: 120px;
     display: flex;
     justify-content: center;
@@ -195,6 +205,27 @@
   .divider.same { display: none; }
 
   .char-block.trad-block.same { display: none; }
+
+  .star-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #D4C9B8;
+    transition: color 0.2s, transform 0.15s;
+    padding: 0.3rem;
+    line-height: 1;
+  }
+  .star-btn:hover {
+    color: #B8860B;
+    transform: scale(1.15);
+  }
+  .star-btn.active {
+    color: #B8860B;
+  }
 
   .show-btn {
     background: #FFFDF8;
@@ -272,6 +303,7 @@
              onkeydown="if(event.key==='Enter') applyRange()">
       <button class="sel-btn" id="btn-apply" onclick="applyRange()">Go</button>
       <button class="sel-btn" id="btn-pick" onclick="toggleLessonPicker()">Lessons...</button>
+      <button class="sel-btn" id="btn-trouble" onclick="selectTroubleWords()">Trouble Words <span class="trouble-badge" id="trouble-badge">(0)</span></button>
     </div>
     <div class="lesson-picker" id="lesson-picker"></div>
   </div>
@@ -289,6 +321,7 @@
       <div class="char-label">Traditional</div>
       <div class="char" id="trad-char"></div>
     </div>
+    <button class="star-btn" id="star-btn" onclick="toggleStar(event)">☆</button>
   </div>
   <button class="show-btn" id="btn-show" onclick="revealAnswer()">Show</button>
   <div class="controls">
@@ -356,6 +389,65 @@ function cycleSpeed() {
   updateSpeedBtn();
 }
 let selectedLessons = new Set();
+let troubleMode = false;
+
+function getTroubleWords() {
+  try { return JSON.parse(localStorage.getItem('trouble-words')) || []; }
+  catch { return []; }
+}
+
+function setTroubleWords(list) {
+  try { localStorage.setItem('trouble-words', JSON.stringify(list)); } catch {}
+}
+
+function isTroubleWord(simp) {
+  return getTroubleWords().some(w => w.simp === simp);
+}
+
+function updateTroubleBadge() {
+  const count = getTroubleWords().length;
+  const badge = document.getElementById('trouble-badge');
+  const btn = document.getElementById('btn-trouble');
+  if (badge) badge.textContent = '(' + count + ')';
+  if (btn) btn.disabled = count === 0 && !troubleMode;
+}
+
+function toggleStar(e) {
+  e.stopPropagation();
+  const p = ALL_PHRASES[order[idx]];
+  let list = getTroubleWords();
+  const i = list.findIndex(w => w.simp === p.simp);
+  const btn = document.getElementById('star-btn');
+  if (i >= 0) {
+    list.splice(i, 1);
+    btn.classList.remove('active');
+    btn.textContent = '☆';
+  } else {
+    list.push({ simp: p.simp, trad: p.trad, pinyin: p.pinyin, meaning: p.meaning });
+    btn.classList.add('active');
+    btn.textContent = '★';
+  }
+  setTroubleWords(list);
+  updateTroubleBadge();
+}
+
+function restoreData() {
+  if (!troubleMode) return;
+  troubleMode = false;
+  ALL_PHRASES.length = 0;
+  LESSON_RANGES.length = 0;
+  DATA.forEach((lesson, li) => {
+    const start = ALL_PHRASES.length;
+    lesson.sections.forEach(sec => {
+      sec.phrases.forEach(p => {
+        ALL_PHRASES.push({ ...p, lesson: li });
+      });
+    });
+    LESSON_RANGES.push({ start, end: ALL_PHRASES.length, title: lesson.title });
+  });
+  document.getElementById('btn-trouble').classList.remove('active');
+  updateTroubleBadge();
+}
 
 let zhVoice = null;
 
@@ -428,6 +520,11 @@ function showCard() {
   revealed = false;
 
   document.getElementById('progress').textContent = `${idx + 1} / ${pool.length}`;
+
+  const star = document.getElementById('star-btn');
+  const saved = isTroubleWord(p.simp);
+  star.className = 'star-btn' + (saved ? ' active' : '');
+  star.textContent = saved ? '★' : '☆';
 
   if (paused) {
     document.getElementById('btn-show').style.display = 'inline-block';
@@ -521,13 +618,50 @@ function toggleSound() {
 }
 
 function selectAll() {
+  restoreData();
   selectedLessons.clear();
   document.getElementById('range-input').value = '';
   updateSelectorUI();
   resetDeck();
 }
 
+function selectTroubleWords() {
+  const words = getTroubleWords();
+  if (words.length === 0) return;
+  troubleMode = true;
+  selectedLessons.clear();
+
+  ALL_PHRASES.length = 0;
+  LESSON_RANGES.length = 0;
+  words.forEach(w => {
+    ALL_PHRASES.push({ ...w, lesson: -1 });
+  });
+
+  document.getElementById('range-input').value = '';
+  document.getElementById('btn-all').classList.remove('active');
+  document.getElementById('btn-trouble').classList.add('active');
+
+  const picker = document.getElementById('lesson-picker');
+  picker.style.display = 'none';
+  document.getElementById('btn-pick').classList.remove('active');
+
+  for (let i = 0; i < DATA.length; i++) {
+    const cb = document.getElementById('cb-' + i);
+    if (cb) {
+      cb.checked = false;
+      cb.parentElement.classList.remove('checked');
+    }
+  }
+
+  pool = ALL_PHRASES.map((_, i) => i);
+  buildOrder();
+  idx = 0;
+  clearInterval(timer);
+  showCard();
+}
+
 function applyRange() {
+  restoreData();
   const input = document.getElementById('range-input').value.trim();
   if (!input) { selectAll(); return; }
 
@@ -566,6 +700,7 @@ function toggleLessonPicker() {
 }
 
 function toggleLesson(li) {
+  restoreData();
   if (selectedLessons.has(li)) {
     selectedLessons.delete(li);
   } else {
@@ -637,6 +772,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 initLessonPicker();
+updateTroubleBadge();
 buildPool();
 buildOrder();
 initVoice();
@@ -663,6 +799,10 @@ window.addEventListener('message', e => {
   if (!e.data || e.data.type !== 'mandarin-hub:hidden') return;
   if (!paused) togglePause();
   if (window.speechSynthesis) speechSynthesis.cancel();
+});
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'trouble-words') updateTroubleBadge();
 });
 </script>
 </body>

@@ -108,6 +108,7 @@
   }
 
   .answer-area {
+    position: relative;
     min-height: 140px;
     display: flex;
     flex-direction: column;
@@ -212,6 +213,38 @@
     color: #C41E3A;
   }
 
+  .star-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #D4C9B8;
+    transition: color 0.2s, transform 0.15s;
+    padding: 0.3rem;
+    line-height: 1;
+  }
+  .star-btn:hover {
+    color: #B8860B;
+    transform: scale(1.15);
+  }
+  .star-btn.active {
+    color: #B8860B;
+  }
+
+  .trouble-badge {
+    font-size: 11px;
+    color: #8a8478;
+    margin-left: 2px;
+  }
+
+  .sel-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
   @media (max-width: 520px) {
     .english { font-size: 22px; }
     .chinese-line { font-size: 1.6rem; }
@@ -237,6 +270,7 @@
     <div class="chinese-line" id="simp-line"></div>
     <div class="chinese-simp" id="trad-line"></div>
     <div class="pinyin" id="pinyin"></div>
+    <button class="star-btn" id="star-btn" onclick="toggleStar(event)">☆</button>
   </div>
   <button class="show-btn" id="btn-show" onclick="revealAnswer()">Show</button>
   <div class="controls">
@@ -917,6 +951,85 @@ function cycleSpeed() {
   updateSpeedBtn();
 }
 let selectedPattern = -1; // -1 = All
+let troubleMode = false;
+
+function getTroubleWordsGrammar() {
+  try { return JSON.parse(localStorage.getItem('trouble-words-grammar')) || []; }
+  catch { return []; }
+}
+
+function setTroubleWordsGrammar(list) {
+  try { localStorage.setItem('trouble-words-grammar', JSON.stringify(list)); } catch {}
+}
+
+function isTroubleWord(simp) {
+  return getTroubleWordsGrammar().some(w => w.simp === simp);
+}
+
+function updateTroubleBadge() {
+  const count = getTroubleWordsGrammar().length;
+  const badge = document.getElementById('trouble-badge');
+  const btn = document.getElementById('btn-trouble');
+  if (badge) badge.textContent = '(' + count + ')';
+  if (btn) btn.disabled = count === 0 && !troubleMode;
+}
+
+function toggleStar(e) {
+  e.stopPropagation();
+  const card = ALL_CARDS[order[idx]];
+  let list = getTroubleWordsGrammar();
+  const i = list.findIndex(w => w.simp === card.simp);
+  const btn = document.getElementById('star-btn');
+  if (i >= 0) {
+    list.splice(i, 1);
+    btn.classList.remove('active');
+    btn.textContent = '☆';
+  } else {
+    list.push({ simp: card.simp, trad: card.trad, pinyin: card.pinyin, english: card.english, highlight: card.highlight, patternName: card.patternName, formula: card.formula });
+    btn.classList.add('active');
+    btn.textContent = '★';
+  }
+  setTroubleWordsGrammar(list);
+  updateTroubleBadge();
+}
+
+function restoreData() {
+  if (!troubleMode) return;
+  troubleMode = false;
+  ALL_CARDS.length = 0;
+  PATTERN_RANGES.length = 0;
+  PATTERNS.forEach((pat, pi) => {
+    const start = ALL_CARDS.length;
+    pat.cards.forEach(card => {
+      ALL_CARDS.push({ ...card, patternIdx: pi, patternName: pat.name, formula: pat.formula });
+    });
+    PATTERN_RANGES.push({ start, end: ALL_CARDS.length, name: pat.name });
+  });
+  document.getElementById('btn-trouble').classList.remove('active');
+  updateTroubleBadge();
+}
+
+function selectTroubleWords() {
+  const words = getTroubleWordsGrammar();
+  if (words.length === 0) return;
+  troubleMode = true;
+  selectedPattern = -1;
+
+  ALL_CARDS.length = 0;
+  PATTERN_RANGES.length = 0;
+  words.forEach(w => {
+    ALL_CARDS.push({ ...w, patternIdx: -1 });
+  });
+
+  document.getElementById('btn-trouble').classList.add('active');
+  updateSelectorButtons();
+
+  pool = ALL_CARDS.map((_, i) => i);
+  buildOrder();
+  idx = 0;
+  clearTimeout(timer);
+  showCard();
+}
 
 let zhVoice = null;
 
@@ -1016,6 +1129,11 @@ function showCard() {
   document.getElementById('progress').textContent = (idx + 1) + ' / ' + order.length;
   document.getElementById('english').textContent = card.english;
   document.getElementById('pattern-badge').textContent = 'Pattern: ' + card.formula;
+
+  const star = document.getElementById('star-btn');
+  const saved = isTroubleWord(card.simp);
+  star.className = 'star-btn' + (saved ? ' active' : '');
+  star.textContent = saved ? '★' : '☆';
 
   /* Reset answer area */
   const answerArea = document.getElementById('answer-area');
@@ -1118,6 +1236,7 @@ function toggleSound() {
 }
 
 function selectPattern(pi) {
+  restoreData();
   selectedPattern = pi;
   buildPool();
   buildOrder();
@@ -1129,12 +1248,12 @@ function selectPattern(pi) {
 function updateSelectorButtons() {
   const btns = document.querySelectorAll('.sel-btn');
   btns.forEach(btn => {
+    if (btn.id === 'btn-trouble') return;
     const val = parseInt(btn.dataset.pattern);
     if (isNaN(val)) {
-      /* "All" button */
-      btn.classList.toggle('active', selectedPattern === -1);
+      btn.classList.toggle('active', !troubleMode && selectedPattern === -1);
     } else {
-      btn.classList.toggle('active', selectedPattern === val);
+      btn.classList.toggle('active', !troubleMode && selectedPattern === val);
     }
   });
 }
@@ -1157,6 +1276,13 @@ function buildSelectorUI() {
     btn.onclick = () => selectPattern(i);
     row.appendChild(btn);
   });
+
+  const troubleBtn = document.createElement('button');
+  troubleBtn.className = 'sel-btn';
+  troubleBtn.id = 'btn-trouble';
+  troubleBtn.innerHTML = 'Trouble Words <span class="trouble-badge" id="trouble-badge">(0)</span>';
+  troubleBtn.onclick = () => selectTroubleWords();
+  row.appendChild(troubleBtn);
 }
 
 /* Click answer area to speak */
@@ -1193,6 +1319,7 @@ document.addEventListener('keydown', e => {
 initVoice();
 updateSpeedBtn();
 buildSelectorUI();
+updateTroubleBadge();
 buildPool();
 buildOrder();
 document.getElementById('btn-shuffle').classList.add('active');
@@ -1205,6 +1332,10 @@ window.addEventListener('message', e => {
   if (!e.data || e.data.type !== 'mandarin-hub:hidden') return;
   if (!paused) togglePause();
   if (window.speechSynthesis) speechSynthesis.cancel();
+});
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'trouble-words-grammar') updateTroubleBadge();
 });
 </script>
 </body>
