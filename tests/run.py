@@ -18,6 +18,10 @@ import sys
 import time
 from pathlib import Path
 
+# Keep the repo clean: without this, importing the test modules leaves a
+# tests/__pycache__/ directory behind that would need gitignoring.
+sys.dont_write_bytecode = True
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import harness  # noqa: E402
