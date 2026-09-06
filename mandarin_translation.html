@@ -221,6 +221,13 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    /* The bar sits inside .container, which starts to the right of the 200px
+       .draw-panel plus the 20px .main-layout gap. Reserving that same 220px on
+       the right puts the bar's centre back on the page's centre line, so it
+       lines up with the "Translator" heading above it instead of with the
+       three cards. Cleared below 700px, where .main-layout stacks and
+       .container is already full width. */
+    margin-right: 220px;
     margin-bottom: 24px;
     font-size: 13px;
     color: #6B7B8D;
@@ -665,6 +672,11 @@
     .draw-card { flex-direction: row; flex-wrap: wrap; justify-content: center; }
     .columns { flex-direction: column; align-items: center; }
     .column { max-width: 100%; width: 100%; }
+    /* .main-layout keeps align-items:flex-start when it stacks, so .container
+       does not stretch and everything in it collapses to content width against
+       the left edge. Force it full width. */
+    .container { width: 100%; }
+    .api-key-bar { margin-right: 0; }
     .api-key-bar input { width: 200px; }
   }
 </style>
