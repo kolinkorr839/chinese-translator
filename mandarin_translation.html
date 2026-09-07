@@ -728,6 +728,7 @@
     </div>
   </div>
   <div class="container">
+  <div class="api-key-bar" id="lara-key-bar"></div>
   <div class="api-key-bar" id="api-key-bar"></div>
   <div class="columns">
     <div class="column">
@@ -832,6 +833,40 @@ function clearApiKey() {
 }
 
 renderApiKeyBar();
+
+function renderLaraKeyBar() {
+  const bar = document.getElementById('lara-key-bar');
+  if (location.protocol !== 'file:' || (getLaraKeyId() && getLaraKeySecret())) {
+    bar.innerHTML = '';
+    return;
+  }
+  bar.innerHTML = `
+    <input type="password" id="lara-id-input" autocomplete="off" spellcheck="false"
+           placeholder="Lara Key ID">
+    <input type="password" id="lara-secret-input" autocomplete="off" spellcheck="false"
+           placeholder="Lara Key Secret">
+    <button onclick="saveLaraKey()">Save</button>
+  `;
+}
+
+function saveLaraKey() {
+  const id = document.getElementById('lara-id-input').value.trim();
+  const secret = document.getElementById('lara-secret-input').value.trim();
+  if (!id || !secret) return;
+  localStorage.setItem('lara_key_id', id);
+  localStorage.setItem('lara_key_secret', secret);
+  laraJwt = null;
+  renderLaraKeyBar();
+}
+
+function clearLaraKey() {
+  localStorage.removeItem('lara_key_id');
+  localStorage.removeItem('lara_key_secret');
+  laraJwt = null;
+  renderLaraKeyBar();
+}
+
+renderLaraKeyBar();
 
 const DECOMPOSITION = {
   '說': { components: [['言','讠','speech, words'],['兌','兑','exchange']], type: 'lr' },
@@ -943,14 +978,112 @@ function persistTranslationCache() {
   }
 }
 
-async function googleTranslate(text, sourceLang, targetLang) {
+function getLaraKeyId() { return localStorage.getItem('lara_key_id') || ''; }
+function getLaraKeySecret() { return localStorage.getItem('lara_key_secret') || ''; }
+let laraJwt = null;
+
+async function laraDigestBase64(data) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(data));
+  return btoa(String.fromCharCode(...new Uint8Array(buf.slice(0, 16))));
+}
+
+async function laraHmac(key, data) {
+  const enc = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw', enc.encode(key), { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, enc.encode(data));
+  return btoa(String.fromCharCode(...new Uint8Array(sig)));
+}
+
+async function laraAuth() {
+  const keyId = getLaraKeyId();
+  const keySecret = getLaraKeySecret();
+  if (!keyId || !keySecret) throw new Error('Lara credentials not configured');
+  const body = JSON.stringify({ id: keyId });
+  const contentMd5 = await laraDigestBase64(body);
+  const date = new Date().toUTCString();
+  const challenge = `POST\n/v2/auth\n${contentMd5}\napplication/json\n${date}`;
+  const signature = await laraHmac(keySecret, challenge);
+
+  const resp = await fetch('https://api.laratranslate.com/v2/auth', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-MD5': contentMd5,
+      'X-Lara-Date': date,
+      'Authorization': `Lara:${signature}`
+    },
+    body
+  });
+  if (!resp.ok) {
+    const text = await resp.text().catch(() => '');
+    throw new Error(`Lara auth failed: ${resp.status} ${text}`);
+  }
+  const data = await resp.json();
+  laraJwt = data.token;
+  return laraJwt;
+}
+
+async function laraTranslate(text, sourceLang, targetLang) {
+  if (!laraJwt) await laraAuth();
+
+  const reqBody = { q: text, target: targetLang };
+  if (sourceLang && sourceLang !== 'auto') reqBody.source = sourceLang;
+
+  let resp = await fetch('https://api.laratranslate.com/v2/translate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Lara-Date': new Date().toUTCString(),
+      'Authorization': `Bearer ${laraJwt}`
+    },
+    body: JSON.stringify(reqBody)
+  });
+
+  if (resp.status === 401) {
+    await laraAuth();
+    resp = await fetch('https://api.laratranslate.com/v2/translate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Lara-Date': new Date().toUTCString(),
+        'Authorization': `Bearer ${laraJwt}`
+      },
+      body: JSON.stringify(reqBody)
+    });
+  }
+
+  if (!resp.ok) {
+    const errText = await resp.text().catch(() => '');
+    throw new Error(`Lara translate failed: ${resp.status} ${errText}`);
+  }
+  const data = await resp.json();
+  return data.translation;
+}
+
+async function translateText(text, sourceLang, targetLang) {
   const key = `${sourceLang}|${targetLang}|${text}`;
   if (typeof translationCache[key] === 'string') return translationCache[key];
 
+  const useLaraFirst = location.protocol === 'file:';
+  const primary = useLaraFirst ? laraTranslate : googleTranslate;
+  const fallback = useLaraFirst ? googleTranslate : laraTranslate;
+
+  let result;
+  try {
+    result = await primary(text, sourceLang, targetLang);
+  } catch {
+    result = await fallback(text, sourceLang, targetLang);
+  }
+  translationCache[key] = result;
+  persistTranslationCache();
+  return result;
+}
+
+async function googleTranslate(text, sourceLang, targetLang) {
   const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
 
-  // Retry once. Throttling is transient, and with ~10 calls per translation a
-  // single blip would otherwise abort the whole thing.
   let lastErr;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
@@ -959,10 +1092,7 @@ async function googleTranslate(text, sourceLang, targetLang) {
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const data = await resp.json();
       if (!Array.isArray(data[0])) throw new Error('Unexpected response shape');
-      const result = data[0].map(s => s[0]).join('');
-      translationCache[key] = result;
-      persistTranslationCache();
-      return result;
+      return data[0].map(s => s[0]).join('');
     } catch (err) {
       lastErr = err;
     }
@@ -992,7 +1122,7 @@ function speak(chinese) {
 
 async function getCharMeaning(char) {
   try {
-    const result = await googleTranslate(char, 'zh-CN', 'en');
+    const result = await translateText(char, 'zh-CN', 'en');
     return result.toLowerCase();
   } catch {
     return '';
@@ -1032,8 +1162,8 @@ async function translate() {
     let traditional, simplified, english;
 
     if (isChinese(input)) {
-      const asSimplified = await googleTranslate(input, 'zh-TW', 'zh-CN');
-      const asTraditional = await googleTranslate(input, 'zh-CN', 'zh-TW');
+      const asSimplified = await translateText(input, 'zh-TW', 'zh-CN');
+      const asTraditional = await translateText(input, 'zh-CN', 'zh-TW');
 
       if (asSimplified === input || input === asTraditional) {
         traditional = asTraditional === input ? input : asTraditional;
@@ -1043,12 +1173,12 @@ async function translate() {
         simplified = asSimplified;
       }
 
-      english = await googleTranslate(input, 'auto', 'en');
+      english = await translateText(input, 'auto', 'en');
       document.getElementById('english-input').value = english.toLowerCase();
     } else {
       english = input;
-      traditional = await googleTranslate(input, 'en', 'zh-TW');
-      simplified = await googleTranslate(traditional, 'zh-TW', 'zh-CN');
+      traditional = await translateText(input, 'en', 'zh-TW');
+      simplified = await translateText(traditional, 'zh-TW', 'zh-CN');
     }
 
     renderClickableChars(tradEl, traditional);

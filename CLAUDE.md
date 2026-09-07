@@ -35,6 +35,25 @@ Google Translate, Gemini (etymology enrichment), Google inputtools (handwriting)
 pinyin-pro via jsDelivr, Google TTS plus yoyochinese/zhongchinese audio. All called
 directly from the browser. All verified working from both origins.
 
+## Translation services
+
+| Service | Purpose | Endpoint | Used by | Protocol routing |
+|---|---|---|---|---|
+| Lara Translate | Text translation (en/zh-CN/zh-TW) | `api.laratranslate.com/v2/auth`, `/v2/translate` | `mandarin_translation.html` | Primary on `file://`, fallback on `https://` |
+| Google Translate | Text translation (en/zh-CN/zh-TW) | `translate.googleapis.com/translate_a/single` | `mandarin_translation.html` | Primary on `https://`, fallback on `file://` |
+| Google TTS | Audio playback of Chinese text | `translate.google.com/translate_tts` | `mandarin_translation.html`, `grammar_guide.html`, `mandarin_in_14_days.html`, `phrase_reference.html` | Always active, no routing |
+
+- **Lara auth** requires `crypto.subtle` (works on both `file://` in Brave and `https://`).
+  Credentials are entered at runtime and stored in `localStorage` (like the Gemini key).
+  Auth produces a JWT; the translate call auto-refreshes on 401.
+- **Google Translate** uses the free `client=gtx` parameter, no auth. Rate-limited under
+  heavy use, which is why Lara is preferred on `file://` (primary user).
+- **Google TTS** is independent of translation. Requires `<meta name="referrer"
+  content="no-referrer">` on every page that uses it.
+- **`translateText()`** is the single entry point. It checks the cache, picks primary vs
+  fallback based on `location.protocol`, and persists results. `laraTranslate()` and
+  `googleTranslate()` are not called directly.
+
 ## State
 
 `localStorage`, which is per-origin — so `file://` and `https://` keep separate stores.
