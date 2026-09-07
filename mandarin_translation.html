@@ -733,7 +733,7 @@
     <div class="column">
       <div class="column-label">Source</div>
       <div class="card card-input" onclick="document.getElementById('english-input').focus()">
-        <input type="text" id="english-input" placeholder="Type a word..." autofocus>
+        <input type="text" id="english-input" placeholder="fly, 飞, or 飛" autofocus>
       </div>
     </div>
     <div class="column">
@@ -1077,17 +1077,18 @@ async function translate() {
       etymologyContent.innerHTML = '<div class="etymology-loading">Loading etymology...</div>';
       const tradChars = [...traditional];
       const simpChars = [...simplified];
+      const sameLength = tradChars.length === simpChars.length;
       const allEtymData = [];
-      for (let i = 0; i < tradChars.length; i++) {
-        const tc = tradChars[i];
-        const sc = simpChars[i] || tc;
+      for (let i = 0; i < simpChars.length; i++) {
+        const sc = simpChars[i];
+        const tc = sameLength ? tradChars[i] : sc;
         const charMeaning = await getCharMeaning(sc);
         const data = await getEtymology(tc, sc, charMeaning);
         if (data && data._error) {
           renderEtymologyError(data._error);
           break;
         }
-        if (data) allEtymData.push({ char: tc, data });
+        if (data) allEtymData.push({ char: sc, data });
       }
       if (allEtymData.length > 0) renderEtymology(allEtymData);
     }
@@ -1115,11 +1116,12 @@ async function translate() {
 async function buildBreakdown(traditional, simplified, container) {
   const tradChars = [...traditional];
   const simpChars = [...simplified];
-  const isSingleChar = tradChars.length === 1;
+  const sameLength = tradChars.length === simpChars.length;
+  const isSingleChar = simpChars.length === 1;
 
-  for (let i = 0; i < tradChars.length; i++) {
-    const tc = tradChars[i];
-    const sc = simpChars[i] || tc;
+  for (let i = 0; i < simpChars.length; i++) {
+    const sc = simpChars[i];
+    const tc = sameLength ? tradChars[i] : sc;
     const pinyin = getPinyin(sc);
     const meaning = await getCharMeaning(sc);
     const isDifferent = tc !== sc;
@@ -1129,7 +1131,7 @@ async function buildBreakdown(traditional, simplified, container) {
 
     let charDisplay;
     if (isDifferent) {
-      charDisplay = `<span class="breakdown-char">${tc} <span class="breakdown-arrow">&rarr;</span> ${sc}</span>`;
+      charDisplay = `<span class="breakdown-char">${sc} <span class="breakdown-arrow">&rarr;</span> ${tc}</span>`;
     } else {
       charDisplay = `<span class="breakdown-char">${tc}</span>`;
     }
@@ -1152,9 +1154,9 @@ async function buildBreakdown(traditional, simplified, container) {
 
         if (tradComp !== simpComp) {
           compItem.innerHTML = `
-            <span class="component-char">${tradComp}</span>
-            <span class="component-arrow">&rarr;</span>
             <span class="component-char">${simpComp}</span>
+            <span class="component-arrow">&rarr;</span>
+            <span class="component-char">${tradComp}</span>
             <span class="component-meaning">= ${compMeaning}</span>
           `;
         } else {

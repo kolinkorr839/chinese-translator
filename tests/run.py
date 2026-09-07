@@ -2,12 +2,14 @@
 """
 Regression tests for Mandarin Hub.
 
-Standard library only — no pip install, no browser, nothing to set up.
-
     python3 tests/run.py            # local checks: fast, offline, deterministic
+    python3 tests/run.py --browser  # local + headless Chromium (needs playwright)
     python3 tests/run.py --live     # local + network (third-party APIs, deploy)
     python3 tests/run.py --only content
     python3 tests/run.py --no-colour
+
+The local tier is stdlib-only. The browser tier requires playwright
+(pip install playwright && playwright install chromium).
 
 Exit code is 0 when everything passes, 1 otherwise — so it works as a
 pre-commit hook or a CI step.
@@ -31,6 +33,7 @@ MODULES = [
     ("structure",   "test_structure",   "local"),
     ("constraints", "test_constraints", "local"),
     ("content",     "test_content",     "local"),
+    ("browser",     "test_browser",     "browser"),
     ("endpoints",   "test_endpoints",   "live"),
     ("deploy",      "test_deploy",      "live"),
 ]
@@ -39,6 +42,8 @@ MODULES = [
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--browser", action="store_true",
+                    help="also run headless Chromium checks (needs playwright)")
     ap.add_argument("--live", action="store_true",
                     help="also run the network-dependent checks")
     ap.add_argument("--only", metavar="NAME",
@@ -49,6 +54,8 @@ def main():
     selected = []
     for name, path, tier in MODULES:
         if args.only and name != args.only:
+            continue
+        if tier == "browser" and not (args.browser or args.only == name):
             continue
         if tier == "live" and not (args.live or args.only == name):
             continue
