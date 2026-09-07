@@ -64,7 +64,7 @@ body {
   overflow-y: auto;
   position: relative;
   z-index: 200;
-  transition: left 0.3s ease;
+  transition: left 0.3s ease, width 0.3s ease;
 }
 
 /* Brand */
@@ -204,6 +204,86 @@ body {
   height: auto;
 }
 
+/* Sidebar collapse/expand (desktop) */
+.sidebar-collapse {
+  position: absolute;
+  top: 12px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  color: var(--ink-wash);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s, opacity 0.15s;
+  z-index: 10;
+  opacity: 0;
+}
+
+.sidebar:hover .sidebar-collapse,
+.sidebar-collapse:focus-visible {
+  opacity: 1;
+}
+
+.sidebar-collapse:hover {
+  background: var(--warm-highlight);
+  color: var(--ink);
+}
+
+.sidebar-collapse svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sidebar-expand {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 6px;
+  background: var(--rice-paper);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  color: var(--ink-wash);
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  transition: color 0.15s;
+}
+
+.sidebar-expand:hover {
+  color: var(--ink);
+}
+
+.sidebar-expand svg {
+  width: 14px;
+  height: 14px;
+}
+
+@media (min-width: 769px) {
+  .sidebar.collapsed {
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
+    border-right-color: transparent;
+  }
+
+  .sidebar.collapsed ~ .sidebar-expand {
+    display: flex;
+  }
+
+  .sidebar.collapsed ~ .content {
+    margin-left: 12px;
+  }
+}
+
 /* -- Content area ---------------------------- */
 
 .content {
@@ -216,6 +296,7 @@ body {
     inset 0 1px 3px rgba(0, 0, 0, 0.04),
     0 2px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+  transition: margin 0.3s ease;
 }
 
 iframe {
@@ -292,6 +373,10 @@ iframe {
 /* -- Responsive ------------------------------ */
 
 @media (max-width: 768px) {
+  .sidebar-collapse {
+    display: none;
+  }
+
   .hamburger {
     display: flex;
   }
@@ -331,6 +416,10 @@ iframe {
 
 <!-- Sidebar -->
 <nav class="sidebar" id="sidebar">
+
+  <button class="sidebar-collapse" id="sidebar-collapse" aria-label="Collapse sidebar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
 
   <div class="brand" id="brand" role="button" tabindex="0"
        aria-label="Mandarin Hub — go to the Translator">
@@ -426,6 +515,11 @@ iframe {
   </div>
 
 </nav>
+
+<!-- Expand sidebar (desktop) -->
+<button class="sidebar-expand" id="sidebar-expand" aria-label="Expand sidebar">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+</button>
 
 <!-- Content -->
 <div class="content" id="content"></div>
@@ -553,6 +647,29 @@ hamburger.addEventListener('click', () => {
 });
 
 overlay.addEventListener('click', closeSidebar);
+
+// Desktop sidebar collapse
+const sidebarCollapse = document.getElementById('sidebar-collapse');
+const sidebarExpand = document.getElementById('sidebar-expand');
+
+sidebarCollapse.addEventListener('click', () => {
+  sidebar.classList.add('collapsed');
+  localStorage.setItem('mandarin-hub-sidebar-collapsed', 'true');
+});
+
+sidebarExpand.addEventListener('click', () => {
+  sidebar.classList.remove('collapsed');
+  localStorage.removeItem('mandarin-hub-sidebar-collapsed');
+});
+
+if (localStorage.getItem('mandarin-hub-sidebar-collapsed') === 'true'
+    && window.innerWidth > 768) {
+  sidebar.style.transition = 'none';
+  sidebar.classList.add('collapsed');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => { sidebar.style.transition = ''; });
+  });
+}
 
 // Back/forward and hand-edited or shared URLs.
 window.addEventListener('hashchange', () => {
