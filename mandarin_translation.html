@@ -1438,6 +1438,7 @@ function buildEtymologyPrompt(traditional, simplified, english) {
 
 Return JSON with this exact structure:
 {
+  "character": "the character being analyzed",
   "components": [
     {
       "char": "the component character",
@@ -1501,12 +1502,20 @@ async function getEtymology(traditional, simplified, english) {
 
   const prompt = buildEtymologyPrompt(traditional, simplified, english);
 
+  function isWrongChar(result) {
+    return result.character && result.character !== traditional && result.character !== simplified;
+  }
+
   try {
     const result = hasGemini
       ? await getEtymologyViaGemini(prompt)
       : await getEtymologyViaOpenRouter(prompt);
     lastEtymologySource = hasGemini ? 'gemini' : 'openrouter';
-    if (result) { setEtymologyCache(traditional, result); return result; }
+    if (result) {
+      if (isWrongChar(result)) return { _error: `Etymology returned for ${result.character} instead of ${traditional}` };
+      setEtymologyCache(traditional, result);
+      return result;
+    }
     return { _error: 'Empty etymology response' };
   } catch (primaryErr) {
     console.warn('Primary etymology failed:', primaryErr.message);
@@ -1514,7 +1523,11 @@ async function getEtymology(traditional, simplified, english) {
       try {
         const result = await getEtymologyViaOpenRouter(prompt);
         lastEtymologySource = 'openrouter';
-        if (result) { setEtymologyCache(traditional, result); return result; }
+        if (result) {
+          if (isWrongChar(result)) return { _error: `Etymology returned for ${result.character} instead of ${traditional}` };
+          setEtymologyCache(traditional, result);
+          return result;
+        }
         return { _error: 'Empty OpenRouter response' };
       } catch (orErr) {
         console.error('OpenRouter fallback failed:', orErr);
