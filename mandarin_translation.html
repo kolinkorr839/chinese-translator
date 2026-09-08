@@ -440,6 +440,14 @@
     padding: 12px 0;
   }
 
+  .via-label {
+    font-size: 11px;
+    font-weight: 400;
+    color: #8B7D6B;
+    font-style: italic;
+    font-family: 'Crimson Pro', Georgia, serif;
+  }
+
   /* Chat box */
   .chat-box {
     margin-top: 24px;
@@ -754,6 +762,7 @@
     </div>
   </div>
   <div class="error-msg" id="error-msg"></div>
+  <div id="translation-via" class="via-label" style="text-align:center; margin-top:6px; display:none;"></div>
   <div class="chat-box hidden" id="chat-box">
     <div class="chat-header">Ask about this</div>
     <div class="chat-messages" id="chat-messages"></div>
@@ -762,22 +771,25 @@
       <button id="chat-send" onclick="sendChat()">Send</button>
     </div>
   </div>
-  <div class="breakdown" id="breakdown">
-    <div class="breakdown-title">Character Breakdown</div>
-    <div id="breakdown-content"></div>
   </div>
-  <div class="etymology" id="etymology">
-    <div class="etymology-title">
-      <span>Etymology</span>
-      <span class="etymology-key-link" onclick="clearApiKey(); renderApiKeyBar();">change API key</span>
-    </div>
-    <div id="etymology-content"></div>
+</div>
+<div class="breakdown" id="breakdown">
+  <div class="breakdown-title">Character Breakdown</div>
+  <div id="breakdown-content"></div>
+</div>
+<div class="etymology" id="etymology">
+  <div class="etymology-title">
+    <span>Etymology</span>
+    <span><span id="etymology-via" class="via-label"></span> <span class="etymology-key-link" onclick="clearApiKey(); renderApiKeyBar();">change API key</span></span>
   </div>
-  </div>
+  <div id="etymology-content"></div>
 </div>
 </div>
 
 <script>
+let lastTranslationSource = '';
+let lastEtymologySource = '';
+
 const HANDWRITING_DELAY_MS = 1200;
 const GEMINI_MODELS = [
   'gemini-3.5-flash-lite',
@@ -1134,12 +1146,16 @@ async function translateText(text, sourceLang, targetLang) {
   const useLaraFirst = location.protocol === 'file:';
   const primary = useLaraFirst ? laraTranslate : googleTranslate;
   const fallback = useLaraFirst ? googleTranslate : laraTranslate;
+  const primaryName = useLaraFirst ? 'lara' : 'google';
+  const fallbackName = useLaraFirst ? 'google' : 'lara';
 
   let result;
   try {
     result = await primary(text, sourceLang, targetLang);
+    lastTranslationSource = primaryName;
   } catch {
     result = await fallback(text, sourceLang, targetLang);
+    lastTranslationSource = fallbackName;
   }
   translationCache[key] = result;
   persistTranslationCache();
@@ -1221,10 +1237,14 @@ async function translate() {
   const etymologyContent = document.getElementById('etymology-content');
 
   document.getElementById('error-msg').classList.remove('visible');
+  document.getElementById('translation-via').style.display = 'none';
+  document.getElementById('etymology-via').textContent = '';
   breakdownEl.style.display = 'none';
   breakdownContent.innerHTML = '';
   etymologyEl.style.display = 'none';
   etymologyContent.innerHTML = '';
+  lastTranslationSource = '';
+  lastEtymologySource = '';
   document.getElementById('chat-messages').innerHTML = '';
   chatHistory = [];
   currentTranslation = null;
@@ -1260,6 +1280,15 @@ async function translate() {
     // point is enrichment (breakdown, etymology) and must not wipe the result.
     rendered = true;
 
+    const usedFallbackTranslation = (location.protocol === 'file:' && lastTranslationSource === 'google')
+      || (location.protocol !== 'file:' && lastTranslationSource === 'lara');
+    if (usedFallbackTranslation) {
+      const viaEl = document.getElementById('translation-via');
+      const label = lastTranslationSource === 'google' ? 'Google Translate' : 'Lara Translate';
+      viaEl.textContent = `via ${label}`;
+      viaEl.style.display = 'block';
+    }
+
     const tradPinyin = getPinyin(traditional);
     const simpPinyin = getPinyin(simplified);
 
@@ -1275,11 +1304,14 @@ async function translate() {
     await buildBreakdown(traditional, simplified, breakdownContent);
     breakdownEl.style.display = 'block';
 
-    const canEtymology = !!localStorage.getItem('gemini_api_key')
-      || (location.protocol === 'file:' && !!getOpenRouterKey());
-    if (canEtymology) {
+    const hasGeminiKey = !!localStorage.getItem('gemini_api_key');
+    const hasORKey = location.protocol === 'file:' && !!getOpenRouterKey();
+    if (hasGeminiKey || hasORKey) {
       etymologyEl.style.display = 'block';
-      etymologyContent.innerHTML = '<div class="etymology-loading">Loading etymology...</div>';
+      const loadingMsg = !hasGeminiKey && hasORKey
+        ? 'Loading etymology via OpenRouter (this may take a while)...'
+        : 'Loading etymology...';
+      etymologyContent.innerHTML = `<div class="etymology-loading">${loadingMsg}</div>`;
       const tradChars = [...traditional];
       const simpChars = [...simplified];
       const sameLength = tradChars.length === simpChars.length;
@@ -1297,6 +1329,9 @@ async function translate() {
       }
       if (allEtymData.length > 0) {
         renderEtymology(allEtymData);
+        if (lastEtymologySource === 'openrouter') {
+          document.getElementById('etymology-via').textContent = 'via OpenRouter · ';
+        }
       } else {
         etymologyContent.innerHTML = '';
         etymologyEl.style.display = 'none';
@@ -1470,6 +1505,7 @@ async function getEtymology(traditional, simplified, english) {
     const result = hasGemini
       ? await getEtymologyViaGemini(prompt)
       : await getEtymologyViaOpenRouter(prompt);
+    lastEtymologySource = hasGemini ? 'gemini' : 'openrouter';
     if (result) { setEtymologyCache(traditional, result); return result; }
     return { _error: 'Empty etymology response' };
   } catch (primaryErr) {
@@ -1477,6 +1513,7 @@ async function getEtymology(traditional, simplified, english) {
     if (hasOpenRouter && hasGemini) {
       try {
         const result = await getEtymologyViaOpenRouter(prompt);
+        lastEtymologySource = 'openrouter';
         if (result) { setEtymologyCache(traditional, result); return result; }
         return { _error: 'Empty OpenRouter response' };
       } catch (orErr) {
@@ -1607,6 +1644,7 @@ Answer concisely. Use Chinese characters with pinyin when relevant. Keep answers
   chatHistory.push({ role: 'user', parts: [{ text: msg }] });
 
   let reply;
+  let chatUsedOpenRouter = false;
   try {
     if (apiKey) {
       const { resp, model } = await callGemini(apiKey, {
@@ -1631,6 +1669,7 @@ Answer concisely. Use Chinese characters with pinyin when relevant. Keep answers
           });
         }
         reply = await callOpenRouter(orMessages, false);
+        chatUsedOpenRouter = true;
       } catch (orErr) {
         const typing = document.getElementById('chat-typing');
         if (typing) {
@@ -1658,6 +1697,9 @@ Answer concisely. Use Chinese characters with pinyin when relevant. Keep answers
   typing.id = '';
   typing.classList.remove('typing');
   typing.innerHTML = formatChat(reply);
+  if (chatUsedOpenRouter) {
+    typing.innerHTML += '<div class="via-label" style="text-align:right; margin-top:4px;">via OpenRouter</div>';
+  }
 
   sendBtn.disabled = false;
   messagesEl.scrollTop = messagesEl.scrollHeight;

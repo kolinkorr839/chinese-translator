@@ -78,6 +78,15 @@ def check_hub_does_not_reach_into_frames():
 
 
 @check
+def check_via_labels_present():
+    """the translator page has via-label elements for service attribution"""
+    src = s.read("mandarin_translation.html")
+    assert 'id="translation-via"' in src, "missing #translation-via element"
+    assert 'id="etymology-via"' in src, "missing #etymology-via element"
+    assert ".via-label" in src, "missing .via-label CSS class"
+
+
+@check
 def check_no_api_keys_in_tracked_files():
     """no API keys committed to this public repo"""
     # The repo is public and serves GitHub Pages. The Gemini key belongs in
