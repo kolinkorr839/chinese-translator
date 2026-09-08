@@ -377,3 +377,210 @@ def check_postmessage_pauses_flashcard_deck():
     finally:
         page.close()
     return "postMessage paused the deck"
+
+
+@check
+def check_iscjk_guard_hides_non_cjk_badge_chars():
+    """renderEtymology skips .badge-char when comp.char is not a CJK character"""
+    import json
+
+    browser = _get_browser()
+    page = browser.new_page()
+    try:
+        _setup_route(page)
+
+        def handle_gemini(route):
+            etym = {
+                "character": "猫",
+                "components": [
+                    {"char": "犭", "type": "semantic", "meaning": "animal",
+                     "explanation": "relates to animals"},
+                    {"char": "seedling", "type": "phonetic", "meaning": "sprout",
+                     "explanation": "provides the sound mao"},
+                ],
+                "meaning_logic": "An animal that sounds like mao.",
+            }
+            body = {"candidates": [{"content": {"parts": [{"text": json.dumps(etym)}]}}]}
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(body),
+            )
+
+        page.route("**/generativelanguage.googleapis.com/**", handle_gemini)
+        page.goto(_file_url("mandarin_translation.html"))
+        page.evaluate("localStorage.setItem('gemini_api_key', 'test-key')")
+        page.reload()
+        page.fill("#english-input", "cat")
+        page.press("#english-input", "Enter")
+        page.wait_for_selector("#etymology-content .component-badge", timeout=10000)
+        badges = page.query_selector_all("#etymology-content .component-badge")
+        assert len(badges) == 2, f"expected 2 component badges, got {len(badges)}"
+        first_char = badges[0].query_selector(".badge-char")
+        assert first_char, "CJK component (犭) should have a .badge-char span"
+        assert first_char.inner_text().strip() == "犭"
+        second_char = badges[1].query_selector(".badge-char")
+        assert second_char is None, \
+            "non-CJK component ('seedling') should NOT have a .badge-char span"
+    finally:
+        page.close()
+    return "犭 gets .badge-char, 'seedling' does not"
+
+
+@check
+def check_etymology_rejects_wrong_character():
+    """etymology shows error when Gemini returns data for the wrong character"""
+    import json
+
+    browser = _get_browser()
+    page = browser.new_page()
+    try:
+        _setup_route(page)
+
+        def handle_gemini(route):
+            wrong = {
+                "character": "東",
+                "components": [],
+                "meaning_logic": "Wrong char returned.",
+            }
+            body = {"candidates": [{"content": {"parts": [{"text": json.dumps(wrong)}]}}]}
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(body),
+            )
+
+        page.route("**/generativelanguage.googleapis.com/**", handle_gemini)
+        page.goto(_file_url("mandarin_translation.html"))
+        page.evaluate("localStorage.setItem('gemini_api_key', 'test-key')")
+        page.reload()
+        page.fill("#english-input", "cat")
+        page.press("#english-input", "Enter")
+        page.wait_for_function(
+            "(() => {"
+            "  const el = document.getElementById('etymology-content');"
+            "  const t = el.textContent.trim();"
+            "  return t.length > 0 && !t.includes('Loading');"
+            "})()",
+            timeout=15000,
+        )
+        text = page.inner_text("#etymology-content")
+        assert "instead of" in text.lower() or "could not" in text.lower(), \
+            f"expected error about wrong character, got: {text!r}"
+        cache = page.evaluate("JSON.parse(localStorage.getItem('etymology_cache') || '{}')")
+        assert "猫" not in cache and "貓" not in cache, \
+            "wrong-character response should NOT be cached"
+    finally:
+        page.close()
+    return "wrong-char response rejected, not cached"
+
+
+@check
+def check_chat_send_receive():
+    """sendChat shows user message and AI reply in chat-messages"""
+    import json
+
+    browser = _get_browser()
+    page = browser.new_page()
+    try:
+        _setup_route(page)
+
+        def handle_gemini(route):
+            reply = "猫 (māo) means cat. It uses the 犭 radical for animals."
+            body = {"candidates": [{"content": {"parts": [{"text": reply}]}}]}
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps(body),
+            )
+
+        page.route("**/generativelanguage.googleapis.com/**", handle_gemini)
+        page.goto(_file_url("mandarin_translation.html"))
+        page.evaluate("localStorage.setItem('gemini_api_key', 'test-key')")
+        page.evaluate("renderApiKeyBar()")
+        page.wait_for_function(
+            "!document.getElementById('chat-box').classList.contains('hidden')",
+            timeout=3000,
+        )
+        page.fill("#chat-input", "What does cat mean?")
+        page.click("#chat-send")
+        page.wait_for_function(
+            "document.querySelectorAll('.chat-msg.ai:not(.typing)').length > 0",
+            timeout=10000,
+        )
+        user_msgs = page.query_selector_all(".chat-msg.user")
+        assert len(user_msgs) == 1, f"expected 1 user message, got {len(user_msgs)}"
+        assert "cat" in user_msgs[0].inner_text().lower()
+        ai_msgs = page.query_selector_all(".chat-msg.ai:not(.typing)")
+        assert len(ai_msgs) == 1, f"expected 1 AI message, got {len(ai_msgs)}"
+        reply_text = ai_msgs[0].inner_text()
+        assert "māo" in reply_text or "mao" in reply_text.lower(), \
+            f"AI reply should contain pinyin, got: {reply_text!r}"
+        disabled = page.evaluate("document.getElementById('chat-send').disabled")
+        assert not disabled, "send button should be re-enabled after reply"
+    finally:
+        page.close()
+    return "user msg displayed, AI reply rendered, send re-enabled"
+
+
+@check
+def check_translation_uses_lara_as_primary_on_file():
+    """on file:// protocol, translateText tries Lara first (primary)"""
+    import json
+
+    browser = _get_browser()
+    page = browser.new_page()
+    lara_called = {"auth": False, "translate": False}
+    try:
+        _setup_route(page)
+
+        def handle_lara_auth(route):
+            lara_called["auth"] = True
+            route.fulfill(
+                status=200,
+                content_type="application/json",
+                body=json.dumps({"token": "fake-jwt-token"}),
+            )
+
+        def handle_lara_translate(route):
+            lara_called["translate"] = True
+            body = route.request.post_data or ""
+            if "bus" in body.lower():
+                route.fulfill(
+                    status=200,
+                    content_type="application/json",
+                    body=json.dumps({"translation": "公共汽车"}),
+                )
+            else:
+                route.fulfill(
+                    status=200,
+                    content_type="application/json",
+                    body=json.dumps({"translation": "翻译"}),
+                )
+
+        page.route("**/api.laratranslate.com/v2/auth", handle_lara_auth)
+        page.route("**/api.laratranslate.com/v2/translate", handle_lara_translate)
+        page.goto(_file_url("mandarin_translation.html"))
+        page.evaluate("""
+            localStorage.setItem('lara_key_id', 'test-id');
+            localStorage.setItem('lara_key_secret', 'test-secret');
+        """)
+        page.fill("#english-input", "bus")
+        page.press("#english-input", "Enter")
+        page.wait_for_function(
+            "document.getElementById('simplified-text').textContent.trim().length > 0"
+            " && !document.getElementById('simplified-text').textContent.includes('...')",
+            timeout=10000,
+        )
+        assert lara_called["auth"], "Lara /v2/auth should have been called on file://"
+        assert lara_called["translate"], "Lara /v2/translate should have been called on file://"
+        source = page.evaluate("lastTranslationSource")
+        assert source == "lara", f"lastTranslationSource should be 'lara', got {source!r}"
+        via_display = page.evaluate(
+            "getComputedStyle(document.getElementById('translation-via')).display"
+        )
+        assert via_display == "none", \
+            "via-label should be hidden when primary (Lara) succeeds"
+    finally:
+        page.close()
+    return "Lara auth+translate called, source='lara', via-label hidden"

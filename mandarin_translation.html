@@ -1316,6 +1316,7 @@ async function translate() {
       const simpChars = [...simplified];
       const sameLength = tradChars.length === simpChars.length;
       const allEtymData = [];
+      let etymError = false;
       for (let i = 0; i < simpChars.length; i++) {
         const sc = simpChars[i];
         const tc = sameLength ? tradChars[i] : sc;
@@ -1323,6 +1324,7 @@ async function translate() {
         const data = await getEtymology(tc, sc, charMeaning);
         if (data && data._error) {
           renderEtymologyError(data._error);
+          etymError = true;
           break;
         }
         if (data) allEtymData.push({ char: sc, data });
@@ -1332,7 +1334,7 @@ async function translate() {
         if (lastEtymologySource === 'openrouter') {
           document.getElementById('etymology-via').textContent = 'via OpenRouter · ';
         }
-      } else {
+      } else if (!etymError) {
         etymologyContent.innerHTML = '';
         etymologyEl.style.display = 'none';
       }
