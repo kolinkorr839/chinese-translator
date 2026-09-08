@@ -729,6 +729,7 @@
   </div>
   <div class="container">
   <div class="api-key-bar" id="lara-key-bar"></div>
+  <div class="api-key-bar" id="openrouter-key-bar"></div>
   <div class="api-key-bar" id="api-key-bar"></div>
   <div class="columns">
     <div class="column">
@@ -806,16 +807,20 @@ async function callGemini(apiKey, body) {
 function renderApiKeyBar() {
   const bar = document.getElementById('api-key-bar');
   const chatBox = document.getElementById('chat-box');
-  const saved = localStorage.getItem('gemini_api_key');
-  if (saved) {
+  const hasGemini = !!localStorage.getItem('gemini_api_key');
+  const hasOpenRouter = location.protocol === 'file:' && !!getOpenRouterKey();
+  if (hasGemini) {
     bar.innerHTML = '';
-    chatBox.classList.remove('hidden');
   } else {
     bar.innerHTML = `
       <input type="password" id="gemini-key-input" autocomplete="off" spellcheck="false"
              placeholder="Gemini API key for etymology">
       <button onclick="saveApiKey()">Save</button>
     `;
+  }
+  if (hasGemini || hasOpenRouter) {
+    chatBox.classList.remove('hidden');
+  } else {
     chatBox.classList.add('hidden');
   }
 }
@@ -867,6 +872,66 @@ function clearLaraKey() {
 }
 
 renderLaraKeyBar();
+
+const OPENROUTER_MODELS = [
+  'nvidia/nemotron-3-ultra-550b-a55b:free',
+  'google/gemma-4-31b-it:free',
+];
+
+function getOpenRouterKey() { return localStorage.getItem('openrouter_api_key') || ''; }
+
+async function callOpenRouter(messages, jsonMode) {
+  const apiKey = getOpenRouterKey();
+  if (!apiKey) throw new Error('OpenRouter key not configured');
+
+  const body = { messages };
+  for (const model of OPENROUTER_MODELS) {
+    body.model = model;
+    if (jsonMode) body.response_format = { type: 'json_object' };
+    const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(body)
+    });
+    if (resp.status === 429 || resp.status === 404) continue;
+    if (!resp.ok) throw new Error(`OpenRouter ${resp.status}`);
+    const data = await resp.json();
+    return data.choices?.[0]?.message?.content || '';
+  }
+  throw new Error('All OpenRouter models exhausted');
+}
+
+function renderOpenRouterKeyBar() {
+  const bar = document.getElementById('openrouter-key-bar');
+  if (location.protocol !== 'file:' || getOpenRouterKey()) {
+    bar.innerHTML = '';
+    return;
+  }
+  bar.innerHTML = `
+    <input type="password" id="openrouter-key-input" autocomplete="off" spellcheck="false"
+           placeholder="OpenRouter API key (etymology fallback)">
+    <button onclick="saveOpenRouterKey()">Save</button>
+  `;
+}
+
+function saveOpenRouterKey() {
+  const key = document.getElementById('openrouter-key-input').value.trim();
+  if (!key) return;
+  localStorage.setItem('openrouter_api_key', key);
+  renderOpenRouterKeyBar();
+  renderApiKeyBar();
+}
+
+function clearOpenRouterKey() {
+  localStorage.removeItem('openrouter_api_key');
+  renderOpenRouterKeyBar();
+  renderApiKeyBar();
+}
+
+renderOpenRouterKeyBar();
 
 const DECOMPOSITION = {
   '說': { components: [['言','讠','speech, words'],['兌','兑','exchange']], type: 'lr' },
@@ -1113,11 +1178,19 @@ function speak(chinese) {
   // Stop whatever is still playing, otherwise rapid clicks stack voices.
   if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
 
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
-  ttsAudio = new Audio(url);
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const primary = location.protocol === 'file:' ? youdao : google;
+  const fallback = location.protocol === 'file:' ? google : youdao;
 
-  // Offline or rate-limited: fail quietly instead of an unhandled rejection.
-  ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  const isFile = location.protocol === 'file:';
+  ttsAudio = new Audio(primary);
+  if (isFile) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!isFile) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
 }
 
 async function getCharMeaning(char) {
@@ -1202,7 +1275,9 @@ async function translate() {
     await buildBreakdown(traditional, simplified, breakdownContent);
     breakdownEl.style.display = 'block';
 
-    if (localStorage.getItem('gemini_api_key')) {
+    const canEtymology = !!localStorage.getItem('gemini_api_key')
+      || (location.protocol === 'file:' && !!getOpenRouterKey());
+    if (canEtymology) {
       etymologyEl.style.display = 'block';
       etymologyContent.innerHTML = '<div class="etymology-loading">Loading etymology...</div>';
       const tradChars = [...traditional];
@@ -1220,7 +1295,12 @@ async function translate() {
         }
         if (data) allEtymData.push({ char: sc, data });
       }
-      if (allEtymData.length > 0) renderEtymology(allEtymData);
+      if (allEtymData.length > 0) {
+        renderEtymology(allEtymData);
+      } else {
+        etymologyContent.innerHTML = '';
+        etymologyEl.style.display = 'none';
+      }
     }
 
 
@@ -1317,15 +1397,9 @@ function setEtymologyCache(key, data) {
   } catch {}
 }
 
-async function getEtymology(traditional, simplified, english) {
-  const apiKey = localStorage.getItem('gemini_api_key');
-  if (!apiKey) return null;
-
-  const cached = getEtymologyCache(traditional);
-  if (cached) return cached;
-
+function buildEtymologyPrompt(traditional, simplified, english) {
   const pinyin = getPinyin(simplified);
-  const prompt = `You are a Chinese etymology expert. Analyze the character ${traditional}${traditional !== simplified ? ' (simplified: ' + simplified + ')' : ''}, pinyin: ${pinyin}, English meaning: "${english}".
+  return `You are a Chinese etymology expert. Analyze the character ${traditional}${traditional !== simplified ? ' (simplified: ' + simplified + ')' : ''}, pinyin: ${pinyin}, English meaning: "${english}".
 
 Return JSON with this exact structure:
 {
@@ -1347,32 +1421,70 @@ Return JSON with this exact structure:
 }
 
 Be specific and insightful. For the mnemonic, describe how to "read the drawing" of the character. For related_words, give 3-5 common examples. Keep historical_context to 2-3 sentences.`;
+}
+
+async function getEtymologyViaGemini(prompt) {
+  const apiKey = localStorage.getItem('gemini_api_key');
+  if (!apiKey) return null;
+
+  const { resp, model } = await callGemini(apiKey, {
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      response_mime_type: 'application/json',
+      temperature: 0.7
+    }
+  });
+
+  if (!resp.ok) {
+    const msg = resp.status === 404 ? `Model ${model} not found` : `API error ${resp.status} (${model})`;
+    console.error('Gemini API error:', resp.status, model);
+    throw new Error(msg);
+  }
+
+  const data = await resp.json();
+  const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) throw new Error('Empty response from Gemini');
+  return JSON.parse(text);
+}
+
+async function getEtymologyViaOpenRouter(prompt) {
+  const text = await callOpenRouter(
+    [{ role: 'user', content: prompt + '\n\nRespond with valid JSON only, no markdown.' }],
+    true
+  );
+  const cleaned = text.replace(/^```json?\s*|```\s*$/g, '').trim();
+  return JSON.parse(cleaned);
+}
+
+async function getEtymology(traditional, simplified, english) {
+  const hasGemini = !!localStorage.getItem('gemini_api_key');
+  const hasOpenRouter = location.protocol === 'file:' && !!getOpenRouterKey();
+  if (!hasGemini && !hasOpenRouter) return null;
+
+  const cached = getEtymologyCache(traditional);
+  if (cached) return cached;
+
+  const prompt = buildEtymologyPrompt(traditional, simplified, english);
 
   try {
-    const { resp, model } = await callGemini(apiKey, {
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        response_mime_type: 'application/json',
-        temperature: 0.7
+    const result = hasGemini
+      ? await getEtymologyViaGemini(prompt)
+      : await getEtymologyViaOpenRouter(prompt);
+    if (result) { setEtymologyCache(traditional, result); return result; }
+    return { _error: 'Empty etymology response' };
+  } catch (primaryErr) {
+    console.warn('Primary etymology failed:', primaryErr.message);
+    if (hasOpenRouter && hasGemini) {
+      try {
+        const result = await getEtymologyViaOpenRouter(prompt);
+        if (result) { setEtymologyCache(traditional, result); return result; }
+        return { _error: 'Empty OpenRouter response' };
+      } catch (orErr) {
+        console.error('OpenRouter fallback failed:', orErr);
+        return { _error: orErr.message || 'Fallback failed' };
       }
-    });
-
-    if (!resp.ok) {
-      const msg = resp.status === 404 ? `Model ${model} not found` : `API error ${resp.status} (${model})`;
-      console.error('Gemini API error:', resp.status, model);
-      return { _error: msg };
     }
-
-    const data = await resp.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!text) return { _error: 'Empty response from Gemini' };
-
-    const result = JSON.parse(text);
-    setEtymologyCache(traditional, result);
-    return result;
-  } catch (err) {
-    console.error('Etymology error:', err);
-    return { _error: err.message || 'Network error' };
+    return { _error: primaryErr.message || 'Network error' };
   }
 }
 
@@ -1468,7 +1580,8 @@ async function sendChat() {
   if (!msg) return;
 
   const apiKey = localStorage.getItem('gemini_api_key');
-  if (!apiKey) return;
+  const hasOpenRouter = location.protocol === 'file:' && !!getOpenRouterKey();
+  if (!apiKey && !hasOpenRouter) return;
 
   input.value = '';
   const messagesEl = document.getElementById('chat-messages');
@@ -1493,41 +1606,58 @@ Answer concisely. Use Chinese characters with pinyin when relevant. Keep answers
 
   chatHistory.push({ role: 'user', parts: [{ text: msg }] });
 
+  let reply;
   try {
-    const { resp, model } = await callGemini(apiKey, {
-      system_instruction: { parts: [{ text: systemInstruction }] },
-      contents: chatHistory,
-      generationConfig: { temperature: 0.7 }
-    });
-
-    const typing = document.getElementById('chat-typing');
-
-    if (!resp.ok) {
-      const errBody = await resp.text();
-      console.error('Chat API error:', resp.status, model, errBody);
-      typing.classList.remove('typing');
-      typing.textContent = `API error ${resp.status} (${model})`;
+    if (apiKey) {
+      const { resp, model } = await callGemini(apiKey, {
+        system_instruction: { parts: [{ text: systemInstruction }] },
+        contents: chatHistory,
+        generationConfig: { temperature: 0.7 }
+      });
+      if (!resp.ok) throw new Error(`API error ${resp.status} (${model})`);
+      const data = await resp.json();
+      reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
+    } else {
+      throw new Error('No Gemini key');
+    }
+  } catch (geminiErr) {
+    if (hasOpenRouter) {
+      try {
+        const orMessages = [{ role: 'system', content: systemInstruction }];
+        for (const entry of chatHistory) {
+          orMessages.push({
+            role: entry.role === 'model' ? 'assistant' : 'user',
+            content: entry.parts[0].text
+          });
+        }
+        reply = await callOpenRouter(orMessages, false);
+      } catch (orErr) {
+        const typing = document.getElementById('chat-typing');
+        if (typing) {
+          typing.classList.remove('typing');
+          typing.textContent = `Error: ${orErr.message}`;
+        }
+        chatHistory.pop();
+        sendBtn.disabled = false;
+        return;
+      }
+    } else {
+      const typing = document.getElementById('chat-typing');
+      if (typing) {
+        typing.classList.remove('typing');
+        typing.textContent = `Error: ${geminiErr.message}`;
+      }
       chatHistory.pop();
       sendBtn.disabled = false;
       return;
     }
-
-    const data = await resp.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
-
-    chatHistory.push({ role: 'model', parts: [{ text: reply }] });
-
-    typing.id = '';
-    typing.classList.remove('typing');
-    typing.innerHTML = formatChat(reply);
-  } catch (err) {
-    const typing = document.getElementById('chat-typing');
-    if (typing) {
-      typing.classList.remove('typing');
-      typing.textContent = `Error: ${err.message}`;
-    }
-    chatHistory.pop();
   }
+
+  const typing = document.getElementById('chat-typing');
+  chatHistory.push({ role: 'model', parts: [{ text: reply }] });
+  typing.id = '';
+  typing.classList.remove('typing');
+  typing.innerHTML = formatChat(reply);
 
   sendBtn.disabled = false;
   messagesEl.scrollTop = messagesEl.scrollHeight;

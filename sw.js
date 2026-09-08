@@ -46,7 +46,9 @@ self.addEventListener('fetch', e => {
 
   const url = new URL(e.request.url);
 
-  if (url.hostname === 'translate.googleapis.com' || url.hostname === 'translate.google.com') {
+  if (url.hostname === 'translate.googleapis.com' || url.hostname === 'translate.google.com'
+      || url.hostname === 'dict.youdao.com' || url.hostname === 'api.laratranslate.com'
+      || url.hostname === 'openrouter.ai') {
     e.respondWith(fetch(e.request));
     return;
   }

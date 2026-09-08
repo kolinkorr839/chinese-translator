@@ -3490,11 +3490,19 @@ function speak(chinese) {
   // Stop whatever is still playing, otherwise rapid clicks stack voices.
   if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
 
-  const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
-  ttsAudio = new Audio(url);
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const primary = location.protocol === 'file:' ? youdao : google;
+  const fallback = location.protocol === 'file:' ? google : youdao;
 
-  // Offline or rate-limited: fail quietly instead of an unhandled rejection.
-  ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  const isFile = location.protocol === 'file:';
+  ttsAudio = new Audio(primary);
+  if (isFile) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!isFile) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
 }
 
 document.querySelectorAll('.phrase, .dialogue-line').forEach(item => {

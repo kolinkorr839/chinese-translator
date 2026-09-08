@@ -41,24 +41,41 @@ directly from the browser. All verified working from both origins.
 |---|---|---|---|---|
 | Lara Translate | Text translation (en/zh-CN/zh-TW) | `api.laratranslate.com/v2/auth`, `/v2/translate` | `mandarin_translation.html` | Primary on `file://`, fallback on `https://` |
 | Google Translate | Text translation (en/zh-CN/zh-TW) | `translate.googleapis.com/translate_a/single` | `mandarin_translation.html` | Primary on `https://`, fallback on `file://` |
-| Google TTS | Audio playback of Chinese text | `translate.google.com/translate_tts` | `mandarin_translation.html`, `grammar_guide.html`, `mandarin_in_14_days.html`, `phrase_reference.html` | Always active, no routing |
+| Gemini | Etymology enrichment, chat | `generativelanguage.googleapis.com/v1beta` | `mandarin_translation.html` | Primary everywhere |
+| OpenRouter | Etymology enrichment, chat | `openrouter.ai/api/v1/chat/completions` | `mandarin_translation.html` | Fallback on `file://` only |
+| Youdao TTS | Audio playback of Chinese text | `dict.youdao.com/dictvoice` | All 4 pages with audio | Primary on `file://`, fallback on `https://` |
+| Google TTS | Audio playback of Chinese text | `translate.google.com/translate_tts` | All 4 pages with audio | Primary on `https://`, fallback on `file://` |
 
 - **Lara auth** requires `crypto.subtle` (works on both `file://` in Brave and `https://`).
   Credentials are entered at runtime and stored in `localStorage` (like the Gemini key).
   Auth produces a JWT; the translate call auto-refreshes on 401.
 - **Google Translate** uses the free `client=gtx` parameter, no auth. Rate-limited under
   heavy use, which is why Lara is preferred on `file://` (primary user).
-- **Google TTS** is independent of translation. Requires `<meta name="referrer"
-  content="no-referrer">` on every page that uses it.
-- **`translateText()`** is the single entry point. It checks the cache, picks primary vs
-  fallback based on `location.protocol`, and persists results. `laraTranslate()` and
-  `googleTranslate()` are not called directly.
+- **Youdao TTS** requires no auth. No CORS headers, but `<audio>` elements bypass CORS
+  for simple playback.
+- **OpenRouter** provides access to free models (Nemotron, Gemma) as a Gemini fallback on
+  `file://`. API key stored in `localStorage`. CORS is fully open (`*`). Only active on
+  `file://` - hidden on `https://`.
+- **Google TTS** requires `<meta name="referrer" content="no-referrer">` on every page
+  that uses it or it returns 404.
+- **`translateText()`** is the single entry point for translation. It checks the cache,
+  picks primary vs fallback based on `location.protocol`, and persists results.
+  `laraTranslate()` and `googleTranslate()` are not called directly.
+- **`speak()`** handles TTS with the same protocol-based routing. Primary fails over to
+  fallback silently. Implemented in all 4 pages that play audio.
 
 ## State
 
 `localStorage`, which is per-origin — so `file://` and `https://` keep separate stores.
-Keys: `gemini_api_key`, `etymology_cache`, `translation_cache`, `mandarin-hub-last`,
+Keys: `gemini_api_key`, `openrouter_api_key`, `lara_key_id`, `lara_key_secret`,
+`etymology_cache`, `translation_cache`, `mandarin-hub-last`,
 `mandarin-hub-speed`.
+
+## Python virtualenv
+
+A virtualenv exists at `.venv/`. Use `.venv/bin/python3` (or activate it) for
+running tests and any Python tooling. Playwright is installed there for browser
+tests.
 
 ## Testing
 
