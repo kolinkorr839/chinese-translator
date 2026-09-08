@@ -111,3 +111,66 @@ def check_no_api_keys_in_tracked_files():
 
     assert not found, "possible secrets in tracked files:\n  " + "\n  ".join(found)
     return f"scanned {len(s.tracked_files())} tracked files"
+
+
+FLASHCARD_PAGES = [
+    "flashcards.html",
+    "grammar_flashcards.html",
+    "simplified_traditional_flashcards.html",
+    "pinyin_chart.html",
+]
+
+
+@check
+def check_flashcard_pages_handle_hub_hidden():
+    """interactive pages pause on mandarin-hub:hidden postMessage"""
+    missing = []
+    for name in FLASHCARD_PAGES:
+        src = s.read(name)
+        if "mandarin-hub:hidden" not in src:
+            missing.append(name)
+    assert not missing, (
+        f"these pages do not handle mandarin-hub:hidden: {missing}\n"
+        "Without it, the deck keeps advancing and speaking when the hub navigates away."
+    )
+    return f"{len(FLASHCARD_PAGES)} pages handle hub-hidden"
+
+
+TTS_PAGES = [
+    "mandarin_translation.html",
+    "phrase_reference.html",
+    "grammar_guide.html",
+    "mandarin_in_14_days.html",
+]
+
+
+@check
+def check_tts_pages_have_protocol_routed_speak():
+    """pages with network TTS implement speak() with protocol-based routing"""
+    # These pages use Youdao (primary on file://) and Google TTS (primary on
+    # https://). If the routing disappears, audio silently breaks on one origin.
+    missing = []
+    for name in TTS_PAGES:
+        src = s.read(name)
+        has_speak = "function speak(" in src or "function speak (" in src
+        has_youdao = "dictvoice" in src or "youdao" in src
+        has_google_tts = "translate_tts" in src
+        if not has_speak:
+            missing.append(f"{name}: no speak() function")
+        elif not has_youdao or not has_google_tts:
+            missing.append(f"{name}: speak() missing dual TTS sources")
+    assert not missing, (
+        "TTS routing issues:\n  " + "\n  ".join(missing)
+    )
+    return f"{len(TTS_PAGES)} pages have protocol-routed TTS"
+
+
+@check
+def check_openrouter_only_on_file_protocol():
+    """OpenRouter UI is guarded behind a file:// protocol check"""
+    src = s.read("mandarin_translation.html")
+    assert "openrouter" in src.lower(), "mandarin_translation.html has no OpenRouter references"
+    assert re.search(r"location\.protocol\s*[!=]==?\s*['\"]file:", src), (
+        "OpenRouter references exist but no location.protocol === 'file:' guard found.\n"
+        "OpenRouter should only be visible on file:// to avoid exposing the key bar on the public site."
+    )

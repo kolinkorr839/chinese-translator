@@ -6,6 +6,8 @@ new drills once TODO item 3 lands, so a malformed entry propagates everywhere.
 The script-consistency check enforces TODO item 5.
 """
 
+import re
+
 from harness import check
 import sitelib as s
 
@@ -110,6 +112,95 @@ def check_script_consistency():
     )
     if still_mixed:
         return "known, tracked as TODO item 5:\n" + "\n".join("  " + m for m in still_mixed)
+
+
+@check
+def check_grammar_patterns_parse():
+    """the grammar flashcard pattern data parses as JSON"""
+    data = s.grammar_patterns()
+    assert data, "grammar pattern data is empty"
+    total = sum(len(p.get("cards", [])) for p in data)
+    return f"{len(data)} patterns, {total} cards"
+
+
+@check
+def check_grammar_cards_have_all_fields():
+    """every grammar card has non-empty english, trad, simp, pinyin and highlight"""
+    bad = []
+    for pat in s.grammar_patterns():
+        for card in pat.get("cards", []):
+            for field in ("english", "trad", "simp", "pinyin"):
+                if not str(card.get(field, "")).strip():
+                    bad.append(f"{pat.get('name')}: missing {field!r}")
+            if not card.get("highlight"):
+                bad.append(f"{pat.get('name')}: missing highlight for {card.get('english', '?')!r}")
+    assert not bad, "incomplete grammar cards:\n  " + "\n  ".join(bad[:20])
+
+
+@check
+def check_no_duplicate_grammar_cards():
+    """no grammar card is repeated inside the same pattern"""
+    dupes = []
+    for pat in s.grammar_patterns():
+        seen = set()
+        for card in pat.get("cards", []):
+            key = card.get("simp", "")
+            if key and key in seen:
+                dupes.append(f"{pat.get('name')}: {key}")
+            seen.add(key)
+    assert not dupes, "duplicated grammar cards:\n  " + "\n  ".join(dupes)
+
+
+@check
+def check_flashcards_data_matches_phrase_reference():
+    """flashcards.html DATA matches phrase_reference.html DATA"""
+    import json as _json
+    ref_src = s.read("phrase_reference.html")
+    fc_src = s.read("flashcards.html")
+
+    ref_m = re.search(r"const DATA = (\[.*?\]);\n", ref_src, re.S)
+    fc_m = re.search(r"const DATA = (\[.*?\]);\n", fc_src, re.S)
+    assert ref_m, "could not find DATA in phrase_reference.html"
+    assert fc_m, "could not find DATA in flashcards.html"
+
+    ref_data = _json.loads(ref_m.group(1))
+    fc_data = _json.loads(fc_m.group(1))
+
+    ref_phrases = [(p["simp"], p["meaning"]) for l in ref_data
+                   for sec in l.get("sections", []) for p in sec.get("phrases", [])]
+    fc_phrases = [(p["simp"], p["meaning"]) for l in fc_data
+                  for sec in l.get("sections", []) for p in sec.get("phrases", [])]
+    assert ref_phrases == fc_phrases, (
+        f"phrase_reference.html has {len(ref_phrases)} phrases, "
+        f"flashcards.html has {len(fc_phrases)} - they must stay in sync"
+    )
+    return f"{len(ref_phrases)} phrases match"
+
+
+@check
+def check_st_pairs_have_valid_fields():
+    """every S/T flashcard pair has non-empty s, t, and m fields"""
+    pairs = s.st_pairs()
+    assert pairs, "S/T pairs data is empty"
+    bad = []
+    for i, p in enumerate(pairs):
+        for field in ("s", "t", "m"):
+            if not str(p.get(field, "")).strip():
+                bad.append(f"pair {i}: missing {field!r}")
+        if p.get("s") == p.get("t"):
+            bad.append(f"pair {i}: s and t are identical ({p.get('s')!r})")
+    assert not bad, "invalid S/T pairs:\n  " + "\n  ".join(bad[:20])
+    return f"{len(pairs)} pairs"
+
+
+@check
+def check_pinyin_chart_valid_combos():
+    """the pinyin chart VALID map parses and has a plausible number of syllables"""
+    combos = s.pinyin_valid_combos()
+    assert combos, "VALID map is empty"
+    total = sum(len(finals) for finals in combos.values())
+    assert 350 < total < 500, f"expected 350-500 valid syllables, got {total}"
+    return f"{len(combos)} initials, {total} valid syllables"
 
 
 @check

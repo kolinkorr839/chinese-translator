@@ -89,6 +89,66 @@ def iter_phrases():
                 yield lesson.get("title", "?"), section.get("title", "?"), phrase
 
 
+def _js_to_json(raw):
+    """Convert JS object literal to JSON (unquoted keys, single-quoted strings, trailing commas)."""
+    raw = re.sub(r"(?<=[{,\[])\s*(\w+)\s*:", r' "\1":', raw)
+    raw = re.sub(r",\s*([}\]])", r"\1", raw)
+    result = []
+    in_string = False
+    quote_char = None
+    i = 0
+    while i < len(raw):
+        ch = raw[i]
+        if in_string:
+            if ch == '\\' and i + 1 < len(raw):
+                result.append(ch)
+                result.append(raw[i + 1])
+                i += 2
+                continue
+            if ch == quote_char:
+                result.append('"')
+                in_string = False
+            elif ch == '"' and quote_char == "'":
+                result.append('\\"')
+            else:
+                result.append(ch)
+        elif ch in ("'", '"'):
+            result.append('"')
+            in_string = True
+            quote_char = ch
+        else:
+            result.append(ch)
+        i += 1
+    return "".join(result)
+
+
+def grammar_patterns():
+    """The PATTERNS array from grammar_flashcards.html."""
+    src = read("grammar_flashcards.html")
+    m = re.search(r"const PATTERNS = (\[.*?\]);\n", src, re.S)
+    if not m:
+        raise AssertionError("could not find `const PATTERNS = [...]` in grammar_flashcards.html")
+    return json.loads(_js_to_json(m.group(1)))
+
+
+def st_pairs():
+    """The PAIRS array from simplified_traditional_flashcards.html."""
+    src = read("simplified_traditional_flashcards.html")
+    m = re.search(r"const PAIRS = (\[.*?\]);\n", src, re.S)
+    if not m:
+        raise AssertionError("could not find `const PAIRS = [...]` in simplified_traditional_flashcards.html")
+    return json.loads(_js_to_json(m.group(1)))
+
+
+def pinyin_valid_combos():
+    """The VALID map from pinyin_chart.html: {initial: [finals]}."""
+    src = read("pinyin_chart.html")
+    m = re.search(r"const VALID = (\{.*?\});", src, re.S)
+    if not m:
+        raise AssertionError("could not find `const VALID = {...}` in pinyin_chart.html")
+    return json.loads(_js_to_json(m.group(1)))
+
+
 # ------------------------------------------------------------------------ git
 
 def git(*args):

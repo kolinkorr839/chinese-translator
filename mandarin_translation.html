@@ -1545,6 +1545,10 @@ function renderEtymologyError(msg) {
   section.style.display = 'block';
 }
 
+function isCJK(str) {
+  return /[㐀-鿿豈-﫿]/.test(str);
+}
+
 function renderEtymology(entries) {
   const container = document.getElementById('etymology-content');
   const section = document.getElementById('etymology');
@@ -1570,8 +1574,9 @@ function renderEtymology(entries) {
       html += '<div class="etymology-components">';
       for (const comp of data.components) {
         const typeClass = comp.type === 'phonetic' ? 'phonetic' : 'semantic';
+        const displayChar = isCJK(comp.char) ? comp.char : '';
         html += `<div class="component-badge ${typeClass}">
-          <span class="badge-char">${comp.char}</span>
+          ${displayChar ? `<span class="badge-char">${displayChar}</span>` : ''}
           <div>
             <div>${comp.meaning}</div>
             <div class="badge-label">${comp.type}</div>
@@ -1582,7 +1587,8 @@ function renderEtymology(entries) {
       if (data.components.some(c => c.explanation)) {
         for (const comp of data.components) {
           if (comp.explanation) {
-            html += `<div class="etymology-text" style="font-size:13px; color:#6B7B8D; margin-top:4px;">${comp.char} - ${comp.explanation}</div>`;
+            const label = isCJK(comp.char) ? comp.char : comp.meaning;
+            html += `<div class="etymology-text" style="font-size:13px; color:#6B7B8D; margin-top:4px;">${label} - ${comp.explanation}</div>`;
           }
         }
       }
