@@ -1763,6 +1763,8 @@ document.getElementById('english-input').addEventListener('keydown', (e) => {
   }
 });
 
+// Lookup from phrase_reference: postMessage for already-loaded iframe,
+// URL param for first load.
 (function checkPendingLookup() {
   const params = new URLSearchParams(window.location.search);
   const query = params.get('lookup');
@@ -1770,6 +1772,11 @@ document.getElementById('english-input').addEventListener('keydown', (e) => {
   document.getElementById('english-input').value = query;
   translate();
 })();
+window.addEventListener('message', (e) => {
+  if (!e.data || e.data.type !== 'mandarin-hub:lookup-query') return;
+  document.getElementById('english-input').value = e.data.query;
+  translate();
+});
 
 // Handwriting recognition
 const drawCanvas = document.getElementById('draw-canvas');

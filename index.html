@@ -280,7 +280,7 @@ body {
   }
 
   .sidebar.collapsed ~ .content {
-    margin-left: 12px;
+    margin-left: 56px;
   }
 }
 
@@ -578,7 +578,12 @@ function loadPage(page, updateHash = true) {
 
   if (!iframes[page]) {
     const f = document.createElement('iframe');
-    f.src = page;
+    if (pendingLookup && page === 'mandarin_translation.html') {
+      f.src = page + '?lookup=' + encodeURIComponent(pendingLookup);
+      pendingLookup = null;
+    } else {
+      f.src = page;
+    }
     // First load: the iframe isn't ready yet, so focus it once it is -- but only
     // if it's still the page being shown (a slow page must not steal focus later).
     f.addEventListener('load', () => {
@@ -672,19 +677,23 @@ if (localStorage.getItem('mandarin-hub-sidebar-collapsed') === 'true'
 }
 
 // Child pages can request navigation (e.g. phrase_reference lookup button).
-// On file://, iframes are cross-origin so localStorage and focus events are
-// isolated per frame. Setting the iframe src with a query param is the only
-// reliable way to pass data -- the translation page reads it on init.
+// Existing iframe: postMessage (instant, no reload, no history entry).
+// First load: bake ?lookup= into the iframe src so it auto-translates on init.
+let pendingLookup = null;
 window.addEventListener('message', (e) => {
   if (!e.data || e.data.type !== 'mandarin-hub:lookup') return;
   const target = 'mandarin_translation.html';
-  const src = target + '?lookup=' + encodeURIComponent(e.data.query);
+  const query = e.data.query;
   if (iframes[target]) {
-    iframes[target].src = src;
     loadPage(target);
+    try {
+      iframes[target].contentWindow.postMessage({
+        type: 'mandarin-hub:lookup-query', query: query
+      }, '*');
+    } catch (err) { /* frame not ready */ }
   } else {
+    pendingLookup = query;
     loadPage(target);
-    if (iframes[target]) iframes[target].src = src;
   }
 });
 
