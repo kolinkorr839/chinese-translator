@@ -1436,25 +1436,27 @@ function setEtymologyCache(key, data) {
 
 function buildEtymologyPrompt(traditional, simplified, english) {
   const pinyin = getPinyin(simplified);
-  return `You are a Chinese etymology expert. Analyze the character ${traditional}${traditional !== simplified ? ' (simplified: ' + simplified + ')' : ''}, pinyin: ${pinyin}, English meaning: "${english}".
+  return `You are a Chinese etymology expert. Analyze the character ${simplified}${traditional !== simplified ? ' (traditional: ' + traditional + ')' : ''}, pinyin: ${pinyin}, English meaning: "${english}".
+
+IMPORTANT: Use simplified Chinese characters throughout your response - in component chars, explanations, meaning_logic, mnemonic, and related_words. Only use traditional forms in the "traditional" field when they differ from the simplified form.
 
 Return JSON with this exact structure:
 {
-  "character": "the character being analyzed",
+  "character": "${simplified}",
   "components": [
     {
-      "char": "the component character",
-      "traditional": "traditional form if different",
+      "char": "the component in simplified Chinese",
+      "traditional": "traditional form if different, otherwise omit",
       "type": "semantic or phonetic",
       "meaning": "core meaning of this component",
-      "explanation": "why this component is in this character"
+      "explanation": "why this component is in this character (use simplified characters)"
     }
   ],
-  "meaning_logic": "explain how the components combine to create the character's meaning",
-  "historical_context": "cultural, historical, or linguistic background - make it a compelling story",
-  "mnemonic": "a vivid memory aid that helps remember this character by reading its visual components as a scene or story",
+  "meaning_logic": "explain how the components combine to create the character's meaning (use simplified characters)",
+  "historical_context": "cultural, historical, or linguistic background - make it a compelling story (use simplified characters)",
+  "mnemonic": "a vivid memory aid that helps remember this character by reading its visual components as a scene or story (use simplified characters)",
   "related_words": [
-    { "word": "a common word using this character", "pinyin": "pinyin", "meaning": "English meaning" }
+    { "word": "a common word using this character (simplified)", "pinyin": "pinyin", "meaning": "English meaning" }
   ]
 }
 
