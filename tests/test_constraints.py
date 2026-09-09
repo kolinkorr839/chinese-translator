@@ -166,6 +166,24 @@ def check_tts_pages_have_protocol_routed_speak():
 
 
 @check
+def check_phrase_lookup_wiring():
+    """phrase reference lookup button is wired through the hub to the translator"""
+    phrase_src = s.read("phrase_reference.html")
+    hub_src = s.read("index.html")
+    trans_src = s.read("mandarin_translation.html")
+
+    assert "mandarin-hub:lookup" in phrase_src, (
+        "phrase_reference.html must send a mandarin-hub:lookup postMessage for the lookup button"
+    )
+    assert "mandarin-hub:lookup" in hub_src, (
+        "index.html must handle the mandarin-hub:lookup message from child pages"
+    )
+    assert "lookup" in trans_src and "location.search" in trans_src, (
+        "mandarin_translation.html must read the ?lookup= query parameter to auto-translate"
+    )
+
+
+@check
 def check_openrouter_only_on_file_protocol():
     """OpenRouter UI is guarded behind a file:// protocol check"""
     src = s.read("mandarin_translation.html")

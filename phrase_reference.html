@@ -225,6 +225,24 @@ body {
 .star-btn.active {
   color: #B8860B;
 }
+.lookup-btn {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #D4C9B8;
+  padding: 0.2rem;
+  line-height: 1;
+  z-index: 1;
+  transition: color 0.2s, transform 0.15s;
+}
+.lookup-btn:hover {
+  color: #C41E3A;
+  transform: scale(1.15);
+}
 
 @media (max-width: 480px) {
   .toc, .flashcard-view { padding: 1rem; }
@@ -357,6 +375,20 @@ function showLesson(idx, skipPush) {
         toggleTroubleWord(p, star);
       });
       card.appendChild(star);
+      const lookup = document.createElement('button');
+      lookup.className = 'lookup-btn';
+      lookup.textContent = '↗';
+      lookup.title = 'Look up etymology';
+      lookup.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'mandarin-hub:lookup',
+            query: p.simp
+          }, '*');
+        }
+      });
+      card.appendChild(lookup);
       container.appendChild(card);
     });
   });

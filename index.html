@@ -671,6 +671,23 @@ if (localStorage.getItem('mandarin-hub-sidebar-collapsed') === 'true'
   });
 }
 
+// Child pages can request navigation (e.g. phrase_reference lookup button).
+// On file://, iframes are cross-origin so localStorage and focus events are
+// isolated per frame. Setting the iframe src with a query param is the only
+// reliable way to pass data -- the translation page reads it on init.
+window.addEventListener('message', (e) => {
+  if (!e.data || e.data.type !== 'mandarin-hub:lookup') return;
+  const target = 'mandarin_translation.html';
+  const src = target + '?lookup=' + encodeURIComponent(e.data.query);
+  if (iframes[target]) {
+    iframes[target].src = src;
+    loadPage(target);
+  } else {
+    loadPage(target);
+    if (iframes[target]) iframes[target].src = src;
+  }
+});
+
 // Back/forward and hand-edited or shared URLs.
 window.addEventListener('hashchange', () => {
   loadPage(pageFromHash() || HOME, false);

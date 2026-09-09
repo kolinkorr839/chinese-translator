@@ -783,6 +783,9 @@
     <span><span id="etymology-via" class="via-label"></span> <span class="etymology-key-link" onclick="clearApiKey(); renderApiKeyBar();">change API key</span></span>
   </div>
   <div id="etymology-content"></div>
+  <div id="clear-etymology-cache" style="display:none; text-align:right; margin-top:4px;">
+    <button onclick="localStorage.removeItem('etymology_cache')" style="background:none; border:1px solid #555; color:#888; font-size:10px; padding:1px 5px; border-radius:3px; cursor:pointer; opacity:0.6;" title="Clear etymology cache">c</button>
+  </div>
 </div>
 </div>
 
@@ -1308,6 +1311,9 @@ async function translate() {
     const hasORKey = location.protocol === 'file:' && !!getOpenRouterKey();
     if (hasGeminiKey || hasORKey) {
       etymologyEl.style.display = 'block';
+      if (location.protocol === 'file:') {
+        document.getElementById('clear-etymology-cache').style.display = 'block';
+      }
       const loadingMsg = !hasGeminiKey && hasORKey
         ? 'Loading etymology via OpenRouter (this may take a while)...'
         : 'Loading etymology...';
@@ -1438,25 +1444,28 @@ function buildEtymologyPrompt(traditional, simplified, english) {
   const pinyin = getPinyin(simplified);
   return `You are a Chinese etymology expert. Analyze the character ${simplified}${traditional !== simplified ? ' (traditional: ' + traditional + ')' : ''}, pinyin: ${pinyin}, English meaning: "${english}".
 
-IMPORTANT: Use simplified Chinese characters throughout your response - in component chars, explanations, meaning_logic, mnemonic, and related_words. Only use traditional forms in the "traditional" field when they differ from the simplified form.
+IMPORTANT:
+- Analyze ONLY the character ${simplified} — break down its actual components. Do not substitute a synonym or related character even if the meaning seems similar.
+- Write ALL explanations, descriptions, and the mnemonic in English. When citing Chinese characters in the text, use their simplified forms.
+- Only use traditional forms in the "traditional" field when they differ from the simplified form.
 
 Return JSON with this exact structure:
 {
-  "character": "${simplified}",
+  "character": "the exact character you analyzed",
   "components": [
     {
-      "char": "the component in simplified Chinese",
+      "char": "component in simplified Chinese",
       "traditional": "traditional form if different, otherwise omit",
       "type": "semantic or phonetic",
-      "meaning": "core meaning of this component",
-      "explanation": "why this component is in this character (use simplified characters)"
+      "meaning": "English meaning of this component",
+      "explanation": "in English, why this component is in this character"
     }
   ],
-  "meaning_logic": "explain how the components combine to create the character's meaning (use simplified characters)",
-  "historical_context": "cultural, historical, or linguistic background - make it a compelling story (use simplified characters)",
-  "mnemonic": "a vivid memory aid that helps remember this character by reading its visual components as a scene or story (use simplified characters)",
+  "meaning_logic": "in English, how the components combine to create the meaning",
+  "historical_context": "in English, cultural/historical/linguistic background",
+  "mnemonic": "in English, a vivid memory aid using the visual components",
   "related_words": [
-    { "word": "a common word using this character (simplified)", "pinyin": "pinyin", "meaning": "English meaning" }
+    { "word": "a common word using this character (simplified Chinese)", "pinyin": "pinyin", "meaning": "English meaning" }
   ]
 }
 
@@ -1753,6 +1762,14 @@ document.getElementById('english-input').addEventListener('keydown', (e) => {
     translate();
   }
 });
+
+(function checkPendingLookup() {
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get('lookup');
+  if (!query) return;
+  document.getElementById('english-input').value = query;
+  translate();
+})();
 
 // Handwriting recognition
 const drawCanvas = document.getElementById('draw-canvas');
