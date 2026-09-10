@@ -197,6 +197,12 @@
     line-height: 1.2;
     color: #1a1a2e;
     white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .char:hover {
+    color: #5C6352;
   }
 
   .divider {
@@ -319,12 +325,12 @@
   <div class="answer-area" id="answer-area">
     <div class="char-block">
       <div class="char-label">Simplified</div>
-      <div class="char" id="simp-char"></div>
+      <div class="char" id="simp-char" onclick="speak(ALL_PHRASES[order[idx]].simp)"></div>
     </div>
     <div class="divider" id="divider">|</div>
     <div class="char-block trad-block" id="trad-block">
       <div class="char-label">Traditional</div>
-      <div class="char" id="trad-char"></div>
+      <div class="char" id="trad-char" onclick="speak(ALL_PHRASES[order[idx]].simp)"></div>
     </div>
     <button class="star-btn" id="star-btn" onclick="toggleStar(event)">☆</button>
   </div>

@@ -64,6 +64,18 @@ directly from the browser. All verified working from both origins.
 - **`speak()`** handles TTS with the same protocol-based routing. Primary fails over to
   fallback silently. Implemented in all 4 pages that play audio.
 
+## TTS pattern
+
+The preferred `speak()` implementation is **external TTS primary, Web Speech API
+fallback**: try Youdao/Google first (consistent female voice, good quality), fall
+back to `speechSynthesis` when offline or when the network call fails. New pages
+must use the preferred pattern.
+
+| TTS method | Pages | Notes |
+|---|---|---|
+| External TTS (Youdao/Google) | `phrase_reference.html`, `grammar_guide.html`, `mandarin_in_14_days.html`, `mandarin_translation.html` | Preferred pattern. Consistent female voice. |
+| Web Speech API only | `flashcards.html`, `grammar_flashcards.html`, `pinyin_chart.html`, `simplified_traditional_flashcards.html` | Legacy. Uses OS voice (male on macOS). Migrate opportunistically. |
+
 ## State
 
 `localStorage`, which is per-origin — so `file://` and `https://` keep separate stores.
