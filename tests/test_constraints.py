@@ -192,3 +192,42 @@ def check_openrouter_only_on_file_protocol():
         "OpenRouter references exist but no location.protocol === 'file:' guard found.\n"
         "OpenRouter should only be visible on file:// to avoid exposing the key bar on the public site."
     )
+
+
+@check
+def check_pinyin_input_panel():
+    """translator pinyin input uses Google Input Tools and guards against non-latin input"""
+    src = s.read("mandarin_translation.html")
+
+    assert 'id="pinyin-input"' in src, "missing #pinyin-input element"
+    assert 'id="pinyin-candidates"' in src, "missing #pinyin-candidates element"
+    assert "zh-t-i0-pinyin" in src, (
+        "pinyin input must use Google Input Tools with itc=zh-t-i0-pinyin"
+    )
+    assert "isPinyin(" in src, (
+        "pinyin input must guard against non-latin text to prevent "
+        "sending Chinese characters to the lookup API"
+    )
+
+
+@check
+def check_breakdown_and_etymology_skip_non_cjk():
+    """character breakdown and etymology loops skip non-CJK characters"""
+    src = s.read("mandarin_translation.html")
+
+    breakdown_match = re.search(
+        r"function buildBreakdown\b.*?^}",
+        src, re.DOTALL | re.MULTILINE,
+    )
+    assert breakdown_match, "buildBreakdown function not found"
+    breakdown_body = breakdown_match.group()
+    assert re.search(r"continue", breakdown_body), (
+        "buildBreakdown must skip non-CJK characters (no continue found). "
+        "Without this, English letters in mixed translations get individual "
+        "breakdown rows (p = p, a = a, ...)."
+    )
+
+    assert "appendCandidateToSource" in src, (
+        "draw/pinyin candidate selection must use appendCandidateToSource "
+        "to clear latin text from the Source box before inserting characters"
+    )

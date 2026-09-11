@@ -569,17 +569,6 @@
     flex-shrink: 0;
   }
 
-  .draw-panel-label {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: #B8860B;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 8px;
-    text-align: center;
-  }
-
   .draw-card {
     background: #FFFDF8;
     border-radius: 14px;
@@ -693,6 +682,123 @@
     background: #FFFDF8;
   }
 
+  /* Input method tabs */
+  .input-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .input-tab {
+    flex: 1;
+    padding: 6px 0;
+    border: 1px solid #E8E0D4;
+    background: #F5F0E8;
+    color: #8B7D6B;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .input-tab:first-child {
+    border-radius: 8px 0 0 8px;
+  }
+
+  .input-tab:last-child {
+    border-radius: 0 8px 8px 0;
+  }
+
+  .input-tab.active {
+    background: #FFFDF8;
+    color: #B8860B;
+    border-color: #B8860B;
+    position: relative;
+    z-index: 1;
+  }
+
+  .input-tab:hover:not(.active) {
+    color: #B8860B;
+  }
+
+  /* Pinyin input panel */
+  .pinyin-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 176px;
+  }
+
+  .pinyin-input-wrapper {
+    width: 176px;
+  }
+
+  .pinyin-input-wrapper input {
+    width: 100%;
+    border: 2px solid #E8E0D4;
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-family: 'Crimson Pro', Georgia, serif;
+    outline: none;
+    background: #FFFDF8;
+    color: #1a1a2e;
+    transition: border-color 0.2s;
+  }
+
+  .pinyin-input-wrapper input:focus {
+    border-color: #B8860B;
+  }
+
+  .pinyin-input-wrapper input::placeholder {
+    color: #C4B9A8;
+    font-size: 14px;
+  }
+
+  .pinyin-candidates {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 38px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .pinyin-candidate-btn {
+    min-width: 38px;
+    height: 38px;
+    padding: 0 8px;
+    border: 1px solid #E8E0D4;
+    border-radius: 10px;
+    background: #FFFDF8;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    color: #1a1a2e;
+    white-space: nowrap;
+  }
+
+  .pinyin-candidate-btn:hover {
+    background: #C41E3A;
+    color: #fff;
+    border-color: #C41E3A;
+  }
+
+  .pinyin-candidates-placeholder {
+    font-size: 12px;
+    color: #C4B9A8;
+  }
+
   @media (max-width: 700px) {
     .main-layout { flex-direction: column; }
     .draw-panel { width: 100%; }
@@ -711,20 +817,35 @@
 <body>
 <div style="width:100%; max-width:1100px;">
 <h1 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:#C41E3A; text-align:center; margin-bottom:0.3rem; letter-spacing:0.02em;">Translator</h1>
-<p style="text-align:center; color:#8B7D6B; font-size:0.95rem; font-family:'Crimson Pro',serif; font-weight:400; letter-spacing:0.04em; margin-bottom:16px;">Type, draw, or ask about any word</p>
+<p style="text-align:center; color:#8B7D6B; font-size:0.95rem; font-family:'Crimson Pro',serif; font-weight:400; letter-spacing:0.04em; margin-bottom:16px;">Type, draw, pinyin, or ask about any word</p>
 <div class="main-layout">
   <div class="draw-panel">
-    <div class="draw-panel-label">Draw</div>
     <div class="draw-card">
-      <div class="draw-canvas-wrapper" id="draw-canvas-wrapper">
-        <canvas id="draw-canvas" width="176" height="176"></canvas>
-        <div class="draw-hint" id="draw-hint">Draw here</div>
+      <div class="input-tabs">
+        <button class="input-tab active" id="tab-draw" onclick="switchInputTab('draw')">Draw</button>
+        <button class="input-tab" id="tab-pinyin" onclick="switchInputTab('pinyin')">Pinyin</button>
       </div>
-      <div id="stroke-order-wrapper" style="display:none">
-        <div id="stroke-order-target"></div>
+      <div id="draw-tab-content">
+        <div class="draw-canvas-wrapper" id="draw-canvas-wrapper">
+          <canvas id="draw-canvas" width="176" height="176"></canvas>
+          <div class="draw-hint" id="draw-hint">Draw here</div>
+        </div>
+        <div id="stroke-order-wrapper" style="display:none">
+          <div id="stroke-order-target"></div>
+        </div>
+      </div>
+      <div id="pinyin-tab-content" style="display:none">
+        <div class="pinyin-panel">
+          <div class="pinyin-input-wrapper">
+            <input type="text" id="pinyin-input" placeholder="Type pinyin" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
       </div>
       <div class="draw-candidates" id="draw-candidates">
               </div>
+      <div class="pinyin-candidates" id="pinyin-candidates" style="display:none">
+        <span class="pinyin-candidates-placeholder">candidates appear here</span>
+      </div>
       <div class="draw-controls" id="draw-controls">
         <button onclick="undoDrawStroke()">Undo</button>
         <button onclick="clearDrawCanvas()">Clear</button>
@@ -732,6 +853,9 @@
       <div class="draw-controls" id="stroke-controls" style="display:none">
         <button onclick="replayStrokeOrder()">Replay</button>
         <button onclick="hideStrokeOrder()">Clear</button>
+      </div>
+      <div class="draw-controls" id="pinyin-controls" style="display:none">
+        <button onclick="clearPinyinInput()">Clear</button>
       </div>
     </div>
   </div>
@@ -1325,6 +1449,7 @@ async function translate() {
       let etymError = false;
       for (let i = 0; i < simpChars.length; i++) {
         const sc = simpChars[i];
+        if (!/[一-鿿㐀-䶿]/.test(sc)) continue;
         const tc = sameLength ? tradChars[i] : sc;
         const charMeaning = await getCharMeaning(sc);
         const data = await getEtymology(tc, sc, charMeaning);
@@ -1370,10 +1495,12 @@ async function buildBreakdown(traditional, simplified, container) {
   const tradChars = [...traditional];
   const simpChars = [...simplified];
   const sameLength = tradChars.length === simpChars.length;
-  const isSingleChar = simpChars.length === 1;
+  const cjkCount = simpChars.filter(c => /[一-鿿㐀-䶿]/.test(c)).length;
+  const isSingleChar = cjkCount === 1;
 
   for (let i = 0; i < simpChars.length; i++) {
     const sc = simpChars[i];
+    if (!/[一-鿿㐀-䶿]/.test(sc)) continue;
     const tc = sameLength ? tradChars[i] : sc;
     const pinyin = getPinyin(sc);
     const meaning = await getCharMeaning(sc);
@@ -1909,11 +2036,16 @@ function renderDrawCandidates(chars) {
   }
 }
 
-function selectDrawCandidate(ch) {
+function appendCandidateToSource(ch) {
   const input = document.getElementById('english-input');
+  if (/[a-zA-Z]/.test(input.value)) input.value = '';
   input.value += ch;
+}
+
+function selectDrawCandidate(ch) {
+  appendCandidateToSource(ch);
   clearDrawCanvas();
-  input.focus();
+  document.getElementById('english-input').focus();
 }
 
 function undoDrawStroke() {
@@ -1948,9 +2080,133 @@ function redrawAllStrokes() {
   }
 }
 
+// Input method tab switching
+let activeInputTab = 'draw';
+
+function switchInputTab(tab) {
+  activeInputTab = tab;
+  const drawContent = document.getElementById('draw-tab-content');
+  const pinyinContent = document.getElementById('pinyin-tab-content');
+  const drawCands = document.getElementById('draw-candidates');
+  const pinyinCands = document.getElementById('pinyin-candidates');
+  const drawCtls = document.getElementById('draw-controls');
+  const strokeCtls = document.getElementById('stroke-controls');
+  const pinyinCtls = document.getElementById('pinyin-controls');
+  const tabDraw = document.getElementById('tab-draw');
+  const tabPinyin = document.getElementById('tab-pinyin');
+
+  if (tab === 'draw') {
+    drawContent.style.display = '';
+    pinyinContent.style.display = 'none';
+    drawCands.style.display = '';
+    pinyinCands.style.display = 'none';
+    pinyinCtls.style.display = 'none';
+    tabDraw.classList.add('active');
+    tabPinyin.classList.remove('active');
+
+    if (strokeOrderWrapper.style.display !== 'none') {
+      drawCtls.style.display = 'none';
+      strokeCtls.style.display = 'flex';
+    } else {
+      drawCtls.style.display = 'flex';
+      strokeCtls.style.display = 'none';
+    }
+  } else {
+    drawContent.style.display = 'none';
+    pinyinContent.style.display = '';
+    drawCands.style.display = 'none';
+    pinyinCands.style.display = '';
+    drawCtls.style.display = 'none';
+    strokeCtls.style.display = 'none';
+    pinyinCtls.style.display = 'flex';
+    tabDraw.classList.remove('active');
+    tabPinyin.classList.add('active');
+    document.getElementById('pinyin-input').focus();
+  }
+}
+
+// Pinyin input recognition
+let pinyinLookupTimer = null;
+const PINYIN_DEBOUNCE_MS = 300;
+
+function isPinyin(text) {
+  return /^[a-zA-Z\s]+$/.test(text);
+}
+
+document.getElementById('pinyin-input').addEventListener('input', function() {
+  clearTimeout(pinyinLookupTimer);
+  const text = this.value.trim();
+  if (!text) {
+    document.getElementById('pinyin-candidates').innerHTML =
+      '<span class="pinyin-candidates-placeholder">candidates appear here</span>';
+    return;
+  }
+  if (!isPinyin(text)) return;
+  pinyinLookupTimer = setTimeout(() => lookupPinyin(text), PINYIN_DEBOUNCE_MS);
+});
+
+document.getElementById('pinyin-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const firstCandidate = document.querySelector('#pinyin-candidates .pinyin-candidate-btn');
+    if (firstCandidate) {
+      selectPinyinCandidate(firstCandidate.textContent);
+    } else {
+      clearTimeout(pinyinLookupTimer);
+      const text = this.value.trim();
+      if (text && isPinyin(text)) lookupPinyin(text);
+    }
+  }
+});
+
+async function lookupPinyin(text) {
+  try {
+    const resp = await fetch(
+      'https://inputtools.google.com/request?itc=zh-t-i0-pinyin&text=' +
+        encodeURIComponent(text) + '&num=8',
+      { method: 'GET' }
+    );
+    const data = await resp.json();
+
+    if (data[0] === 'SUCCESS' && data[1] && data[1][0] && data[1][0][1]) {
+      const candidates = data[1][0][1].filter(c => /^[一-鿿㐀-䶿]+$/.test(c));
+      renderPinyinCandidates(candidates);
+    } else {
+      document.getElementById('pinyin-candidates').innerHTML =
+        '<span class="pinyin-candidates-placeholder">no matches</span>';
+    }
+  } catch {
+    document.getElementById('pinyin-candidates').innerHTML =
+      '<span class="pinyin-candidates-placeholder">lookup failed</span>';
+  }
+}
+
+function renderPinyinCandidates(candidates) {
+  const container = document.getElementById('pinyin-candidates');
+  container.innerHTML = '';
+  for (const ch of candidates) {
+    const btn = document.createElement('button');
+    btn.className = 'pinyin-candidate-btn';
+    btn.textContent = ch;
+    btn.onclick = () => selectPinyinCandidate(ch);
+    container.appendChild(btn);
+  }
+}
+
+function selectPinyinCandidate(ch) {
+  appendCandidateToSource(ch);
+  clearPinyinInput();
+  document.getElementById('pinyin-input').focus();
+}
+
+function clearPinyinInput() {
+  document.getElementById('pinyin-input').value = '';
+  document.getElementById('pinyin-candidates').innerHTML =
+    '<span class="pinyin-candidates-placeholder">candidates appear here</span>';
+}
+
 // Stroke order animation
 let strokeWriter = null;
-const drawPanelLabel = document.querySelector('.draw-panel-label');
 const drawCanvasWrapper = document.getElementById('draw-canvas-wrapper');
 const strokeOrderWrapper = document.getElementById('stroke-order-wrapper');
 const strokeControls = document.getElementById('stroke-controls');
@@ -1972,6 +2228,8 @@ function renderClickableChars(el, text) {
 }
 
 function showStrokeOrder(char) {
+  if (activeInputTab !== 'draw') switchInputTab('draw');
+
   if (strokeWriter) {
     strokeWriter.hideCharacter();
     strokeWriter = null;
@@ -1994,7 +2252,6 @@ function showStrokeOrder(char) {
   drawControlsEl.style.display = 'none';
   strokeControls.style.display = 'flex';
   drawCandidatesEl.innerHTML = '';
-  drawPanelLabel.textContent = 'Stroke Order';
 }
 
 function hideStrokeOrder() {
@@ -2002,7 +2259,6 @@ function hideStrokeOrder() {
   strokeOrderWrapper.style.display = 'none';
   drawControlsEl.style.display = 'flex';
   strokeControls.style.display = 'none';
-  drawPanelLabel.textContent = 'Draw';
   if (drawStrokes.length === 0) {
     drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">candidates appear here</span>';
     drawHint.style.opacity = '1';
