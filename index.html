@@ -595,6 +595,9 @@ function loadPage(page, updateHash = true) {
 
   iframes[page].style.display = 'block';
   activePage = page;
+  try {
+    iframes[page].contentWindow.postMessage({ type: 'mandarin-hub:visible' }, '*');
+  } catch (e) { /* frame not ready yet */ }
   // Hand keyboard focus to the page so its own shortcuts (space, arrows) reach it.
   iframes[page].contentWindow.focus();
   localStorage.setItem('mandarin-hub-last', page);
