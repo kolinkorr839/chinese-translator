@@ -675,7 +675,7 @@
 
   #stroke-order-target {
     width: 176px;
-    height: 176px;
+    height: 130px;
     border: 2px solid #E8E0D4;
     border-radius: 12px;
     overflow: hidden;
@@ -733,6 +733,7 @@
     align-items: center;
     gap: 10px;
     width: 176px;
+    min-height: 178px;
   }
 
   .pinyin-input-wrapper {
@@ -809,6 +810,9 @@
        does not stretch and everything in it collapses to content width against
        the left edge. Force it full width. */
     .container { width: 100%; }
+    #pinyin-tab-content { width: 100%; min-height: 130px; display: flex; align-items: flex-start; }
+    .pinyin-panel { min-height: 0; width: 100%; }
+    .pinyin-input-wrapper { width: 100%; }
     .api-key-bar { margin-right: 0; }
     .api-key-bar input { width: 200px; }
   }
@@ -827,7 +831,7 @@
       </div>
       <div id="draw-tab-content">
         <div class="draw-canvas-wrapper" id="draw-canvas-wrapper">
-          <canvas id="draw-canvas" width="176" height="176"></canvas>
+          <canvas id="draw-canvas" width="176" height="130"></canvas>
           <div class="draw-hint" id="draw-hint">Draw here</div>
         </div>
         <div id="stroke-order-wrapper" style="display:none">
@@ -839,13 +843,13 @@
           <div class="pinyin-input-wrapper">
             <input type="text" id="pinyin-input" placeholder="Type pinyin" autocomplete="off" spellcheck="false">
           </div>
+          <div class="pinyin-candidates" id="pinyin-candidates">
+            <span class="pinyin-candidates-placeholder">candidates appear here</span>
+          </div>
         </div>
       </div>
       <div class="draw-candidates" id="draw-candidates">
               </div>
-      <div class="pinyin-candidates" id="pinyin-candidates" style="display:none">
-        <span class="pinyin-candidates-placeholder">candidates appear here</span>
-      </div>
       <div class="draw-controls" id="draw-controls">
         <button onclick="undoDrawStroke()">Undo</button>
         <button onclick="clearDrawCanvas()">Clear</button>
@@ -2020,7 +2024,7 @@ async function recognizeDrawing() {
     const data = await resp.json();
 
     if (data[0] === 'SUCCESS' && data[1] && data[1][0]) {
-      const chars = data[1][0][1].filter(ch => ch.length === 1 && /[一-鿿㐀-䶿]/.test(ch));
+      const chars = data[1][0][1].filter(ch => ch.length === 1 && /[一-鿿㐀-䶿]/.test(ch)).slice(0, 8);
       renderDrawCandidates(chars);
     } else {
       drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">no matches</span>';
@@ -2093,7 +2097,6 @@ function switchInputTab(tab) {
   const drawContent = document.getElementById('draw-tab-content');
   const pinyinContent = document.getElementById('pinyin-tab-content');
   const drawCands = document.getElementById('draw-candidates');
-  const pinyinCands = document.getElementById('pinyin-candidates');
   const drawCtls = document.getElementById('draw-controls');
   const strokeCtls = document.getElementById('stroke-controls');
   const pinyinCtls = document.getElementById('pinyin-controls');
@@ -2104,7 +2107,6 @@ function switchInputTab(tab) {
     drawContent.style.display = '';
     pinyinContent.style.display = 'none';
     drawCands.style.display = '';
-    pinyinCands.style.display = 'none';
     pinyinCtls.style.display = 'none';
     tabDraw.classList.add('active');
     tabPinyin.classList.remove('active');
@@ -2120,7 +2122,6 @@ function switchInputTab(tab) {
     drawContent.style.display = 'none';
     pinyinContent.style.display = '';
     drawCands.style.display = 'none';
-    pinyinCands.style.display = '';
     drawCtls.style.display = 'none';
     strokeCtls.style.display = 'none';
     pinyinCtls.style.display = 'flex';
@@ -2174,7 +2175,7 @@ async function lookupPinyin(text) {
     const data = await resp.json();
 
     if (data[0] === 'SUCCESS' && data[1] && data[1][0] && data[1][0][1]) {
-      const candidates = data[1][0][1].filter(c => /^[一-鿿㐀-䶿]+$/.test(c));
+      const candidates = data[1][0][1].filter(c => /^[一-鿿㐀-䶿]+$/.test(c)).slice(0, 6);
       renderPinyinCandidates(candidates);
     } else {
       document.getElementById('pinyin-candidates').innerHTML =
@@ -2243,7 +2244,7 @@ function showStrokeOrder(char) {
 
   strokeWriter = HanziWriter.create('stroke-order-target', char, {
     width: 176,
-    height: 176,
+    height: 130,
     padding: 10,
     strokeColor: '#1a1a2e',
     radicalColor: '#C41E3A',
