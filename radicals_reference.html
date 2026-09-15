@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radicals Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: #F5F0E8;
+  color: #1a1a2e;
+  min-height: 100vh;
+  line-height: 1.45;
+  zoom: 1.35;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    );
+}
+
+.header {
+  text-align: center;
+  color: #1a1a2e;
+  padding: 16px 20px 24px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid #E8E0D4;
+  position: relative;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: #C41E3A;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #C41E3A;
+  font-family: "Cormorant Garamond", "Noto Serif CJK TC", "Noto Sans CJK TC", serif;
+}
+
+.page-wrap {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 20px 3rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11pt;
+  margin-top: 12px;
+  background: #FFFDF8;
+  border: 1px solid #E8E0D4;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(139, 119, 75, 0.06);
+}
+
+thead th {
+  background-color: #F5EDE0;
+  color: #3D2B1F;
+  font-weight: 700;
+  text-align: left;
+  padding: 6px 10px;
+  border: 1px solid #D8CCBB;
+  font-family: "Cormorant Garamond", "Noto Sans CJK TC", serif;
+  font-size: 10pt;
+}
+
+thead th:first-child {
+  width: 36px;
+  text-align: center;
+}
+
+tbody tr {
+  transition: background 0.15s;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #FAF5EC;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #FFFDF8;
+}
+
+tbody tr:hover {
+  background: rgba(196, 30, 58, 0.05);
+}
+
+td {
+  padding: 5px 10px;
+  border: 1px solid #E8E0D4;
+  vertical-align: middle;
+}
+
+td:first-child {
+  text-align: center;
+  color: #8B7D6B;
+  font-size: 9pt;
+}
+
+.radical-cell {
+  font-size: 1.4rem;
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  white-space: nowrap;
+}
+
+.radical-main {
+  color: #C41E3A;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.15s;
+  padding: 1px 3px;
+  border-radius: 3px;
+}
+
+.radical-main:hover {
+  background: rgba(196, 30, 58, 0.1);
+}
+
+.radical-variant {
+  font-size: 0.8rem;
+  color: #5C4A32;
+  margin-left: 3px;
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+}
+
+.meaning-cell {
+  font-size: 9.5pt;
+  color: #5C4A32;
+  line-height: 1.4;
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  align-items: center;
+}
+
+.example-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.example-char {
+  font-size: 1.1rem;
+  font-family: "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  cursor: pointer;
+  transition: color 0.15s;
+  padding: 1px 2px;
+  border-radius: 3px;
+  color: #3D2B1F;
+}
+
+.example-char:hover {
+  color: #C41E3A;
+  background: rgba(196, 30, 58, 0.06);
+}
+
+.example-detail {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+}
+
+.example-meaning {
+  font-size: 7.5pt;
+  color: #8B7D6B;
+}
+
+.example-pinyin {
+  font-size: 7.5pt;
+  color: #A89880;
+}
+
+.lookup-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  background: none;
+  color: #C4B5A0;
+  cursor: pointer;
+  font-size: 0.7rem;
+  border-radius: 3px;
+  transition: color 0.15s, background 0.15s;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.lookup-btn:hover {
+  color: #C41E3A;
+  background: rgba(196, 30, 58, 0.08);
+}
+
+@media (max-width: 600px) {
+  .page-wrap { padding: 0 10px 2rem; }
+  .header { padding: 12px 14px 18px; }
+  .header h1 { font-size: 1.5rem; }
+  table { font-size: 10pt; }
+  td { padding: 4px 6px; }
+  .radical-cell { font-size: 1.2rem; }
+  .example-char { font-size: 1rem; }
+
+  thead th:nth-child(3) { display: none; }
+  td:nth-child(3) { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>100 Common Radicals</h1>
+</div>
+
+<div class="page-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Radical</th>
+        <th>Meaning</th>
+        <th>Examples</th>
+      </tr>
+    </thead>
+    <tbody id="radical-body"></tbody>
+  </table>
+</div>
+
+<script>
+let ttsAudio = null;
+
+function speak(chinese) {
+  if (!chinese) return;
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const primary = location.protocol === 'file:' ? youdao : google;
+  const fallback = location.protocol === 'file:' ? google : youdao;
+
+  const isFile = location.protocol === 'file:';
+  ttsAudio = new Audio(primary);
+  if (isFile) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!isFile) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+function lookupInTranslator(query) {
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'mandarin-hub:lookup', query }, '*');
+  }
+}
+
+function showStrokeOrder(char) {
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'mandarin-hub:stroke-order', char }, '*');
+  }
+}
+
+const RADICALS = [
+  { n:1, r:"一", v:"", m:"One; horizontal line", ex:[["三","three","sān"],["七","seven","qī"],["下","below","xià"],["不","not","bù"],["世","world","shì"],["万","ten thousand","wàn"]] },
+  { n:2, r:"丨", v:"", m:"Vertical line", ex:[["中","middle","zhōng"],["丰","abundant","fēng"],["串","string","chuàn"],["旧","old","jiù"],["临","face","lín"],["丹","red","dān"]] },
+  { n:3, r:"丶", v:"", m:"Dot", ex:[["主","host","zhǔ"],["丸","pill","wán"],["义","justice","yì"],["太","too","tài"],["永","forever","yǒng"],["为","do","wéi"]] },
+  { n:4, r:"丿", v:"", m:"Left-falling slash", ex:[["九","nine","jiǔ"],["乃","thus","nǎi"],["久","long time","jiǔ"],["乐","happy","lè"],["么","what","me"],["千","thousand","qiān"]] },
+  { n:5, r:"乙", v:"乚", m:"Second; twist", ex:[["也","also","yě"],["乱","chaos","luàn"],["飞","fly","fēi"],["买","buy","mǎi"],["书","book","shū"],["了","finish","le"]] },
+  { n:6, r:"二", v:"", m:"Two", ex:[["五","five","wǔ"],["些","some","xiē"],["亚","Asia","yà"],["于","at","yú"],["云","cloud","yún"],["元","origin","yuán"]] },
+  { n:7, r:"亠", v:"", m:"Lid; top", ex:[["京","capital","jīng"],["高","tall","gāo"],["亮","bright","liàng"],["交","exchange","jiāo"],["六","six","liù"],["市","city","shì"]] },
+  { n:8, r:"人", v:"亻", m:"Person", ex:[["你","you","nǐ"],["他","he","tā"],["作","make","zuò"],["做","do","zuò"],["住","live","zhù"],["什","what","shén"]] },
+  { n:9, r:"儿", v:"", m:"Legs; son", ex:[["先","first","xiān"],["元","origin","yuán"],["光","light","guāng"],["见","see","jiàn"],["兄","elder brother","xiōng"],["克","overcome","kè"]] },
+  { n:10, r:"入", v:"", m:"Enter", ex:[["内","inside","nèi"],["全","all","quán"],["两","two","liǎng"],["入","enter","rù"],["肉","meat","ròu"],["丛","cluster","cóng"]] },
+  { n:11, r:"八", v:"丷", m:"Eight; divide", ex:[["分","divide","fēn"],["公","public","gōng"],["共","together","gòng"],["关","close","guān"],["半","half","bàn"],["兴","prosper","xīng"]] },
+  { n:12, r:"冂", v:"", m:"Down box; borders", ex:[["同","same","tóng"],["内","inside","nèi"],["周","week","zhōu"],["网","net","wǎng"],["冈","ridge","gāng"],["用","use","yòng"]] },
+  { n:13, r:"冖", v:"", m:"Cover cloth", ex:[["写","write","xiě"],["军","army","jūn"],["冠","crown","guān"],["农","farm","nóng"],["深","deep","shēn"],["冤","injustice","yuān"]] },
+  { n:14, r:"冫", v:"", m:"Ice (two-drop water)", ex:[["冷","cold","lěng"],["冰","ice","bīng"],["决","decide","jué"],["准","allow","zhǔn"],["净","clean","jìng"],["凉","cool","liáng"]] },
+  { n:15, r:"几", v:"", m:"Small table", ex:[["凡","ordinary","fán"],["风","wind","fēng"],["机","machine","jī"],["朵","blossom","duǒ"],["殳","weapon","shū"],["凭","rely on","píng"]] },
+  { n:16, r:"刀", v:"刂", m:"Knife", ex:[["别","don't","bié"],["到","arrive","dào"],["刻","carve","kè"],["前","front","qián"],["利","sharp","lì"],["判","judge","pàn"]] },
+  { n:17, r:"力", v:"", m:"Strength; power", ex:[["加","add","jiā"],["动","move","dòng"],["办","handle","bàn"],["努","strive","nǔ"],["助","help","zhù"],["功","merit","gōng"]] },
+  { n:18, r:"勹", v:"", m:"Wrap", ex:[["包","wrap","bāo"],["勾","hook","gōu"],["匀","even","yún"],["句","sentence","jù"],["勿","don't","wù"],["匈","chest","xiōng"]] },
+  { n:19, r:"匕", v:"", m:"Spoon; ladle", ex:[["北","north","běi"],["化","change","huà"],["匙","spoon","chí"],["旨","purpose","zhǐ"],["老","old","lǎo"],["比","compare","bǐ"]] },
+  { n:20, r:"十", v:"", m:"Ten", ex:[["华","China","huá"],["早","early","zǎo"],["南","south","nán"],["千","thousand","qiān"],["半","half","bàn"],["直","straight","zhí"]] },
+  { n:21, r:"卜", v:"", m:"Divination", ex:[["占","occupy","zhàn"],["卡","card","kǎ"],["外","outside","wài"],["处","place","chù"],["卧","lie down","wò"],["卦","trigram","guà"]] },
+  { n:22, r:"卩", v:"", m:"Seal (kneeling person)", ex:[["印","print","yìn"],["即","immediately","jí"],["却","but","què"],["卫","guard","wèi"],["危","danger","wēi"],["卷","roll","juǎn"]] },
+  { n:23, r:"厂", v:"", m:"Cliff; shelter", ex:[["厅","hall","tīng"],["原","original","yuán"],["厉","severe","lì"],["厚","thick","hòu"],["压","press","yā"],["厨","kitchen","chú"]] },
+  { n:24, r:"厶", v:"", m:"Private; cocoon", ex:[["去","go","qù"],["公","public","gōng"],["能","can","néng"],["私","private","sī"],["台","platform","tái"],["参","join","cān"]] },
+  { n:25, r:"又", v:"", m:"Again; right hand", ex:[["友","friend","yǒu"],["发","emit","fā"],["双","pair","shuāng"],["对","correct","duì"],["难","difficult","nán"],["欢","happy","huān"]] },
+  { n:26, r:"口", v:"", m:"Mouth; opening", ex:[["叫","call","jiào"],["吃","eat","chī"],["喝","drink","hē"],["听","listen","tīng"],["问","ask","wèn"],["名","name","míng"]] },
+  { n:27, r:"囗", v:"", m:"Enclosure", ex:[["国","country","guó"],["回","return","huí"],["图","picture","tú"],["四","four","sì"],["因","because","yīn"],["园","garden","yuán"]] },
+  { n:28, r:"土", v:"", m:"Earth; soil", ex:[["地","ground","dì"],["城","city","chéng"],["场","field","chǎng"],["在","at","zài"],["坐","sit","zuò"],["块","piece","kuài"]] },
+  { n:29, r:"士", v:"", m:"Scholar; warrior", ex:[["声","sound","shēng"],["壮","strong","zhuàng"],["志","will","zhì"],["吉","lucky","jí"],["喜","happy","xǐ"],["卖","sell","mài"]] },
+  { n:30, r:"夂", v:"", m:"Go; follow", ex:[["冬","winter","dōng"],["各","each","gè"],["条","strip","tiáo"],["处","place","chù"],["备","prepare","bèi"],["夏","summer","xià"]] },
+  { n:31, r:"夕", v:"", m:"Evening; dusk", ex:[["外","outside","wài"],["多","many","duō"],["夜","night","yè"],["名","name","míng"],["够","enough","gòu"],["梦","dream","mèng"]] },
+  { n:32, r:"大", v:"", m:"Big; great", ex:[["天","sky","tiān"],["太","too","tài"],["夫","husband","fū"],["头","head","tóu"],["央","center","yāng"],["奇","strange","qí"]] },
+  { n:33, r:"女", v:"", m:"Woman; female", ex:[["好","good","hǎo"],["她","she","tā"],["妈","mom","mā"],["如","like","rú"],["姐","sister","jiě"],["安","safe","ān"]] },
+  { n:34, r:"子", v:"", m:"Child; son", ex:[["学","study","xué"],["孩","child","hái"],["字","character","zì"],["存","keep","cún"],["季","season","jì"],["孙","grandchild","sūn"]] },
+  { n:35, r:"宀", v:"", m:"Roof (of a house)", ex:[["家","home","jiā"],["安","safe","ān"],["宝","treasure","bǎo"],["定","decide","dìng"],["实","real","shí"],["完","finish","wán"]] },
+  { n:36, r:"寸", v:"", m:"Inch; a little", ex:[["对","correct","duì"],["寻","seek","xún"],["导","guide","dǎo"],["封","seal","fēng"],["射","shoot","shè"],["将","will","jiāng"]] },
+  { n:37, r:"小", v:"⺌", m:"Small; little", ex:[["少","few","shǎo"],["尖","sharp","jiān"],["尚","still","shàng"],["当","act as","dāng"],["常","often","cháng"],["省","save","shěng"]] },
+  { n:38, r:"尢", v:"尣", m:"Lame; weak", ex:[["就","then","jiù"],["尤","especially","yóu"],["尬","awkward","gà"],["尧","Yao","yáo"],["尘","dust","chén"],["尖","sharp","jiān"]] },
+  { n:39, r:"尸", v:"", m:"Corpse; body", ex:[["屋","room","wū"],["居","reside","jū"],["层","layer","céng"],["局","bureau","jú"],["展","display","zhǎn"],["属","belong","shǔ"]] },
+  { n:40, r:"山", v:"", m:"Mountain; hill", ex:[["岛","island","dǎo"],["岸","shore","àn"],["崇","lofty","chóng"],["峰","peak","fēng"],["岁","year","suì"],["岩","rock","yán"]] },
+  { n:41, r:"川", v:"巛", m:"River; stream", ex:[["州","prefecture","zhōu"],["巡","patrol","xún"],["灾","disaster","zāi"],["顺","smooth","shùn"],["训","train","xùn"],["驯","tame","xùn"]] },
+  { n:42, r:"工", v:"", m:"Work; labor", ex:[["左","left","zuǒ"],["功","merit","gōng"],["差","differ","chà"],["红","red","hóng"],["江","river","jiāng"],["空","empty","kōng"]] },
+  { n:43, r:"己", v:"", m:"Self; oneself", ex:[["巷","lane","xiàng"],["已","already","yǐ"],["起","rise","qǐ"],["记","remember","jì"],["改","change","gǎi"],["配","match","pèi"]] },
+  { n:44, r:"巾", v:"", m:"Cloth; towel", ex:[["帮","help","bāng"],["带","belt","dài"],["帽","hat","mào"],["常","often","cháng"],["布","cloth","bù"],["师","teacher","shī"]] },
+  { n:45, r:"干", v:"", m:"Dry; shield", ex:[["平","flat","píng"],["年","year","nián"],["幸","lucky","xìng"],["并","combine","bìng"],["干","dry","gān"],["刊","publish","kān"]] },
+  { n:46, r:"幺", v:"", m:"Tiny; short thread", ex:[["幼","young","yòu"],["幻","illusion","huàn"],["幽","quiet","yōu"],["兹","this","zī"],["率","rate","lǜ"],["畿","vicinity","jī"]] },
+  { n:47, r:"广", v:"", m:"Broad shelter; roof", ex:[["床","bed","chuáng"],["店","shop","diàn"],["度","degree","dù"],["广","wide","guǎng"],["应","should","yīng"],["座","seat","zuò"]] },
+  { n:48, r:"廴", v:"", m:"Long stride", ex:[["建","build","jiàn"],["延","extend","yán"],["廷","court","tíng"],["进","enter","jìn"],["远","far","yuǎn"],["连","connect","lián"]] },
+  { n:49, r:"廾", v:"", m:"Two hands; clasp", ex:[["开","open","kāi"],["弄","play with","nòng"],["弁","cap","biàn"],["异","different","yì"],["弃","abandon","qì"],["算","calculate","suàn"]] },
+  { n:50, r:"弋", v:"", m:"Shoot with a bow", ex:[["式","style","shì"],["代","generation","dài"],["弑","kill","shì"],["贰","two","èr"],["弋","shoot","yì"],["鸢","kite","yuān"]] },
+  { n:51, r:"弓", v:"", m:"Bow (weapon)", ex:[["张","sheet","zhāng"],["强","strong","qiáng"],["弱","weak","ruò"],["引","lead","yǐn"],["弟","brother","dì"],["弹","bullet","dàn"]] },
+  { n:52, r:"彐", v:"彑", m:"Pig's snout", ex:[["录","record","lù"],["归","return","guī"],["寻","seek","xún"],["当","act as","dāng"],["灵","spirit","líng"],["雪","snow","xuě"]] },
+  { n:53, r:"彡", v:"", m:"Bristle; hair; rays", ex:[["影","shadow","yǐng"],["形","shape","xíng"],["彩","color","cǎi"],["须","must","xū"],["衫","shirt","shān"],["参","join","cān"]] },
+  { n:54, r:"彳", v:"", m:"Step; walk", ex:[["很","very","hěn"],["行","go","xíng"],["得","get","dé"],["往","go to","wǎng"],["待","wait","dài"],["后","after","hòu"]] },
+  { n:55, r:"辶", v:"辵", m:"Walk; movement", ex:[["这","this","zhè"],["还","still","hái"],["过","pass","guò"],["道","way","dào"],["进","enter","jìn"],["近","near","jìn"]] },
+  { n:56, r:"阝", v:"邑", m:"City; town (right ear)", ex:[["都","all","dōu"],["部","part","bù"],["那","that","nà"],["邮","mail","yóu"],["郎","man","láng"],["邻","neighbor","lín"]] },
+  { n:57, r:"阝", v:"阜", m:"Mound; hill (left ear)", ex:[["院","courtyard","yuàn"],["阳","sun","yáng"],["队","team","duì"],["际","border","jì"],["防","prevent","fáng"],["限","limit","xiàn"]] },
+  { n:58, r:"犭", v:"犬", m:"Dog; animal", ex:[["猫","cat","māo"],["狗","dog","gǒu"],["猪","pig","zhū"],["独","alone","dú"],["狂","crazy","kuáng"],["猜","guess","cāi"]] },
+  { n:59, r:"饣", v:"食", m:"Eat; food", ex:[["饭","rice","fàn"],["饮","drink","yǐn"],["饱","full","bǎo"],["饺","dumpling","jiǎo"],["馆","restaurant","guǎn"],["饿","hungry","è"]] },
+  { n:60, r:"忄", v:"心", m:"Heart (side form)", ex:[["情","feeling","qíng"],["快","fast","kuài"],["忙","busy","máng"],["性","nature","xìng"],["怕","afraid","pà"],["慢","slow","màn"]] },
+  { n:61, r:"扌", v:"手", m:"Hand (side form)", ex:[["打","hit","dǎ"],["拉","pull","lā"],["把","hold","bǎ"],["找","find","zhǎo"],["提","lift","tí"],["推","push","tuī"]] },
+  { n:62, r:"氵", v:"水", m:"Water (three drops)", ex:[["河","river","hé"],["海","sea","hǎi"],["洗","wash","xǐ"],["没","not have","méi"],["汉","Han","hàn"],["清","clear","qīng"]] },
+  { n:63, r:"艹", v:"艸", m:"Grass; plant", ex:[["花","flower","huā"],["草","grass","cǎo"],["茶","tea","chá"],["药","medicine","yào"],["英","hero","yīng"],["菜","vegetable","cài"]] },
+  { n:64, r:"夂", v:"", m:"Go slowly; trail", ex:[["复","again","fù"],["夏","summer","xià"],["条","strip","tiáo"],["务","affair","wù"],["麦","wheat","mài"],["爱","love","ài"]] },
+  { n:65, r:"纟", v:"糸", m:"Silk; thread", ex:[["红","red","hóng"],["绿","green","lǜ"],["给","give","gěi"],["经","pass through","jīng"],["结","tie","jié"],["线","line","xiàn"]] },
+  { n:66, r:"讠", v:"言", m:"Speech; words", ex:[["说","speak","shuō"],["话","words","huà"],["请","please","qǐng"],["认","recognize","rèn"],["让","let","ràng"],["读","read","dú"]] },
+  { n:67, r:"心", v:"", m:"Heart; mind", ex:[["想","think","xiǎng"],["思","think","sī"],["感","feel","gǎn"],["意","meaning","yì"],["愿","wish","yuàn"],["急","urgent","jí"]] },
+  { n:68, r:"戈", v:"", m:"Halberd; spear", ex:[["我","I","wǒ"],["成","become","chéng"],["战","war","zhàn"],["或","or","huò"],["感","feel","gǎn"],["代","generation","dài"]] },
+  { n:69, r:"户", v:"戶", m:"Door; household", ex:[["房","room","fáng"],["所","place","suǒ"],["扇","fan","shàn"],["肩","shoulder","jiān"],["启","open","qǐ"],["雇","hire","gù"]] },
+  { n:70, r:"手", v:"", m:"Hand", ex:[["拿","hold","ná"],["拳","fist","quán"],["掌","palm","zhǎng"],["看","look","kàn"],["挚","sincere","zhì"],["摩","rub","mó"]] },
+  { n:71, r:"攴", v:"攵", m:"Tap; rap (folded hand)", ex:[["教","teach","jiāo"],["数","number","shù"],["放","release","fàng"],["政","politics","zhèng"],["故","therefore","gù"],["改","change","gǎi"]] },
+  { n:72, r:"文", v:"", m:"Script; writing", ex:[["斑","speckle","bān"],["斋","fast","zhāi"],["斐","elegant","fěi"],["文","writing","wén"],["刘","surname Liu","liú"],["齐","neat","qí"]] },
+  { n:73, r:"斤", v:"", m:"Axe; a catty", ex:[["新","new","xīn"],["断","break","duàn"],["斯","this","sī"],["近","near","jìn"],["所","place","suǒ"],["析","analyze","xī"]] },
+  { n:74, r:"方", v:"", m:"Square; direction", ex:[["旁","side","páng"],["放","release","fàng"],["旅","travel","lǚ"],["方","square","fāng"],["族","clan","zú"],["施","carry out","shī"]] },
+  { n:75, r:"日", v:"", m:"Sun; day", ex:[["明","bright","míng"],["时","time","shí"],["早","early","zǎo"],["晚","late","wǎn"],["春","spring","chūn"],["星","star","xīng"]] },
+  { n:76, r:"曰", v:"", m:"To say; speak", ex:[["书","book","shū"],["最","most","zuì"],["曾","once","céng"],["替","replace","tì"],["更","more","gèng"],["冒","risk","mào"]] },
+  { n:77, r:"月", v:"", m:"Moon; (also flesh)", ex:[["有","have","yǒu"],["朋","friend","péng"],["肉","meat","ròu"],["期","period","qī"],["服","clothes","fú"],["能","can","néng"]] },
+  { n:78, r:"木", v:"", m:"Tree; wood", ex:[["林","forest","lín"],["树","tree","shù"],["桌","table","zhuō"],["本","root","běn"],["机","machine","jī"],["板","board","bǎn"]] },
+  { n:79, r:"欠", v:"", m:"Yawn; owe; lack", ex:[["歌","song","gē"],["次","next","cì"],["欢","happy","huān"],["欲","desire","yù"],["款","section","kuǎn"],["饮","drink","yǐn"]] },
+  { n:80, r:"止", v:"", m:"Stop; foot", ex:[["正","correct","zhèng"],["步","step","bù"],["此","this","cǐ"],["武","martial","wǔ"],["走","walk","zǒu"],["歪","crooked","wāi"]] },
+  { n:81, r:"歹", v:"", m:"Death; bad", ex:[["死","die","sǐ"],["残","cruel","cán"],["殊","special","shū"],["列","list","liè"],["殖","breed","zhí"],["殿","palace","diàn"]] },
+  { n:82, r:"毛", v:"", m:"Fur; hair; feather", ex:[["毫","a bit","háo"],["毯","blanket","tǎn"],["毕","finish","bì"],["笔","pen","bǐ"],["毛","hair","máo"],["毽","shuttlecock","jiàn"]] },
+  { n:83, r:"气", v:"", m:"Air; steam; breath", ex:[["氧","oxygen","yǎng"],["氛","atmosphere","fēn"],["氢","hydrogen","qīng"],["气","air","qì"],["汽","steam","qì"],["氮","nitrogen","dàn"]] },
+  { n:84, r:"水", v:"", m:"Water", ex:[["泉","spring","quán"],["浆","slurry","jiāng"],["泰","peace","tài"],["水","water","shuǐ"],["永","forever","yǒng"],["淼","vast water","miǎo"]] },
+  { n:85, r:"火", v:"灬", m:"Fire", ex:[["烧","burn","shāo"],["灯","lamp","dēng"],["热","hot","rè"],["炒","fry","chǎo"],["烤","roast","kǎo"],["然","so","rán"]] },
+  { n:86, r:"爪", v:"爫", m:"Claw; talon", ex:[["爬","climb","pá"],["爱","love","ài"],["采","pick","cǎi"],["受","receive","shòu"],["乳","milk","rǔ"],["觅","seek","mì"]] },
+  { n:87, r:"父", v:"", m:"Father", ex:[["爸","dad","bà"],["爷","grandpa","yé"],["爹","dad","diē"],["斧","axe","fǔ"],["釜","cauldron","fǔ"],["交","exchange","jiāo"]] },
+  { n:88, r:"牛", v:"牜", m:"Cow; ox", ex:[["物","thing","wù"],["特","special","tè"],["牧","herd","mù"],["牛","cow","niú"],["件","piece","jiàn"],["告","tell","gào"]] },
+  { n:89, r:"犬", v:"", m:"Dog", ex:[["哭","cry","kū"],["器","device","qì"],["献","offer","xiàn"],["状","state","zhuàng"],["突","sudden","tū"],["类","type","lèi"]] },
+  { n:90, r:"王", v:"玉", m:"Jade; king", ex:[["球","ball","qiú"],["现","appear","xiàn"],["理","reason","lǐ"],["环","ring","huán"],["班","class","bān"],["珍","precious","zhēn"]] },
+  { n:91, r:"见", v:"見", m:"To see", ex:[["观","observe","guān"],["现","appear","xiàn"],["视","view","shì"],["觉","feel","jué"],["规","rule","guī"],["览","browse","lǎn"]] },
+  { n:92, r:"贝", v:"貝", m:"Shell; money; wealth", ex:[["财","wealth","cái"],["货","goods","huò"],["贵","expensive","guì"],["买","buy","mǎi"],["费","cost","fèi"],["赚","earn","zhuàn"]] },
+  { n:93, r:"车", v:"車", m:"Cart; vehicle", ex:[["轮","wheel","lún"],["转","turn","zhuǎn"],["轻","light","qīng"],["软","soft","ruǎn"],["辆","vehicle","liàng"],["较","compare","jiào"]] },
+  { n:94, r:"钅", v:"金", m:"Metal; gold", ex:[["银","silver","yín"],["铁","iron","tiě"],["钱","money","qián"],["错","wrong","cuò"],["锁","lock","suǒ"],["镜","mirror","jìng"]] },
+  { n:95, r:"田", v:"", m:"Field; farmland", ex:[["男","man","nán"],["界","boundary","jiè"],["思","think","sī"],["留","stay","liú"],["画","draw","huà"],["番","time","fān"]] },
+  { n:96, r:"目", v:"", m:"Eye", ex:[["看","look","kàn"],["睡","sleep","shuì"],["眼","eye","yǎn"],["相","mutual","xiāng"],["着","attach","zhe"],["真","real","zhēn"]] },
+  { n:97, r:"石", v:"", m:"Stone; rock", ex:[["码","code","mǎ"],["破","break","pò"],["砖","brick","zhuān"],["研","grind","yán"],["确","sure","què"],["碗","bowl","wǎn"]] },
+  { n:98, r:"示", v:"礻", m:"Altar; spirit; ritual", ex:[["神","god","shén"],["福","luck","fú"],["祝","wish","zhù"],["社","society","shè"],["礼","rite","lǐ"],["视","view","shì"]] },
+  { n:99, r:"禾", v:"", m:"Grain; growing rice", ex:[["秋","autumn","qiū"],["种","seed","zhǒng"],["和","and","hé"],["科","science","kē"],["程","process","chéng"],["利","benefit","lì"]] },
+  { n:100, r:"竹", v:"⺮", m:"Bamboo", ex:[["笑","laugh","xiào"],["笔","pen","bǐ"],["算","calculate","suàn"],["简","simple","jiǎn"],["答","answer","dá"],["篇","chapter","piān"]] }
+];
+
+const tbody = document.getElementById('radical-body');
+
+RADICALS.forEach(rd => {
+  const tr = document.createElement('tr');
+
+  const tdNum = document.createElement('td');
+  tdNum.textContent = rd.n;
+  tr.appendChild(tdNum);
+
+  const tdRad = document.createElement('td');
+  tdRad.className = 'radical-cell';
+  const radMain = document.createElement('span');
+  radMain.className = 'radical-main';
+  radMain.textContent = rd.r;
+  radMain.title = 'Show stroke order';
+  radMain.addEventListener('click', () => showStrokeOrder(rd.r));
+  tdRad.appendChild(radMain);
+  if (rd.v) {
+    const radVar = document.createElement('span');
+    radVar.className = 'radical-variant';
+    radVar.textContent = `(${rd.v})`;
+    tdRad.appendChild(radVar);
+  }
+  tr.appendChild(tdRad);
+
+  const tdMeaning = document.createElement('td');
+  tdMeaning.className = 'meaning-cell';
+  tdMeaning.textContent = rd.m;
+  tr.appendChild(tdMeaning);
+
+  const tdEx = document.createElement('td');
+  const exWrap = document.createElement('div');
+  exWrap.className = 'examples';
+  rd.ex.forEach(([ch, en, py]) => {
+    const item = document.createElement('span');
+    item.className = 'example-item';
+
+    const charSpan = document.createElement('span');
+    charSpan.className = 'example-char';
+    charSpan.textContent = ch;
+    charSpan.title = 'Click to hear';
+    charSpan.addEventListener('click', () => speak(ch));
+    item.appendChild(charSpan);
+
+    const detail = document.createElement('span');
+    detail.className = 'example-detail';
+    const meanSpan = document.createElement('span');
+    meanSpan.className = 'example-meaning';
+    meanSpan.textContent = en;
+    detail.appendChild(meanSpan);
+    const pySpan = document.createElement('span');
+    pySpan.className = 'example-pinyin';
+    pySpan.textContent = py;
+    detail.appendChild(pySpan);
+    item.appendChild(detail);
+
+    const btn = document.createElement('button');
+    btn.className = 'lookup-btn';
+    btn.textContent = '↗';
+    btn.title = 'Look up in translator';
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      lookupInTranslator(ch);
+    });
+    item.appendChild(btn);
+
+    exWrap.appendChild(item);
+  });
+  tdEx.appendChild(exWrap);
+  tr.appendChild(tdEx);
+
+  tbody.appendChild(tr);
+});
+</script>
+</body>
+</html>

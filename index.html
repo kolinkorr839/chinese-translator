@@ -489,6 +489,17 @@ iframe {
 
   <div class="section-divider"></div>
 
+  <!-- Characters -->
+  <div class="section-label">Characters</div>
+  <div class="nav-group">
+    <button class="nav-item" data-page="radicals_reference.html">
+      <span class="nav-icon">部</span>
+      <span class="nav-label">Radicals Reference</span>
+    </button>
+  </div>
+
+  <div class="section-divider"></div>
+
   <!-- Simplified / Traditional -->
   <div class="section-label">Simplified / Traditional</div>
   <div class="nav-group">
@@ -581,6 +592,9 @@ function loadPage(page, updateHash = true) {
     if (pendingLookup && page === 'mandarin_translation.html') {
       f.src = page + '?lookup=' + encodeURIComponent(pendingLookup);
       pendingLookup = null;
+    } else if (pendingStrokeOrder && page === 'mandarin_translation.html') {
+      f.src = page + '?stroke=' + encodeURIComponent(pendingStrokeOrder);
+      pendingStrokeOrder = null;
     } else {
       f.src = page;
     }
@@ -596,7 +610,12 @@ function loadPage(page, updateHash = true) {
   iframes[page].style.display = 'block';
   activePage = page;
   try {
-    iframes[page].contentWindow.postMessage({ type: 'mandarin-hub:visible' }, '*');
+    const msg = { type: 'mandarin-hub:visible' };
+    if (pendingStrokeOrder && page === 'mandarin_translation.html') {
+      msg.strokeOrder = pendingStrokeOrder;
+      pendingStrokeOrder = null;
+    }
+    iframes[page].contentWindow.postMessage(msg, '*');
   } catch (e) { /* frame not ready yet */ }
   // Hand keyboard focus to the page so its own shortcuts (space, arrows) reach it.
   iframes[page].contentWindow.focus();
@@ -683,20 +702,27 @@ if (localStorage.getItem('mandarin-hub-sidebar-collapsed') === 'true'
 // Existing iframe: postMessage (instant, no reload, no history entry).
 // First load: bake ?lookup= into the iframe src so it auto-translates on init.
 let pendingLookup = null;
+let pendingStrokeOrder = null;
 window.addEventListener('message', (e) => {
-  if (!e.data || e.data.type !== 'mandarin-hub:lookup') return;
-  const target = 'mandarin_translation.html';
-  const query = e.data.query;
-  if (iframes[target]) {
-    loadPage(target);
-    try {
-      iframes[target].contentWindow.postMessage({
-        type: 'mandarin-hub:lookup-query', query: query
-      }, '*');
-    } catch (err) { /* frame not ready */ }
-  } else {
-    pendingLookup = query;
-    loadPage(target);
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:lookup') {
+    const target = 'mandarin_translation.html';
+    const query = e.data.query;
+    if (iframes[target]) {
+      loadPage(target);
+      try {
+        iframes[target].contentWindow.postMessage({
+          type: 'mandarin-hub:lookup-query', query: query
+        }, '*');
+      } catch (err) { /* frame not ready */ }
+    } else {
+      pendingLookup = query;
+      loadPage(target);
+    }
+  }
+  if (e.data.type === 'mandarin-hub:stroke-order') {
+    pendingStrokeOrder = e.data.char;
+    loadPage('mandarin_translation.html');
   }
 });
 
