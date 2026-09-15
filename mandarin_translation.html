@@ -448,6 +448,31 @@
     font-family: 'Crimson Pro', Georgia, serif;
   }
 
+  .tts-btn {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 10px;
+    width: 18px;
+    height: 18px;
+    line-height: 16px;
+    text-align: center;
+    padding: 0;
+    border-radius: 9px;
+    border: 1px solid #D4C9B8;
+    background: #FFFDF8;
+    color: #8B7D6B;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 63px;
+    margin-left: -16px;
+  }
+
+  .tts-btn:hover {
+    border-color: #B8860B;
+    color: #B8860B;
+  }
+
   /* Chat box */
   .chat-box {
     margin-top: 24px;
@@ -888,6 +913,7 @@
       </div>
       <div class="pinyin" id="traditional-pinyin"></div>
     </div>
+    <button class="tts-btn" id="tts-btn" onclick="toggleTtsEngine()">g</button>
   </div>
   <div class="error-msg" id="error-msg"></div>
   <div id="translation-via" class="via-label" style="text-align:center; margin-top:6px; display:none;"></div>
@@ -1318,24 +1344,35 @@ function getPinyin(chinese) {
 }
 
 let ttsAudio = null;
+let ttsEngine = localStorage.getItem('tts_engine') || 'google';
+
+function toggleTtsEngine() {
+  ttsEngine = ttsEngine === 'google' ? 'youdao' : 'google';
+  localStorage.setItem('tts_engine', ttsEngine);
+  updateTtsButton();
+}
+
+function updateTtsButton() {
+  document.getElementById('tts-btn').textContent = ttsEngine === 'google' ? 'g' : 'y';
+}
 
 function speak(chinese) {
   if (!chinese) return;
 
-  // Stop whatever is still playing, otherwise rapid clicks stack voices.
   if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
 
   const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
   const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
-  const primary = location.protocol === 'file:' ? youdao : google;
-  const fallback = location.protocol === 'file:' ? google : youdao;
 
-  const isFile = location.protocol === 'file:';
+  const primary = ttsEngine === 'youdao' ? youdao : google;
+  const fallback = ttsEngine === 'youdao' ? google : youdao;
+
+  const slowdown = (primary === youdao);
   ttsAudio = new Audio(primary);
-  if (isFile) ttsAudio.playbackRate = 0.75;
+  if (slowdown) ttsAudio.playbackRate = 0.75;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
-    if (!isFile) ttsAudio.playbackRate = 0.75;
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
 }
@@ -1578,6 +1615,7 @@ function buildEtymologyPrompt(traditional, simplified, english) {
 IMPORTANT:
 - Analyze ONLY the character ${simplified} — break down its actual components. Do not substitute a synonym or related character even if the meaning seems similar.
 - The simplified form may have different radicals than the traditional form. Decompose the simplified character as written, not the traditional.
+- Account for every distinct structural part visible in the character (top, bottom, left, right, enclosure). Do not omit any component.
 - Write ALL explanations, descriptions, and the mnemonic in English. When citing Chinese characters in the text, use their simplified forms.
 - Only use traditional forms in the "traditional" field when they differ from the simplified form.
 
@@ -1590,7 +1628,7 @@ Return JSON with this exact structure:
       "traditional": "traditional form if different, otherwise omit",
       "type": "semantic or phonetic",
       "meaning": "English meaning of this component",
-      "explanation": "in English, why this component is in this character"
+      "explanation": "in English, start with what this component originally depicted as a pictograph or ideograph and how its shape evolved, then briefly state its role in this character"
     }
   ],
   "meaning_logic": "in English, how the components combine to create the meaning",
@@ -1601,7 +1639,7 @@ Return JSON with this exact structure:
   ]
 }
 
-Be specific and insightful. For the mnemonic, describe how to "read the drawing" of the character. For related_words, give 3-5 common examples. Keep historical_context to 2-3 sentences.`;
+Be specific and insightful. For each component's explanation, lead with its pictographic or ideographic origin — what it originally depicted and how the shape evolved — then briefly state its role (semantic or phonetic) in this character. Do not say "derived from oracle bone scripts" or similar preambles; just describe what the ancient form showed. For the mnemonic, describe how to "read the drawing" of the character. For related_words, give 3-5 common examples. Keep historical_context to 2-3 sentences.`;
 }
 
 async function getEtymologyViaGemini(prompt) {
@@ -1911,7 +1949,15 @@ window.addEventListener('message', (e) => {
     translate();
   }
   if (e.data.type === 'mandarin-hub:visible') {
-    resetInputPanels();
+    if (e.data.strokeOrder) {
+      pageHasBeenHidden = false;
+      resetInputPanels();
+      document.getElementById('english-input').value = e.data.strokeOrder;
+      translate();
+      showStrokeOrder(e.data.strokeOrder);
+    } else {
+      resetInputPanels();
+    }
   }
 });
 
@@ -2260,6 +2306,14 @@ function showStrokeOrder(char) {
   drawCandidatesEl.innerHTML = '';
 }
 
+(function checkPendingStrokeOrder() {
+  const char = new URLSearchParams(window.location.search).get('stroke');
+  if (!char) return;
+  document.getElementById('english-input').value = char;
+  translate();
+  showStrokeOrder(char);
+})();
+
 function hideStrokeOrder() {
   drawCanvasWrapper.style.display = 'block';
   strokeOrderWrapper.style.display = 'none';
@@ -2294,6 +2348,7 @@ window.addEventListener('focus', () => {
   pageHasBeenHidden = false;
   resetInputPanels();
 });
+updateTtsButton();
 </script>
 </body>
 </html>
