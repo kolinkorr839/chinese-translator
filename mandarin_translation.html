@@ -1344,7 +1344,10 @@ function getPinyin(chinese) {
 }
 
 let ttsAudio = null;
-let ttsEngine = localStorage.getItem('tts_engine') || 'google';
+const ttsDefault = location.protocol === 'file:' ? 'youdao' : 'google';
+let ttsEngine = location.protocol === 'file:'
+  ? (localStorage.getItem('tts_engine') || ttsDefault)
+  : ttsDefault;
 
 function toggleTtsEngine() {
   ttsEngine = ttsEngine === 'google' ? 'youdao' : 'google';
@@ -2348,7 +2351,11 @@ window.addEventListener('focus', () => {
   pageHasBeenHidden = false;
   resetInputPanels();
 });
-updateTtsButton();
+if (location.protocol === 'file:') {
+  updateTtsButton();
+} else {
+  document.getElementById('tts-btn').style.display = 'none';
+}
 </script>
 </body>
 </html>

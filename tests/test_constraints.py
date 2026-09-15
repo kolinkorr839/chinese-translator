@@ -141,6 +141,7 @@ TTS_PAGES = [
     "phrase_reference.html",
     "grammar_guide.html",
     "mandarin_in_14_days.html",
+    "radicals_reference.html",
 ]
 
 
@@ -163,6 +164,20 @@ def check_tts_pages_have_protocol_routed_speak():
         "TTS routing issues:\n  " + "\n  ".join(missing)
     )
     return f"{len(TTS_PAGES)} pages have protocol-routed TTS"
+
+
+@check
+def check_translator_tts_toggle():
+    """translator TTS toggle is file://-only with youdao default"""
+    src = s.read("mandarin_translation.html")
+    assert "toggleTtsEngine" in src, "missing toggleTtsEngine function"
+    assert "tts_engine" in src, "missing tts_engine localStorage key"
+    assert "location.protocol === 'file:'" in src and "tts-btn" in src, (
+        "TTS toggle button must be guarded behind file:// protocol check"
+    )
+    assert "'youdao'" in src and "'google'" in src, (
+        "toggle must support both youdao and google engines"
+    )
 
 
 @check
@@ -230,4 +245,86 @@ def check_breakdown_and_etymology_skip_non_cjk():
     assert "appendCandidateToSource" in src, (
         "draw/pinyin candidate selection must use appendCandidateToSource "
         "to clear latin text from the Source box before inserting characters"
+    )
+
+
+@check
+def check_radicals_data_shape():
+    """radicals reference has 100 entries with required fields and 6 examples each"""
+    src = s.read("radicals_reference.html")
+    m = re.search(r"const RADICALS = \[(.*?)\];", src, re.S)
+    assert m, "could not find RADICALS array in radicals_reference.html"
+
+    entries = re.findall(r"\{\s*n:\s*(\d+),\s*r:", m.group(1))
+    assert len(entries) == 100, f"expected 100 radicals, got {len(entries)}"
+
+    examples = re.findall(r"ex:\[(.+?)\]\s*\}", m.group(1))
+    bad = []
+    for i, ex_str in enumerate(examples, 1):
+        count = ex_str.count("[")
+        if count != 6:
+            bad.append(f"radical {i}: has {count} examples (expected 6)")
+    assert not bad, "example count issues:\n  " + "\n  ".join(bad[:10])
+    return f"100 radicals, all with 6 examples"
+
+
+@check
+def check_radicals_lookup_wiring():
+    """radicals reference lookup button is wired through the hub to the translator"""
+    src = s.read("radicals_reference.html")
+    assert "mandarin-hub:lookup" in src, (
+        "radicals_reference.html must send mandarin-hub:lookup for the example lookup buttons"
+    )
+
+
+@check
+def check_radicals_stroke_order_wiring():
+    """radicals reference wires radical click through the hub to translator stroke order"""
+    rad_src = s.read("radicals_reference.html")
+    assert "mandarin-hub:stroke-order" in rad_src, (
+        "radicals_reference.html must send mandarin-hub:stroke-order on radical click"
+    )
+
+    hub_src = s.read("index.html")
+    assert "mandarin-hub:stroke-order" in hub_src, (
+        "index.html must handle mandarin-hub:stroke-order from radicals page"
+    )
+    assert "strokeOrder" in hub_src, (
+        "index.html must piggyback stroke order on the visible message"
+    )
+
+    trans_src = s.read("mandarin_translation.html")
+    assert re.search(r"strokeOrder.*showStrokeOrder", trans_src, re.S), (
+        "mandarin_translation.html must show stroke order from visible message"
+    )
+    assert re.search(r"strokeOrder.*translate\(\)", trans_src, re.S), (
+        "stroke order handler must call translate() to auto-translate the radical"
+    )
+    assert re.search(r"strokeOrder.*pageHasBeenHidden\s*=\s*false", trans_src, re.S), (
+        "stroke order handler must clear pageHasBeenHidden so the "
+        "focus listener does not reset the stroke order panel"
+    )
+    assert "get('stroke')" in trans_src, (
+        "mandarin_translation.html must support ?stroke= URL param for first load"
+    )
+
+
+@check
+def check_etymology_prompt_requires_all_components():
+    """etymology prompt instructs Gemini to include every visible component"""
+    src = s.read("mandarin_translation.html")
+
+    prompt_match = re.search(
+        r"function buildEtymologyPrompt\b.*?^}",
+        src, re.DOTALL | re.MULTILINE,
+    )
+    assert prompt_match, "buildEtymologyPrompt function not found"
+    prompt_body = prompt_match.group()
+    assert re.search(r"every.+structural part|every.+component|do not omit", prompt_body, re.IGNORECASE), (
+        "etymology prompt must tell the model not to omit any visible "
+        "component — stacked characters like 单 were missing parts"
+    )
+    assert re.search(r"pictograph|ideograph|originally depicted|visual.+origin", prompt_body, re.IGNORECASE), (
+        "etymology prompt must ask for pictographic/ideographic origin "
+        "of each component in the explanation field"
     )
