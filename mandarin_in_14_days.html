@@ -3487,20 +3487,21 @@ let ttsAudio = null;
 function speak(chinese) {
   if (!chinese) return;
 
-  // Stop whatever is still playing, otherwise rapid clicks stack voices.
   if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
 
   const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
   const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
-  const primary = location.protocol === 'file:' ? youdao : google;
-  const fallback = location.protocol === 'file:' ? google : youdao;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
 
-  const isFile = location.protocol === 'file:';
+  const slowdown = (primary === youdao);
   ttsAudio = new Audio(primary);
-  if (isFile) ttsAudio.playbackRate = 0.75;
+  if (slowdown) ttsAudio.playbackRate = 0.75;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
-    if (!isFile) ttsAudio.playbackRate = 0.75;
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
 }
