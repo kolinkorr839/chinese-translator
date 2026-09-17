@@ -218,6 +218,152 @@ td:first-child {
   background: rgba(196, 30, 58, 0.08);
 }
 
+.draw-toggle-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #E8E0D4;
+  border-radius: 8px;
+  background: #FFFDF8;
+  color: #6B7B8D;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  vertical-align: middle;
+  margin-left: 6px;
+  position: relative;
+  top: -2px;
+}
+
+.draw-toggle-btn:hover,
+.draw-toggle-btn.active {
+  border-color: #C41E3A;
+  color: #C41E3A;
+}
+
+.draw-panel {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 8px auto 0;
+  max-width: 460px;
+  padding: 10px 20px 0;
+}
+
+.draw-panel.open { display: flex; }
+
+.draw-canvas-wrapper { position: relative; }
+
+#draw-canvas {
+  border: 2px solid #E8E0D4;
+  border-radius: 12px;
+  cursor: crosshair;
+  display: block;
+  touch-action: none;
+  background: #FFFDF8;
+}
+
+.draw-hint {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #C4B9A8;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+}
+
+.draw-candidates {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 34px;
+  align-items: center;
+}
+
+.draw-candidates-placeholder {
+  font-size: 12px;
+  color: #C4B9A8;
+}
+
+.draw-candidate-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #E8E0D4;
+  border-radius: 10px;
+  background: #FFFDF8;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  color: #1a1a2e;
+}
+
+.draw-candidate-btn:hover {
+  background: #C41E3A;
+  color: #fff;
+  border-color: #C41E3A;
+}
+
+.draw-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.draw-controls button {
+  font-size: 12px;
+  padding: 4px 12px;
+  border: 1px solid #E8E0D4;
+  border-radius: 8px;
+  background: #FFFDF8;
+  color: #6B7B8D;
+  cursor: pointer;
+  font-family: 'Crimson Pro', Georgia, serif;
+  transition: all 0.15s;
+}
+
+.draw-controls button:hover {
+  border-color: #C41E3A;
+  color: #C41E3A;
+}
+
+.match-highlight { background: rgba(196, 30, 58, 0.12); border-radius: 3px; }
+
+.draw-candidate-btn.lookup {
+  border-style: dashed;
+  border-color: #C4B9A8;
+  color: #5C4A32;
+}
+
+.draw-candidate-btn.lookup:hover {
+  background: #5C4A32;
+  color: #fff;
+  border-color: #5C4A32;
+}
+
+.draw-candidates-label {
+  font-size: 11px;
+  color: #8B7D6B;
+  width: 100%;
+  text-align: center;
+}
+
+.no-results-row td {
+  text-align: center;
+  color: #C4B9A8;
+  font-style: italic;
+  padding: 20px 10px;
+}
+
 @media (max-width: 600px) {
   .page-wrap { padding: 0 10px 2rem; }
   .header { padding: 12px 14px 18px; }
@@ -226,6 +372,7 @@ td:first-child {
   td { padding: 4px 6px; }
   .radical-cell { font-size: 1.2rem; }
   .example-char { font-size: 1rem; }
+  .draw-panel { padding: 8px 10px 0; }
 
   thead th:nth-child(3) { display: none; }
   td:nth-child(3) { display: none; }
@@ -235,7 +382,21 @@ td:first-child {
 <body>
 
 <div class="header">
-  <h1>100 Common Radicals</h1>
+  <h1>100 Common Radicals <button class="draw-toggle-btn" id="draw-toggle" title="Draw to search">&#x270E;</button></h1>
+</div>
+
+<div class="draw-panel" id="draw-panel">
+  <div class="draw-canvas-wrapper">
+    <canvas id="draw-canvas" width="220" height="150"></canvas>
+    <div class="draw-hint" id="draw-hint">Draw a radical or character</div>
+  </div>
+  <div class="draw-candidates" id="draw-candidates">
+    <span class="draw-candidates-placeholder">candidates appear here</span>
+  </div>
+  <div class="draw-controls">
+    <button onclick="undoDrawStroke()">Undo</button>
+    <button onclick="clearDrawCanvas()">Clear</button>
+  </div>
 </div>
 
 <div class="page-wrap">
@@ -390,6 +551,7 @@ const RADICALS = [
 ];
 
 const tbody = document.getElementById('radical-body');
+const allRows = [];
 
 RADICALS.forEach(rd => {
   const tr = document.createElement('tr');
@@ -460,8 +622,288 @@ RADICALS.forEach(rd => {
   tdEx.appendChild(exWrap);
   tr.appendChild(tdEx);
 
+  allRows.push({ tr, data: rd });
   tbody.appendChild(tr);
 });
+
+// --- Lookup maps for radical matching ---
+const radicalSet = new Set();
+const variantToRadical = new Map();
+const exampleToRadicals = new Map();
+
+RADICALS.forEach(rd => {
+  radicalSet.add(rd.r);
+  if (rd.v) variantToRadical.set(rd.v, rd.r);
+  rd.ex.forEach(([ch]) => {
+    if (!exampleToRadicals.has(ch)) exampleToRadicals.set(ch, new Set());
+    exampleToRadicals.get(ch).add(rd.r);
+  });
+});
+
+function resolveToRadicals(chars) {
+  const seen = new Set();
+  const results = [];
+  for (const ch of chars) {
+    let radicals = [];
+    if (radicalSet.has(ch)) {
+      radicals = [ch];
+    } else if (variantToRadical.has(ch)) {
+      radicals = [variantToRadical.get(ch)];
+    } else if (exampleToRadicals.has(ch)) {
+      radicals = [...exampleToRadicals.get(ch)];
+    }
+    for (const r of radicals) {
+      if (!seen.has(r)) { seen.add(r); results.push(r); }
+    }
+  }
+  return results;
+}
+
+// --- Filter table by character ---
+function filterTable(query) {
+  const q = query.trim();
+  let anyVisible = false;
+
+  const noResultsRow = tbody.querySelector('.no-results-row');
+  if (noResultsRow) noResultsRow.remove();
+
+  allRows.forEach(({ tr, data }) => {
+    if (!q) { tr.style.display = ''; anyVisible = true; return; }
+
+    if (data.r === q || data.v === q) {
+      tr.style.display = '';
+      anyVisible = true;
+    } else {
+      tr.style.display = 'none';
+    }
+  });
+
+  if (q && !anyVisible) {
+    const row = document.createElement('tr');
+    row.className = 'no-results-row';
+    const td = document.createElement('td');
+    td.colSpan = 4;
+    td.textContent = 'No matching radicals found';
+    row.appendChild(td);
+    tbody.appendChild(row);
+  }
+}
+
+function resetFilter() {
+  allRows.forEach(({ tr }) => { tr.style.display = ''; });
+  const noResultsRow = tbody.querySelector('.no-results-row');
+  if (noResultsRow) noResultsRow.remove();
+}
+
+// --- Draw panel toggle ---
+const drawToggleBtn = document.getElementById('draw-toggle');
+const drawPanelEl = document.getElementById('draw-panel');
+
+drawToggleBtn.addEventListener('click', () => {
+  const open = drawPanelEl.classList.toggle('open');
+  drawToggleBtn.classList.toggle('active', open);
+  if (!open) clearDrawCanvas();
+});
+
+// --- Handwriting recognition ---
+const HANDWRITING_DELAY_MS = 1200;
+const drawCanvas = document.getElementById('draw-canvas');
+const drawCtx = drawCanvas.getContext('2d');
+const drawHint = document.getElementById('draw-hint');
+const drawCandidatesEl = document.getElementById('draw-candidates');
+
+drawCtx.strokeStyle = '#1a1a2e';
+drawCtx.lineWidth = 3;
+drawCtx.lineCap = 'round';
+drawCtx.lineJoin = 'round';
+
+let drawStrokes = [];
+let drawCurrentStroke = null;
+let drawIsDrawing = false;
+let drawRecognizeTimer = null;
+
+function getDrawPos(e) {
+  const rect = drawCanvas.getBoundingClientRect();
+  const scaleX = drawCanvas.width / rect.width;
+  const scaleY = drawCanvas.height / rect.height;
+  if (e.touches) {
+    return [
+      (e.touches[0].clientX - rect.left) * scaleX,
+      (e.touches[0].clientY - rect.top) * scaleY
+    ];
+  }
+  return [
+    (e.clientX - rect.left) * scaleX,
+    (e.clientY - rect.top) * scaleY
+  ];
+}
+
+function startDrawStroke(e) {
+  e.preventDefault();
+  drawIsDrawing = true;
+  const [x, y] = getDrawPos(e);
+  drawCurrentStroke = { xs: [x], ys: [y], ts: [Date.now()] };
+  drawCtx.beginPath();
+  drawCtx.moveTo(x, y);
+  drawHint.style.opacity = '0';
+}
+
+function moveDrawStroke(e) {
+  if (!drawIsDrawing || !drawCurrentStroke) return;
+  e.preventDefault();
+  const [x, y] = getDrawPos(e);
+  drawCurrentStroke.xs.push(x);
+  drawCurrentStroke.ys.push(y);
+  drawCurrentStroke.ts.push(Date.now());
+  drawCtx.lineTo(x, y);
+  drawCtx.stroke();
+  drawCtx.beginPath();
+  drawCtx.moveTo(x, y);
+}
+
+function endDrawStroke(e) {
+  if (!drawIsDrawing || !drawCurrentStroke) return;
+  e.preventDefault();
+  drawIsDrawing = false;
+  drawStrokes.push(drawCurrentStroke);
+  drawCurrentStroke = null;
+  clearTimeout(drawRecognizeTimer);
+  drawRecognizeTimer = setTimeout(recognizeDrawing, HANDWRITING_DELAY_MS);
+}
+
+drawCanvas.addEventListener('mousedown', startDrawStroke);
+drawCanvas.addEventListener('mousemove', moveDrawStroke);
+drawCanvas.addEventListener('mouseup', endDrawStroke);
+drawCanvas.addEventListener('mouseleave', endDrawStroke);
+drawCanvas.addEventListener('touchstart', startDrawStroke, { passive: false });
+drawCanvas.addEventListener('touchmove', moveDrawStroke, { passive: false });
+drawCanvas.addEventListener('touchend', endDrawStroke);
+
+async function recognizeDrawing() {
+  if (drawStrokes.length === 0) return;
+
+  const ink = drawStrokes.map(s => {
+    const t0 = s.ts[0];
+    return [
+      s.xs.map(Math.round),
+      s.ys.map(Math.round),
+      s.ts.map(t => t - t0)
+    ];
+  });
+
+  try {
+    const resp = await fetch(
+      'https://inputtools.google.com/request?itc=zh-t-i0-handwrit&app=translate',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          options: 'enable_pre_space',
+          requests: [{
+            writing_guide: {
+              writing_area_width: drawCanvas.width,
+              writing_area_height: drawCanvas.height
+            },
+            ink: ink,
+            pre_context: '',
+            max_num_results: 8,
+            max_completions: 0
+          }]
+        })
+      }
+    );
+    const data = await resp.json();
+
+    if (data[0] === 'SUCCESS' && data[1] && data[1][0]) {
+      const chars = data[1][0][1]
+        .filter(ch => ch.length === 1 && /[一-鿿㐀-䶿]/.test(ch))
+        .slice(0, 8);
+      renderDrawCandidates(chars);
+    } else {
+      drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">no matches</span>';
+    }
+  } catch {
+    drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">error - try serving via HTTP</span>';
+  }
+}
+
+function renderDrawCandidates(chars) {
+  const radicals = resolveToRadicals(chars);
+  drawCandidatesEl.innerHTML = '';
+
+  if (radicals.length > 0) {
+    for (const r of radicals) {
+      const btn = document.createElement('button');
+      btn.className = 'draw-candidate-btn';
+      btn.textContent = r;
+      btn.onclick = () => selectDrawCandidate(r);
+      drawCandidatesEl.appendChild(btn);
+    }
+    return;
+  }
+
+  const cjk = chars.filter(ch => /[一-鿿㐀-䶿]/.test(ch)).slice(0, 6);
+  if (cjk.length === 0) {
+    drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">no matches</span>';
+    return;
+  }
+
+  const label = document.createElement('span');
+  label.className = 'draw-candidates-label';
+  label.textContent = 'Not in the 100 - look up in translator:';
+  drawCandidatesEl.appendChild(label);
+
+  for (const ch of cjk) {
+    const btn = document.createElement('button');
+    btn.className = 'draw-candidate-btn lookup';
+    btn.textContent = ch;
+    btn.title = 'Look up in translator';
+    btn.onclick = () => { lookupInTranslator(ch); resetCanvas(); };
+    drawCandidatesEl.appendChild(btn);
+  }
+}
+
+function selectDrawCandidate(ch) {
+  filterTable(ch);
+  resetCanvas();
+}
+
+function resetCanvas() {
+  drawStrokes = [];
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">candidates appear here</span>';
+  drawHint.style.opacity = '1';
+}
+
+function undoDrawStroke() {
+  if (drawStrokes.length === 0) return;
+  drawStrokes.pop();
+  redrawAllStrokes();
+  if (drawStrokes.length > 0) {
+    clearTimeout(drawRecognizeTimer);
+    drawRecognizeTimer = setTimeout(recognizeDrawing, HANDWRITING_DELAY_MS);
+  } else {
+    drawCandidatesEl.innerHTML = '<span class="draw-candidates-placeholder">candidates appear here</span>';
+    drawHint.style.opacity = '1';
+  }
+}
+
+function clearDrawCanvas() {
+  resetCanvas();
+  resetFilter();
+}
+
+function redrawAllStrokes() {
+  drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+  for (const s of drawStrokes) {
+    drawCtx.beginPath();
+    drawCtx.moveTo(s.xs[0], s.ys[0]);
+    for (let i = 1; i < s.xs.length; i++) {
+      drawCtx.lineTo(s.xs[i], s.ys[i]);
+    }
+    drawCtx.stroke();
+  }
+}
 </script>
 </body>
 </html>
