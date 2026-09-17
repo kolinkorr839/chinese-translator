@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yoyo Chinese Pinyin Cheat Sheet</title>
+    <title>Pinyin Guide</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -50,7 +50,6 @@
 
         header {
             text-align: center;
-            border-bottom: 2px solid var(--primary-color);
             padding-bottom: 20px;
             margin-bottom: 20px;
         }
@@ -72,7 +71,7 @@
             font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
         }
 
-        .disclaimer {
+        .note {
             background-color: #FDF8EE;
             border-left: 4px solid var(--accent-color);
             padding: 12px 16px;
@@ -82,21 +81,14 @@
             color: #5A4A2A;
         }
 
-        .disclaimer a {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-
-        @media (min-width: 768px) {
-            .grid-container {
-                grid-template-columns: 1fr 1fr;
-            }
+        .tip-box {
+            background-color: #FDF8EE;
+            border-left: 4px solid var(--accent-color);
+            padding: 12px 16px;
+            margin: 16px 0 30px;
+            font-size: 0.95rem;
+            border-radius: 0 4px 4px 0;
+            color: #5A4A2A;
         }
 
         .section-title {
@@ -146,13 +138,23 @@
         .pinyin {
             font-weight: bold;
             color: var(--primary-color);
-            width: 30%;
+            width: 15%;
             font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
             font-size: 1.05rem;
         }
 
         .english {
             color: var(--dark-color);
+        }
+
+        .tips {
+            color: #5A4A2A;
+            font-size: 0.9rem;
+        }
+
+        .example {
+            color: #5A4A2A;
+            font-size: 0.9rem;
         }
 
         footer {
@@ -164,29 +166,9 @@
             border-top: 3px solid var(--primary-color);
         }
 
-        footer h2 {
-            margin: 0 0 5px 0;
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
         footer p {
             margin: 5px 0;
             color: var(--dark-color);
-        }
-
-        footer a {
-            color: var(--accent-color);
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-            color: var(--primary-color);
         }
     </style>
 </head>
@@ -194,102 +176,104 @@
 
 <div class="container">
     <header>
-        <h1>Yoyo Chinese</h1>
-        <p class="subtitle">Pinyin Pronunciation Cheat Sheet</p>
+        <h1>Pinyin Guide</h1>
+        <p class="subtitle">Initials, Finals &amp; Pronunciation Tips</p>
     </header>
 
-    <div class="disclaimer">
-        Here is how each Mandarin sound is written in pinyin, with its approximate English equivalent. Remember, they are only <strong>APPROXIMATE</strong> equivalent sounds. Please refer to the Pinyin series on <a href="https://www.yoyochinese.com" target="_blank">www.yoyochinese.com</a> for correct pronunciation.
-    </div>
 
-    <div class="grid-container">
-        <section>
-            <h2 class="section-title">Consonants</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Pinyin</th>
-                        <th>English Equivalent</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td class="pinyin">b</td><td class="english">bear</td></tr>
-                    <tr><td class="pinyin">p</td><td class="english">poor</td></tr>
-                    <tr><td class="pinyin">m</td><td class="english">more</td></tr>
-                    <tr><td class="pinyin">f</td><td class="english">fake</td></tr>
-                    <tr><td class="pinyin">d</td><td class="english">dare</td></tr>
-                    <tr><td class="pinyin">t</td><td class="english">take</td></tr>
-                    <tr><td class="pinyin">n</td><td class="english">now</td></tr>
-                    <tr><td class="pinyin">l</td><td class="english">learn</td></tr>
-                    <tr><td class="pinyin">g</td><td class="english">get</td></tr>
-                    <tr><td class="pinyin">k</td><td class="english">king</td></tr>
-                    <tr><td class="pinyin">h</td><td class="english">help</td></tr>
-                    <tr><td class="pinyin">j</td><td class="english">jeep</td></tr>
-                    <tr><td class="pinyin">q</td><td class="english">cheese</td></tr>
-                    <tr><td class="pinyin">x</td><td class="english">sheep</td></tr>
-                    <tr><td class="pinyin">zh</td><td class="english">judge</td></tr>
-                    <tr><td class="pinyin">ch</td><td class="english">church</td></tr>
-                    <tr><td class="pinyin">sh</td><td class="english">shhhh</td></tr>
-                    <tr><td class="pinyin">r</td><td class="english">Jacque, Asia, measure</td></tr>
-                    <tr><td class="pinyin">z</td><td class="english">yards</td></tr>
-                    <tr><td class="pinyin">c</td><td class="english">its</td></tr>
-                    <tr><td class="pinyin">s</td><td class="english">sing</td></tr>
-                    <tr><td class="pinyin">w</td><td class="english">want</td></tr>
-                    <tr><td class="pinyin">y</td><td class="english">yes</td></tr>
-                </tbody>
-            </table>
-        </section>
+    <section>
+        <h2 class="section-title">Initials (Consonants)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pinyin</th>
+                    <th>Sounds like</th>
+                    <th>Tips</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="pinyin">b</td><td class="english">"b" in "bed"</td><td class="tips">Unaspirated (less breathy than English "b")</td></tr>
+                <tr><td class="pinyin">p</td><td class="english">"p" in "put"</td><td class="tips">Aspirated (a puff of air)</td></tr>
+                <tr><td class="pinyin">m</td><td class="english">"m" in "mom"</td><td class="tips">Same as English</td></tr>
+                <tr><td class="pinyin">f</td><td class="english">"f" in "fan"</td><td class="tips">Same as English</td></tr>
+                <tr><td class="pinyin">d</td><td class="english">"d" in "day"</td><td class="tips">Unaspirated</td></tr>
+                <tr><td class="pinyin">t</td><td class="english">"t" in "top"</td><td class="tips">Aspirated</td></tr>
+                <tr><td class="pinyin">n</td><td class="english">"n" in "now"</td><td class="tips">Same as English</td></tr>
+                <tr><td class="pinyin">l</td><td class="english">"l" in "learn"</td><td class="tips">Same as English</td></tr>
+                <tr><td class="pinyin">g</td><td class="english">"g" in "go"</td><td class="tips">Unaspirated</td></tr>
+                <tr><td class="pinyin">k</td><td class="english">"k" in "kite"</td><td class="tips">Aspirated</td></tr>
+                <tr><td class="pinyin">h</td><td class="english">"h" in "help"</td><td class="tips">Slightly stronger, from back of throat</td></tr>
+                <tr><td class="pinyin">zh</td><td class="english">"j" in "jump"</td><td class="tips">Tongue curled back (retroflex). Like "dr" said quickly.</td></tr>
+                <tr><td class="pinyin">ch</td><td class="english">"ch" in "church"</td><td class="tips">Tongue curled back with a puff of air</td></tr>
+                <tr><td class="pinyin">sh</td><td class="english">"sh" in "she"</td><td class="tips">Tongue curled back</td></tr>
+                <tr><td class="pinyin">r</td><td class="english">Between "r" and "zh"</td><td class="tips">Like "pleasure" but with tongue curled back</td></tr>
+                <tr><td class="pinyin">z</td><td class="english">"dz" in "kids"</td><td class="tips">Tongue flat behind lower teeth</td></tr>
+                <tr><td class="pinyin">c</td><td class="english">"ts" in "cats"</td><td class="tips">Tongue flat with a puff of air</td></tr>
+                <tr><td class="pinyin">s</td><td class="english">"s" in "see"</td><td class="tips">Tongue flat behind lower teeth</td></tr>
+                <tr><td class="pinyin">j</td><td class="english">"j" in "jeep"</td><td class="tips">Tongue flat, pressed against roof of mouth</td></tr>
+                <tr><td class="pinyin">q</td><td class="english">"ch" in "cheese"</td><td class="tips">Like "j" but with a puff of air</td></tr>
+                <tr><td class="pinyin">x</td><td class="english">"sh" in "she"</td><td class="tips">Tongue flat behind lower teeth (not curled back like sh)</td></tr>
+                <tr><td class="pinyin">w</td><td class="english">"w" in "want"</td><td class="tips">Same as English</td></tr>
+                <tr><td class="pinyin">y</td><td class="english">"y" in "yes"</td><td class="tips">Same as English</td></tr>
+            </tbody>
+        </table>
 
-        <section>
-            <h2 class="section-title">Vowels</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Pinyin</th>
-                        <th>English Equivalent</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td class="pinyin">a</td><td class="english">father</td></tr>
-                    <tr><td class="pinyin">ai</td><td class="english">my</td></tr>
-                    <tr><td class="pinyin">an</td><td class="english">sun</td></tr>
-                    <tr><td class="pinyin">ang</td><td class="english">ahng</td></tr>
-                    <tr><td class="pinyin">ao</td><td class="english">pout</td></tr>
-                    <tr><td class="pinyin">e</td><td class="english">serve</td></tr>
-                    <tr><td class="pinyin">ei</td><td class="english">day</td></tr>
-                    <tr><td class="pinyin">en</td><td class="english">taken</td></tr>
-                    <tr><td class="pinyin">eng</td><td class="english">mung or erng</td></tr>
-                    <tr><td class="pinyin">er</td><td class="english">are</td></tr>
-                    <tr><td class="pinyin">i</td><td class="english">see</td></tr>
-                    <tr><td class="pinyin">ia</td><td class="english">yah</td></tr>
-                    <tr><td class="pinyin">iao</td><td class="english">meow</td></tr>
-                    <tr><td class="pinyin">ian</td><td class="english">yen</td></tr>
-                    <tr><td class="pinyin">iang</td><td class="english">young</td></tr>
-                    <tr><td class="pinyin">ie</td><td class="english">yes</td></tr>
-                    <tr><td class="pinyin">in</td><td class="english">sin</td></tr>
-                    <tr><td class="pinyin">ing</td><td class="english">eeng</td></tr>
-                    <tr><td class="pinyin">iong</td><td class="english">ee + own</td></tr>
-                    <tr><td class="pinyin">iu (iou)</td><td class="english">yo-yo</td></tr>
-                    <tr><td class="pinyin">o</td><td class="english">awesome (British accent)</td></tr>
-                    <tr><td class="pinyin">ou</td><td class="english">boat</td></tr>
-                    <tr><td class="pinyin">ong</td><td class="english">loan</td></tr>
-                    <tr><td class="pinyin">u</td><td class="english">shoot</td></tr>
-                    <tr><td class="pinyin">ua</td><td class="english">suave</td></tr>
-                    <tr><td class="pinyin">uai</td><td class="english">wide</td></tr>
-                    <tr><td class="pinyin">uan</td><td class="english">won</td></tr>
-                    <tr><td class="pinyin">uang</td><td class="english">oo + ahng</td></tr>
-                    <tr><td class="pinyin">ui (uei)</td><td class="english">way</td></tr>
-                    <tr><td class="pinyin">un (uen)</td><td class="english">oo + taken</td></tr>
-                    <tr><td class="pinyin">uo</td><td class="english">wok</td></tr>
-                </tbody>
-            </table>
-        </section>
-    </div>
+        <div class="tip-box">
+            The hardest distinction for English speakers: <strong>zh/ch/sh</strong> (tongue curled back) vs <strong>z/c/s</strong> (tongue flat) vs <strong>j/q/x</strong> (tongue behind lower teeth). Don't stress about perfecting these right away - you will be understood even if they are not perfect.
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title">Finals (Vowels &amp; Endings)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pinyin</th>
+                    <th>Sounds like</th>
+                    <th>Example</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td class="pinyin">a</td><td class="english">"ah" in "father"</td><td class="example">大 dà (big)</td></tr>
+                <tr><td class="pinyin">o</td><td class="english">"aw" in "saw"</td><td class="example">多 duō (many)</td></tr>
+                <tr><td class="pinyin">e</td><td class="english">"uh" in "duh"</td><td class="example">喝 hē (drink)</td></tr>
+                <tr><td class="pinyin">i</td><td class="english">"ee" in "see"</td><td class="example">你 nǐ (you)</td></tr>
+                <tr><td class="pinyin">u</td><td class="english">"oo" in "too"</td><td class="example">五 wǔ (five)</td></tr>
+                <tr><td class="pinyin">ü</td><td class="english">Say "ee" with rounded lips</td><td class="example">去 qù (go)</td></tr>
+                <tr><td class="pinyin">ai</td><td class="english">"eye"</td><td class="example">买 mǎi (buy)</td></tr>
+                <tr><td class="pinyin">ei</td><td class="english">"ay" in "say"</td><td class="example">北 běi (north)</td></tr>
+                <tr><td class="pinyin">ao</td><td class="english">"ow" in "how"</td><td class="example">好 hǎo (good)</td></tr>
+                <tr><td class="pinyin">ou</td><td class="english">"oh"</td><td class="example">走 zǒu (walk)</td></tr>
+                <tr><td class="pinyin">an</td><td class="english">"ahn"</td><td class="example">三 sān (three)</td></tr>
+                <tr><td class="pinyin">en</td><td class="english">"un" in "fun"</td><td class="example">人 rén (person)</td></tr>
+                <tr><td class="pinyin">ang</td><td class="english">"ahng"</td><td class="example">忙 máng (busy)</td></tr>
+                <tr><td class="pinyin">eng</td><td class="english">"ung" in "lung"</td><td class="example">风 fēng (wind)</td></tr>
+                <tr><td class="pinyin">ong</td><td class="english">"oong" (rhymes with "goong")</td><td class="example">中 zhōng (middle)</td></tr>
+                <tr><td class="pinyin">er</td><td class="english">"ar" in "car" (American English)</td><td class="example">二 èr (two)</td></tr>
+                <tr><td class="pinyin">ian</td><td class="english">"yen"</td><td class="example">天 tiān (sky/day)</td></tr>
+                <tr><td class="pinyin">iang</td><td class="english">"yahng"</td><td class="example">两 liǎng (two, for counting)</td></tr>
+                <tr><td class="pinyin">iao</td><td class="english">"yow" in "meow"</td><td class="example">小 xiǎo (small)</td></tr>
+                <tr><td class="pinyin">iu</td><td class="english">"yo" in "yo-yo"</td><td class="example">六 liù (six)</td></tr>
+                <tr><td class="pinyin">ua</td><td class="english">"wah"</td><td class="example">花 huā (flower)</td></tr>
+                <tr><td class="pinyin">uo</td><td class="english">"waw"</td><td class="example">我 wǒ (I/me)</td></tr>
+                <tr><td class="pinyin">ui</td><td class="english">"way"</td><td class="example">水 shuǐ (water)</td></tr>
+                <tr><td class="pinyin">uan</td><td class="english">"wahn"</td><td class="example">饭 fàn (rice/meal)</td></tr>
+                <tr><td class="pinyin">üe</td><td class="english">"you-eh"</td><td class="example">学 xué (study)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="tip-box">
+            After <strong>j, q, x</strong>, the letter "u" is always pronounced "ü" (the dots are dropped in writing but the sound stays). So "qu" is pronounced "chü", not "koo".
+        </div>
+
+        <div class="tip-box">
+            The letter <strong>i</strong> after zh, ch, sh, r, z, c, s is NOT pronounced "ee". It is a buzzy, held consonant sound - almost silent. Just hold the consonant. This is one of the few sounds you simply need to hear and imitate.
+        </div>
+    </section>
 
     <footer>
-        <h2>YOYO CHINESE</h2>
-        <p>Chinese taught in plain English</p>
-        <p>For complete courses on Chinese pinyin and pronunciation please visit <a href="https://www.yoyochinese.com" target="_blank">www.yoyochinese.com</a></p>
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #8B7D6B; letter-spacing: 0.04em;">拼 音 指 南</p>
+        <p>Pinyin Guide</p>
     </footer>
 </div>
 
