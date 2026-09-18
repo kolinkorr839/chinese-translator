@@ -196,7 +196,7 @@ th.row-active-header {
 const SPEED_MS = 700;
 const VOLUME = 0.1;
 
-const INITIALS = ['','b','p','m','f','d','t','n','l','g','k','h','j','q','x','z','c','s','zh','ch','sh','r'];
+const INITIALS = ['','b','p','m','f','d','t','n','l','g','k','h','j','q','x','z','c','s','zh','ch','sh','r','y','w'];
 
 const ALL_FINALS = ['a','ai','an','ang','ao','e','ei','en','eng','er','i','ia','ian','iang','iao','ie','in','ing','iong','iu','o','ong','ou','u','ua','uai','uan','uang','ui','un','ueng','uo','ü','üan','üe','ün'];
 
@@ -223,18 +223,21 @@ const VALID = {
   'ch': ['a','ai','an','ang','ao','e','en','eng','i','ong','ou','u','uai','uan','uang','ui','un','uo'],
   'sh': ['a','ai','an','ang','ao','e','ei','en','eng','i','ou','u','ua','uai','uan','uang','ui','un','uo'],
   'r': ['an','ang','ao','e','en','eng','i','ong','ou','u','uan','ui','un','uo'],
+  'y': ['i','ia','ian','iang','iao','ie','in','ing','iong','iu','ü','üan','üe','ün'],
+  'w': ['u','ua','uai','uan','uang','ueng','ui','un','uo'],
+};
+
+const ZERO_INITIAL_MAP = {
+  'i':'yi','ia':'ya','ie':'ye','iao':'yao','iu':'you',
+  'ian':'yan','in':'yin','iang':'yang','ing':'ying','iong':'yong',
+  'u':'wu','ua':'wa','uo':'wo','uai':'wai','ui':'wei',
+  'uan':'wan','un':'wen','uang':'wang','ueng':'weng',
+  'ü':'yu','üe':'yue','üan':'yuan','ün':'yun'
 };
 
 function buildPinyin(initial, final) {
-  if (initial === '') {
-    const map = {
-      'i':'yi','ia':'ya','ie':'ye','iao':'yao','iu':'you',
-      'ian':'yan','in':'yin','iang':'yang','ing':'ying','iong':'yong',
-      'u':'wu','ua':'wa','uo':'wo','uai':'wai','ui':'wei',
-      'uan':'wan','un':'wen','uang':'wang','ueng':'weng',
-      'ü':'yu','üe':'yue','üan':'yuan','ün':'yun'
-    };
-    return map[final] || final;
+  if (initial === '' || initial === 'y' || initial === 'w') {
+    return ZERO_INITIAL_MAP[final] || final;
   }
   if ('jqx'.includes(initial) && final.startsWith('ü')) {
     return initial + final.replace('ü', 'u');
