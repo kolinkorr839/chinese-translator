@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinyin IME Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #C41E3A;
+            --secondary-color: #FAF6EE;
+            --dark-color: #1a1a2e;
+            --accent-color: #B8860B;
+            --border-color: #E8E0D4;
+            --warm-gray: #6B7B8D;
+        }
+
+        body {
+            font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            background-color: #F5F0E8;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(184, 134, 11, 0.03) 40px,
+                    rgba(184, 134, 11, 0.03) 41px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 40px,
+                    rgba(184, 134, 11, 0.03) 40px,
+                    rgba(184, 134, 11, 0.03) 41px
+                );
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            margin: 0;
+            background: #FFFDF8;
+            padding: 30px 4rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(26, 26, 46, 0.08), 0 1px 6px rgba(184, 134, 11, 0.06);
+            border: 1px solid #E8E0D4;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 3px;
+            margin-bottom: 3px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0 0 5px 0;
+            font-size: 2rem;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin: 0;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+        }
+
+        .intro {
+            font-size: 1.05rem;
+            color: #5A4A2A;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .section-title {
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+            margin-top: 40px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-weight: 700;
+        }
+
+        .section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-size: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        tr:nth-child(even) { background-color: #FAF6EE; }
+        tr:nth-child(odd) { background-color: #FFFDF8; }
+        tr:hover { background-color: #F0E8D8; }
+
+        td.row-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            text-align: left;
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-size: 1rem;
+            background-color: var(--secondary-color);
+            white-space: nowrap;
+        }
+
+        td.pinyin-cell {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+        }
+
+        td.other-cell {
+            font-size: 0.95rem;
+            color: #5A4A2A;
+        }
+
+        .tip-box {
+            background-color: #FDF8EE;
+            border-left: 4px solid var(--accent-color);
+            padding: 12px 16px;
+            margin: 16px 0 30px;
+            font-size: 0.95rem;
+            border-radius: 0 4px 4px 0;
+            color: #5A4A2A;
+        }
+
+        .rule-box {
+            background-color: #FEF4F5;
+            border-left: 4px solid var(--primary-color);
+            padding: 12px 16px;
+            margin: 16px 0;
+            font-size: 0.95rem;
+            border-radius: 0 4px 4px 0;
+            color: #5A4A2A;
+        }
+
+        .rule-box strong, .tip-box strong {
+            color: var(--dark-color);
+        }
+
+        .family-box {
+            background-color: #FFFDF8;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin-bottom: 12px;
+        }
+
+        .family-box h3 {
+            font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0 0 6px 0;
+        }
+
+        .family-box p {
+            margin: 4px 0;
+            font-size: 0.95rem;
+            color: #5A4A2A;
+        }
+
+        .family-box .hook {
+            margin-top: 8px;
+            font-style: italic;
+            color: var(--warm-gray);
+        }
+
+        .section-intro {
+            font-size: 0.95rem;
+            color: #5A4A2A;
+            margin-bottom: 12px;
+        }
+
+        td.empty-cell {
+            color: #D0C8BB;
+        }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px;
+            background-color: var(--secondary-color);
+            border-radius: 6px;
+            border-top: 3px solid var(--primary-color);
+        }
+
+        footer p {
+            margin: 5px 0;
+            color: var(--dark-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Pinyin IME Guide</h1>
+        <p class="subtitle">Why Can't I Find My Character?</p>
+    </header>
+
+    <p class="intro">
+        You heard a sound, typed your best guess, and the IME doesn't show your character.<br>
+        This guide helps you figure out what to try next.
+    </p>
+
+
+    <h2 class="section-title">The Initials Grid</h2>
+
+    <p class="section-intro">
+        Every initial sits at the intersection of a <strong>mouth position</strong> (row) and an <strong>airflow type</strong> (column).
+        When your character doesn't appear, move one step on the grid.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Mouth position</th>
+                <th>No air (soft)</th>
+                <th>Puff of air</th>
+                <th>Other</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="row-label">Lips</td>
+                <td class="pinyin-cell">b</td>
+                <td class="pinyin-cell">p</td>
+                <td class="pinyin-cell">m &middot; f</td>
+            </tr>
+            <tr>
+                <td class="row-label">Tongue tip</td>
+                <td class="pinyin-cell">d</td>
+                <td class="pinyin-cell">t</td>
+                <td class="pinyin-cell">n &middot; l</td>
+            </tr>
+            <tr>
+                <td class="row-label">Back of throat</td>
+                <td class="pinyin-cell">g</td>
+                <td class="pinyin-cell">k</td>
+                <td class="pinyin-cell">h</td>
+            </tr>
+            <tr>
+                <td class="row-label">Flat, i/&uuml; only</td>
+                <td class="pinyin-cell">j</td>
+                <td class="pinyin-cell">q</td>
+                <td class="pinyin-cell">x</td>
+            </tr>
+            <tr>
+                <td class="row-label">Flat, buzzy</td>
+                <td class="pinyin-cell">z</td>
+                <td class="pinyin-cell">c</td>
+                <td class="pinyin-cell">s</td>
+            </tr>
+            <tr>
+                <td class="row-label">Curled tongue</td>
+                <td class="pinyin-cell">zh</td>
+                <td class="pinyin-cell">ch</td>
+                <td class="pinyin-cell">sh &middot; r</td>
+            </tr>
+            <tr>
+                <td class="row-label">Spelling rules</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">y &middot; w</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="rule-box">
+        <strong>How to use this grid:</strong><br>
+        &bull; <strong>Wrong character?</strong> Move one column right (add air) or left (remove air). Example: typed <strong>b</strong>? Try <strong>p</strong>.<br>
+        &bull; <strong>Still wrong?</strong> Move one row up or down (change tongue position). Example: typed <strong>zh</strong>? Try <strong>z</strong> or <strong>j</strong>.<br>
+        &bull; <strong>Vowel is i or &uuml;?</strong> You're almost certainly in the <strong>j / q / x</strong> row, not z/c/s or zh/ch/sh.
+    </div>
+
+    <div class="tip-box">
+        The bottom three rows are where English speakers get stuck the most. The sounds <strong>j/q/x</strong>, <strong>z/c/s</strong>, and <strong>zh/ch/sh</strong> don't exist as separate groups in English. But the grid means you only ever have <strong>2 other options</strong> to try, not 8.
+    </div>
+
+
+    <h2 class="section-title">Sound Families</h2>
+
+    <p class="section-intro">
+        Mnemonics for the three confusing rows. Each family has the same airflow pattern: <strong>soft &rarr; puffy &rarr; hissy</strong>.
+        Remember the group names: <strong>"JaQX"</strong> (sounds like "jacks") and <strong>"ZoCS"</strong> (sounds like "socks").
+    </p>
+
+    <div class="family-box">
+        <h3>The "JaQX" (jacks) - Squeaky Clean Clique (j, q, x)</h3>
+        <p>These are the high-pitched snobs. They ONLY hang out with <strong>i</strong> and <strong>&uuml;</strong>.</p>
+        <p><strong>j</strong> = the <strong>J</strong>eep &middot; <strong>q</strong> = the bird that goes "<strong>Ch</strong>eep" (j + air) &middot; <strong>x</strong> = the <strong>Sh</strong>eep</p>
+        <p class="hook">Jeep won't pick you up? Try the Cheeping bird (q). Bird flies away? Find the Sheep (x). If it sounds like a squeaky toy, it's this club.</p>
+    </div>
+
+    <div class="family-box">
+        <h3>The "ZoCS" (socks) - Flat &amp; Buzzy Snakes (z, c, s)</h3>
+        <p>Tongue stays <strong>flat</strong> behind your teeth. No curling, no H.</p>
+        <p><strong>z</strong> = su<strong>DS</strong> (buzz, no air) &middot; <strong>c</strong> = pi<strong>TS</strong> (spitting air) &middot; <strong>s</strong> = <strong>S</strong>nake (sssss)</p>
+        <p class="hook">Zebra (z) too quiet? Try the spitting Cat (c). Cat runs off? Follow the Snake (s). If you add an H, the snake gets angry.</p>
+    </div>
+
+    <div class="family-box">
+        <h3>The "Curled-Up Cavemen" (zh, ch, sh)</h3>
+        <p>Tongue <strong>curled back</strong>. The H-versions of the snakes - deeper and thicker.</p>
+        <p><strong>zh</strong> = the <strong>J</strong>u<strong>dg</strong>e (deep "jr") &middot; <strong>ch</strong> = the <strong>Ch</strong>imp in <strong>ch</strong>urch (screaming air) &middot; <strong>sh</strong> = <strong>Sh</strong>e is <strong>sh</strong>ushing you</p>
+        <p class="hook">Judge (zh) ignores you? Ask the Chimp (ch). Chimp too loud? She (sh) will shush you. Curl your tongue like you're trying to swallow it.</p>
+    </div>
+
+    <div class="tip-box">
+        <strong>The 3-family shortcut:</strong> If the vowel after it is <strong>i</strong> or <strong>&uuml;</strong>, skip the snakes and cavemen - go straight to the Squeaky Clean clique (j/q/x). That eliminates 6 of the 9 options instantly.
+    </div>
+
+
+    <h2 class="section-title">The Finals Grid</h2>
+
+    <p class="section-intro">
+        Every final is built from up to 3 parts: a <strong>head</strong> (i, u, &uuml;), a <strong>body</strong> (a, e, o), and a <strong>tail</strong> (-i, -o/u, -n, -ng).
+        When your vowel is wrong, move one column or one row.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>No tail</th>
+                <th>Tail: -i</th>
+                <th>Tail: -u/o</th>
+                <th>Tail: -n</th>
+                <th>Tail: -ng</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="row-label">a</td>
+                <td class="pinyin-cell">a</td>
+                <td class="pinyin-cell">ai</td>
+                <td class="pinyin-cell">ao</td>
+                <td class="pinyin-cell">an</td>
+                <td class="pinyin-cell">ang</td>
+            </tr>
+            <tr>
+                <td class="row-label">e</td>
+                <td class="pinyin-cell">e</td>
+                <td class="pinyin-cell">ei</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">en</td>
+                <td class="pinyin-cell">eng</td>
+            </tr>
+            <tr>
+                <td class="row-label">o</td>
+                <td class="pinyin-cell">o</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">ou</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">ong</td>
+            </tr>
+            <tr>
+                <td class="row-label">i + a</td>
+                <td class="pinyin-cell">ia</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">iao</td>
+                <td class="pinyin-cell">ian</td>
+                <td class="pinyin-cell">iang</td>
+            </tr>
+            <tr>
+                <td class="row-label">i + e</td>
+                <td class="pinyin-cell">ie</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">iu *</td>
+                <td class="pinyin-cell">in</td>
+                <td class="pinyin-cell">ing</td>
+            </tr>
+            <tr>
+                <td class="row-label">i + &empty;</td>
+                <td class="pinyin-cell">i</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">iong</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="empty-cell">&middot;</td>
+            </tr>
+            <tr>
+                <td class="row-label">u + a</td>
+                <td class="pinyin-cell">ua</td>
+                <td class="pinyin-cell">uai</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">uan</td>
+                <td class="pinyin-cell">uang</td>
+            </tr>
+            <tr>
+                <td class="row-label">u + o</td>
+                <td class="pinyin-cell">uo</td>
+                <td class="pinyin-cell">ui *</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">un</td>
+                <td class="pinyin-cell">ueng</td>
+            </tr>
+            <tr>
+                <td class="row-label">u + &empty;</td>
+                <td class="pinyin-cell">u</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="empty-cell">&middot;</td>
+            </tr>
+            <tr>
+                <td class="row-label">&uuml;</td>
+                <td class="pinyin-cell">&uuml;</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="pinyin-cell">&uuml;e</td>
+                <td class="pinyin-cell">&uuml;an &middot; &uuml;n</td>
+                <td class="empty-cell">&middot;</td>
+            </tr>
+            <tr>
+                <td class="row-label">standalone</td>
+                <td class="pinyin-cell">er</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="empty-cell">&middot;</td>
+                <td class="empty-cell">&middot;</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="tip-box">
+        <strong>* Hidden sounds:</strong> Some finals are shortened in writing but keep their full pronunciation.<br>
+        &bull; <strong>iu</strong> is really <strong>iou</strong> - sounds like "yo"<br>
+        &bull; <strong>ui</strong> is really <strong>uei</strong> - sounds like "way"<br>
+        &bull; <strong>un</strong> is really <strong>uen</strong> - sounds like "wun" (rhymes with "won")<br>
+        This is why these vowels sound nothing like they look. If you hear "way" and type <strong>wai</strong>, try <strong>ui</strong> instead.
+    </div>
+
+    <div class="rule-box">
+        <strong>How to use this grid:</strong><br>
+        &bull; <strong>Wrong character?</strong> Move one column - the most common miss is <strong>-n vs -ng</strong>. Just add or drop the <strong>g</strong>.<br>
+        &bull; <strong>Still wrong?</strong> Swap the vowel order: <strong>ui &harr; iu</strong>, <strong>ei &harr; ie</strong>, <strong>ou &harr; uo</strong>.<br>
+        &bull; <strong>Sounds like it starts with a vowel?</strong> Add the bodyguard: <strong>w</strong> before u-sounds, <strong>y</strong> before i/&uuml;-sounds.
+    </div>
+
+
+    <h2 class="section-title">Quick Swap Cheat Sheet</h2>
+
+    <p class="section-intro">
+        When the IME doesn't show your character, try these swaps in order. Most problems are solved by the first two.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>You typed</th>
+                <th>Try instead</th>
+                <th>Why it happens</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pinyin-cell">-an</td>
+                <td class="pinyin-cell">-ang</td>
+                <td class="other-cell">Missed the -g (most common IME miss)</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">-ang</td>
+                <td class="pinyin-cell">-an</td>
+                <td class="other-cell">Added an extra -g</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">-en</td>
+                <td class="pinyin-cell">-eng</td>
+                <td class="other-cell">Same -n/-ng swap</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">-in</td>
+                <td class="pinyin-cell">-ing</td>
+                <td class="other-cell">Same -n/-ng swap</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">-ui</td>
+                <td class="pinyin-cell">-iu</td>
+                <td class="other-cell">"way" vs "yo" - swapped order</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">-iu</td>
+                <td class="pinyin-cell">-ui</td>
+                <td class="other-cell">Same, other direction</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">-ei</td>
+                <td class="pinyin-cell">-ie</td>
+                <td class="other-cell">"ay" vs "yeh"</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">-ou</td>
+                <td class="pinyin-cell">-uo</td>
+                <td class="other-cell">"oh" vs "waw"</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">zh-</td>
+                <td class="pinyin-cell">z- or j-</td>
+                <td class="other-cell">Move one row on the initials grid</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">ch-</td>
+                <td class="pinyin-cell">c- or q-</td>
+                <td class="other-cell">Move one row on the initials grid</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">sh-</td>
+                <td class="pinyin-cell">s- or x-</td>
+                <td class="other-cell">Move one row on the initials grid</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">b-</td>
+                <td class="pinyin-cell">p-</td>
+                <td class="other-cell">Move one column - add air</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">d-</td>
+                <td class="pinyin-cell">t-</td>
+                <td class="other-cell">Move one column - add air</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">g-</td>
+                <td class="pinyin-cell">k-</td>
+                <td class="other-cell">Move one column - add air</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">-u</td>
+                <td class="pinyin-cell">-v (&uuml;)</td>
+                <td class="other-cell">Forgot the dots - see &uuml; key below</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">-e</td>
+                <td class="pinyin-cell">-o</td>
+                <td class="other-cell">"uh" vs "aw" - sound similar</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <h2 class="section-title">The &uuml; Key</h2>
+
+    <p class="section-intro">
+        The &uuml; sound (say "ee" with rounded lips) is typed with the <strong>V</strong> key on most IMEs.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>You type</th>
+                <th>You get</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pinyin-cell">nv</td>
+                <td class="pinyin-cell">n&uuml;</td>
+                <td class="other-cell">女 n&uuml; (woman) - must use V</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">lv</td>
+                <td class="pinyin-cell">l&uuml;</td>
+                <td class="other-cell">绿 l&uuml; (green) - must use V</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">ju</td>
+                <td class="pinyin-cell">j&uuml;</td>
+                <td class="other-cell">After j, q, x the &uuml; is hidden - just type U</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">qu</td>
+                <td class="pinyin-cell">q&uuml;</td>
+                <td class="other-cell">去 q&uuml; (go) - just type QU, not QV</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">xu</td>
+                <td class="pinyin-cell">x&uuml;</td>
+                <td class="other-cell">需 x&uuml; (need) - just type XU, not XV</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">yuan</td>
+                <td class="pinyin-cell">&uuml;an</td>
+                <td class="other-cell">远 yu&aacute;n (far) - Y is the bodyguard for &uuml;</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="rule-box">
+        <strong>When to use V:</strong> Only after <strong>n</strong> and <strong>l</strong>. After <strong>j, q, x</strong> the &uuml; is disguised as U (the IME knows). After <strong>y</strong> just type YU.
+    </div>
+
+
+    <h2 class="section-title">The Bodyguard Rule (W and Y)</h2>
+
+    <p class="section-intro">
+        Syllables that start with a vowel sound get a "bodyguard" consonant in pinyin spelling. This is what you actually type in the IME.
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>You hear</th>
+                <th>You type</th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="pinyin-cell">u- sound</td>
+                <td class="pinyin-cell">w-</td>
+                <td class="other-cell">hear "oo" &rarr; type <strong>wu</strong> (五 five)</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">ua, uo, uai ...</td>
+                <td class="pinyin-cell">wa, wo, wai ...</td>
+                <td class="other-cell">hear "waw" &rarr; type <strong>wo</strong> (我 I/me)</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">i- sound</td>
+                <td class="pinyin-cell">y-</td>
+                <td class="other-cell">hear "ee" &rarr; type <strong>yi</strong> (一 one)</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">ia, ie, iao ...</td>
+                <td class="pinyin-cell">ya, ye, yao ...</td>
+                <td class="other-cell">hear "yow" &rarr; type <strong>yao</strong> (要 want)</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">&uuml;- sound</td>
+                <td class="pinyin-cell">yu-</td>
+                <td class="other-cell">hear "&uuml;" &rarr; type <strong>yu</strong> (鱼 fish)</td>
+            </tr>
+            <tr>
+                <td class="pinyin-cell">&uuml;e, &uuml;an, &uuml;n</td>
+                <td class="pinyin-cell">yue, yuan, yun</td>
+                <td class="other-cell">hear "you-eh" &rarr; type <strong>yue</strong> (月 moon)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="tip-box">
+        If a syllable sounds like it starts with a pure vowel, it never does in pinyin. Add <strong>Y</strong> for i/&uuml; sounds or <strong>W</strong> for u sounds.
+    </div>
+
+
+    <footer>
+        <p style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: #8B7D6B; letter-spacing: 0.04em;">拼 音 输 入 法 指 南</p>
+        <p>Pinyin IME Guide</p>
+    </footer>
+</div>
+
+</body>
+</html>
