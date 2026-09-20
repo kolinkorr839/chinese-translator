@@ -382,7 +382,8 @@ td:first-child {
 <body>
 
 <div class="header">
-  <h1>100 Common Radicals <button class="draw-toggle-btn" id="draw-toggle" title="Draw to search">&#x270E;</button></h1>
+  <h1>120 Common Radicals <button class="draw-toggle-btn" id="draw-toggle" title="Draw to search">&#x270E;</button></h1>
+  <p style="text-align:center; margin-top:6px; font-size:0.9rem; color:#8B7D6B;">Curated from the <a href="https://en.wiktionary.org/wiki/Appendix:Chinese_radical" target="_blank" rel="noopener" style="color:#C41E3A; text-decoration:none; border-bottom:1px solid rgba(196,30,58,0.3);">214 Kangxi radicals</a></p>
 </div>
 
 <div class="draw-panel" id="draw-panel">
@@ -547,7 +548,27 @@ const RADICALS = [
   { n:97, r:"石", v:"", m:"Stone; rock", ex:[["码","code","mǎ"],["破","break","pò"],["砖","brick","zhuān"],["研","grind","yán"],["确","sure","què"],["碗","bowl","wǎn"]] },
   { n:98, r:"示", v:"礻", m:"Altar; spirit; ritual", ex:[["神","god","shén"],["福","luck","fú"],["祝","wish","zhù"],["社","society","shè"],["礼","rite","lǐ"],["视","view","shì"]] },
   { n:99, r:"禾", v:"", m:"Grain; growing rice", ex:[["秋","autumn","qiū"],["种","seed","zhǒng"],["和","and","hé"],["科","science","kē"],["程","process","chéng"],["利","benefit","lì"]] },
-  { n:100, r:"竹", v:"⺮", m:"Bamboo", ex:[["笑","laugh","xiào"],["笔","pen","bǐ"],["算","calculate","suàn"],["简","simple","jiǎn"],["答","answer","dá"],["篇","chapter","piān"]] }
+  { n:100, r:"竹", v:"⺮", m:"Bamboo", ex:[["笑","laugh","xiào"],["笔","pen","bǐ"],["算","calculate","suàn"],["简","simple","jiǎn"],["答","answer","dá"],["篇","chapter","piān"]] },
+  { n:101, r:"白", v:"", m:"White; bright", ex:[["百","hundred","bǎi"],["的","(particle)","de"],["皇","emperor","huáng"],["泉","spring","quán"],["皂","soap","zào"],["皆","all","jiē"]] },
+  { n:102, r:"皮", v:"", m:"Skin; leather", ex:[["破","break","pò"],["波","wave","bō"],["疲","tired","pí"],["披","drape","pī"],["皱","wrinkle","zhòu"],["被","quilt","bèi"]] },
+  { n:103, r:"皿", v:"", m:"Dish; vessel", ex:[["盘","plate","pán"],["盖","cover","gài"],["盛","fill","chéng"],["盆","basin","pén"],["盈","full","yíng"],["监","supervise","jiān"]] },
+  { n:104, r:"疒", v:"", m:"Sickness; illness", ex:[["病","sick","bìng"],["痛","pain","tòng"],["疼","ache","téng"],["疯","crazy","fēng"],["症","symptom","zhèng"],["瘦","thin","shòu"]] },
+  { n:105, r:"穴", v:"", m:"Cave; hole", ex:[["空","empty","kōng"],["穿","wear","chuān"],["窗","window","chuāng"],["突","sudden","tū"],["究","study","jiū"],["穷","poor","qióng"]] },
+  { n:106, r:"立", v:"", m:"Stand; establish", ex:[["站","stand","zhàn"],["竞","compete","jìng"],["端","end","duān"],["章","chapter","zhāng"],["童","child","tóng"],["竖","vertical","shù"]] },
+  { n:107, r:"耳", v:"", m:"Ear", ex:[["聪","clever","cōng"],["职","duty","zhí"],["联","connect","lián"],["取","take","qǔ"],["聊","chat","liáo"],["耻","shame","chǐ"]] },
+  { n:108, r:"米", v:"", m:"Rice; grain", ex:[["粮","grain","liáng"],["精","fine","jīng"],["粗","coarse","cū"],["糖","sugar","táng"],["粉","powder","fěn"],["糊","paste","hú"]] },
+  { n:109, r:"衤", v:"衣", m:"Clothing; garment", ex:[["被","quilt","bèi"],["裤","pants","kù"],["裙","skirt","qún"],["袋","bag","dài"],["补","repair","bǔ"],["衬","lining","chèn"]] },
+  { n:110, r:"虫", v:"", m:"Insect; bug", ex:[["蛇","snake","shé"],["蚊","mosquito","wén"],["蜂","bee","fēng"],["虾","shrimp","xiā"],["蝶","butterfly","dié"],["融","melt","róng"]] },
+  { n:111, r:"羊", v:"", m:"Sheep; goat", ex:[["美","beautiful","měi"],["善","good","shàn"],["群","group","qún"],["羞","shy","xiū"],["养","raise","yǎng"],["鲜","fresh","xiān"]] },
+  { n:112, r:"足", v:"", m:"Foot; leg", ex:[["跑","run","pǎo"],["路","road","lù"],["跳","jump","tiào"],["跟","follow","gēn"],["踢","kick","tī"],["距","distance","jù"]] },
+  { n:113, r:"酉", v:"", m:"Wine vessel; alcohol", ex:[["酒","wine","jiǔ"],["醉","drunk","zuì"],["醋","vinegar","cù"],["酸","sour","suān"],["配","match","pèi"],["酿","brew","niàng"]] },
+  { n:114, r:"门", v:"門", m:"Gate; door", ex:[["问","ask","wèn"],["间","between","jiān"],["闻","hear","wén"],["闭","close","bì"],["闹","noisy","nào"],["闷","stuffy","mēn"]] },
+  { n:115, r:"雨", v:"", m:"Rain", ex:[["雪","snow","xuě"],["雷","thunder","léi"],["零","zero","líng"],["需","need","xū"],["震","shake","zhèn"],["霜","frost","shuāng"]] },
+  { n:116, r:"革", v:"", m:"Leather; hide", ex:[["鞋","shoe","xié"],["靴","boot","xuē"],["鞭","whip","biān"],["靠","lean on","kào"],["勒","rein in","lè"],["鞍","saddle","ān"]] },
+  { n:117, r:"页", v:"頁", m:"Page; head; leaf", ex:[["题","topic","tí"],["顺","smooth","shùn"],["须","must","xū"],["领","lead","lǐng"],["额","forehead","é"],["颜","face","yán"]] },
+  { n:118, r:"马", v:"馬", m:"Horse", ex:[["骑","ride","qí"],["驾","drive","jià"],["骗","deceive","piàn"],["驻","station","zhù"],["驰","gallop","chí"],["骄","proud","jiāo"]] },
+  { n:119, r:"鸟", v:"鳥", m:"Bird", ex:[["鸡","chicken","jī"],["鸭","duck","yā"],["鸣","cry","míng"],["鹅","goose","é"],["鹰","eagle","yīng"],["鸽","pigeon","gē"]] },
+  { n:120, r:"舟", v:"", m:"Boat; ship", ex:[["船","ship","chuán"],["般","sort","bān"],["航","navigate","háng"],["舰","warship","jiàn"],["艇","boat","tǐng"],["舱","cabin","cāng"]] }
 ];
 
 const tbody = document.getElementById('radical-body');

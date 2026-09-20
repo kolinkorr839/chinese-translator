@@ -250,13 +250,13 @@ def check_breakdown_and_etymology_skip_non_cjk():
 
 @check
 def check_radicals_data_shape():
-    """radicals reference has 100 entries with required fields and 6 examples each"""
+    """radicals reference has 120 entries with required fields and 6 examples each"""
     src = s.read("radicals_reference.html")
     m = re.search(r"const RADICALS = \[(.*?)\];", src, re.S)
     assert m, "could not find RADICALS array in radicals_reference.html"
 
     entries = re.findall(r"\{\s*n:\s*(\d+),\s*r:", m.group(1))
-    assert len(entries) == 100, f"expected 100 radicals, got {len(entries)}"
+    assert len(entries) == 120, f"expected 120 radicals, got {len(entries)}"
 
     examples = re.findall(r"ex:\[(.+?)\]\s*\}", m.group(1))
     bad = []
@@ -265,7 +265,7 @@ def check_radicals_data_shape():
         if count != 6:
             bad.append(f"radical {i}: has {count} examples (expected 6)")
     assert not bad, "example count issues:\n  " + "\n  ".join(bad[:10])
-    return f"100 radicals, all with 6 examples"
+    return f"120 radicals, all with 6 examples"
 
 
 @check
