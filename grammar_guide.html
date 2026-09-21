@@ -452,6 +452,28 @@ body {
 
 /* smooth scroll */
 html { scroll-behavior: smooth; }
+
+/* back to contents links */
+.pattern-number a {
+  color: var(--vermillion);
+  text-decoration: none;
+}
+.pattern-number a:hover {
+  text-decoration: underline;
+}
+.back-to-toc-link {
+  display: block;
+  text-align: left;
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+.back-to-toc-link a {
+  color: var(--vermillion);
+  text-decoration: none;
+}
+.back-to-toc-link a:hover {
+  text-decoration: underline;
+}
 </style>
 </head>
 <body>
@@ -463,27 +485,27 @@ html { scroll-behavior: smooth; }
   <p style="text-align:center; color:#8B7D6B; font-size:0.95rem; font-family:'Crimson Pro',serif; font-weight:400; letter-spacing:0.04em; margin-bottom:16px;">Core patterns for conversational Mandarin</p>
 
   <!-- Table of Contents -->
-  <nav class="toc">
+  <nav class="toc" id="toc">
     <h2>Contents</h2>
     <ol>
       <li><a href="#pattern-1">Basic Word Order <span class="toc-chinese">S + T + V + O</span></a></li>
-      <li><a href="#pattern-2">是...的 Construction <span class="toc-chinese">Emphasis on circumstances</span></a></li>
-      <li><a href="#pattern-3">在 + Verb <span class="toc-chinese">Ongoing action</span></a></li>
-      <li><a href="#pattern-4">了 Particle <span class="toc-chinese">Completed action &amp; change of state</span></a></li>
-      <li><a href="#pattern-5">过 Particle <span class="toc-chinese">Past experience</span></a></li>
-      <li><a href="#pattern-6">想 / 要 / 会 / 能 / 可以 <span class="toc-chinese">The 5 "can/want" words</span></a></li>
-      <li><a href="#pattern-7">把 Active Voice <span class="toc-chinese">Take [this] and [do that to it]</span></a></li>
-      <li><a href="#pattern-8">被 Passive Voice <span class="toc-chinese">Was [done to] by someone</span></a></li>
-      <li><a href="#pattern-9">的 Particle <span class="toc-chinese">Possession &amp; description</span></a></li>
-      <li><a href="#pattern-10">得 Complement <span class="toc-chinese">Degree &amp; result</span></a></li>
-      <li><a href="#pattern-11">地 Particle <span class="toc-chinese">Adverb marker</span></a></li>
-      <li><a href="#pattern-12">比 Comparisons <span class="toc-chinese">A is more X than B</span></a></li>
+      <li><a href="#pattern-2">是...的 Construction <span class="toc-chinese">S + 是 + Detail + 的</span></a></li>
+      <li><a href="#pattern-3">在 + Verb <span class="toc-chinese">S + 在 + Verb</span></a></li>
+      <li><a href="#pattern-4">了 Particle <span class="toc-chinese">Verb + 了 / Situation + 了</span></a></li>
+      <li><a href="#pattern-5">过 Particle <span class="toc-chinese">Verb + 过</span></a></li>
+      <li><a href="#pattern-6">想 / 要 / 会 / 能 / 可以 <span class="toc-chinese">S + Modal + Verb</span></a></li>
+      <li><a href="#pattern-7">把 Active Voice <span class="toc-chinese">S + Time + 把 + O + Verb + Result</span></a></li>
+      <li><a href="#pattern-8">被 Passive Voice <span class="toc-chinese">Victim + Time + 被 + Doer + Verb + Result</span></a></li>
+      <li><a href="#pattern-9">的 Particle <span class="toc-chinese">Noun + 的 + Noun / Adj + 的 + Noun</span></a></li>
+      <li><a href="#pattern-10">得 Complement <span class="toc-chinese">Verb + 得 + Description</span></a></li>
+      <li><a href="#pattern-11">地 Particle <span class="toc-chinese">Adverb + 地 + Verb</span></a></li>
+      <li><a href="#pattern-12">比 Comparisons <span class="toc-chinese">A + 比 + B + Adj</span></a></li>
       <li><a href="#pattern-13">Clause Connectors <span class="toc-chinese">因为...所以, 虽然...但是, 如果...就</span></a></li>
-      <li><a href="#pattern-14">越来越 <span class="toc-chinese">More and more</span></a></li>
-      <li><a href="#pattern-15">一边...一边 <span class="toc-chinese">Doing two things at once</span></a></li>
-      <li><a href="#pattern-16">Result Complements <span class="toc-chinese">Verb + outcome (看懂, 吃完, 做好)</span></a></li>
-      <li><a href="#pattern-17">Directional Complements <span class="toc-chinese">Verb + direction (走进去, 跑出来)</span></a></li>
-      <li><a href="#pattern-18">Location Words <span class="toc-chinese">Noun + position (位置词)</span></a></li>
+      <li><a href="#pattern-14">越来越 <span class="toc-chinese">越来越 + Adj/Verb</span></a></li>
+      <li><a href="#pattern-15">一边...一边 <span class="toc-chinese">一边 + V + 一边 + V</span></a></li>
+      <li><a href="#pattern-16">Result Complements <span class="toc-chinese">Verb + Result (看懂, 吃完, 做好)</span></a></li>
+      <li><a href="#pattern-17">Directional Complements <span class="toc-chinese">Verb + Direction (走进去, 跑出来)</span></a></li>
+      <li><a href="#pattern-18">Location Words <span class="toc-chinese">Noun + Location Word (位置词)</span></a></li>
     </ol>
   </nav>
 
@@ -491,7 +513,7 @@ html { scroll-behavior: smooth; }
   <!-- PATTERN 1: Basic Word Order -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-1">
-    <div class="pattern-number">Pattern 1</div>
+    <div class="pattern-number"><a href="#toc">Pattern 1</a></div>
     <h2 class="pattern-title">Basic Word Order (S + T + V + O)</h2>
 
     <div class="formula-row">
@@ -551,13 +573,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>If you remember one rule, remember this: time goes <strong>before</strong> the verb. "I yesterday ate" not "I ate yesterday."</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 2: 是...的 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-2">
-    <div class="pattern-number">Pattern 2</div>
+    <div class="pattern-number"><a href="#toc">Pattern 2</a></div>
     <h2 class="pattern-title">是...的 (Emphasis on Circumstances)</h2>
 
     <div class="formula-row">
@@ -617,13 +641,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>Think of <code>是...的</code> as a spotlight - the action already happened, you're just shining a light on one detail.</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 3: 在 + Verb -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-3">
-    <div class="pattern-number">Pattern 3</div>
+    <div class="pattern-number"><a href="#toc">Pattern 3</a></div>
     <h2 class="pattern-title">在 + Verb (Ongoing Action)</h2>
 
     <div class="formula-row">
@@ -709,13 +735,15 @@ html { scroll-behavior: smooth; }
           <td style="padding:4px 8px"><span class="simp">我会吃辣</span><span class="sep"> | </span><span class="trad">我會吃辣</span> - I can eat spicy food</td></tr>
       </table>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 4: 了 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-4">
-    <div class="pattern-number">Pattern 4</div>
+    <div class="pattern-number"><a href="#toc">Pattern 4</a></div>
     <h2 class="pattern-title">了 (Completed Action &amp; Change of State)</h2>
 
     <div class="formula-row">
@@ -783,13 +811,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>Verb + <code>了</code> = "did it." Sentence + <code>了</code> = "now it's different." When both appear (<code>我吃了饭了</code>), it means "I've eaten now" - completed AND new situation.</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 5: 过 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-5">
-    <div class="pattern-number">Pattern 5</div>
+    <div class="pattern-number"><a href="#toc">Pattern 5</a></div>
     <h2 class="pattern-title">过 (Past Experience)</h2>
 
     <div class="formula-row">
@@ -849,13 +879,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p><code>过</code> vs <code>了</code>: <code>我吃了饺子</code> = "I ate dumplings (just now)." <code>我吃过饺子</code> = "I've had dumplings (at some point in my life)."</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 6: 想/要/會/能/可以 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-6">
-    <div class="pattern-number">Pattern 6</div>
+    <div class="pattern-number"><a href="#toc">Pattern 6</a></div>
     <h2 class="pattern-title">想 / 要 / 会 / 能 / 可以 (The 5 "Can/Want" Words)</h2>
 
     <div class="formula-row">
@@ -991,13 +1023,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>Quick test: "Can you swim?" = <code>你会游泳吗</code> (skill). "Can you swim today?" = <code>你今天能游泳吗</code> (circumstance). "May I swim here?" = <code>我可以在这里游泳吗</code> (permission).</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 7: 把 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-7">
-    <div class="pattern-number">Pattern 7</div>
+    <div class="pattern-number"><a href="#toc">Pattern 7</a></div>
     <h2 class="pattern-title">把 (Active Voice)</h2>
 
     <div class="formula-row">
@@ -1057,13 +1091,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p><code>把</code> needs a result - you can't just say <code>把门关</code>. You need <code>把门关上</code> (close-up). The verb alone isn't enough; something must happen <strong>to</strong> the object.</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 8: 被 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-8">
-    <div class="pattern-number">Pattern 8</div>
+    <div class="pattern-number"><a href="#toc">Pattern 8</a></div>
     <h2 class="pattern-title">被 (Passive Voice)</h2>
 
     <div class="formula-row">
@@ -1123,13 +1159,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p><code>被</code> traditionally carries a negative feeling - something bad happened to you. Modern usage is looser, but when in doubt, <code>被</code> implies the subject didn't want it to happen.</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- 把 vs 被 Comparison -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="ba-bei-comparison">
-    <div class="pattern-number" style="color:var(--amber-border)">Patterns 7 &amp; 8</div>
+    <div class="pattern-number" style="color:var(--amber-border)"><a href="#toc" style="color:inherit">Patterns 7 &amp; 8</a></div>
     <h2 class="pattern-title">把 vs 被 - Active &amp; Passive Voice</h2>
 
     <p class="explanation">
@@ -1179,13 +1217,15 @@ html { scroll-behavior: smooth; }
       <p><code>被</code> is closest to English <strong>"was [verb]ed"</strong> - "the cake <em>was</em> eaten." Easy to map.</p>
       <p style="margin-top:8px;"><code>把</code> is <strong>"Take [this] and [do that to it]"</strong> (The Executive) - English doesn't really have this. You just have to learn to "grab" your objects before you "verb" them!</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 9: 的 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-9">
-    <div class="pattern-number">Pattern 9</div>
+    <div class="pattern-number"><a href="#toc">Pattern 9</a></div>
     <h2 class="pattern-title">的 (Possession &amp; Description)</h2>
 
     <div class="formula-row">
@@ -1253,13 +1293,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>For close relationships, <code>的</code> is often dropped: <code>我妈</code> (my mom), <code>我家</code> (my home). But for emphasis or clarity, keep it: <code>这是我的</code> ("This is mine!").</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 10: 得 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-10">
-    <div class="pattern-number">Pattern 10</div>
+    <div class="pattern-number"><a href="#toc">Pattern 10</a></div>
     <h2 class="pattern-title">得 (Degree &amp; Result Complement)</h2>
 
     <div class="formula-row">
@@ -1319,13 +1361,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>If the verb has an object, repeat the verb: <code>他说中文说得很好</code> (He speaks Chinese speaks-well). You can't put <code>得</code> between the verb and its object.</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 11: 地 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-11">
-    <div class="pattern-number">Pattern 11</div>
+    <div class="pattern-number"><a href="#toc">Pattern 11</a></div>
     <h2 class="pattern-title">地 (Adverb Marker)</h2>
 
     <div class="formula-row">
@@ -1385,13 +1429,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>The three <code>de</code> particles: <code>的</code> modifies nouns (beautiful <strong>的</strong> girl), <code>得</code> follows verbs (runs <strong>得</strong> fast), <code>地</code> precedes verbs (slowly <strong>地</strong> walks). Position is the key.</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 12: 比 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-12">
-    <div class="pattern-number">Pattern 12</div>
+    <div class="pattern-number"><a href="#toc">Pattern 12</a></div>
     <h2 class="pattern-title">比 (Comparisons)</h2>
 
     <div class="formula-row">
@@ -1451,13 +1497,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>Don't add <code>很</code> (very) after <code>比</code>. Say <code>他比我高</code> not <code>他比我很高</code>. For emphasis, use <code>多</code>: <code>他比我高多了</code> ("He's much taller than me").</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 13: Clause Connectors -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-13">
-    <div class="pattern-number">Pattern 13</div>
+    <div class="pattern-number"><a href="#toc">Pattern 13</a></div>
     <h2 class="pattern-title">Clause Connectors</h2>
 
     <p class="explanation">
@@ -1540,13 +1588,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>In casual speech, one half can be dropped: <code>因为下雨我没出去</code> or <code>下雨所以我没出去</code>. But using both halves is always correct and clearer.</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 14: 越來越 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-14">
-    <div class="pattern-number">Pattern 14</div>
+    <div class="pattern-number"><a href="#toc">Pattern 14</a></div>
     <h2 class="pattern-title">越来越 (More and More)</h2>
 
     <div class="formula-row">
@@ -1606,13 +1656,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>Related pattern: <code>越 A 越 B</code> = "the more A, the more B." Example: <code>越吃越胖</code> (the more you eat, the fatter you get).</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 15: 一邊...一邊 -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-15">
-    <div class="pattern-number">Pattern 15</div>
+    <div class="pattern-number"><a href="#toc">Pattern 15</a></div>
     <h2 class="pattern-title">一边...一边 (Doing Two Things at Once)</h2>
 
     <div class="formula-row">
@@ -1672,13 +1724,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>Both actions must be happening at the same time. You can't use <code>一边...一边</code> for sequential events. For "first X then Y," use <code>先...再</code> instead.</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 16: Result Complements -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-16">
-    <div class="pattern-number">Pattern 16</div>
+    <div class="pattern-number"><a href="#toc">Pattern 16</a></div>
     <h2 class="pattern-title">Result Complements (Verb + Outcome)</h2>
 
     <div class="formula-row">
@@ -1761,13 +1815,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>Result complements pair naturally with <code>把</code> (Pattern 7): <code>我把功课做完了</code> - the <code>把</code> moves the object forward, and the complement says what happened to it. To negate a result complement, use <code>没</code> (not <code>不</code>): <code>我没看懂</code>, not <s>我不看懂</s>.</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 17: Directional Complements -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-17">
-    <div class="pattern-number">Pattern 17</div>
+    <div class="pattern-number"><a href="#toc">Pattern 17</a></div>
     <h2 class="pattern-title">Directional Complements (Verb + Direction)</h2>
 
     <div class="formula-row">
@@ -1856,13 +1912,15 @@ html { scroll-behavior: smooth; }
       <div class="tip-label">Tip</div>
       <p>When there's an object, it can go between the two parts of the directional complement: <code>走进教室去</code> (walk into the classroom). Simple directions (<code>来/去</code>) put the object before them: <code>拿书来</code> (bring the book).</p>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
   <!-- PATTERN 18: Location Words (位置词) -->
   <!-- ============================================================ -->
   <section class="pattern-card" id="pattern-18">
-    <div class="pattern-number">Pattern 18</div>
+    <div class="pattern-number"><a href="#toc">Pattern 18</a></div>
     <h2 class="pattern-title">Location Words (位置词)</h2>
 
     <div class="formula-row">
@@ -1941,6 +1999,8 @@ html { scroll-behavior: smooth; }
       <tr><td style="padding:4px 8px">附近</td><td style="padding:4px 8px">f&#249;j&#236;n</td><td style="padding:4px 8px">nearby</td></tr>
       </table>
     </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- Footer -->
