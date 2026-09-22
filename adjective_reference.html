@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adjective Reference - Mandarin Chinese</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rice-paper: #F5F0E8;
+  --card-bg: #FFFDF8;
+  --ink: #1a1a2e;
+  --vermillion: #C41E3A;
+  --sage: #7D8471;
+  --ink-wash: #6B7B8D;
+  --warm-border: #E8E0D4;
+  --amber-bg: #FFF8E7;
+  --amber-border: #D4A853;
+}
+
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC',
+    'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: var(--rice-paper);
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    );
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+/* -- Page Header -- */
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+.page-header h1 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--vermillion);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+.page-header .subtitle {
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* -- Table -- */
+
+.adj-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+  margin-bottom: 36px;
+}
+
+.adj-table thead th {
+  background: #F5EDE0;
+  color: #3D2B1F;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--vermillion);
+}
+
+.adj-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.7);
+  vertical-align: middle;
+  font-size: 1rem;
+}
+
+.adj-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cat-cell {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  background: rgba(245, 237, 224, 0.5);
+}
+
+.clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 4px;
+}
+
+.clickable:hover {
+  background: rgba(196, 30, 58, 0.06);
+}
+
+.zh {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.zh .trad {
+  opacity: 0.55;
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.pinyin {
+  color: var(--sage);
+  font-style: italic;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 4px;
+}
+
+.pinyin:hover {
+  background: rgba(125, 132, 113, 0.1);
+}
+
+.eng {
+  color: var(--ink-wash);
+  font-size: 0.95rem;
+}
+
+/* -- Rules Section -- */
+
+.rules-section {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.rules-section h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--vermillion);
+  display: inline-block;
+}
+
+.rule {
+  margin-bottom: 24px;
+}
+
+.rule:last-child {
+  margin-bottom: 0;
+}
+
+.rule-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vermillion);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.rule-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.rule p {
+  font-size: 1.05rem;
+  color: var(--ink);
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+.rule p strong {
+  color: var(--vermillion);
+  font-weight: 600;
+}
+
+.rule-example {
+  padding: 10px 14px;
+  background: rgba(245, 240, 232, 0.5);
+  border-radius: 8px;
+  border: 1px solid rgba(232, 224, 212, 0.6);
+  margin: 8px 0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.rule-example:hover {
+  background: rgba(196, 30, 58, 0.05);
+}
+
+.rule-example .zh {
+  font-size: 1.25rem;
+}
+
+.rule-example .pinyin {
+  display: block;
+  margin-top: 2px;
+}
+
+.rule-example .eng {
+  display: block;
+  margin-top: 2px;
+}
+
+/* -- Footer -- */
+
+.page-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--warm-border);
+  color: var(--ink-wash);
+  font-size: 0.9rem;
+}
+
+.page-footer .deco {
+  color: var(--vermillion);
+  opacity: 0.3;
+  font-size: 1.2rem;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 8px;
+  margin-bottom: 8px;
+}
+
+/* -- Responsive -- */
+
+@media (max-width: 600px) {
+  .container { padding: 24px 14px 60px; }
+  .page-header h1 { font-size: 1.6rem; }
+  .adj-table { font-size: 0.9rem; }
+  .adj-table thead th { padding: 8px 8px; font-size: 0.8rem; }
+  .adj-table tbody td { padding: 8px 8px; }
+  .zh { font-size: 1.15rem; }
+  .rules-section { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Adjective Reference</h1>
+    <p class="subtitle">The Big 50 - opposite pairs for conversational Mandarin</p>
+  </div>
+
+  <!-- Adjective Table -->
+  <table class="adj-table">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Word</th>
+        <th>Pinyin</th>
+        <th>English</th>
+        <th>Opposite</th>
+        <th>Pinyin</th>
+        <th>English</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Opinion -->
+      <tr>
+        <td class="cat-cell" rowspan="2">Opinion</td>
+        <td class="clickable" data-zh="好"><span class="zh">好</span></td>
+        <td class="pinyin">hǎo</td>
+        <td class="eng">Good</td>
+        <td class="clickable" data-zh="坏"><span class="zh">坏 <span class="trad">(壞)</span></span></td>
+        <td class="pinyin">huài</td>
+        <td class="eng">Bad</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="对"><span class="zh">对 <span class="trad">(對)</span></span></td>
+        <td class="pinyin">duì</td>
+        <td class="eng">Correct</td>
+        <td class="clickable" data-zh="错"><span class="zh">错 <span class="trad">(錯)</span></span></td>
+        <td class="pinyin">cuò</td>
+        <td class="eng">Wrong</td>
+      </tr>
+
+      <!-- Size / Amount -->
+      <tr>
+        <td class="cat-cell" rowspan="2">Size / Amount</td>
+        <td class="clickable" data-zh="大"><span class="zh">大</span></td>
+        <td class="pinyin">dà</td>
+        <td class="eng">Big</td>
+        <td class="clickable" data-zh="小"><span class="zh">小</span></td>
+        <td class="pinyin">xiǎo</td>
+        <td class="eng">Small</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="多"><span class="zh">多</span></td>
+        <td class="pinyin">duō</td>
+        <td class="eng">Many / Much</td>
+        <td class="clickable" data-zh="少"><span class="zh">少</span></td>
+        <td class="pinyin">shǎo</td>
+        <td class="eng">Few / Little</td>
+      </tr>
+
+      <!-- Temperature -->
+      <tr>
+        <td class="cat-cell">Temperature</td>
+        <td class="clickable" data-zh="热"><span class="zh">热 <span class="trad">(熱)</span></span></td>
+        <td class="pinyin">rè</td>
+        <td class="eng">Hot</td>
+        <td class="clickable" data-zh="冷"><span class="zh">冷</span></td>
+        <td class="pinyin">lěng</td>
+        <td class="eng">Cold</td>
+      </tr>
+
+      <!-- Price -->
+      <tr>
+        <td class="cat-cell">Price</td>
+        <td class="clickable" data-zh="贵"><span class="zh">贵 <span class="trad">(貴)</span></span></td>
+        <td class="pinyin">guì</td>
+        <td class="eng">Expensive</td>
+        <td class="clickable" data-zh="便宜"><span class="zh">便宜</span></td>
+        <td class="pinyin">piányi</td>
+        <td class="eng">Cheap</td>
+      </tr>
+
+      <!-- Speed -->
+      <tr>
+        <td class="cat-cell">Speed</td>
+        <td class="clickable" data-zh="快"><span class="zh">快</span></td>
+        <td class="pinyin">kuài</td>
+        <td class="eng">Fast</td>
+        <td class="clickable" data-zh="慢"><span class="zh">慢</span></td>
+        <td class="pinyin">màn</td>
+        <td class="eng">Slow</td>
+      </tr>
+
+      <!-- Difficulty -->
+      <tr>
+        <td class="cat-cell">Difficulty</td>
+        <td class="clickable" data-zh="难"><span class="zh">难 <span class="trad">(難)</span></span></td>
+        <td class="pinyin">nán</td>
+        <td class="eng">Difficult</td>
+        <td class="clickable" data-zh="容易"><span class="zh">容易</span></td>
+        <td class="pinyin">róngyì</td>
+        <td class="eng">Easy</td>
+      </tr>
+
+      <!-- Emotion -->
+      <tr>
+        <td class="cat-cell" rowspan="3">Emotion</td>
+        <td class="clickable" data-zh="高兴"><span class="zh">高兴 <span class="trad">(高興)</span></span></td>
+        <td class="pinyin">gāoxìng</td>
+        <td class="eng">Happy</td>
+        <td class="clickable" data-zh="难过"><span class="zh">难过 <span class="trad">(難過)</span></span></td>
+        <td class="pinyin">nánguò</td>
+        <td class="eng">Sad</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="累"><span class="zh">累</span></td>
+        <td class="pinyin">lèi</td>
+        <td class="eng">Tired</td>
+        <td class="clickable" data-zh="舒服"><span class="zh">舒服</span></td>
+        <td class="pinyin">shūfu</td>
+        <td class="eng">Comfortable</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="忙"><span class="zh">忙</span></td>
+        <td class="pinyin">máng</td>
+        <td class="eng">Busy</td>
+        <td class="clickable" data-zh="空"><span class="zh">空</span></td>
+        <td class="pinyin">kòng</td>
+        <td class="eng">Free (time)</td>
+      </tr>
+
+      <!-- Distance -->
+      <tr>
+        <td class="cat-cell">Distance</td>
+        <td class="clickable" data-zh="远"><span class="zh">远 <span class="trad">(遠)</span></span></td>
+        <td class="pinyin">yuǎn</td>
+        <td class="eng">Far</td>
+        <td class="clickable" data-zh="近"><span class="zh">近</span></td>
+        <td class="pinyin">jìn</td>
+        <td class="eng">Near</td>
+      </tr>
+
+      <!-- Height -->
+      <tr>
+        <td class="cat-cell">Height</td>
+        <td class="clickable" data-zh="高"><span class="zh">高</span></td>
+        <td class="pinyin">gāo</td>
+        <td class="eng">Tall / High</td>
+        <td class="clickable" data-zh="矮"><span class="zh">矮</span></td>
+        <td class="pinyin">ǎi</td>
+        <td class="eng">Short (height)</td>
+      </tr>
+
+      <!-- Length -->
+      <tr>
+        <td class="cat-cell">Length</td>
+        <td class="clickable" data-zh="长"><span class="zh">长 <span class="trad">(長)</span></span></td>
+        <td class="pinyin">cháng</td>
+        <td class="eng">Long</td>
+        <td class="clickable" data-zh="短"><span class="zh">短</span></td>
+        <td class="pinyin">duǎn</td>
+        <td class="eng">Short (length)</td>
+      </tr>
+
+      <!-- Weight -->
+      <tr>
+        <td class="cat-cell">Weight</td>
+        <td class="clickable" data-zh="重"><span class="zh">重</span></td>
+        <td class="pinyin">zhòng</td>
+        <td class="eng">Heavy</td>
+        <td class="clickable" data-zh="轻"><span class="zh">轻 <span class="trad">(輕)</span></span></td>
+        <td class="pinyin">qīng</td>
+        <td class="eng">Light</td>
+      </tr>
+
+      <!-- Age -->
+      <tr>
+        <td class="cat-cell" rowspan="2">Age</td>
+        <td class="clickable" data-zh="新"><span class="zh">新</span></td>
+        <td class="pinyin">xīn</td>
+        <td class="eng">New</td>
+        <td class="clickable" data-zh="旧"><span class="zh">旧 <span class="trad">(舊)</span></span></td>
+        <td class="pinyin">jiù</td>
+        <td class="eng">Old (objects)</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="老"><span class="zh">老</span></td>
+        <td class="pinyin">lǎo</td>
+        <td class="eng">Old (people)</td>
+        <td class="clickable" data-zh="年轻"><span class="zh">年轻 <span class="trad">(年輕)</span></span></td>
+        <td class="pinyin">niánqīng</td>
+        <td class="eng">Young</td>
+      </tr>
+
+      <!-- Thickness -->
+      <tr>
+        <td class="cat-cell">Thickness</td>
+        <td class="clickable" data-zh="厚"><span class="zh">厚</span></td>
+        <td class="pinyin">hòu</td>
+        <td class="eng">Thick</td>
+        <td class="clickable" data-zh="薄"><span class="zh">薄</span></td>
+        <td class="pinyin">báo</td>
+        <td class="eng">Thin</td>
+      </tr>
+
+      <!-- State -->
+      <tr>
+        <td class="cat-cell" rowspan="3">State</td>
+        <td class="clickable" data-zh="干"><span class="zh">干 <span class="trad">(乾)</span></span></td>
+        <td class="pinyin">gān</td>
+        <td class="eng">Dry</td>
+        <td class="clickable" data-zh="湿"><span class="zh">湿 <span class="trad">(濕)</span></span></td>
+        <td class="pinyin">shī</td>
+        <td class="eng">Wet</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="硬"><span class="zh">硬</span></td>
+        <td class="pinyin">yìng</td>
+        <td class="eng">Hard</td>
+        <td class="clickable" data-zh="软"><span class="zh">软 <span class="trad">(軟)</span></span></td>
+        <td class="pinyin">ruǎn</td>
+        <td class="eng">Soft</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="满"><span class="zh">满 <span class="trad">(滿)</span></span></td>
+        <td class="pinyin">mǎn</td>
+        <td class="eng">Full</td>
+        <td class="clickable" data-zh="空"><span class="zh">空</span></td>
+        <td class="pinyin">kōng</td>
+        <td class="eng">Empty</td>
+      </tr>
+
+      <!-- Cleanliness -->
+      <tr>
+        <td class="cat-cell">Cleanliness</td>
+        <td class="clickable" data-zh="干净"><span class="zh">干净 <span class="trad">(乾淨)</span></span></td>
+        <td class="pinyin">gānjìng</td>
+        <td class="eng">Clean</td>
+        <td class="clickable" data-zh="脏"><span class="zh">脏 <span class="trad">(髒)</span></span></td>
+        <td class="pinyin">zāng</td>
+        <td class="eng">Dirty</td>
+      </tr>
+
+      <!-- Brightness -->
+      <tr>
+        <td class="cat-cell">Brightness</td>
+        <td class="clickable" data-zh="亮"><span class="zh">亮</span></td>
+        <td class="pinyin">liàng</td>
+        <td class="eng">Bright</td>
+        <td class="clickable" data-zh="暗"><span class="zh">暗</span></td>
+        <td class="pinyin">àn</td>
+        <td class="eng">Dark</td>
+      </tr>
+
+      <!-- Senses -->
+      <tr>
+        <td class="cat-cell" rowspan="2">Senses</td>
+        <td class="clickable" data-zh="香"><span class="zh">香</span></td>
+        <td class="pinyin">xiāng</td>
+        <td class="eng">Fragrant / Tasty</td>
+        <td class="clickable" data-zh="臭"><span class="zh">臭</span></td>
+        <td class="pinyin">chòu</td>
+        <td class="eng">Stinky</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="甜"><span class="zh">甜</span></td>
+        <td class="pinyin">tián</td>
+        <td class="eng">Sweet</td>
+        <td class="clickable" data-zh="苦"><span class="zh">苦</span></td>
+        <td class="pinyin">kǔ</td>
+        <td class="eng">Bitter</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 3 Rules Section -->
+  <div class="rules-section">
+    <h2>3 Rules for Using Adjectives</h2>
+
+    <!-- Rule 1: The Very Tax -->
+    <div class="rule">
+      <div class="rule-number">Rule 1</div>
+      <div class="rule-title">The "Very" Tax - 很 (hěn)</div>
+      <p>
+        To say "The coffee is hot," you can't just say <strong>咖啡热</strong>. A bare adjective in a sentence sounds like a comparison ("Coffee is hot [but tea isn't]"). You need <strong>很</strong> as filler to make it a neutral statement. It technically means "very" but here it's just grammatical glue.
+      </p>
+      <div class="rule-example" data-zh="咖啡很热">
+        <span class="zh">咖啡很热 <span class="trad">(咖啡很熱)</span></span>
+        <span class="pinyin">kāfēi hěn rè</span>
+        <span class="eng">"The coffee is hot" (neutral statement)</span>
+      </div>
+      <div class="rule-example" data-zh="他很高">
+        <span class="zh">他很高</span>
+        <span class="pinyin">tā hěn gāo</span>
+        <span class="eng">"He is tall"</span>
+      </div>
+    </div>
+
+    <!-- Rule 2: The Noun Glue -->
+    <div class="rule">
+      <div class="rule-number">Rule 2</div>
+      <div class="rule-title">The "Noun Glue" - 的 (de)</div>
+      <p>
+        To put an adjective <strong>before</strong> a noun (like "a big dog"), use <strong>的</strong> between them. For single-syllable adjectives like 大, you can sometimes skip 的 (大狗), but as a beginner, using it is always safe.
+      </p>
+      <div class="rule-example" data-zh="大的狗">
+        <span class="zh">大的狗</span>
+        <span class="pinyin">dà de gǒu</span>
+        <span class="eng">"a big dog"</span>
+      </div>
+      <div class="rule-example" data-zh="便宜的东西">
+        <span class="zh">便宜的东西 <span class="trad">(便宜的東西)</span></span>
+        <span class="pinyin">piányi de dōngxi</span>
+        <span class="eng">"cheap stuff"</span>
+      </div>
+    </div>
+
+    <!-- Rule 3: The Not -->
+    <div class="rule">
+      <div class="rule-number">Rule 3</div>
+      <div class="rule-title">The "Not" - 不 (bù)</div>
+      <p>
+        To negate an adjective, put <strong>不</strong> in front. No 很 needed here - 不 replaces it.
+      </p>
+      <div class="rule-example" data-zh="我不忙">
+        <span class="zh">我不忙</span>
+        <span class="pinyin">wǒ bù máng</span>
+        <span class="eng">"I'm not busy"</span>
+      </div>
+      <div class="rule-example" data-zh="这个不贵">
+        <span class="zh">这个不贵 <span class="trad">(這個不貴)</span></span>
+        <span class="pinyin">zhège bù guì</span>
+        <span class="eng">"This isn't expensive"</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <div class="deco">大 小 好 坏 多 少</div>
+    <p>Adjective Reference</p>
+  </footer>
+
+</div>
+
+<script>
+let ttsAudio = null;
+
+function speak(chinese) {
+  if (!chinese) return;
+
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+
+  const slowdown = (primary === youdao);
+  ttsAudio = new Audio(primary);
+  if (slowdown) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+function lookupInTranslator(query) {
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'mandarin-hub:lookup', query }, '*');
+  }
+}
+
+document.querySelectorAll('.clickable').forEach(cell => {
+  cell.addEventListener('click', () => {
+    const zh = cell.getAttribute('data-zh');
+    if (zh) lookupInTranslator(zh);
+  });
+});
+
+document.querySelectorAll('td.pinyin').forEach(cell => {
+  cell.addEventListener('click', () => {
+    const sibling = cell.previousElementSibling;
+    if (sibling && sibling.classList.contains('clickable')) {
+      const zh = sibling.getAttribute('data-zh');
+      if (zh) speak(zh);
+    }
+  });
+});
+
+document.querySelectorAll('.rule-example').forEach(ex => {
+  ex.addEventListener('click', () => {
+    const zh = ex.getAttribute('data-zh');
+    if (zh) speak(zh);
+  });
+});
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+});
+</script>
+
+</body>
+</html>

@@ -493,6 +493,17 @@ iframe {
 
   <div class="section-divider"></div>
 
+  <!-- Vocabulary -->
+  <div class="section-label">Vocabulary</div>
+  <div class="nav-group">
+    <button class="nav-item" data-page="adjective_reference.html">
+      <span class="nav-icon">形</span>
+      <span class="nav-label">Adjective Reference</span>
+    </button>
+  </div>
+
+  <div class="section-divider"></div>
+
   <!-- Characters -->
   <div class="section-label">Characters</div>
   <div class="nav-group">
@@ -543,6 +554,7 @@ iframe {
 const content = document.getElementById('content');
 const tabs = document.querySelectorAll('.nav-item');
 const iframes = {};
+const scrollPositions = {};
 let activePage = null;
 
 const HOME = 'mandarin_translation.html';
@@ -586,6 +598,9 @@ function loadPage(page, updateHash = true) {
     // over file://, where the frames are cross-origin. '*' for the same reason
     // (file:// origins are opaque); the message carries nothing sensitive.
     try {
+      scrollPositions[activePage] = iframes[activePage].contentWindow.scrollY;
+    } catch (e) { /* cross-origin on file:// - use postMessage fallback */ }
+    try {
       iframes[activePage].contentWindow.postMessage({ type: 'mandarin-hub:hidden' }, '*');
     } catch (e) { /* frame not ready yet */ }
     iframes[activePage].style.display = 'none';
@@ -613,8 +628,17 @@ function loadPage(page, updateHash = true) {
 
   iframes[page].style.display = 'block';
   activePage = page;
+  const savedY = scrollPositions[page];
+  if (savedY != null) {
+    requestAnimationFrame(() => {
+      try {
+        iframes[page].contentWindow.scrollTo(0, savedY);
+      } catch (e) { /* cross-origin on file:// */ }
+    });
+  }
   try {
     const msg = { type: 'mandarin-hub:visible' };
+    if (savedY != null) msg.scrollY = savedY;
     if (pendingStrokeOrder && page === 'mandarin_translation.html') {
       msg.strokeOrder = pendingStrokeOrder;
       pendingStrokeOrder = null;
@@ -709,6 +733,15 @@ let pendingLookup = null;
 let pendingStrokeOrder = null;
 window.addEventListener('message', (e) => {
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:scroll-report') {
+    for (const [page, frame] of Object.entries(iframes)) {
+      if (e.source === frame.contentWindow) {
+        scrollPositions[page] = e.data.scrollY;
+        break;
+      }
+    }
+    return;
+  }
   if (e.data.type === 'mandarin-hub:lookup') {
     const target = 'mandarin_translation.html';
     const query = e.data.query;

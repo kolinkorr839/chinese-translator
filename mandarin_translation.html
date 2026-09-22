@@ -2342,9 +2342,25 @@ function resetInputPanels() {
 // The hub sends mandarin-hub:visible (handled above), but also calls
 // contentWindow.focus() - listen for that as a fallback on file:// where
 // cross-origin postMessage can be unreliable.
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
 let pageHasBeenHidden = false;
 window.addEventListener('message', (e) => {
-  if (e.data && e.data.type === 'mandarin-hub:hidden') pageHasBeenHidden = true;
+  if (e.data && e.data.type === 'mandarin-hub:hidden') {
+    pageHasBeenHidden = true;
+  }
+  if (e.data && e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
 });
 window.addEventListener('focus', () => {
   if (!pageHasBeenHidden) return;

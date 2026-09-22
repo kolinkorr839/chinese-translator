@@ -206,11 +206,51 @@ PRIORITY 3 — structure
    theory that S/T is reference material consulted rarely, while Courses is daily.
    Do not reorder on a guess; confirm first.
 
+7. EXTRACT SHARED JS AND CSS
+   Problem: 9 pages duplicate speak() with the same TTS engine toggle, protocol
+   routing, and fallback logic. A TTS bug fix must be applied to 9 files. CSS
+   resets, dark-mode variables, and base typography are copy-pasted across every
+   page's <style> block with minor drift.
+
+   Constraints:
+     - Must keep working on file:// (no fetch for local files, no ES modules
+       without a server). Classic <script src="..."> and <link rel="stylesheet">
+       with relative paths only.
+     - No build step. No bundler.
+     - sw.js STATIC_ASSETS must include the new shared files. Bump CACHE_NAME.
+
+   Phase 1 - shared/tts.js (highest ROI):
+     - Extract speak(), the engine toggle, and protocol-based routing into one
+       file. Pages load it with <script src="shared/tts.js"></script> and call
+       speak(text, lang) directly.
+     - Migrate the 4 pages already using the external-TTS-primary pattern first
+       (phrase_reference, grammar_guide, mandarin_in_14_days, mandarin_translation).
+     - Then migrate the 5 legacy Web-Speech-API-only pages (flashcards,
+       grammar_flashcards, pinyin_chart, simplified_traditional_flashcards,
+       radicals_reference) to the shared module, switching them to the preferred
+       pattern in the process.
+     - After migration, each page's inline speak() is deleted entirely.
+
+   Phase 2 - shared/base.css (lower priority):
+     - Extract the common reset (box-sizing, margin, font stack), CSS custom
+       properties (--bg, --text, --accent, --card-bg, etc.), and responsive
+       breakpoints that are already near-identical across pages.
+     - Keep page-specific layout and component styles inline. The shared file
+       is ONLY the foundation that every page would otherwise copy.
+     - Each page adds <link rel="stylesheet" href="shared/base.css"> before
+       its own <style> block so page-specific rules win by cascade order.
+
+   What NOT to extract:
+     - Translation logic (only mandarin_translation.html uses it).
+     - Page-specific JS (flashcard shuffle, quiz grading, handwriting canvas).
+     - Component-level CSS (card styles, quiz buttons, sidebar). These vary
+       enough per page that a shared file would become a grab-bag.
+
 
 PRIORITY 4 — new content
 ------------------------
 
-7. COURSE 2 — "HANDLING THE REPLY"   (was: "Next 14-Day Course")
+8. COURSE 2 — "HANDLING THE REPLY"   (was: "Next 14-Day Course")
    STATUS: AGREED. Course 2 is the same travel situations taught from the OTHER side
    of the conversation — what he HEARS back — not deeper vocabulary on the same topics.
 

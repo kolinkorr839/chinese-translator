@@ -1327,11 +1327,27 @@ showCard();
 
 // The hub hides pages with display:none, which stops neither timers nor audio.
 // Pause ourselves when it tells us we are no longer on screen.
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
 window.addEventListener('message', e => {
   if (e.source !== window.parent) return;
-  if (!e.data || e.data.type !== 'mandarin-hub:hidden') return;
-  if (!paused) togglePause();
-  if (window.speechSynthesis) speechSynthesis.cancel();
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:hidden') {
+    if (!paused) togglePause();
+    if (window.speechSynthesis) speechSynthesis.cancel();
+  }
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
 });
 
 window.addEventListener('storage', (e) => {

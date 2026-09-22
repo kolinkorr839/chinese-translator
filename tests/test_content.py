@@ -23,6 +23,7 @@ BILINGUAL_BY_DESIGN = {
     "grammar_flashcards.html",
     "mandarin_translation.html",
     "radicals_reference.html",
+    "adjective_reference.html",
 }
 
 # Prose pages known to mix scripts today. This is TODO item 5.
