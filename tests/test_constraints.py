@@ -143,6 +143,7 @@ TTS_PAGES = [
     "mandarin_in_14_days.html",
     "radicals_reference.html",
     "adjective_reference.html",
+    "conversation_phrases.html",
 ]
 
 
