@@ -390,9 +390,9 @@ const DATA = [
       { "en": "I mean, I didn't quite understand.", "simp": "我是说，我没太听懂。", "trad": "我是說，我沒太聽懂。", "pinyin": "Wǒ shì shuō, wǒ méi tài tīng dǒng." },
       { "en": "I mean, what I'm trying to say is...", "simp": "我是说，我想说的是……", "trad": "我是說，我想說的是……", "pinyin": "Wǒ shì shuō, wǒ xiǎng shuō de shì..." },
       { "en": "I mean, it was a bit strange.", "simp": "我是说，有点奇怪。", "trad": "我是說，有點奇怪。", "pinyin": "Wǒ shì shuō, yǒu diǎn qí guài." },
-      { "en": "Of course I love you.", "simp": "我当然爱你。", "trad": "我當然愛你。", "pinyin": "Wǒ dāng rán ài nǐ." },
-      { "en": "Of course I'm coming.", "simp": "我当然会去。", "trad": "我當然會去。", "pinyin": "Wǒ dāng rán huì qù." },
-      { "en": "Of course I'll help.", "simp": "我当然会帮忙。", "trad": "我當然會幫忙。", "pinyin": "Wǒ dāng rán huì bāng máng." },
+      { "en": "Of course I love you.", "simp": "当然爱你。", "trad": "當然愛你。", "pinyin": "Dāng rán ài nǐ." },
+      { "en": "Of course I'm coming.", "simp": "当然会去。", "trad": "當然會去。", "pinyin": "Dāng rán huì qù." },
+      { "en": "Of course I'll help.", "simp": "当然会帮忙。", "trad": "當然會幫忙。", "pinyin": "Dāng rán huì bāng máng." },
       { "en": "Okay, what shall we do now?", "simp": "好吧，我们现在做什么？", "trad": "好吧，我們現在做什麼？", "pinyin": "Hǎo ba, wǒ men xiàn zài zuò shén me?" },
       { "en": "Alright, you decide.", "simp": "行，你决定吧。", "trad": "行，你決定吧。", "pinyin": "Xíng, nǐ jué dìng ba." },
       { "en": "Okay, why not?", "simp": "好吧，为什么不呢？", "trad": "好吧，為什麼不呢？", "pinyin": "Hǎo ba, wèi shén me bù ne?" },
@@ -433,7 +433,7 @@ const DATA = [
       { "en": "What's your hobby?", "simp": "你的爱好是什么？", "trad": "你的愛好是什麼？", "pinyin": "Nǐ de ài hào shì shén me?" },
       { "en": "Have you been here before?", "simp": "你以前来过这里吗？", "trad": "你以前來過這裡嗎？", "pinyin": "Nǐ yǐ qián lái guò zhè lǐ ma?" },
       { "en": "What's your favorite color?", "simp": "你最喜欢什么颜色？", "trad": "你最喜歡什麼顏色？", "pinyin": "Nǐ zuì xǐ huan shén me yán sè?" },
-      { "en": "What's your phone number?", "simp": "你的电话号码是多少？", "trad": "你的電話號碼是多少？", "pinyin": "Nǐ de diàn huà hào mǎ shì duō shao?" },
+      { "en": "What's your phone number?", "simp": "你的电话号码是多少？", "trad": "你的電話號碼是多少？", "pinyin": "Nǐ de diàn huà hào mǎ shì duō shǎo?" },
       { "en": "Do you like music?", "simp": "你喜欢音乐吗？", "trad": "你喜歡音樂嗎？", "pinyin": "Nǐ xǐ huan yīn yuè ma?" },
       { "en": "What's your job?", "simp": "你的职业是什么？", "trad": "你的職業是什麼？", "pinyin": "Nǐ de zhí yè shì shén me?" },
       { "en": "Can you speak slowly?", "simp": "你能说慢一点吗？", "trad": "你能說慢一點嗎？", "pinyin": "Nǐ néng shuō màn yī diǎn ma?" }
@@ -462,7 +462,7 @@ function init() {
       html += `<div class="phrase-row">
         <div class="phrase-english">${p.en}</div>
         <div class="phrase-chinese" onclick="speak('${escaped}')">
-          <span class="simp">${p.simp}</span><span class="sep${isDiff ? '' : ' same'}">|</span><span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>
+          <span class="simp">${p.simp}</span><span class="sep${isDiff ? '' : ' same'}">| </span><span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>
           <div class="phrase-pinyin" onclick="event.stopPropagation(); speak('${escaped}')">
             ${p.pinyin}
           </div>
