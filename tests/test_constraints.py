@@ -144,6 +144,7 @@ TTS_PAGES = [
     "radicals_reference.html",
     "adjective_reference.html",
     "conversation_phrases.html",
+    "scenarios.html",
 ]
 
 

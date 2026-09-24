@@ -25,6 +25,7 @@ BILINGUAL_BY_DESIGN = {
     "radicals_reference.html",
     "adjective_reference.html",
     "conversation_phrases.html",
+    "scenarios.html",
 }
 
 # Prose pages known to mix scripts today. This is TODO item 5.

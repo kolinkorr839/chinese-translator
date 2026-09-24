@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scenarios - Mandarin Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@media print {
+  body { font-size: 11pt; background: #FFFDF8 !important; }
+  .section-content { page-break-before: always; }
+  .dialogue-line { page-break-inside: avoid; }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  color: #1a1a2e;
+  line-height: 1.7;
+  margin: 0;
+  padding: 0;
+  background: #F5F0E8;
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    );
+}
+h1 { font-family: 'Cormorant Garamond', 'Noto Serif TC', serif; color: #C41E3A; font-size: 2rem; margin: 1.5rem 0 1rem; }
+h2 { font-family: 'Cormorant Garamond', serif; color: #1a1a2e; font-size: 1.5rem; margin: 2rem 0 1rem; border-bottom: 2px solid #C41E3A; padding-bottom: 0.3rem; }
+h3 { font-family: 'Cormorant Garamond', serif; color: #1a1a2e; font-size: 1.2rem; margin: 0.5rem 0 0.5rem; }
+p { margin: 0.5rem 0; }
+
+/* Tone colors */
+.t1 { color: #C41E3A; font-weight: 600; }
+.t2 { color: #2E6BA7; font-weight: 600; }
+.t3 { color: #2D7D46; font-weight: 600; }
+.t4 { color: #6B3FA0; font-weight: 600; }
+.t5 { color: #8a8478; font-weight: 600; }
+
+/* Dialogue */
+.dialogue { margin: 1rem 0; }
+.dialogue-line {
+  background: #FFFDF8;
+  border-left: 3px solid #B8860B;
+  padding: 0.5rem 1rem;
+  margin: 0.4rem 0;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+.dialogue-line:hover { background: #FBF6ED; }
+.dialogue-line .speaker {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  color: #1a1a2e;
+  display: inline-block;
+  margin-bottom: 0.2rem;
+  font-size: 0.95rem;
+}
+.dialogue-line .chars { font-size: 1.2rem; }
+.dialogue-line .pinyin { font-size: 1rem; }
+.dialogue-line .meaning {
+  font-size: 0.9rem;
+  color: #8a8478;
+}
+.dialogue-line .divider { color: #E8E0D4; margin: 0 0.3rem; font-weight: 300; }
+
+.scene {
+  font-size: 0.95rem;
+  color: #8a8478;
+  font-style: italic;
+  margin: 0.5rem 0 0.8rem;
+}
+
+.dialogue-break {
+  font-size: 0.9rem;
+  color: #8a8478;
+  font-style: italic;
+  margin: 0.8rem 0 0.4rem;
+  padding-left: 0.5rem;
+}
+
+.scenario { margin-bottom: 2.5rem; }
+.scenarios-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 2rem;
+  align-items: start;
+}
+.scenarios-grid .scenario { margin-bottom: 0; }
+@media (max-width: 800px) {
+  .scenarios-grid { grid-template-columns: 1fr; }
+}
+
+/* Play button */
+.play-btn {
+  background: none;
+  border: 1px solid #B8860B;
+  color: #B8860B;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: 'Crimson Pro', serif;
+  transition: all 0.2s;
+  margin-top: 0.5rem;
+}
+.play-btn:hover { background: #B8860B; color: #FFFDF8; }
+.play-btn.playing { border-color: #C41E3A; color: #C41E3A; }
+.dialogue-line.speaking { border-left-color: #C41E3A; background: #FBF6ED; }
+
+/* TOC navigation */
+.toc {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 32px;
+}
+.toc h1 {
+  font-family: 'Cormorant Garamond', 'PingFang TC', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.3rem;
+  color: #C41E3A;
+  letter-spacing: 0.02em;
+}
+.toc .subtitle {
+  text-align: center;
+  color: #8B7D6B;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  font-family: 'Crimson Pro', serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+#content-view {
+  display: none;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1rem 32px 0;
+}
+.toc-list {
+  list-style: none;
+}
+.toc-list li {
+  border-bottom: 1px solid #E8E0D4;
+}
+.toc-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0.8rem;
+  color: #1a1a2e;
+  text-decoration: none;
+  transition: background 0.2s, padding-left 0.2s;
+  border-radius: 8px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem;
+}
+.toc-list a:hover {
+  background: rgba(184,134,11,0.06);
+  padding-left: 1.2rem;
+}
+.toc-list .lesson-num {
+  color: #B8860B;
+  font-weight: 600;
+  min-width: 1.8rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+}
+.toc-list .lesson-title {
+  flex: 1;
+  margin-left: 0.5rem;
+}
+.toc-list .scenario-count {
+  color: #A89B8C;
+  font-size: 0.85rem;
+}
+.back-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E8E0D4;
+}
+.back-btn {
+  background: none;
+  border: 1px solid #C4B5A0;
+  color: #8B7D6B;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: 'Crimson Pro', serif;
+  transition: all 0.2s;
+}
+.back-btn:hover {
+  border-color: #C41E3A;
+  color: #C41E3A;
+  background: rgba(196, 30, 58, 0.04);
+}
+.section-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+.section-content {
+  display: none;
+  padding: 0 32px 2rem;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ==================== TOC VIEW ==================== -->
+<div class="toc" id="toc-view">
+  <h1>Scenarios</h1>
+  <p class="subtitle">Practice phrases in real conversations. Click any line to hear it spoken.</p>
+
+  <ul class="toc-list">
+    <li><a href="#" onclick="showSection('lesson-1'); return false;">
+      <span class="lesson-num">1</span>
+      <span class="lesson-title">Greetings &amp; Basics</span>
+      <span class="scenario-count">4 scenarios</span>
+    </a></li>
+  </ul>
+</div>
+
+<!-- ==================== CONTENT VIEW ==================== -->
+<div id="content-view">
+  <div class="back-bar">
+    <button class="back-btn" onclick="showTOC()">Back</button>
+    <span class="section-heading" id="section-heading"></span>
+  </div>
+</div>
+
+<!-- ==================== LEVEL 1 ==================== -->
+<div class="section-content" data-section="lesson-1">
+
+<div class="scenarios-grid">
+<div class="scenario">
+<h3>At a Tea Shop</h3>
+<p class="scene">You walk into a tea shop and are greeted by the owner.</p>
+
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">Owner:</span>
+  <div class="chars"><span class="simp">您好！</span> <span class="divider">|</span> <span class="trad">您好！</span></div>
+  <div class="pinyin"><span class="t2">nín</span> <span class="t3">hǎo</span>!</div>
+  <div class="meaning">Hello! (polite)</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好！</span> <span class="divider">|</span> <span class="trad">你好！</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>!</div>
+  <div class="meaning">Hello!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Owner:</span>
+  <div class="chars"><span class="simp">请。</span> <span class="divider">|</span> <span class="trad">請。</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span>.</div>
+  <div class="meaning">Please (have a seat).</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">谢谢！</span> <span class="divider">|</span> <span class="trad">謝謝！</span></div>
+  <div class="pinyin"><span class="t4">xiè</span><span class="t5">xie</span>!</div>
+  <div class="meaning">Thank you!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Owner:</span>
+  <div class="chars"><span class="simp">不客气。</span> <span class="divider">|</span> <span class="trad">不客氣。</span></div>
+  <div class="pinyin"><span class="t2">bú</span> <span class="t4">kè</span><span class="t5">qi</span>.</div>
+  <div class="meaning">You're welcome.</div>
+</div>
+</div>
+
+<p class="dialogue-break">You finish your tea and head out.</p>
+
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">再见！</span> <span class="divider">|</span> <span class="trad">再見！</span></div>
+  <div class="pinyin"><span class="t4">zài</span><span class="t4">jiàn</span>!</div>
+  <div class="meaning">Goodbye!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Owner:</span>
+  <div class="chars"><span class="simp">拜拜！</span> <span class="divider">|</span> <span class="trad">拜拜！</span></div>
+  <div class="pinyin"><span class="t2">bái</span><span class="t2">bái</span>!</div>
+  <div class="meaning">Bye-bye!</div>
+</div>
+</div>
+
+</div>
+
+<div class="scenario">
+<h3>Bumping Into Someone</h3>
+<p class="scene">You accidentally bump someone's arm at a market.</p>
+
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">对不起！</span> <span class="divider">|</span> <span class="trad">對不起！</span></div>
+  <div class="pinyin"><span class="t4">duì</span><span class="t5">bu</span><span class="t3">qǐ</span>!</div>
+  <div class="meaning">Sorry!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Stranger:</span>
+  <div class="chars"><span class="simp">没关系。</span> <span class="divider">|</span> <span class="trad">沒關係。</span></div>
+  <div class="pinyin"><span class="t2">méi</span> <span class="t1">guān</span><span class="t5">xi</span>.</div>
+  <div class="meaning">It's OK.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">谢谢。</span> <span class="divider">|</span> <span class="trad">謝謝。</span></div>
+  <div class="pinyin"><span class="t4">xiè</span><span class="t5">xie</span>.</div>
+  <div class="meaning">Thank you.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Stranger:</span>
+  <div class="chars"><span class="simp">不客气。</span> <span class="divider">|</span> <span class="trad">不客氣。</span></div>
+  <div class="pinyin"><span class="t2">bú</span> <span class="t4">kè</span><span class="t5">qi</span>.</div>
+  <div class="meaning">You're welcome.</div>
+</div>
+</div>
+
+</div>
+
+<div class="scenario">
+<h3>Checking In at a Hotel</h3>
+<p class="scene">You arrive at a hotel in the evening.</p>
+
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">晚上好！</span> <span class="divider">|</span> <span class="trad">晚上好！</span></div>
+  <div class="pinyin"><span class="t3">wǎn</span><span class="t5">shang</span> <span class="t3">hǎo</span>!</div>
+  <div class="meaning">Good evening!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Staff:</span>
+  <div class="chars"><span class="simp">晚上好！是王先生吗？</span> <span class="divider">|</span> <span class="trad">晚上好！是王先生嗎？</span></div>
+  <div class="pinyin"><span class="t3">wǎn</span><span class="t5">shang</span> <span class="t3">hǎo</span>! <span class="t4">shì</span> <span class="t2">Wáng</span> <span class="t1">xiān</span><span class="t5">sheng</span> <span class="t5">ma</span>?</div>
+  <div class="meaning">Good evening! Are you Mr. Wang?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">不是。</span> <span class="divider">|</span> <span class="trad">不是。</span></div>
+  <div class="pinyin"><span class="t2">bú</span> <span class="t4">shì</span>.</div>
+  <div class="meaning">No.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Staff:</span>
+  <div class="chars"><span class="simp">对不起！是李先生吗？</span> <span class="divider">|</span> <span class="trad">對不起！是李先生嗎？</span></div>
+  <div class="pinyin"><span class="t4">duì</span><span class="t5">bu</span><span class="t3">qǐ</span>! <span class="t4">shì</span> <span class="t3">Lǐ</span> <span class="t1">xiān</span><span class="t5">sheng</span> <span class="t5">ma</span>?</div>
+  <div class="meaning">Sorry! Are you Mr. Li?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">对！</span> <span class="divider">|</span> <span class="trad">對！</span></div>
+  <div class="pinyin"><span class="t4">duì</span>!</div>
+  <div class="meaning">Right!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Staff:</span>
+  <div class="chars"><span class="simp">请！</span> <span class="divider">|</span> <span class="trad">請！</span></div>
+  <div class="pinyin"><span class="t3">qǐng</span>!</div>
+  <div class="meaning">Please (come this way)!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">谢谢！</span> <span class="divider">|</span> <span class="trad">謝謝！</span></div>
+  <div class="pinyin"><span class="t4">xiè</span><span class="t5">xie</span>!</div>
+  <div class="meaning">Thank you!</div>
+</div>
+</div>
+
+<p class="dialogue-break">The next morning, you head out.</p>
+
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">早上好！</span> <span class="divider">|</span> <span class="trad">早上好！</span></div>
+  <div class="pinyin"><span class="t3">zǎo</span><span class="t5">shang</span> <span class="t3">hǎo</span>!</div>
+  <div class="meaning">Good morning!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Staff:</span>
+  <div class="chars"><span class="simp">早上好！</span> <span class="divider">|</span> <span class="trad">早上好！</span></div>
+  <div class="pinyin"><span class="t3">zǎo</span><span class="t5">shang</span> <span class="t3">hǎo</span>!</div>
+  <div class="meaning">Good morning!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">再见！</span> <span class="divider">|</span> <span class="trad">再見！</span></div>
+  <div class="pinyin"><span class="t4">zài</span><span class="t4">jiàn</span>!</div>
+  <div class="meaning">Goodbye!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Staff:</span>
+  <div class="chars"><span class="simp">再见！</span> <span class="divider">|</span> <span class="trad">再見！</span></div>
+  <div class="pinyin"><span class="t4">zài</span><span class="t4">jiàn</span>!</div>
+  <div class="meaning">Goodbye!</div>
+</div>
+</div>
+
+</div>
+
+<div class="scenario">
+<h3>Morning Walk in the Park</h3>
+<p class="scene">You're walking in a park and step on someone's foot.</p>
+
+<div class="dialogue">
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">对不起！</span> <span class="divider">|</span> <span class="trad">對不起！</span></div>
+  <div class="pinyin"><span class="t4">duì</span><span class="t5">bu</span><span class="t3">qǐ</span>!</div>
+  <div class="meaning">Sorry!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Stranger:</span>
+  <div class="chars"><span class="simp">没关系！</span> <span class="divider">|</span> <span class="trad">沒關係！</span></div>
+  <div class="pinyin"><span class="t2">méi</span> <span class="t1">guān</span><span class="t5">xi</span>!</div>
+  <div class="meaning">It's OK!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Stranger:</span>
+  <div class="chars"><span class="simp">早上好！你是美国人吗？</span> <span class="divider">|</span> <span class="trad">早上好！你是美國人嗎？</span></div>
+  <div class="pinyin"><span class="t3">zǎo</span><span class="t5">shang</span> <span class="t3">hǎo</span>! <span class="t3">nǐ</span> <span class="t4">shì</span> <span class="t3">měi</span><span class="t2">guó</span><span class="t2">rén</span> <span class="t5">ma</span>?</div>
+  <div class="meaning">Good morning! Are you American?</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">早上好！对，是。</span> <span class="divider">|</span> <span class="trad">早上好！對，是。</span></div>
+  <div class="pinyin"><span class="t3">zǎo</span><span class="t5">shang</span> <span class="t3">hǎo</span>! <span class="t4">duì</span>, <span class="t4">shì</span>.</div>
+  <div class="meaning">Good morning! Right, yes.</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Stranger:</span>
+  <div class="chars"><span class="simp">你好！</span> <span class="divider">|</span> <span class="trad">你好！</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>!</div>
+  <div class="meaning">Hello!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">You:</span>
+  <div class="chars"><span class="simp">你好！谢谢。拜拜！</span> <span class="divider">|</span> <span class="trad">你好！謝謝。拜拜！</span></div>
+  <div class="pinyin"><span class="t3">nǐ</span> <span class="t3">hǎo</span>! <span class="t4">xiè</span><span class="t5">xie</span>. <span class="t2">bái</span><span class="t2">bái</span>!</div>
+  <div class="meaning">Hello! Thank you. Bye-bye!</div>
+</div>
+<div class="dialogue-line">
+  <span class="speaker">Stranger:</span>
+  <div class="chars"><span class="simp">拜拜！</span> <span class="divider">|</span> <span class="trad">拜拜！</span></div>
+  <div class="pinyin"><span class="t2">bái</span><span class="t2">bái</span>!</div>
+  <div class="meaning">Bye-bye!</div>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<script>
+let ttsAudio = null;
+
+function speak(chinese) {
+  if (!chinese) return;
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+
+  const slowdown = (primary === youdao);
+  ttsAudio = new Audio(primary);
+  if (slowdown) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+document.querySelectorAll('.dialogue-line').forEach(line => {
+  line.addEventListener('click', () => {
+    const simp = line.querySelector('.simp');
+    if (simp) speak(simp.textContent);
+  });
+});
+
+// Play dialogue
+let playingScenario = null;
+let playTimer = null;
+let playGeneration = 0;
+
+document.querySelectorAll('.scenario').forEach(scenario => {
+  const btn = document.createElement('button');
+  btn.className = 'play-btn';
+  btn.textContent = 'Play';
+  btn.addEventListener('click', () => togglePlay(scenario));
+  scenario.querySelector('.scene').after(btn);
+});
+
+function togglePlay(scenario) {
+  if (playingScenario === scenario) {
+    stopPlay();
+    return;
+  }
+  if (playingScenario) stopPlay();
+
+  playGeneration++;
+  playingScenario = scenario;
+  scenario.querySelector('.play-btn').textContent = 'Stop';
+  scenario.querySelector('.play-btn').classList.add('playing');
+
+  const lines = [...scenario.querySelectorAll('.dialogue-line')];
+  playLine(scenario, lines, 0, playGeneration);
+}
+
+function playLine(scenario, lines, idx, gen) {
+  if (gen !== playGeneration || playingScenario !== scenario || idx >= lines.length) {
+    if (gen === playGeneration) stopPlay();
+    return;
+  }
+
+  lines.forEach(l => l.classList.remove('speaking'));
+  lines[idx].classList.add('speaking');
+  lines[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const simp = lines[idx].querySelector('.simp')?.textContent || '';
+  speakThenDo(simp, () => {
+    if (gen !== playGeneration) return;
+    playTimer = setTimeout(() => playLine(scenario, lines, idx + 1, gen), 1000);
+  });
+}
+
+function speakThenDo(chinese, callback) {
+  if (!chinese) { callback(); return; }
+  if (ttsAudio) { ttsAudio.onended = null; ttsAudio.onerror = null; ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+  const slowdown = (primary === youdao);
+
+  function tryPlay(url, slow, onFail) {
+    let fired = false;
+    const fail = () => { if (fired) return; fired = true; onFail(); };
+    ttsAudio = new Audio(url);
+    if (slow) ttsAudio.playbackRate = 0.75;
+    ttsAudio.onended = callback;
+    ttsAudio.onerror = fail;
+    ttsAudio.play().catch(fail);
+  }
+
+  tryPlay(primary, slowdown, () => {
+    tryPlay(fallback, !slowdown, () => {
+      console.warn('TTS unavailable');
+      callback();
+    });
+  });
+}
+
+function stopPlay() {
+  playGeneration++;
+  if (playTimer) { clearTimeout(playTimer); playTimer = null; }
+  if (ttsAudio) { ttsAudio.onended = null; ttsAudio.onerror = null; ttsAudio.pause(); ttsAudio.src = ''; }
+  if (playingScenario) {
+    playingScenario.querySelectorAll('.dialogue-line').forEach(l => l.classList.remove('speaking'));
+    playingScenario.querySelector('.play-btn').textContent = 'Play';
+    playingScenario.querySelector('.play-btn').classList.remove('playing');
+    playingScenario = null;
+  }
+}
+
+const SECTION_TITLES = {};
+document.querySelectorAll('.toc-list a').forEach(a => {
+  const hash = a.getAttribute('onclick')?.match(/showSection\('(.+?)'\)/)?.[1];
+  const num = a.querySelector('.lesson-num')?.textContent || '';
+  const title = a.querySelector('.lesson-title')?.textContent || '';
+  if (hash) SECTION_TITLES[hash] = `Lesson ${num}: ${title}`;
+});
+
+function showSection(id, skipPush) {
+  document.getElementById('toc-view').style.display = 'none';
+  document.querySelectorAll('.section-content').forEach(el => {
+    el.style.display = el.dataset.section === id ? 'block' : 'none';
+  });
+  document.getElementById('section-heading').textContent = SECTION_TITLES[id] || '';
+  document.getElementById('content-view').style.display = 'block';
+  window.scrollTo(0, 0);
+  if (!skipPush) history.pushState({ section: id }, '', '#' + id);
+}
+
+function showTOC(skipPush) {
+  document.getElementById('content-view').style.display = 'none';
+  document.querySelectorAll('.section-content').forEach(el => {
+    el.style.display = 'none';
+  });
+  document.getElementById('toc-view').style.display = 'block';
+  window.scrollTo(0, 0);
+  if (!skipPush) history.pushState({ toc: true }, '', '#');
+}
+
+window.addEventListener('popstate', (e) => {
+  if (e.state && e.state.section) {
+    showSection(e.state.section, true);
+  } else {
+    showTOC(true);
+  }
+});
+
+if (location.hash && location.hash.length > 1) {
+  const id = location.hash.slice(1);
+  const el = document.querySelector('[data-section="' + id + '"]');
+  if (el) showSection(id, true);
+}
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:hidden') {
+    if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+  }
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+});
+</script>
+
+</body>
+</html>
