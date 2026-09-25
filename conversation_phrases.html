@@ -113,9 +113,14 @@ body {
 .toc ol li {
   counter-increment: toc-counter;
   margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .toc ol li a {
+  flex: 1;
+  min-width: 0;
   text-decoration: none;
   color: var(--ink);
   font-size: 1.05rem;
@@ -309,6 +314,82 @@ body {
   letter-spacing: 8px;
 }
 
+/* -- Practice Mode -- */
+
+.practice-toggle {
+  display: inline-block;
+  padding: 3px 12px;
+  border: 1.5px solid var(--sage);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--sage);
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.practice-toggle:hover {
+  border-color: var(--vermillion);
+  color: var(--vermillion);
+}
+
+.practice-toggle.active {
+  background: var(--vermillion);
+  border-color: var(--vermillion);
+  color: #fff;
+}
+
+.reveal-dot {
+  display: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--sage);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.reveal-dot:hover {
+  background: var(--vermillion);
+  transform: scale(1.2);
+}
+
+.section-card.practice-mode .phrase-chinese .simp,
+.section-card.practice-mode .phrase-chinese .sep,
+.section-card.practice-mode .phrase-chinese .trad,
+.section-card.practice-mode .phrase-chinese .phrase-pinyin {
+  display: none;
+}
+
+.section-card.practice-mode .reveal-dot {
+  display: inline-block;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .simp,
+.section-card.practice-mode .phrase-chinese.revealed .sep,
+.section-card.practice-mode .phrase-chinese.revealed .trad {
+  display: inline;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .same {
+  display: none;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .phrase-pinyin {
+  display: block;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .reveal-dot {
+  background: var(--vermillion);
+}
+
 /* -- Responsive -- */
 
 @media (max-width: 600px) {
@@ -379,6 +460,35 @@ function lookupInTranslator(chinese) {
   }
 }
 
+const PRACTICE_KEY = 'conversation-phrases-practice';
+
+function togglePractice(sectionId, btn) {
+  const card = document.getElementById(sectionId);
+  const isActive = card.classList.toggle('practice-mode');
+  btn.classList.toggle('active', isActive);
+
+  const state = JSON.parse(localStorage.getItem(PRACTICE_KEY) || '{}');
+  if (isActive) {
+    state[sectionId] = true;
+    card.querySelectorAll('.phrase-chinese.revealed').forEach(el => el.classList.remove('revealed'));
+    card.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    delete state[sectionId];
+  }
+  localStorage.setItem(PRACTICE_KEY, JSON.stringify(state));
+}
+
+function handlePhraseClick(el, chinese) {
+  const inPractice = el.closest('.section-card')?.classList.contains('practice-mode');
+  if (!inPractice) {
+    speak(chinese);
+    return;
+  }
+  const wasHidden = !el.classList.contains('revealed');
+  el.classList.toggle('revealed');
+  if (wasHidden) speak(chinese);
+}
+
 const DATA = [
   {
     "title": "Fillers & Connectors",
@@ -447,7 +557,7 @@ function init() {
 
   DATA.forEach((section, i) => {
     const li = document.createElement('li');
-    li.innerHTML = `<a href="#${section.id}">${section.title}<span class="toc-count">${section.phrases.length} phrases</span></a>`;
+    li.innerHTML = `<a href="#${section.id}">${section.title}<span class="toc-count">${section.phrases.length} phrases</span></a><button class="practice-toggle" onclick="togglePractice('${section.id}', this)">Practice</button>`;
     tocList.appendChild(li);
 
     const card = document.createElement('section');
@@ -461,7 +571,8 @@ function init() {
       const escaped = p.simp.replace(/'/g, "\\'");
       html += `<div class="phrase-row">
         <div class="phrase-english">${p.en}</div>
-        <div class="phrase-chinese" onclick="speak('${escaped}')">
+        <div class="phrase-chinese" onclick="handlePhraseClick(this, '${escaped}')">
+          <span class="reveal-dot"></span>
           <span class="simp">${p.simp}</span><span class="sep${isDiff ? '' : ' same'}">| </span><span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>
           <div class="phrase-pinyin" onclick="event.stopPropagation(); speak('${escaped}')">
             ${p.pinyin}
@@ -478,6 +589,17 @@ function init() {
 }
 
 init();
+
+(function restorePracticeState() {
+  const state = JSON.parse(localStorage.getItem(PRACTICE_KEY) || '{}');
+  Object.keys(state).forEach(sectionId => {
+    const card = document.getElementById(sectionId);
+    if (!card) return;
+    card.classList.add('practice-mode');
+    const btn = document.querySelector(`.practice-toggle[onclick*="'${sectionId}'"]`);
+    if (btn) btn.classList.add('active');
+  });
+})();
 
 let scrollTimer = null;
 window.addEventListener('scroll', () => {
