@@ -32,7 +32,6 @@ BILINGUAL_BY_DESIGN = {
 # When you normalise a page to simplified, DELETE it from this set — the check
 # then starts enforcing it and stops the mixing coming back.
 KNOWN_MIXED = {
-    "mandarin_in_14_days.html",
     "grammar_guide.html",
 }
 
@@ -205,6 +204,63 @@ def check_pinyin_chart_valid_combos():
     total = sum(len(finals) for finals in combos.values())
     assert 350 < total < 500, f"expected 350-500 valid syllables, got {total}"
     return f"{len(combos)} initials, {total} valid syllables"
+
+
+@check
+def check_scenarios_cover_all_lessons():
+    """scenarios page has a dialogue section for every phrase-reference lesson"""
+    src = s.read("scenarios.html")
+    lesson_count = len(s.phrase_data())
+    sections = re.findall(r'data-section="(lesson-\d+)"', src)
+    missing = [f"lesson-{i}" for i in range(1, lesson_count + 1)
+               if f"lesson-{i}" not in sections]
+    assert not missing, (
+        f"scenarios.html covers {len(sections)}/{lesson_count} lessons, "
+        f"missing: {', '.join(missing)}"
+    )
+    return f"{len(sections)} lessons"
+
+
+@check
+def check_scenario_dialogue_lines_have_required_fields():
+    """every scenario dialogue line has simp, trad, pinyin, and meaning"""
+    from html.parser import HTMLParser
+
+    src = s.read("scenarios.html")
+    bad = []
+
+    class LineParser(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self._in_line = False
+            self._depth = 0
+            self._found = set()
+
+        def handle_starttag(self, tag, attrs):
+            cls = dict(attrs).get("class", "")
+            if "dialogue-line" in cls:
+                self._in_line = True
+                self._depth = 1
+                self._found = set()
+            elif self._in_line:
+                self._depth += 1
+                for c in cls.split():
+                    if c in ("simp", "trad", "pinyin", "meaning"):
+                        self._found.add(c)
+
+        def handle_endtag(self, tag):
+            if self._in_line:
+                self._depth -= 1
+                if self._depth <= 0:
+                    self._in_line = False
+                    missing = {"simp", "trad", "pinyin", "meaning"} - self._found
+                    if missing:
+                        bad.append(f"dialogue line missing {', '.join(sorted(missing))}")
+
+    LineParser().feed(src)
+    assert not bad, "incomplete dialogue lines:\n  " + "\n  ".join(bad[:20])
+    line_count = src.count('class="dialogue-line"')
+    return f"{line_count} lines, all valid"
 
 
 @check

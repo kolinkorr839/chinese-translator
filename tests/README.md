@@ -68,7 +68,7 @@ and the meta tag is no longer load-bearing.
 ## Known-failing by design
 
 `test_content.py` carries a `KNOWN_MIXED` allowlist for the two prose pages that mix
-traditional and simplified today (`mandarin_in_14_days.html`, `grammar_guide.html`) —
+traditional and simplified today (`grammar_guide.html`) —
 that's TODO item 5. The check reports them as a note instead of failing, and a second
 check makes sure the allowlist doesn't rot: **once you normalise a page, delete it
 from `KNOWN_MIXED`** and the check starts protecting it.
