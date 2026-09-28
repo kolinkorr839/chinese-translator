@@ -312,6 +312,57 @@ def check_radicals_stroke_order_wiring():
 
 
 @check
+def check_grammar_guide_uses_css_auto_numbering():
+    """grammar guide pattern cards use CSS counters, not hardcoded Pattern N text"""
+    src = s.read("grammar_guide.html")
+    assert "counter-increment: pattern-counter" in src, (
+        "grammar_guide.html must use CSS counter-increment for pattern numbering"
+    )
+    hardcoded = re.findall(r'class="pattern-number"[^>]*>.*?Pattern \d+', src)
+    assert not hardcoded, (
+        f"found {len(hardcoded)} hardcoded 'Pattern N' labels - "
+        "remove them and let the CSS counter generate the number"
+    )
+
+
+@check
+def check_grammar_guide_uses_semantic_anchors():
+    """grammar guide sections and TOC use semantic anchors, not pattern-N"""
+    src = s.read("grammar_guide.html")
+    numeric_ids = re.findall(r'id="pattern-\d+"', src)
+    assert not numeric_ids, (
+        f"found {len(numeric_ids)} numeric anchors ({', '.join(numeric_ids[:5])}...) - "
+        "use semantic IDs like #modals, #de-complement instead"
+    )
+    numeric_hrefs = re.findall(r'href="#pattern-\d+"', src)
+    assert not numeric_hrefs, (
+        f"found {len(numeric_hrefs)} numeric hrefs - update cross-references to semantic anchors"
+    )
+    toc_hrefs = re.findall(r'class="toc".*?</nav>', src, re.S)
+    if toc_hrefs:
+        ids_in_page = set(re.findall(r'id="([^"]+)"', src))
+        toc_targets = re.findall(r'href="#([^"]+)"', toc_hrefs[0])
+        dangling = [t for t in toc_targets if t not in ids_in_page]
+        assert not dangling, f"TOC links to missing anchors: {dangling}"
+
+
+@check
+def check_no_duplicate_phrases_across_lessons():
+    """no phrase appears in more than one lesson"""
+    seen = {}
+    dupes = []
+    for lesson, _section, p in s.iter_phrases():
+        key = p.get("simp", "")
+        if key in seen:
+            dupes.append(f"{key!r} in both {seen[key]!r} and {lesson!r}")
+        else:
+            seen[key] = lesson
+    assert not dupes, (
+        "phrases duplicated across lessons:\n  " + "\n  ".join(dupes[:10])
+    )
+
+
+@check
 def check_etymology_prompt_requires_all_components():
     """etymology prompt instructs Gemini to include every visible component"""
     src = s.read("mandarin_translation.html")
