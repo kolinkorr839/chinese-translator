@@ -166,6 +166,8 @@ body {
 
 /* -- Pattern Card -- */
 
+.container { counter-reset: pattern-counter; }
+
 .pattern-card {
   background: var(--card-bg);
   border: 1px solid var(--warm-border);
@@ -174,6 +176,7 @@ body {
   margin-bottom: 28px;
   box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
               0 1px 3px rgba(26, 26, 46, 0.04);
+  counter-increment: pattern-counter;
 }
 
 .pattern-number {
@@ -185,6 +188,8 @@ body {
   letter-spacing: 2px;
   margin-bottom: 4px;
 }
+
+.pattern-number a::before { content: "Pattern " counter(pattern-counter); }
 
 .pattern-title {
   font-family: 'Cormorant Garamond', serif;
@@ -375,7 +380,7 @@ body {
   font-style: normal;
 }
 
-/* -- Sub-section for Pattern 6 -- */
+/* -- Sub-section for Modals -- */
 
 .sub-section {
   margin: 16px 0;
@@ -488,35 +493,36 @@ html { scroll-behavior: smooth; }
   <nav class="toc" id="toc">
     <h2>Contents</h2>
     <ol>
-      <li><a href="#pattern-1">Basic Word Order <span class="toc-chinese">S + T + V + O</span></a></li>
-      <li><a href="#pattern-2">是...的 Construction <span class="toc-chinese">S + 是 + Detail + 的</span></a></li>
-      <li><a href="#pattern-3">在 (Ongoing Action &amp; Location) <span class="toc-chinese">S + 在 + Verb / Place</span></a></li>
-      <li><a href="#pattern-4">了 Particle <span class="toc-chinese">Verb + 了 / Situation + 了</span></a></li>
-      <li><a href="#pattern-5">过 Particle <span class="toc-chinese">Verb + 过</span></a></li>
-      <li><a href="#pattern-6">想 / 要 / 会 / 能 / 可以 <span class="toc-chinese">S + Modal + Verb</span></a></li>
-      <li><a href="#pattern-7">把 Active Voice <span class="toc-chinese">S + Time + 把 + O + Verb + Result</span></a></li>
-      <li><a href="#pattern-8">被 Passive Voice <span class="toc-chinese">Victim + Time + 被 + Doer + Verb + Result</span></a></li>
-      <li><a href="#pattern-9">的 Particle <span class="toc-chinese">Noun + 的 + Noun / Adj + 的 + Noun</span></a></li>
-      <li><a href="#pattern-10">得 Complement <span class="toc-chinese">Verb + 得 + Description</span></a></li>
-      <li><a href="#pattern-11">地 Particle <span class="toc-chinese">Adverb + 地 + Verb</span></a></li>
-      <li><a href="#pattern-12">比 Comparisons <span class="toc-chinese">A + 比 + B + Adj</span></a></li>
-      <li><a href="#pattern-13">Clause Connectors <span class="toc-chinese">因为...所以, 虽然...但是, 如果...就</span></a></li>
-      <li><a href="#pattern-14">越来越 <span class="toc-chinese">越来越 + Adj/Verb</span></a></li>
-      <li><a href="#pattern-15">一边...一边 <span class="toc-chinese">一边 + V + 一边 + V</span></a></li>
-      <li><a href="#pattern-16">Result Complements <span class="toc-chinese">Verb + Result (看懂, 吃完, 做好)</span></a></li>
-      <li><a href="#pattern-17">Directional Complements <span class="toc-chinese">Verb + Direction (走进去, 跑出来)</span></a></li>
-      <li><a href="#pattern-18">Location Words <span class="toc-chinese">Noun + Location Word (位置词)</span></a></li>
-      <li><a href="#pattern-19">The Sentence Grid <span class="toc-chinese">Position Changes Meaning</span></a></li>
-      <li><a href="#pattern-20">Pre-Verb Adverbs <span class="toc-chinese">还, 也, 都, 再, 又, 就, 才</span></a></li>
-      <li><a href="#pattern-21">Negation <span class="toc-chinese">不, 没, 别</span></a></li>
+      <li><a href="#word-order">Basic Word Order <span class="toc-chinese">S + T + V + O</span></a></li>
+      <li><a href="#shi-de">是...的 Construction <span class="toc-chinese">S + 是 + Detail + 的</span></a></li>
+      <li><a href="#zai">在 (Ongoing Action &amp; Location) <span class="toc-chinese">S + 在 + Verb / Place</span></a></li>
+      <li><a href="#le">了 Particle <span class="toc-chinese">Verb + 了 / Situation + 了</span></a></li>
+      <li><a href="#guo">过 Particle <span class="toc-chinese">Verb + 过</span></a></li>
+      <li><a href="#modals">想 / 要 / 会 / 能 / 可以 <span class="toc-chinese">S + Modal + Verb</span></a></li>
+      <li><a href="#ba">把 Active Voice <span class="toc-chinese">S + Time + 把 + O + Verb + Result</span></a></li>
+      <li><a href="#bei">被 Passive Voice <span class="toc-chinese">Victim + Time + 被 + Doer + Verb + Result</span></a></li>
+      <li><a href="#de-possessive">的 Particle <span class="toc-chinese">Noun + 的 + Noun / Adj + 的 + Noun</span></a></li>
+      <li><a href="#de-complement">得 Complement <span class="toc-chinese">Verb + 得 + Description</span></a></li>
+      <li><a href="#de-adverb">地 Particle <span class="toc-chinese">Adverb + 地 + Verb</span></a></li>
+      <li><a href="#hen-adjective">很 + Adjective <span class="toc-chinese">Subject + 很 + Adj</span></a></li>
+      <li><a href="#bi">比 Comparisons <span class="toc-chinese">A + 比 + B + Adj</span></a></li>
+      <li><a href="#clause-connectors">Clause Connectors <span class="toc-chinese">因为...所以, 虽然...但是, 如果...就</span></a></li>
+      <li><a href="#yuelaiyue">越来越 <span class="toc-chinese">越来越 + Adj/Verb</span></a></li>
+      <li><a href="#yibian">一边...一边 <span class="toc-chinese">一边 + V + 一边 + V</span></a></li>
+      <li><a href="#result-complements">Result Complements <span class="toc-chinese">Verb + Result (看懂, 吃完, 做好)</span></a></li>
+      <li><a href="#directional-complements">Directional Complements <span class="toc-chinese">Verb + Direction (走进去, 跑出来)</span></a></li>
+      <li><a href="#location-words">Location Words <span class="toc-chinese">Noun + Location Word (位置词)</span></a></li>
+      <li><a href="#sentence-grid">The Sentence Grid <span class="toc-chinese">Position Changes Meaning</span></a></li>
+      <li><a href="#pre-verb-adverbs">Pre-Verb Adverbs <span class="toc-chinese">还, 也, 都, 再, 又, 就, 才</span></a></li>
+      <li><a href="#negation">Negation <span class="toc-chinese">不, 没, 别</span></a></li>
     </ol>
   </nav>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 1: Basic Word Order -->
+  <!-- Basic Word Order -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-1">
-    <div class="pattern-number"><a href="#toc">Pattern 1</a></div>
+  <section class="pattern-card" id="word-order">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">Basic Word Order (S + T + V + O)</h2>
 
     <div class="formula-row">
@@ -581,10 +587,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 2: 是...的 -->
+  <!-- 是...的 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-2">
-    <div class="pattern-number"><a href="#toc">Pattern 2</a></div>
+  <section class="pattern-card" id="shi-de">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">是...的 (Emphasis on Circumstances)</h2>
 
     <div class="formula-row">
@@ -649,10 +655,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 3: 在 + Verb -->
+  <!-- 在 + Verb -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-3">
-    <div class="pattern-number"><a href="#toc">Pattern 3</a></div>
+  <section class="pattern-card" id="zai">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">在 (Ongoing Action &amp; Location)</h2>
 
     <div class="formula-row">
@@ -754,22 +760,22 @@ html { scroll-behavior: smooth; }
           <td style="padding:4px 8px">-</td>
           <td style="padding:4px 8px"><span class="simp">我吃饭</span><span class="sep"> | </span><span class="trad">我吃飯</span> - I eat</td></tr>
       <tr><td style="padding:4px 8px">ongoing</td>
-          <td style="padding:4px 8px">在 <span style="font-size:0.85em">(Pattern 3)</span></td>
+          <td style="padding:4px 8px">在 <a href="#zai" style="font-size:0.85em;color:var(--vermillion)">(在)</a></td>
           <td style="padding:4px 8px"><span class="simp">我在吃饭</span><span class="sep"> | </span><span class="trad">我在吃飯</span> - I am eating</td></tr>
       <tr><td style="padding:4px 8px">at / in</td>
-          <td style="padding:4px 8px">在 <span style="font-size:0.85em">(Pattern 3)</span></td>
+          <td style="padding:4px 8px">在 <a href="#zai" style="font-size:0.85em;color:var(--vermillion)">(在)</a></td>
           <td style="padding:4px 8px"><span class="simp">我在家</span><span class="sep"> | </span><span class="trad">我在家</span> - I am at home</td></tr>
       <tr><td style="padding:4px 8px">completed</td>
-          <td style="padding:4px 8px">了 <span style="font-size:0.85em">(Pattern 4)</span></td>
+          <td style="padding:4px 8px">了 <a href="#le" style="font-size:0.85em;color:var(--vermillion)">(了)</a></td>
           <td style="padding:4px 8px"><span class="simp">我吃了饭</span><span class="sep"> | </span><span class="trad">我吃了飯</span> - I ate</td></tr>
       <tr><td style="padding:4px 8px">experienced before</td>
-          <td style="padding:4px 8px">过 <span style="font-size:0.85em">(Pattern 5)</span></td>
+          <td style="padding:4px 8px">过 <a href="#guo" style="font-size:0.85em;color:var(--vermillion)">(过)</a></td>
           <td style="padding:4px 8px"><span class="simp">我吃过北京烤鸭</span><span class="sep"> | </span><span class="trad">我吃過北京烤鴨</span> - I have eaten Peking duck</td></tr>
       <tr><td style="padding:4px 8px">about to / want to</td>
-          <td style="padding:4px 8px">要 <span style="font-size:0.85em">(Pattern 6)</span></td>
+          <td style="padding:4px 8px">要 <a href="#modals" style="font-size:0.85em;color:var(--vermillion)">(Modals)</a></td>
           <td style="padding:4px 8px"><span class="simp">我要吃饭</span><span class="sep"> | </span><span class="trad">我要吃飯</span> - I am going to eat</td></tr>
       <tr><td style="padding:4px 8px">ability</td>
-          <td style="padding:4px 8px">会 / 能 <span style="font-size:0.85em">(Pattern 6)</span></td>
+          <td style="padding:4px 8px">会 / 能 <a href="#modals" style="font-size:0.85em;color:var(--vermillion)">(Modals)</a></td>
           <td style="padding:4px 8px"><span class="simp">我会吃辣</span><span class="sep"> | </span><span class="trad">我會吃辣</span> - I can eat spicy food</td></tr>
       </table>
     </div>
@@ -778,10 +784,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 4: 了 -->
+  <!-- 了 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-4">
-    <div class="pattern-number"><a href="#toc">Pattern 4</a></div>
+  <section class="pattern-card" id="le">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">了 (Completed Action &amp; Change of State)</h2>
 
     <div class="formula-row">
@@ -854,10 +860,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 5: 过 -->
+  <!-- 过 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-5">
-    <div class="pattern-number"><a href="#toc">Pattern 5</a></div>
+  <section class="pattern-card" id="guo">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">过 (Past Experience)</h2>
 
     <div class="formula-row">
@@ -922,10 +928,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 6: 想/要/會/能/可以 -->
+  <!-- 想/要/會/能/可以 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-6">
-    <div class="pattern-number"><a href="#toc">Pattern 6</a></div>
+  <section class="pattern-card" id="modals">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">想 / 要 / 会 / 能 / 可以 (The 5 "Can/Want" Words)</h2>
 
     <div class="formula-row">
@@ -1066,10 +1072,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 7: 把 -->
+  <!-- 把 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-7">
-    <div class="pattern-number"><a href="#toc">Pattern 7</a></div>
+  <section class="pattern-card" id="ba">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">把 (Active Voice)</h2>
 
     <div class="formula-row">
@@ -1134,10 +1140,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 8: 被 -->
+  <!-- 被 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-8">
-    <div class="pattern-number"><a href="#toc">Pattern 8</a></div>
+  <section class="pattern-card" id="bei">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">被 (Passive Voice)</h2>
 
     <div class="formula-row">
@@ -1260,10 +1266,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 9: 的 -->
+  <!-- 的 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-9">
-    <div class="pattern-number"><a href="#toc">Pattern 9</a></div>
+  <section class="pattern-card" id="de-possessive">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">的 (Possession &amp; Description)</h2>
 
     <div class="formula-row">
@@ -1336,10 +1342,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 10: 得 -->
+  <!-- 得 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-10">
-    <div class="pattern-number"><a href="#toc">Pattern 10</a></div>
+  <section class="pattern-card" id="de-complement">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">得 (Degree &amp; Result Complement)</h2>
 
     <div class="formula-row">
@@ -1404,10 +1410,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 11: 地 -->
+  <!-- 地 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-11">
-    <div class="pattern-number"><a href="#toc">Pattern 11</a></div>
+  <section class="pattern-card" id="de-adverb">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">地 (Adverb Marker)</h2>
 
     <div class="formula-row">
@@ -1472,10 +1478,78 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 12: 比 -->
+  <!-- 很 + Adjective (Predicate Adjectives) -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-12">
-    <div class="pattern-number"><a href="#toc">Pattern 12</a></div>
+  <section class="pattern-card" id="hen-adjective">
+    <div class="pattern-number"><a href="#toc"></a></div>
+    <h2 class="pattern-title">很 + Adjective (Predicate Adjectives)</h2>
+
+    <div class="formula-row">
+      <span class="formula-label">Formula</span>
+      <span class="formula-pill">Subject + 很 + Adjective</span>
+    </div>
+
+    <p class="explanation">
+      In Chinese, adjectives act as verbs - they don't need <code>是</code>. You don't say <s>天气是热</s>; you say <code>天气很热</code>. A bare adjective without <code>很</code> implies a comparison (<code>天气热</code> = "the weather is hot<em>ter</em>"), so <code>很</code> is added as a neutral filler even when you don't mean "very."
+    </p>
+
+    <div class="examples-heading">Examples</div>
+    <ul class="example-list">
+      <li class="example-item">
+        <span class="example-num">1</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="simp">天气很热</span><span class="sep">|</span><span class="trad">天氣很熱</span></div>
+          <div class="example-pinyin">tiānqì hěn rè</div>
+          <div class="example-english">"The weather is hot"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">2</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="simp">她很漂亮</span><span class="sep">|</span><span class="trad">她很漂亮</span></div>
+          <div class="example-pinyin">tā hěn piàoliang</div>
+          <div class="example-english">"She is pretty"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">3</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="simp">中文很难</span><span class="sep">|</span><span class="trad">中文很難</span></div>
+          <div class="example-pinyin">zhōngwén hěn nán</div>
+          <div class="example-english">"Chinese is hard"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">4</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="simp">这个菜很好吃</span><span class="sep">|</span><span class="trad">這個菜很好吃</span></div>
+          <div class="example-pinyin">zhège cài hěn hǎochī</div>
+          <div class="example-english">"This dish is delicious"</div>
+        </div>
+      </li>
+      <li class="example-item">
+        <span class="example-num">5</span>
+        <div class="example-content">
+          <div class="example-chinese"><span class="simp">他很高</span><span class="sep">|</span><span class="trad">他很高</span></div>
+          <div class="example-pinyin">tā hěn gāo</div>
+          <div class="example-english">"He is tall"</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="tip-box">
+      <div class="tip-label">Tip</div>
+      <p>To actually emphasize "very," stress <code>很</code> in speech or use a stronger word: <code>非常</code> (fēicháng), <code>真</code> (zhēn), or <code>特别</code> (tèbié). In writing, unstressed <code>很</code> is just a grammatical filler.</p>
+    </div>
+
+    <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- 比 -->
+  <!-- ============================================================ -->
+  <section class="pattern-card" id="bi">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">比 (Comparisons)</h2>
 
     <div class="formula-row">
@@ -1540,10 +1614,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 13: Clause Connectors -->
+  <!-- Clause Connectors -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-13">
-    <div class="pattern-number"><a href="#toc">Pattern 13</a></div>
+  <section class="pattern-card" id="clause-connectors">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">Clause Connectors</h2>
 
     <p class="explanation">
@@ -1631,10 +1705,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 14: 越來越 -->
+  <!-- 越來越 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-14">
-    <div class="pattern-number"><a href="#toc">Pattern 14</a></div>
+  <section class="pattern-card" id="yuelaiyue">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">越来越 (More and More)</h2>
 
     <div class="formula-row">
@@ -1699,10 +1773,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 15: 一邊...一邊 -->
+  <!-- 一邊...一邊 -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-15">
-    <div class="pattern-number"><a href="#toc">Pattern 15</a></div>
+  <section class="pattern-card" id="yibian">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">一边...一边 (Doing Two Things at Once)</h2>
 
     <div class="formula-row">
@@ -1767,10 +1841,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 16: Result Complements -->
+  <!-- Result Complements -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-16">
-    <div class="pattern-number"><a href="#toc">Pattern 16</a></div>
+  <section class="pattern-card" id="result-complements">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">Result Complements (Verb + Outcome)</h2>
 
     <div class="formula-row">
@@ -1851,17 +1925,17 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p>Result complements pair naturally with <code>把</code> (Pattern 7): <code>我把功课做完了</code> - the <code>把</code> moves the object forward, and the complement says what happened to it. To negate a result complement, use <code>没</code> (not <code>不</code>): <code>我没看懂</code>, not <s>我不看懂</s>.</p>
+      <p>Result complements pair naturally with <code>把</code> (<a href="#ba" style="color:var(--vermillion)">把</a>): <code>我把功课做完了</code> - the <code>把</code> moves the object forward, and the complement says what happened to it. To negate a result complement, use <code>没</code> (not <code>不</code>): <code>我没看懂</code>, not <s>我不看懂</s>.</p>
     </div>
 
     <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 17: Directional Complements -->
+  <!-- Directional Complements -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-17">
-    <div class="pattern-number"><a href="#toc">Pattern 17</a></div>
+  <section class="pattern-card" id="directional-complements">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">Directional Complements (Verb + Direction)</h2>
 
     <div class="formula-row">
@@ -1955,10 +2029,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 18: Location Words (位置词) -->
+  <!-- Location Words (位置词) -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-18">
-    <div class="pattern-number"><a href="#toc">Pattern 18</a></div>
+  <section class="pattern-card" id="location-words">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">Location Words (位置词)</h2>
 
     <div class="formula-row">
@@ -1969,7 +2043,7 @@ html { scroll-behavior: smooth; }
     <p class="explanation">
       Location words come <strong>after</strong> the noun they describe - the opposite of English.
       English says "behind the restaurant"; Mandarin says "restaurant behind" (饭店后面).
-      To say something <strong>is at</strong> a location, add 在 (Pattern 3) in front:
+      To say something <strong>is at</strong> a location, add <a href="#zai" style="color:var(--vermillion)">在</a> in front:
       <code>在 + Noun + Location Word</code> - e.g. 猫<strong>在</strong>桌子下面 = "The cat is under the table."
     </p>
 
@@ -2042,10 +2116,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 19: The Sentence Grid -->
+  <!-- The Sentence Grid -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-19">
-    <div class="pattern-number"><a href="#toc">Pattern 19</a></div>
+  <section class="pattern-card" id="sentence-grid">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">The Sentence Grid (Position Changes Meaning)</h2>
 
     <div class="formula-row">
@@ -2261,17 +2335,17 @@ html { scroll-behavior: smooth; }
 
     <div class="tip-box">
       <div class="tip-label">Tip</div>
-      <p>This grid connects several patterns you already know: modals like 想/要 (<a href="#pattern-6" style="color:var(--vermillion)">Pattern 6</a>) are Zone 1, 地 adverbs (<a href="#pattern-11" style="color:var(--vermillion)">Pattern 11</a>) are Zone 2, 得 complements (<a href="#pattern-10" style="color:var(--vermillion)">Pattern 10</a>) and result complements (<a href="#pattern-16" style="color:var(--vermillion)">Pattern 16</a>) are Zone 3. The grid is the map - those patterns are the close-ups.</p>
+      <p>This grid connects several patterns you already know: modals like 想/要 (<a href="#modals" style="color:var(--vermillion)">Modals</a>) are Zone 1, 地 adverbs (<a href="#de-adverb" style="color:var(--vermillion)">地 Adverbs</a>) are Zone 2, 得 complements (<a href="#de-complement" style="color:var(--vermillion)">得 Complements</a>) and result complements (<a href="#result-complements" style="color:var(--vermillion)">Result Complements</a>) are Zone 3. The grid is the map - those patterns are the close-ups.</p>
     </div>
 
     <div class="back-to-toc-link"><a href="#toc">Contents &#x2191;</a></div>
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 20: Pre-Verb Adverbs -->
+  <!-- Pre-Verb Adverbs -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-20">
-    <div class="pattern-number"><a href="#toc">Pattern 20</a></div>
+  <section class="pattern-card" id="pre-verb-adverbs">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">Pre-Verb Adverbs (还, 也, 都, 再, 又, 就, 才)</h2>
 
     <div class="formula-row">
@@ -2284,7 +2358,7 @@ html { scroll-behavior: smooth; }
     </p>
 
     <div class="tip-box">
-      <div class="tip-label">Where Adverbs Sit in S + T + V + O (<a href="#pattern-1" style="color:var(--vermillion)">Pattern 1</a>)</div>
+      <div class="tip-label">Where Adverbs Sit in S + T + V + O (<a href="#word-order" style="color:var(--vermillion)">Word Order</a>)</div>
       <div style="overflow-x:auto">
       <table style="width:100%; font-size:0.92rem; border-collapse:collapse; text-align:center;">
       <tr style="border-bottom:2px solid var(--warm-border)">
@@ -2506,10 +2580,10 @@ html { scroll-behavior: smooth; }
   </section>
 
   <!-- ============================================================ -->
-  <!-- PATTERN 21: Negation -->
+  <!-- Negation -->
   <!-- ============================================================ -->
-  <section class="pattern-card" id="pattern-21">
-    <div class="pattern-number"><a href="#toc">Pattern 21</a></div>
+  <section class="pattern-card" id="negation">
+    <div class="pattern-number"><a href="#toc"></a></div>
     <h2 class="pattern-title">Negation (不, 没, 别)</h2>
 
     <div class="formula-row">
