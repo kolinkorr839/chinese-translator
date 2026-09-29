@@ -26,6 +26,7 @@ BILINGUAL_BY_DESIGN = {
     "adjective_reference.html",
     "conversation_phrases.html",
     "scenarios.html",
+    "listening_drill.html",
 }
 
 # Prose pages known to mix scripts today. This is TODO item 5.
@@ -261,6 +262,56 @@ def check_scenario_dialogue_lines_have_required_fields():
     assert not bad, "incomplete dialogue lines:\n  " + "\n  ".join(bad[:20])
     line_count = src.count('class="dialogue-line"')
     return f"{line_count} lines, all valid"
+
+
+@check
+def check_listening_drill_data_parses():
+    """listening drill has valid phrase data with required fields"""
+    src = s.read("listening_drill.html")
+    m = re.search(r"const DATA = (\[.*?\]);\n", src, re.S)
+    assert m, "could not find `const DATA = [...]` in listening_drill.html"
+    import json as _json
+    data = _json.loads(m.group(1))
+    assert data, "listening drill DATA is empty"
+    total = 0
+    bad = []
+    for lesson in data:
+        assert lesson.get("title"), "lesson missing title"
+        for section in lesson.get("sections", []):
+            for p in section.get("phrases", []):
+                total += 1
+                for field in ("trad", "simp", "pinyin", "meaning"):
+                    if not str(p.get(field, "")).strip():
+                        bad.append(f"{lesson['title']}: missing {field!r}")
+    assert not bad, "incomplete phrases:\n  " + "\n  ".join(bad[:20])
+    return f"{len(data)} lessons, {total} phrases"
+
+
+@check
+def check_listening_drill_data_matches_phrase_reference():
+    """listening drill DATA matches phrase_reference.html DATA"""
+    import json as _json
+    ref_src = s.read("phrase_reference.html")
+    ld_src = s.read("listening_drill.html")
+
+    ref_m = re.search(r"const DATA = (\[.*?\]);\n", ref_src, re.S)
+    ld_m = re.search(r"const DATA = (\[.*?\]);\n", ld_src, re.S)
+    assert ref_m, "could not find DATA in phrase_reference.html"
+    assert ld_m, "could not find DATA in listening_drill.html"
+
+    ref_phrases = [(p["simp"], p["meaning"])
+                   for l in _json.loads(ref_m.group(1))
+                   for sec in l.get("sections", [])
+                   for p in sec.get("phrases", [])]
+    ld_phrases = [(p["simp"], p["meaning"])
+                  for l in _json.loads(ld_m.group(1))
+                  for sec in l.get("sections", [])
+                  for p in sec.get("phrases", [])]
+    assert ref_phrases == ld_phrases, (
+        f"phrase_reference.html has {len(ref_phrases)} phrases, "
+        f"listening_drill.html has {len(ld_phrases)} - they must stay in sync"
+    )
+    return f"{len(ref_phrases)} phrases match"
 
 
 @check
