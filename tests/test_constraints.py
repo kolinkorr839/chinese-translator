@@ -143,6 +143,7 @@ TTS_PAGES = [
     "grammar_guide.html",
     "radicals_reference.html",
     "adjective_reference.html",
+    "word_categories.html",
     "conversation_phrases.html",
     "scenarios.html",
     "listening_drill.html",

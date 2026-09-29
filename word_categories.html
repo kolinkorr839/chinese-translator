@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Categories - Mandarin Chinese</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rice-paper: #F5F0E8;
+  --card-bg: #FFFDF8;
+  --ink: #1a1a2e;
+  --vermillion: #C41E3A;
+  --sage: #7D8471;
+  --ink-wash: #6B7B8D;
+  --warm-border: #E8E0D4;
+}
+
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC',
+    'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: var(--rice-paper);
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    );
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+.page-header h1 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--vermillion);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+.page-header .subtitle {
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* Section heading */
+
+.section-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 36px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--vermillion);
+  display: inline-block;
+}
+
+/* Table */
+
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+  margin-bottom: 36px;
+}
+
+.ref-table thead th {
+  background: #F5EDE0;
+  color: #3D2B1F;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--vermillion);
+}
+
+.ref-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.7);
+  vertical-align: middle;
+  font-size: 1rem;
+}
+
+.ref-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cat-cell {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  background: rgba(245, 237, 224, 0.5);
+}
+
+.clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 4px;
+}
+
+.clickable:hover {
+  background: rgba(196, 30, 58, 0.06);
+}
+
+.zh {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.zh .trad {
+  opacity: 0.55;
+  font-size: 1.05rem;
+  font-weight: 400;
+}
+
+.pinyin {
+  color: var(--sage);
+  font-style: italic;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 4px;
+}
+
+.pinyin:hover {
+  background: rgba(125, 132, 113, 0.1);
+}
+
+.eng {
+  color: var(--ink-wash);
+  font-size: 0.95rem;
+}
+
+.example {
+  font-size: 0.9rem;
+  color: var(--ink-wash);
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 4px;
+}
+
+.example:hover {
+  background: rgba(125, 132, 113, 0.1);
+}
+
+.example .ex-zh {
+  color: var(--ink);
+}
+
+/* Footer */
+
+.page-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--warm-border);
+  color: var(--ink-wash);
+  font-size: 0.9rem;
+}
+
+.page-footer .deco {
+  color: var(--vermillion);
+  opacity: 0.3;
+  font-size: 1.2rem;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 8px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 24px 14px 60px; }
+  .page-header h1 { font-size: 1.6rem; }
+  .ref-table { font-size: 0.9rem; }
+  .ref-table thead th { padding: 8px 8px; font-size: 0.8rem; }
+  .ref-table tbody td { padding: 8px 8px; }
+  .zh { font-size: 1.15rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>Word Categories</h1>
+    <p class="subtitle">Measure words, frequency, and quantity</p>
+  </div>
+
+  <!-- Measure Words -->
+  <h2 class="section-heading">Measure Words</h2>
+  <table class="ref-table">
+    <thead>
+      <tr>
+        <th>Chinese</th>
+        <th>Pinyin</th>
+        <th>Meaning</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="clickable" data-zh="次"><span class="zh">次</span></td>
+        <td class="pinyin">cì</td>
+        <td class="eng">Number of occurrences</td>
+        <td class="example" data-zh="去过三次"><span class="ex-zh">去过三次</span> = been there 3 times</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="遍"><span class="zh">遍</span></td>
+        <td class="pinyin">biàn</td>
+        <td class="eng">Times through, start to finish</td>
+        <td class="example" data-zh="看三遍"><span class="ex-zh">看三遍</span> = watch/read it 3 times through</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="回"><span class="zh">回</span></td>
+        <td class="pinyin">huí</td>
+        <td class="eng">Occasions (conversational)</td>
+        <td class="example" data-zh="我去过两回"><span class="ex-zh">我去过两回</span> = I've been twice</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="下"><span class="zh">下</span></td>
+        <td class="pinyin">xià</td>
+        <td class="eng">A brief action / one go</td>
+        <td class="example" data-zh="看一下"><span class="ex-zh">看一下</span> = take a look</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="个"><span class="zh">个 <span class="trad">(個)</span></span></td>
+        <td class="pinyin">gè</td>
+        <td class="eng">General counter (things, people)</td>
+        <td class="example" data-zh="三个人"><span class="ex-zh">三个人</span> = 3 people</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="件"><span class="zh">件</span></td>
+        <td class="pinyin">jiàn</td>
+        <td class="eng">Items, matters, clothing</td>
+        <td class="example" data-zh="三件衣服"><span class="ex-zh">三件衣服</span> = 3 pieces of clothing</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="本"><span class="zh">本</span></td>
+        <td class="pinyin">běn</td>
+        <td class="eng">Bound items (books, magazines)</td>
+        <td class="example" data-zh="两本书"><span class="ex-zh">两本书</span> = 2 books</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="杯"><span class="zh">杯</span></td>
+        <td class="pinyin">bēi</td>
+        <td class="eng">Cups / glasses of</td>
+        <td class="example" data-zh="一杯咖啡"><span class="ex-zh">一杯咖啡</span> = a cup of coffee</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="瓶"><span class="zh">瓶</span></td>
+        <td class="pinyin">píng</td>
+        <td class="eng">Bottles of</td>
+        <td class="example" data-zh="一瓶水"><span class="ex-zh">一瓶水</span> = a bottle of water</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="张"><span class="zh">张 <span class="trad">(張)</span></span></td>
+        <td class="pinyin">zhāng</td>
+        <td class="eng">Flat objects (paper, tickets, tables)</td>
+        <td class="example" data-zh="一张票"><span class="ex-zh">一张票</span> = a ticket</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="条"><span class="zh">条 <span class="trad">(條)</span></span></td>
+        <td class="pinyin">tiáo</td>
+        <td class="eng">Long, thin objects (roads, fish, pants)</td>
+        <td class="example" data-zh="一条路"><span class="ex-zh">一条路</span> = a road</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="只"><span class="zh">只 <span class="trad">(隻)</span></span></td>
+        <td class="pinyin">zhī</td>
+        <td class="eng">Animals, one of a pair</td>
+        <td class="example" data-zh="一只猫"><span class="ex-zh">一只猫</span> = a cat</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="位"><span class="zh">位</span></td>
+        <td class="pinyin">wèi</td>
+        <td class="eng">People (polite / formal)</td>
+        <td class="example" data-zh="三位客人"><span class="ex-zh">三位客人</span> = 3 guests</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="块"><span class="zh">块 <span class="trad">(塊)</span></span></td>
+        <td class="pinyin">kuài</td>
+        <td class="eng">Chunks, pieces; yuan (money)</td>
+        <td class="example" data-zh="十块钱"><span class="ex-zh">十块钱</span> = 10 yuan</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Frequency -->
+  <h2 class="section-heading">Frequency</h2>
+  <table class="ref-table">
+    <thead>
+      <tr>
+        <th>Chinese</th>
+        <th>Pinyin</th>
+        <th>Meaning</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="clickable" data-zh="总是"><span class="zh">总是 <span class="trad">(總是)</span></span></td>
+        <td class="pinyin">zǒngshì</td>
+        <td class="eng">Always</td>
+        <td class="example" data-zh="他总是迟到"><span class="ex-zh">他总是迟到</span> = He's always late</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="通常"><span class="zh">通常</span></td>
+        <td class="pinyin">tōngcháng</td>
+        <td class="eng">Usually</td>
+        <td class="example" data-zh="我通常八点起床"><span class="ex-zh">我通常八点起床</span> = I usually get up at 8</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="经常"><span class="zh">经常 <span class="trad">(經常)</span></span></td>
+        <td class="pinyin">jīngcháng</td>
+        <td class="eng">Often</td>
+        <td class="example" data-zh="她经常看书"><span class="ex-zh">她经常看书</span> = She often reads</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="有时候"><span class="zh">有时候 <span class="trad">(有時候)</span></span></td>
+        <td class="pinyin">yǒu shíhou</td>
+        <td class="eng">Sometimes</td>
+        <td class="example" data-zh="有时候我走路去"><span class="ex-zh">有时候我走路去</span> = Sometimes I walk there</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="很少"><span class="zh">很少</span></td>
+        <td class="pinyin">hěn shǎo</td>
+        <td class="eng">Rarely</td>
+        <td class="example" data-zh="我很少喝酒"><span class="ex-zh">我很少喝酒</span> = I rarely drink</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="从不"><span class="zh">从不 <span class="trad">(從不)</span></span></td>
+        <td class="pinyin">cóng bù</td>
+        <td class="eng">Never</td>
+        <td class="example" data-zh="我从不吃辣"><span class="ex-zh">我从不吃辣</span> = I never eat spicy food</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Quantity -->
+  <h2 class="section-heading">Quantity</h2>
+  <table class="ref-table">
+    <thead>
+      <tr>
+        <th>Chinese</th>
+        <th>Pinyin</th>
+        <th>Meaning</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="clickable" data-zh="所有"><span class="zh">所有</span></td>
+        <td class="pinyin">suǒyǒu</td>
+        <td class="eng">All</td>
+        <td class="example" data-zh="所有人都来了"><span class="ex-zh">所有人都来了</span> = Everyone came</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="很多"><span class="zh">很多</span></td>
+        <td class="pinyin">hěn duō</td>
+        <td class="eng">Many / A lot</td>
+        <td class="example" data-zh="很多人喜欢"><span class="ex-zh">很多人喜欢</span> = Many people like it</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="一些"><span class="zh">一些</span></td>
+        <td class="pinyin">yìxiē</td>
+        <td class="eng">Some</td>
+        <td class="example" data-zh="我买了一些水果"><span class="ex-zh">我买了一些水果</span> = I bought some fruit</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="几个"><span class="zh">几个 <span class="trad">(幾個)</span></span></td>
+        <td class="pinyin">jǐ gè</td>
+        <td class="eng">A few</td>
+        <td class="example" data-zh="我有几个朋友"><span class="ex-zh">我有几个朋友</span> = I have a few friends</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="少"><span class="zh">少</span></td>
+        <td class="pinyin">shǎo</td>
+        <td class="eng">Few / Little</td>
+        <td class="example" data-zh="人很少"><span class="ex-zh">人很少</span> = There are few people</td>
+      </tr>
+      <tr>
+        <td class="clickable" data-zh="没有"><span class="zh">没有 <span class="trad">(沒有)</span></span></td>
+        <td class="pinyin">méiyǒu</td>
+        <td class="eng">None / Don't have</td>
+        <td class="example" data-zh="我没有时间"><span class="ex-zh">我没有时间</span> = I have no time</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-footer">
+    <div class="deco">词 汇 分 类</div>
+  </div>
+
+</div>
+
+<script>
+let ttsAudio = null;
+
+function speak(chinese) {
+  if (!chinese) return;
+
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+
+  const slowdown = (primary === youdao);
+  ttsAudio = new Audio(primary);
+  if (slowdown) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+function lookupInTranslator(query) {
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'mandarin-hub:lookup', query }, '*');
+  }
+}
+
+document.querySelectorAll('.clickable').forEach(cell => {
+  cell.addEventListener('click', () => {
+    const zh = cell.getAttribute('data-zh');
+    if (zh) lookupInTranslator(zh);
+  });
+});
+
+document.querySelectorAll('td.pinyin').forEach(cell => {
+  cell.addEventListener('click', () => {
+    const row = cell.closest('tr');
+    const clickable = row.querySelector('.clickable');
+    if (clickable) {
+      const zh = clickable.getAttribute('data-zh');
+      if (zh) speak(zh);
+    }
+  });
+});
+
+document.querySelectorAll('.example').forEach(ex => {
+  ex.addEventListener('click', () => {
+    const zh = ex.getAttribute('data-zh');
+    if (zh) speak(zh);
+  });
+});
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+});
+</script>
+
+</body>
+</html>

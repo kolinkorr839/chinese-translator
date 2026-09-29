@@ -24,6 +24,7 @@ BILINGUAL_BY_DESIGN = {
     "mandarin_translation.html",
     "radicals_reference.html",
     "adjective_reference.html",
+    "word_categories.html",
     "conversation_phrases.html",
     "scenarios.html",
     "listening_drill.html",
