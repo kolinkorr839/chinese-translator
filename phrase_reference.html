@@ -244,6 +244,21 @@ body {
   transform: scale(1.15);
 }
 
+.back-to-toc-link {
+  display: block;
+  text-align: left;
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+.back-to-toc-link a {
+  color: #C41E3A;
+  text-decoration: none;
+  cursor: pointer;
+}
+.back-to-toc-link a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 480px) {
   .toc, .flashcard-view { padding: 1rem; }
   .card { padding: 0.8rem; gap: 0.6rem; }
@@ -393,6 +408,11 @@ function showLesson(idx, skipPush) {
       container.appendChild(card);
     });
   });
+
+  const tocLink = document.createElement("div");
+  tocLink.className = "back-to-toc-link";
+  tocLink.innerHTML = '<a onclick="showTOC(); return false;" href="#">Contents ↑</a>';
+  container.appendChild(tocLink);
 
   window.scrollTo(0, 0);
 }
