@@ -512,33 +512,33 @@
         </thead>
         <tbody>
             <tr>
-                <td class="pinyin-cell">u- sound</td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="wu">u-</span> sound</td>
                 <td class="pinyin-cell">w-</td>
                 <td class="other-cell">hear "oo" &rarr; type <strong>wu</strong> (五 five)</td>
             </tr>
             <tr>
-                <td class="pinyin-cell">ua, uo, uai ...</td>
-                <td class="pinyin-cell">wa, wo, wai ...</td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="wa">ua</span>, <span class="pinyin-alt" data-pinyin="wo">uo</span>, <span class="pinyin-alt" data-pinyin="wai">uai</span> ...</td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="wa">wa</span>, <span class="pinyin-alt" data-pinyin="wo">wo</span>, <span class="pinyin-alt" data-pinyin="wai">wai</span> ...</td>
                 <td class="other-cell">hear "waw" &rarr; type <strong>wo</strong> (我 I/me)</td>
             </tr>
             <tr>
-                <td class="pinyin-cell">i- sound</td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="yi">i-</span> sound</td>
                 <td class="pinyin-cell">y-</td>
                 <td class="other-cell">hear "ee" &rarr; type <strong>yi</strong> (一 one)</td>
             </tr>
             <tr>
-                <td class="pinyin-cell">ia, ie, iao ...</td>
-                <td class="pinyin-cell">ya, ye, yao ...</td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="ya">ia</span>, <span class="pinyin-alt" data-pinyin="ye">ie</span>, <span class="pinyin-alt" data-pinyin="yao">iao</span> ...</td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="ya">ya</span>, <span class="pinyin-alt" data-pinyin="ye">ye</span>, <span class="pinyin-alt" data-pinyin="yao">yao</span> ...</td>
                 <td class="other-cell">hear "yow" &rarr; type <strong>yao</strong> (要 want)</td>
             </tr>
             <tr>
-                <td class="pinyin-cell">&uuml;- sound</td>
-                <td class="pinyin-cell">yu-</td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="yu">&uuml;-</span> sound</td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="yu">yu-</span></td>
                 <td class="other-cell">hear "&uuml;" &rarr; type <strong>yu</strong> (鱼 fish)</td>
             </tr>
             <tr>
-                <td class="pinyin-cell">&uuml;e, &uuml;an, &uuml;n</td>
-                <td class="pinyin-cell">yue, yuan, yun</td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="yue">&uuml;e</span>, <span class="pinyin-alt" data-pinyin="yuan">&uuml;an</span>, <span class="pinyin-alt" data-pinyin="yun">&uuml;n</span></td>
+                <td class="pinyin-cell"><span class="pinyin-alt" data-pinyin="yue">yue</span>, <span class="pinyin-alt" data-pinyin="yuan">yuan</span>, <span class="pinyin-alt" data-pinyin="yun">yun</span></td>
                 <td class="other-cell">hear "you-eh" &rarr; type <strong>yue</strong> (月 moon)</td>
             </tr>
         </tbody>
@@ -565,13 +565,19 @@ const INITIAL_FINALS = {
   'j':'i','q':'i','x':'i',
   'z':'i','c':'i','s':'i',
   'zh':'i','ch':'i','sh':'i','r':'i',
-  'y':'a','w':'o','yu':'e'
+  'y':'i','w':'u','yu':'e'
 };
 
 const STANDALONE = {
   'in':'yin','ing':'ying','ui':'wei','iu':'you',
   'ie':'ye','uo':'wo','u':'wu','v':'nv',
   'ü':'yu'
+};
+
+const SPELLING_ALIAS = {
+  'jü':'ju','qü':'qu','xü':'xu',
+  'üan':'yuan','üe':'yue','ün':'yun',
+  'nü':'nv','lü':'lv'
 };
 
 function ttsTextFromCell(text) {
@@ -586,7 +592,7 @@ function ttsTextFromCell(text) {
   if (!raw) return null;
   if (isInitial) return raw + (INITIAL_FINALS[raw] || 'a');
   if (isFinal) return STANDALONE[raw] || raw;
-  return raw;
+  return SPELLING_ALIAS[raw] || raw;
 }
 
 function speak(pinyin) {
