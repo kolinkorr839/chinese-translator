@@ -67,18 +67,29 @@ def phrase_data():
     """
     The lesson/phrase data powering the flashcards.
 
-    Lives as `const DATA = [...]` inside phrase_reference.html. It is valid
-    JSON today; if that ever stops being true this raises and the content tests
-    fail loudly, which is the point.
-
-    NOTE: once TODO item 3 lands (single source of truth in data/phrases.js),
-    point this at that file instead — it is the only place that needs changing.
+    Lives as window.PHRASES in data/phrases.js - a flat array of phrase objects
+    with id, lesson, lessonTitle, section, simp, trad, pinyin, meaning.
+    Rebuilt here into the legacy lesson/section structure the tests expect.
     """
-    src = read("phrase_reference.html")
-    m = re.search(r"const DATA = (\[.*?\]);\n", src, re.S)
+    src = (ROOT / "data" / "phrases.js").read_text(encoding="utf-8")
+    m = re.search(r"window\.PHRASES\s*=\s*(\[.*?\]);\s*$", src, re.S | re.M)
     if not m:
-        raise AssertionError("could not find `const DATA = [...]` in phrase_reference.html")
-    return json.loads(m.group(1))
+        raise AssertionError("could not find `window.PHRASES = [...]` in data/phrases.js")
+    phrases = json.loads(m.group(1))
+    from collections import OrderedDict
+    lessons = OrderedDict()
+    for p in phrases:
+        key = p["lesson"]
+        if key not in lessons:
+            lessons[key] = {"title": p["lessonTitle"], "sections": OrderedDict()}
+        secs = lessons[key]["sections"]
+        if p["section"] not in secs:
+            secs[p["section"]] = []
+        secs[p["section"]].append(p)
+    return [
+        {"title": l["title"], "sections": [{"title": s, "phrases": ps} for s, ps in l["sections"].items()]}
+        for l in lessons.values()
+    ]
 
 
 def iter_phrases():

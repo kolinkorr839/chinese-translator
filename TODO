@@ -49,35 +49,9 @@ SETTLED DECISIONS — do not re-litigate these
 PRIORITY 1 — flip the direction of practice
 -------------------------------------------
 
-1. LISTENING-FIRST MODE   (new page: listening_drill.html)
-   Why: he has never trained hear -> understand. This is the wall for both travel
-   and the Netflix goal. Highest-value item on this list.
+DONE: Listening Drill (listening_drill.html) — shipped and in the nav.
 
-   Behaviour:
-     - Play audio for a phrase FIRST. Render no Chinese text, no pinyin, no English
-       until the user answers. (Critical: if text renders first it silently becomes
-       another recognition drill and the whole point is lost.)
-     - Show 4 English meanings; user picks one. Then reveal simplified + pinyin +
-       English together, and replay the audio once on reveal.
-     - Replay button, always available, unlimited replays before answering.
-     - Wrong answers get pushed back into the queue ~5 cards later.
-     - Second sub-mode, "tone drill": play a single word, ask which tone (1/2/3/4/neutral).
-       Build minimal pairs from the existing phrase set where possible (mā/má/mǎ/mà).
-
-   Implementation:
-     - Audio: reuse the existing TTS approach — Audio() against
-       translate.google.com/translate_tts (see speak() in mandarin_translation.html).
-       The page MUST carry <meta name="referrer" content="no-referrer"> or Google
-       returns 404. This is verified: with a Referer it 404s, without one it 200s.
-     - Distractors: pull the 3 wrong options from the same lesson so they're
-       plausible, not random.
-     - Reuse the control bar from mandarin_flashcards_2.html (shuffle / speed /
-       sound toggle) so it feels like the rest of the site.
-     - Listen for the hub's postMessage {type:'mandarin-hub:hidden'} and stop audio,
-       same as the other decks already do.
-     - Add to index.html nav under "Practice", and to sw.js STATIC_ASSETS (bump CACHE_NAME).
-
-2. PRODUCTION MODE   (UPGRADE mandarin_flashcards_2.html — do not build a new page)
+1. PRODUCTION MODE   (UPGRADE mandarin_flashcards_2.html — do not build a new page)
    Note: Recall Mode ALREADY does this direction. Its header literally reads
    "English prompt - recall the Chinese", with a Show button calling revealAnswer().
    So prompted production exists. What's missing is the feedback loop and the grading.
@@ -95,10 +69,10 @@ PRIORITY 1 — flip the direction of practice
    Implementation:
      - Grades in localStorage under key `mandarin-production-grades`, shape
        { [phraseId]: {seen, again, hard, good, lastSeen} }.
-     - Needs stable phrase IDs -> depends on item 3 below. Do item 3 first.
+     - Stable phrase IDs are available in data/phrases.js (done).
 
 
-2B. TRANSFORM & GENERATE DRILLS  (the missing levels of production)
+1B. TRANSFORM & GENERATE DRILLS  (the missing levels of production)
    Why: production has three levels. He only trains level 1.
      Level 1 RECALL    — English cue -> the one memorized phrase. = Recall Mode. Exists.
      Level 2 TRANSFORM — take a phrase he knows and bend it with grammar. MISSING.
@@ -121,7 +95,7 @@ PRIORITY 1 — flip the direction of practice
        grammar_guide.html (是...的, 了, 在+verb, 过, 想/要/会/能/可以, 把, 被,
        的/得/地, 比, connectors, 越来越, 一边...一边). Reuse those, do not invent new grammar.
      - Data: a transformations table { baseId, instruction, answer, patternRef }.
-       baseId points into window.PHRASES (item 3), patternRef links to the anchor in
+       baseId points into window.PHRASES (item 2), patternRef links to the anchor in
        grammar_guide.html so he can jump to the explanation when he gets it wrong.
      - Reveal plays audio + self-grade, same as the Recall Mode upgrade in item 2.
 
@@ -142,24 +116,11 @@ PRIORITY 1 — flip the direction of practice
 PRIORITY 2 — consistency and plumbing
 -------------------------------------
 
-3. SINGLE SOURCE OF TRUTH FOR PHRASE DATA
-   Problem: the 227 phrases exist as `const DATA = [...]` inside
-   mandarin_flashcards.html AND again inside mandarin_flashcards_2.html, and the
-   14-day course re-states the same content as hand-written HTML tables. Three
-   copies that drift.
+DONE: Single Source of Truth (data/phrases.js) — 187 phrases with stable IDs
+      (L01-001 through L14-010). flashcards.html, phrase_reference.html, and
+      listening_drill.html all load from it. sw.js updated (v16).
 
-   Fix:
-     - Create data/phrases.js containing:  window.PHRASES = [ ... ];
-       Shape per phrase: { id, lesson, section, simp, trad, pinyin, meaning }
-       Add a stable `id` (e.g. "L01-005") — production mode and SRS both need it.
-     - IMPORTANT: it must be a CLASSIC .js file that assigns a global. Do NOT make
-       it a .json loaded with fetch() — fetch of a local file is blocked under
-       file:// (CORS), which would break local use.
-     - Update mandarin_flashcards.html and mandarin_flashcards_2.html to read
-       window.PHRASES instead of their own DATA.
-     - Add data/phrases.js to sw.js STATIC_ASSETS and bump CACHE_NAME.
-
-4. GLOBAL SIMPLIFIED / TRADITIONAL SWITCH
+2. GLOBAL SIMPLIFIED / TRADITIONAL SWITCH
    Problem: mandarin_flashcards_2.html and grammar_flashcards.html have a
    trad/simp toggle. mandarin_flashcards.html, mandarin_in_14_days.html and
    grammar_guide.html do NOT. So the script the student sees is inconsistent
@@ -177,7 +138,7 @@ PRIORITY 2 — consistency and plumbing
        but absent on file://). postMessage works on both.
      - Also send the current value on iframe load, so a newly-opened page starts correct.
 
-5. FIX THE 14-DAY COURSE
+3. FIX THE 14-DAY COURSE
    Problems found:
      - Mixed scripts in one document: 這 x6 vs 这 x12, 說 x5 vs 说 x8, 個 x8 vs 个 x18.
        Same drift in grammar_guide.html (這 x7 / 这 x9, 說 x2 / 说 x4, 會 x5 / 会 x7).
@@ -186,9 +147,9 @@ PRIORITY 2 — consistency and plumbing
        drifts from the flashcard data.
    Fix:
      - Normalize to SIMPLIFIED as the printed script throughout.
-     - Then render the lesson phrase tables from window.PHRASES (item 3) so the
+     - Then render the lesson phrase tables from window.PHRASES so the
        course, the deck and Recall Mode can never disagree again, and so the global
-       script switch (item 4) reaches the course too.
+       script switch (item 2) reaches the course too.
      - Keep the prose/explanations as hand-written HTML — only the phrase tables
        become data-driven.
 
@@ -196,7 +157,7 @@ PRIORITY 2 — consistency and plumbing
 PRIORITY 3 — structure
 ----------------------
 
-6. SIDEBAR REORDER
+4. SIDEBAR REORDER
    Current order (index.html): Translate / Practice (Flashcards, Recall Mode) /
    Pronunciation (Pinyin Chart, Pinyin Guide) / Grammar (Guide, Flashcards) /
    Courses (14-Day) / Simplified-Traditional (Guide, Cheat Sheet, Flashcards).
@@ -206,7 +167,7 @@ PRIORITY 3 — structure
    theory that S/T is reference material consulted rarely, while Courses is daily.
    Do not reorder on a guess; confirm first.
 
-7. EXTRACT SHARED JS AND CSS
+5. EXTRACT SHARED JS AND CSS
    Problem: 9 pages duplicate speak() with the same TTS engine toggle, protocol
    routing, and fallback logic. A TTS bug fix must be applied to 9 files. CSS
    resets, dark-mode variables, and base typography are copy-pasted across every
@@ -250,7 +211,7 @@ PRIORITY 3 — structure
 PRIORITY 4 — new content
 ------------------------
 
-8. COURSE 2 — "HANDLING THE REPLY"   (was: "Next 14-Day Course")
+6. COURSE 2 — "HANDLING THE REPLY"   (was: "Next 14-Day Course")
    STATUS: AGREED. Course 2 is the same travel situations taught from the OTHER side
    of the conversation — what he HEARS back — not deeper vocabulary on the same topics.
 
@@ -294,6 +255,6 @@ PARKING LOT (unchanged, lower priority)
   - Patterns 7-15 for the grammar guide (把, 被, three 的/得/地, 比, clause connectors)
   - Short dialogue/story reader (bridges phrases to comprehension)
   - Stroke order watch-only animations
-  - Spaced repetition tracking (reads the grades written by item 2)
+  - Spaced repetition tracking (reads the grades written by item 1)
   - HSK vocabulary sets
   - Netflix bridge: a page of listening strategies + which shows suit a beginner ear

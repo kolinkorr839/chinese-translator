@@ -157,29 +157,12 @@ def check_no_duplicate_grammar_cards():
 
 
 @check
-def check_flashcards_data_matches_phrase_reference():
-    """flashcards.html DATA matches phrase_reference.html DATA"""
-    import json as _json
-    ref_src = s.read("phrase_reference.html")
-    fc_src = s.read("flashcards.html")
-
-    ref_m = re.search(r"const DATA = (\[.*?\]);\n", ref_src, re.S)
-    fc_m = re.search(r"const DATA = (\[.*?\]);\n", fc_src, re.S)
-    assert ref_m, "could not find DATA in phrase_reference.html"
-    assert fc_m, "could not find DATA in flashcards.html"
-
-    ref_data = _json.loads(ref_m.group(1))
-    fc_data = _json.loads(fc_m.group(1))
-
-    ref_phrases = [(p["simp"], p["meaning"]) for l in ref_data
-                   for sec in l.get("sections", []) for p in sec.get("phrases", [])]
-    fc_phrases = [(p["simp"], p["meaning"]) for l in fc_data
-                  for sec in l.get("sections", []) for p in sec.get("phrases", [])]
-    assert ref_phrases == fc_phrases, (
-        f"phrase_reference.html has {len(ref_phrases)} phrases, "
-        f"flashcards.html has {len(fc_phrases)} - they must stay in sync"
-    )
-    return f"{len(ref_phrases)} phrases match"
+def check_phrase_pages_load_shared_data():
+    """flashcards, phrase_reference, and listening_drill all load data/phrases.js"""
+    pages = ["flashcards.html", "phrase_reference.html", "listening_drill.html"]
+    missing = [p for p in pages if 'src="data/phrases.js"' not in s.read(p)]
+    assert not missing, f"pages not loading data/phrases.js: {', '.join(missing)}"
+    return f"{len(pages)} pages use shared data/phrases.js"
 
 
 @check
@@ -266,53 +249,18 @@ def check_scenario_dialogue_lines_have_required_fields():
 
 
 @check
-def check_listening_drill_data_parses():
-    """listening drill has valid phrase data with required fields"""
-    src = s.read("listening_drill.html")
-    m = re.search(r"const DATA = (\[.*?\]);\n", src, re.S)
-    assert m, "could not find `const DATA = [...]` in listening_drill.html"
-    import json as _json
-    data = _json.loads(m.group(1))
-    assert data, "listening drill DATA is empty"
-    total = 0
-    bad = []
+def check_shared_phrase_data_has_stable_ids():
+    """every phrase in data/phrases.js has a unique stable ID"""
+    data = s.phrase_data()
+    ids = []
     for lesson in data:
-        assert lesson.get("title"), "lesson missing title"
         for section in lesson.get("sections", []):
             for p in section.get("phrases", []):
-                total += 1
-                for field in ("trad", "simp", "pinyin", "meaning"):
-                    if not str(p.get(field, "")).strip():
-                        bad.append(f"{lesson['title']}: missing {field!r}")
-    assert not bad, "incomplete phrases:\n  " + "\n  ".join(bad[:20])
-    return f"{len(data)} lessons, {total} phrases"
-
-
-@check
-def check_listening_drill_data_matches_phrase_reference():
-    """listening drill DATA matches phrase_reference.html DATA"""
-    import json as _json
-    ref_src = s.read("phrase_reference.html")
-    ld_src = s.read("listening_drill.html")
-
-    ref_m = re.search(r"const DATA = (\[.*?\]);\n", ref_src, re.S)
-    ld_m = re.search(r"const DATA = (\[.*?\]);\n", ld_src, re.S)
-    assert ref_m, "could not find DATA in phrase_reference.html"
-    assert ld_m, "could not find DATA in listening_drill.html"
-
-    ref_phrases = [(p["simp"], p["meaning"])
-                   for l in _json.loads(ref_m.group(1))
-                   for sec in l.get("sections", [])
-                   for p in sec.get("phrases", [])]
-    ld_phrases = [(p["simp"], p["meaning"])
-                  for l in _json.loads(ld_m.group(1))
-                  for sec in l.get("sections", [])
-                  for p in sec.get("phrases", [])]
-    assert ref_phrases == ld_phrases, (
-        f"phrase_reference.html has {len(ref_phrases)} phrases, "
-        f"listening_drill.html has {len(ld_phrases)} - they must stay in sync"
-    )
-    return f"{len(ref_phrases)} phrases match"
+                pid = p.get("id", "")
+                assert pid, f"phrase missing id: {p.get('simp', '?')}"
+                ids.append(pid)
+    assert len(ids) == len(set(ids)), "duplicate phrase IDs found"
+    return f"{len(ids)} phrases, all IDs unique"
 
 
 @check
