@@ -101,44 +101,19 @@ DONE: Single Source of Truth (data/phrases.js) — 187 phrases with stable IDs
       (L01-001 through L14-010). flashcards.html, phrase_reference.html, and
       listening_drill.html all load from it. sw.js updated (v16).
 
-2. GLOBAL SIMPLIFIED / TRADITIONAL SWITCH
-   Problem: mandarin_flashcards_2.html and grammar_flashcards.html have a
-   trad/simp toggle. mandarin_flashcards.html, mandarin_in_14_days.html and
-   grammar_guide.html do NOT. So the script the student sees is inconsistent
-   depending on which page he's on.
+DROPPED: Global simp/trad switch - not needed. Pages showing both scripts
+         side-by-side (grammar_guide, scenarios, conversation_phrases) are fine
+         as-is. No toggle, no display changes.
 
-   Fix:
-     - One control in the hub sidebar. Default SIMPLIFIED (that's the target script).
-     - Store in localStorage as `mandarin-hub-script` = 'simp' | 'trad'.
-     - Broadcast to pages via postMessage {type:'mandarin-hub:script', value:'simp'},
-       mirroring the existing 'mandarin-hub:hidden' message. Each page listens and
-       re-renders from the trad/simp fields it already has.
-     - Use postMessage as the transport, NOT shared localStorage. Under file:// the
-       iframes are cross-origin/opaque, and it is not confirmed they share the hub's
-       localStorage (observed: `mandarin-hub-speed` was present on the https origin
-       but absent on file://). postMessage works on both.
-     - Also send the current value on iframe load, so a newly-opened page starts correct.
-
-3. FIX THE 14-DAY COURSE
-   Problems found:
-     - Mixed scripts in one document: 這 x6 vs 这 x12, 說 x5 vs 说 x8, 個 x8 vs 个 x18.
-       Same drift in grammar_guide.html (這 x7 / 这 x9, 說 x2 / 说 x4, 會 x5 / 会 x7).
-       For a student whose only foothold is character shape, this is actively confusing.
-     - The course is hand-written HTML tables, so it can't participate in item 4 and
-       drifts from the flashcard data.
-   Fix:
-     - Normalize to SIMPLIFIED as the printed script throughout.
-     - Then render the lesson phrase tables from window.PHRASES so the
-       course, the deck and Recall Mode can never disagree again, and so the global
-       script switch (item 2) reaches the course too.
-     - Keep the prose/explanations as hand-written HTML — only the phrase tables
-       become data-driven.
+DONE: 14-day course is gone. Its content lives in phrase_reference.html and
+      flashcards.html, both loading from data/phrases.js. No hand-written
+      phrase tables remain to drift.
 
 
 PRIORITY 3 — structure
 ----------------------
 
-3. SIDEBAR REORDER
+2. SIDEBAR REORDER
    Current order (index.html): Translate / Practice (Flashcards, Recall Mode) /
    Pronunciation (Pinyin Chart, Pinyin Guide) / Grammar (Guide, Flashcards) /
    Courses (14-Day) / Simplified-Traditional (Guide, Cheat Sheet, Flashcards).
@@ -148,7 +123,7 @@ PRIORITY 3 — structure
    theory that S/T is reference material consulted rarely, while Courses is daily.
    Do not reorder on a guess; confirm first.
 
-4. EXTRACT SHARED JS AND CSS
+3. EXTRACT SHARED JS AND CSS
    Problem: 9 pages duplicate speak() with the same TTS engine toggle, protocol
    routing, and fallback logic. A TTS bug fix must be applied to 9 files. CSS
    resets, dark-mode variables, and base typography are copy-pasted across every
@@ -192,7 +167,7 @@ PRIORITY 3 — structure
 PRIORITY 4 — new content
 ------------------------
 
-5. COURSE 2 — "HANDLING THE REPLY"   (was: "Next 14-Day Course")
+4. COURSE 2 — "HANDLING THE REPLY"   (was: "Next 14-Day Course")
    STATUS: AGREED. Course 2 is the same travel situations taught from the OTHER side
    of the conversation — what he HEARS back — not deeper vocabulary on the same topics.
 
