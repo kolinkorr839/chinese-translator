@@ -3114,7 +3114,7 @@ function playLine(scenario, lines, idx, gen) {
 
   lines.forEach(l => l.classList.remove('speaking'));
   lines[idx].classList.add('speaking');
-  lines[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  lines[idx].scrollIntoView({ behavior: 'instant', block: 'center' });
   const simp = lines[idx].querySelector('.simp')?.textContent || '';
   speakThenDo(simp, () => {
     if (gen !== playGeneration) return;

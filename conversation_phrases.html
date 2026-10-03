@@ -471,7 +471,7 @@ function togglePractice(sectionId, btn) {
   if (isActive) {
     state[sectionId] = true;
     card.querySelectorAll('.phrase-chinese.revealed').forEach(el => el.classList.remove('revealed'));
-    card.scrollIntoView({ behavior: 'smooth' });
+    card.scrollIntoView({ behavior: 'instant' });
   } else {
     delete state[sectionId];
   }

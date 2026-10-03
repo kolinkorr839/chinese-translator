@@ -432,7 +432,7 @@ function playNextColumn() {
   const cellEl = document.getElementById('c-' + colIdx + '-' + cell.ri);
   if (cellEl) {
     cellEl.classList.add('cell-playing');
-    cellEl.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    cellEl.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
   }
 
   speak(cell.pinyin, cell.base);
@@ -466,7 +466,7 @@ function playNextRow() {
   const cellEl = document.getElementById('c-' + cell.ci + '-' + rowIdx);
   if (cellEl) {
     cellEl.classList.add('cell-playing');
-    cellEl.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+    cellEl.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
   }
 
   speak(cell.pinyin, cell.base);

@@ -455,8 +455,8 @@ body {
   .example-item { grid-template-columns: 22px 1fr; gap: 0 8px; }
 }
 
-/* smooth scroll */
-html { scroll-behavior: smooth; }
+/* instant scroll */
+html { scroll-behavior: auto; }
 
 /* back to contents links */
 .pattern-number a {
@@ -2991,7 +2991,7 @@ document.addEventListener('click', (e) => {
   const target = document.getElementById(id);
   if (target) {
     e.preventDefault();
-    target.scrollIntoView({ behavior: 'smooth' });
+    target.scrollIntoView({ behavior: 'instant' });
   }
 });
 
