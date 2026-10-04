@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<title>Generate Drill - Mandarin Hub</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #faf9f6;
+  --text: #1a1a2e;
+  --accent: #C41E3A;
+  --accent-light: rgba(196, 30, 58, 0.08);
+  --card-bg: #fff;
+  --border: #e5e2db;
+  --muted: #6B7B8D;
+  --success: #2d8a4e;
+  --warning: #b8860b;
+  --radius: 8px;
+}
+
+body {
+  font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei',
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  padding: 24px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+/* API key setup */
+.api-setup {
+  background: var(--accent-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+}
+
+.api-setup p { margin-bottom: 12px; font-size: 14px; }
+
+.api-setup input {
+  width: 100%;
+  max-width: 360px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.api-setup button {
+  margin-top: 8px;
+  padding: 8px 20px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* Controls bar */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.controls select, .controls button {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--card-bg);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.controls button:hover { background: var(--accent-light); }
+
+.controls .btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  font-weight: 500;
+}
+
+.controls .btn-primary:hover { opacity: 0.9; }
+.controls .btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Lesson picker */
+.lesson-picker {
+  margin-bottom: 16px;
+}
+
+.lesson-picker summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--muted);
+  user-select: none;
+}
+
+.lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.lesson-cb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+.lesson-cb input { cursor: pointer; }
+
+.toggle-all {
+  font-size: 12px;
+  color: var(--accent);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 4px;
+}
+
+/* Drill card */
+.drill-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  min-height: 200px;
+  position: relative;
+}
+
+/* Timer bar */
+.timer-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  display: none;
+}
+
+.timer-bar.active { display: block; }
+
+.timer-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 100%;
+  transition: width linear;
+}
+
+/* Situation */
+.situation {
+  font-size: 17px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* Hint area */
+.hints { margin-bottom: 20px; }
+
+.hint-content {
+  background: #fffbf0;
+  border: 1px solid #f0e6cc;
+  border-radius: 4px;
+  padding: 10px 14px;
+  margin-top: 8px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.hint-content .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--warning);
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Action buttons */
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--card-bg);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.actions button:hover { background: var(--accent-light); }
+.actions button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.actions .btn-reveal {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.actions .btn-reveal:hover { opacity: 0.9; }
+
+/* Answer reveal */
+.answer {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.answer-chinese {
+  font-size: 26px;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.answer-meaning {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+
+.answer-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.answer-actions button {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--card-bg);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.answer-actions button:hover { background: var(--accent-light); }
+
+.grammar-link {
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.grammar-link:hover { text-decoration: underline; }
+
+/* Loading spinner */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Error */
+.error {
+  background: #fff0f0;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  padding: 12px;
+  color: #721c24;
+  font-size: 14px;
+}
+
+/* Stats */
+.stats {
+  margin-top: 16px;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  body { padding: 16px; }
+  .drill-card { padding: 16px; }
+  .answer-chinese { font-size: 22px; }
+  .lesson-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<h1>Generate Drill</h1>
+<p class="subtitle">Build sentences from scratch. Gemini creates fresh situations each time.</p>
+
+<div id="api-setup" class="api-setup" style="display:none">
+  <p>This drill uses Gemini to generate fresh situations.<br>Enter your API key to get started.</p>
+  <input type="password" id="api-key-input" autocomplete="off" spellcheck="false"
+         placeholder="Gemini API key">
+  <br>
+  <button onclick="saveApiKey()">Save</button>
+</div>
+
+<div id="main-ui" style="display:none">
+
+  <details class="lesson-picker">
+    <summary>Vocabulary scope (select lessons)</summary>
+    <div class="lesson-grid" id="lesson-grid"></div>
+    <button class="toggle-all" id="toggle-all">Select / Deselect All</button>
+  </details>
+
+  <div class="controls">
+    <select id="difficulty">
+      <option value="easy">Easy (1 sentence)</option>
+      <option value="medium" selected>Medium (1-2 clauses)</option>
+      <option value="hard">Hard (connectors, multi-sentence)</option>
+    </select>
+    <select id="timer-select">
+      <option value="0">No timer</option>
+      <option value="5">5 second timer</option>
+      <option value="8">8 second timer</option>
+      <option value="12">12 second timer</option>
+    </select>
+    <button class="btn-primary" id="btn-generate" onclick="generate()">New Situation</button>
+  </div>
+
+  <div class="drill-card" id="drill-card"></div>
+
+  <div class="stats" id="stats"></div>
+
+</div>
+
+<script src="data/phrases.js"></script>
+<script>
+
+const GEMINI_MODELS = [
+  'gemini-3.5-flash-lite',
+  'gemini-3.1-flash-lite',
+  'gemini-3-flash-preview',
+  'gemini-2.5-flash-lite',
+];
+
+const GRAMMAR_ANCHORS = {
+  'word-order': 'Word Order (SVO)',
+  'shi-de': '是...的 (Emphasis)',
+  'zai': '在 + Verb (In Progress)',
+  'zhe': '着 (Continuing State)',
+  'le': '了 (Completed Action)',
+  'guo': '过 (Past Experience)',
+  'modals': 'Modals (想/要/会/能/可以)',
+  'ba': '把 (Object Before Verb)',
+  'bei': '被 (Passive Voice)',
+  'de-possessive': '的 (Possessive)',
+  'de-complement': '得 (Complement)',
+  'de-adverb': '地 (Adverb)',
+  'hen-adjective': '很 + Adjective',
+  'bi': '比 (Comparison)',
+  'clause-connectors': 'Clause Connectors',
+  'yuelaiyue': '越来越 (More and More)',
+  'yibian': '一边...一边 (Simultaneous)',
+  'negation': 'Negation (不/没)',
+};
+
+let ttsAudio = null;
+let selectedLessons = new Set();
+let sessionCount = 0;
+let timerInterval = null;
+let currentGeneration = 0;
+let previousSituations = [];
+
+function getApiKey() {
+  return localStorage.getItem('gemini_api_key');
+}
+
+function saveApiKey() {
+  const key = document.getElementById('api-key-input').value.trim();
+  if (!key) return;
+  localStorage.setItem('gemini_api_key', key);
+  init();
+}
+
+async function callGemini(apiKey, body) {
+  for (let i = 0; i < GEMINI_MODELS.length; i++) {
+    const model = GEMINI_MODELS[i];
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (resp.status === 429 && i < GEMINI_MODELS.length - 1) {
+      console.warn(`Gemini ${model} returned 429, falling back...`);
+      continue;
+    }
+    return resp;
+  }
+}
+
+function getSelectedPhrases() {
+  if (selectedLessons.size === 0) return window.PHRASES;
+  const lessons = [...selectedLessons].map(i => i + 1);
+  return window.PHRASES.filter(p => lessons.includes(p.lesson));
+}
+
+const SETTINGS = [
+  'ordering food at a restaurant',
+  'checking into a hotel',
+  'in a taxi going somewhere',
+  'shopping for clothes at a market',
+  'asking a stranger for directions on the street',
+  'at a pharmacy because you feel sick',
+  'at a train station buying tickets',
+  'making small talk about the weather with a local',
+  'meeting someone new and introducing yourself',
+  'talking to a friend about your family',
+  'at the supermarket buying groceries',
+  'checking out of your hotel',
+  'at the airport trying to find your gate',
+  'haggling over the price of a souvenir',
+  'asking what time something starts or opens',
+  'telling a taxi driver to stop or change destination',
+  'complaining that something is too expensive',
+  'asking if a shop has a different size or color',
+  'telling someone you are lost and need help',
+  'at a restaurant asking for the bill',
+  'describing how you feel today to a friend',
+  'comparing two things while shopping',
+  'asking someone if they speak English',
+  'explaining that you are a vegetarian',
+  'telling someone about your travel plans for tomorrow',
+];
+
+let usedSettings = [];
+
+function pickSetting() {
+  let available = SETTINGS.filter(s => !usedSettings.includes(s));
+  if (available.length === 0) {
+    usedSettings = [];
+    available = SETTINGS;
+  }
+  const pick = available[Math.floor(Math.random() * available.length)];
+  usedSettings.push(pick);
+  return pick;
+}
+
+function buildPrompt(phrases, difficulty) {
+  const vocabList = phrases.map(p =>
+    `${p.simp} (${p.pinyin}) = ${p.meaning}`
+  ).join('\n');
+
+  const anchorList = Object.entries(GRAMMAR_ANCHORS)
+    .map(([id, name]) => `${id}: ${name}`)
+    .join('\n');
+
+  const setting = pickSetting();
+
+  const difficultyGuide = {
+    easy: 'Create a simple situation requiring a 1-sentence response using 1-3 vocabulary items. No grammar patterns needed beyond basic word order. The modelAnswer MUST be a complete sentence, not a single word or phrase.',
+    medium: 'Create a situation requiring 1-2 clauses, possibly using a grammar pattern like negation, questions (吗), modals, or comparison. The modelAnswer MUST contain at least 2 clauses that address the full situation. A single word or short phrase is not acceptable.',
+    hard: 'Create a situation requiring multiple clauses with connectors (因为/所以, 虽然/但是, 如果/就) or more complex grammar (比, 了, 过, 在+verb). The modelAnswer MUST combine 3+ vocabulary items with at least one grammar pattern and be at least 2 sentences.',
+  };
+
+  return `You are a Mandarin Chinese teacher creating practice situations for a beginner student traveling in China.
+
+SETTING: ${setting}
+You MUST set the situation in this specific context. Do not change the setting.
+
+RULES:
+- The student ONLY knows the vocabulary listed below. Do not use ANY Chinese words outside this list in the model answer.
+- The situation must be described in English (1-3 sentences).
+- The model answer (modelAnswer) must use ONLY simplified Chinese characters. NEVER use pinyin or romanization in modelAnswer. Write 面条 not miàntiáo, write 不要辣 not bú yào là.
+- The situation should be realistic and specific to the setting above.
+- The modelAnswer MUST directly address every part of the situation. If the situation asks the student to do two things, the answer must do both.
+- Only set patternRef to a grammar pattern that is actually used in the modelAnswer. If the answer does not use any listed pattern, set patternRef to null.
+
+DIFFICULTY: ${difficulty}
+${difficultyGuide[difficulty]}
+
+KNOWN VOCABULARY:
+${vocabList}
+
+AVAILABLE GRAMMAR PATTERN ANCHORS (use the id value for patternRef):
+${anchorList}
+${previousSituations.length ? '\nPREVIOUS SITUATIONS (do NOT repeat or closely resemble any of these):\n' + previousSituations.map((s, i) => `${i + 1}. ${s}`).join('\n') + '\n' : ''}
+Respond with ONLY valid JSON (no markdown fencing, no explanation):
+{
+  "situation": "English description of the situation",
+  "modelAnswer": "Simplified Chinese response the student should produce",
+  "modelPinyin": "Pinyin for the model answer",
+  "modelMeaning": "English translation of the model answer",
+  "hints": [
+    "Key vocabulary hint: list the 2-4 key Chinese words needed, separated by /",
+    "Structure hint: show the sentence skeleton with blanks, e.g. 我要___，不要___"
+  ],
+  "patternRef": "grammar-anchor-id or null if no grammar pattern is involved"
+}`;
+}
+
+function speak(chinese) {
+  if (!chinese) return;
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+  ttsAudio = new Audio(primary);
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+function stopTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function startTimer(seconds, onExpire) {
+  stopTimer();
+  const bar = document.getElementById('timer-bar');
+  const fill = document.getElementById('timer-fill');
+  if (!seconds) {
+    bar.classList.remove('active');
+    return;
+  }
+  bar.classList.add('active');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  fill.offsetWidth;
+  fill.style.transition = `width ${seconds}s linear`;
+  fill.style.width = '0%';
+
+  const gen = currentGeneration;
+  timerInterval = setTimeout(() => {
+    if (gen === currentGeneration) onExpire();
+  }, seconds * 1000);
+}
+
+async function generate() {
+  const apiKey = getApiKey();
+  if (!apiKey) return;
+
+  const phrases = getSelectedPhrases();
+  if (phrases.length < 5) {
+    showError('Select at least one lesson with enough vocabulary.');
+    return;
+  }
+
+  const difficulty = document.getElementById('difficulty').value;
+  const timerSeconds = parseInt(document.getElementById('timer-select').value);
+  const card = document.getElementById('drill-card');
+  const btn = document.getElementById('btn-generate');
+
+  currentGeneration++;
+  stopTimer();
+  btn.disabled = true;
+
+  card.innerHTML = '<div class="loading"><div class="spinner"></div>Generating situation...</div>';
+
+  try {
+    const prompt = buildPrompt(phrases, difficulty);
+    const resp = await callGemini(apiKey, {
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: {
+        temperature: 1.0,
+        maxOutputTokens: 512,
+      }
+    });
+
+    if (!resp || !resp.ok) {
+      const status = resp ? resp.status : 'no response';
+      throw new Error(`Gemini returned ${status}`);
+    }
+
+    const data = await resp.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!text) throw new Error('Empty response from Gemini');
+
+    const cleaned = text.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim();
+    const result = JSON.parse(cleaned);
+
+    previousSituations.push(result.situation);
+    if (previousSituations.length > 20) previousSituations.shift();
+    sessionCount++;
+    renderDrill(result, timerSeconds);
+  } catch (err) {
+    showError(`Failed to generate: ${err.message}`);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function showError(msg) {
+  const card = document.getElementById('drill-card');
+  card.innerHTML = `<div class="error">${msg}</div>`;
+}
+
+function renderDrill(result, timerSeconds) {
+  const card = document.getElementById('drill-card');
+  const gen = currentGeneration;
+
+  let hintsRevealed = 0;
+  const maxHints = (result.hints || []).length;
+
+  let html = '';
+  html += '<div class="timer-bar" id="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>';
+  html += `<div class="situation">${escapeHtml(result.situation)}</div>`;
+  html += '<div class="hints" id="hints-area"></div>';
+  html += '<div class="actions" id="actions">';
+  if (maxHints > 0) html += '<button id="btn-hint" onclick="revealHint()">Hint</button>';
+  html += '<button class="btn-reveal" id="btn-reveal" onclick="revealAnswer()">Reveal Answer</button>';
+  html += '</div>';
+  html += '<div id="answer-area"></div>';
+
+  card.innerHTML = html;
+
+  window._currentResult = result;
+
+  window.revealHint = function() {
+    if (hintsRevealed >= maxHints) return;
+    const area = document.getElementById('hints-area');
+    const hint = result.hints[hintsRevealed];
+    const labels = ['Key words', 'Structure'];
+    const div = document.createElement('div');
+    div.className = 'hint-content';
+    div.innerHTML = `<span class="label">${labels[hintsRevealed] || 'Hint'}</span>${escapeHtml(hint)}`;
+    area.appendChild(div);
+    hintsRevealed++;
+    if (hintsRevealed >= maxHints) {
+      const btn = document.getElementById('btn-hint');
+      if (btn) btn.disabled = true;
+    }
+  };
+
+  window.revealAnswer = function() {
+    if (gen !== currentGeneration) return;
+    stopTimer();
+    const area = document.getElementById('answer-area');
+    const actions = document.getElementById('actions');
+    actions.style.display = 'none';
+
+    let answerHtml = '<div class="answer">';
+    answerHtml += `<div class="answer-chinese">${escapeHtml(result.modelAnswer)}</div>`;
+    if (result.modelMeaning) {
+      answerHtml += `<div class="answer-meaning">${escapeHtml(result.modelMeaning)}</div>`;
+    }
+    answerHtml += '<div class="answer-actions">';
+    answerHtml += `<button onclick="speak('${escapeJs(result.modelAnswer)}')">Play Audio</button>`;
+    if (result.patternRef && result.patternRef !== 'null' && GRAMMAR_ANCHORS[result.patternRef]) {
+      const anchor = escapeHtml(result.patternRef);
+      const label = escapeHtml(GRAMMAR_ANCHORS[result.patternRef]);
+      answerHtml += ` <a class="grammar-link" href="#" onclick="navigateToGrammar('${escapeJs(anchor)}'); return false;">`;
+      answerHtml += `Pattern: ${label}</a>`;
+    }
+    answerHtml += '</div></div>';
+
+    area.innerHTML = answerHtml;
+    speak(result.modelAnswer);
+    updateStats();
+  };
+
+  if (timerSeconds) {
+    startTimer(timerSeconds, () => {
+      if (gen === currentGeneration) window.revealAnswer();
+    });
+  }
+}
+
+function navigateToGrammar(anchor) {
+  window.parent.postMessage({
+    type: 'mandarin-hub:navigate',
+    page: 'grammar_guide.html#' + anchor
+  }, '*');
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+function escapeJs(str) {
+  return (str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+function updateStats() {
+  document.getElementById('stats').textContent = `Situations completed: ${sessionCount}`;
+}
+
+function buildLessonPicker() {
+  const grid = document.getElementById('lesson-grid');
+  const seen = new Map();
+  window.PHRASES.forEach(p => {
+    if (!seen.has(p.lesson)) seen.set(p.lesson, p.lessonTitle);
+  });
+  seen.forEach((title, num) => {
+    const idx = num - 1;
+    const label = document.createElement('label');
+    label.className = 'lesson-cb';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = true;
+    selectedLessons.add(idx);
+    cb.addEventListener('change', () => {
+      if (cb.checked) selectedLessons.add(idx);
+      else selectedLessons.delete(idx);
+    });
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(title));
+    grid.appendChild(label);
+  });
+
+  document.getElementById('toggle-all').addEventListener('click', () => {
+    const cbs = grid.querySelectorAll('input');
+    const allChecked = [...cbs].every(c => c.checked);
+    cbs.forEach((cb, i) => {
+      cb.checked = !allChecked;
+      if (!allChecked) selectedLessons.add(i);
+      else selectedLessons.delete(i);
+    });
+  });
+}
+
+function init() {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    document.getElementById('api-setup').style.display = '';
+    document.getElementById('main-ui').style.display = 'none';
+  } else {
+    document.getElementById('api-setup').style.display = 'none';
+    document.getElementById('main-ui').style.display = '';
+    buildLessonPicker();
+  }
+}
+
+window.addEventListener('message', (e) => {
+  if (e.data && e.data.type === 'mandarin-hub:hidden') {
+    stopTimer();
+    if (ttsAudio) { ttsAudio.pause(); }
+  }
+});
+
+init();
+
+</script>
+</body>
+</html>

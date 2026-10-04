@@ -3011,6 +3011,10 @@ window.addEventListener('message', (e) => {
     const y = e.data.scrollY;
     setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
   }
+  if (e.data.type === 'mandarin-hub:scroll-to-anchor' && e.data.anchor) {
+    const el = document.getElementById(e.data.anchor);
+    if (el) el.scrollIntoView({ behavior: 'instant' });
+  }
 });
 </script>
 

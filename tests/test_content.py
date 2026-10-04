@@ -159,7 +159,7 @@ def check_no_duplicate_grammar_cards():
 @check
 def check_phrase_pages_load_shared_data():
     """flashcards, phrase_reference, and listening_drill all load data/phrases.js"""
-    pages = ["flashcards.html", "phrase_reference.html", "listening_drill.html"]
+    pages = ["flashcards.html", "phrase_reference.html", "listening_drill.html", "generate_drill.html"]
     missing = [p for p in pages if 'src="data/phrases.js"' not in s.read(p)]
     assert not missing, f"pages not loading data/phrases.js: {', '.join(missing)}"
     return f"{len(pages)} pages use shared data/phrases.js"

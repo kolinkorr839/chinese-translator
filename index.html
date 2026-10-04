@@ -459,6 +459,10 @@ iframe {
       <span class="nav-icon">听</span>
       <span class="nav-label">Listening Drill</span>
     </button>
+    <button class="nav-item" data-page="generate_drill.html">
+      <span class="nav-icon">造</span>
+      <span class="nav-label">Generate Drill</span>
+    </button>
   </div>
 
   <div class="section-divider"></div>
@@ -626,6 +630,9 @@ function loadPage(page, updateHash = true) {
     } else if (pendingStrokeOrder && page === 'mandarin_translation.html') {
       f.src = page + '?stroke=' + encodeURIComponent(pendingStrokeOrder);
       pendingStrokeOrder = null;
+    } else if (pendingAnchor && pendingAnchor.page === page) {
+      f.src = page + '#' + pendingAnchor.anchor;
+      pendingAnchor = null;
     } else {
       f.src = page;
     }
@@ -743,6 +750,7 @@ if (localStorage.getItem('mandarin-hub-sidebar-collapsed') === 'true'
 // First load: bake ?lookup= into the iframe src so it auto-translates on init.
 let pendingLookup = null;
 let pendingStrokeOrder = null;
+let pendingAnchor = null;
 window.addEventListener('message', (e) => {
   if (!e.data) return;
   if (e.data.type === 'mandarin-hub:scroll-report') {
@@ -772,6 +780,26 @@ window.addEventListener('message', (e) => {
   if (e.data.type === 'mandarin-hub:stroke-order') {
     pendingStrokeOrder = e.data.char;
     loadPage('mandarin_translation.html');
+  }
+  if (e.data.type === 'mandarin-hub:navigate') {
+    const full = e.data.page || '';
+    const [page, hash] = full.split('#');
+    if (!isKnownPage(page)) return;
+    if (hash) {
+      if (iframes[page]) {
+        loadPage(page);
+        try {
+          iframes[page].contentWindow.postMessage({
+            type: 'mandarin-hub:scroll-to-anchor', anchor: hash
+          }, '*');
+        } catch (err) { /* frame not ready */ }
+      } else {
+        pendingAnchor = { page, anchor: hash };
+        loadPage(page);
+      }
+    } else {
+      loadPage(page);
+    }
   }
 });
 

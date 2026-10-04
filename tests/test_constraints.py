@@ -119,6 +119,7 @@ FLASHCARD_PAGES = [
     "simplified_traditional_flashcards.html",
     "pinyin_chart.html",
     "listening_drill.html",
+    "generate_drill.html",
 ]
 
 
@@ -147,6 +148,7 @@ TTS_PAGES = [
     "conversation_phrases.html",
     "scenarios.html",
     "listening_drill.html",
+    "generate_drill.html",
 ]
 
 
