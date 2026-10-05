@@ -1,0 +1,100 @@
+Source: http://www.youtube.com/watch?v=pW1PcrtEqws
+70 conversational phrases organized by function.
+
+High-frequency subset (26 phrases) added to conversation_phrases.html as
+"Conversational Building Blocks". The remaining ~44 below are intermediate/
+advanced - pull them in as the student's level warrants.
+
+STATUS: High-frequency subset shipped. Remaining phrases below.
+
+=========================================================================
+
+1. Filler Words (Buying Time)
+   [SHIPPED] That / Um (Filler word) - 那个 / 这个 (neige / zheige)
+   [SHIPPED] How to say / How do I say - 怎么说 (zenme shuo)
+             That is to say / I mean - 就是说 (jiushi shuo)
+   [SHIPPED] Let me think - 让我想一想 (rang wo xiang yi xiang)
+   [SHIPPED] Wait a moment - 等一下 (deng yixia)
+   [SHIPPED] And then / Um - 然后 (ranhou)
+
+2. Giving Opinions
+   [SHIPPED] I feel / I think - 我觉得 (wo juede)
+             I literally feel (more subjective/emotional) - 我感觉 (wo ganjue)
+             To be honest - 说实话 (shuo shihua)
+   [SHIPPED] Actually / The thing is - 其实 (qishi)
+             If you ask me - 要我说 (yao wo shuo)
+             In my opinion / From my viewpoint - 依我看 / 我看 (yi wo kan / wo kan)
+
+3. Active Listening & Reacting
+   [SHIPPED] Really? - 真的吗 (zhen de ma)
+             No way / You're kidding - 不是吧 (bu shi ba)
+   [SHIPPED] So that's how it is / I see - 原来是这样 (yuanlai shi zheyang)
+             I didn't think of that - 我没想到 (wo mei xiangdao)
+   [SHIPPED] Interesting - 有意思 (you yisi)
+   [SHIPPED] And then what? - 然后呢 (ranhou ne)
+             Indeed / That's right - 确实 (queshi)
+             Oh, is that so - 这样啊 (zheyang a)
+   [SHIPPED] No wonder - 难怪 (nanguai)
+
+4. Building on Ideas (Connecting & Stacking)
+             Moreover / Furthermore - 并且 (bingqie)
+             Additionally / In addition - 另外 (lingwai)
+             Also / In addition (Casual) - 还 (hai)
+             Not only... but also... - 不但... 而且... (budan... erqie...)
+             Even / Even so - 甚至 (shenzhi)
+             On top of that / Furthermore - 再说 (zaishuo)
+             Especially - 尤其是 (youqi shi)
+
+5. Transitioning & Contrasting (But / However)
+   [SHIPPED] But (softer) - 不过 (buguo)
+   [SHIPPED] Standard but / However - 但是 (danshi)
+             Although... but... - 虽然... 但是... (suiran... danshi...)
+             On the contrary / Instead - 反而 (fan'er)
+             On the other hand - 另一方面 (ling yi fangmian)
+             Conversely / On the contrary - 相反 (xiangfan)
+             No matter what / Anyway - 不管怎样 (buguan zenyang)
+
+6. Explaining & Clarifying
+   [SHIPPED] Because... therefore... - 因为... 所以... (yinwei... suoyi...)
+   [SHIPPED] Anyway / Regardless - 反正 (fanzheng)
+             Since / Given that - 既然 (jiran)
+             In other words - 换句话说 (huan ju hua shuo)
+             Let me say it again / Rewind - 再说一遍 (zai shuo yi bian)
+             To put it simply - 简单来说 (jiandan lai shuo)
+             Therefore / To summarize - 所以说 (suoyi shuo)
+             Otherwise / If not - 要不然 (yao buran)
+
+7. Navigating & Changing the Subject
+   [SHIPPED] Oh right / By the way - 哦对了 (o duile)
+             I almost forgot - 差点忘了 (chadian wangle)
+             Speaking of this - 说到这个 (shuo dao zhege)
+   [SHIPPED] Anyway / Wrapping up - 总之 (zongzhi)
+             Changing the subject / Let's talk about something else - 换个话题 (huan ge huati)
+
+8. Active Agreement
+             I agree - 我同意 (wo tongyi)
+   [SHIPPED] No mistake / Exactly right - 没错 (meicuo)
+   [SHIPPED] Yeah, yeah, yeah - 对对对 (dui dui dui)
+   [SHIPPED] Correct! / You're right - 对啊 / 对的 (dui a / dui de)
+             Indeed / That's true - 确实是这样 (queshi shi zheyang)
+
+9. Diplomatic Disagreement
+             I'm not saying... I just feel that... - 我不是说... 我只是觉得... (wo bu shi shuo... wo zhi shi juede...)
+             People say this, but... - 话是这么说，但是... (hua shi zheme shuo, danshi...)
+             Maybe I'm wrong, but... - 也许我错了，但是... (yexu wo cuole, danshi...)
+   [SHIPPED] Not necessarily - 不一定 (bu yiding)
+             You can't really say it that way - 也不能这么说 (ye buneng zheme shuo)
+
+10. Emphasizing Key Points
+             The most important thing is - 最重要的是 (zui zhongyao de shi)
+             The key point is - 关键是 (guanjian shi)
+             After all / Considering that - 毕竟 (bijing)
+             More importantly - 更重要的是 (geng zhongyao de shi)
+             Finally / Lastly - 最后 (zuihou)
+
+11. Graceful Exits
+   [SHIPPED] Alright / I better be going - 好吧 (hao ba)
+   [SHIPPED] See you next time - 回头见 (huitou jian)
+   [SHIPPED] I'll go first (Leaving politely) - 我先走了 (wo xian zoule)
+             Let's talk about it later - 这个以后再说 (zhege yihou zai shuo)
+   [SHIPPED] Bye-bye / Talk to you later - 拜拜 (baibai)

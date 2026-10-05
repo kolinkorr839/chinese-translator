@@ -53,16 +53,17 @@ DONE: Listening Drill (listening_drill.html) — shipped and in the nav.
 DONE: Production Mode (flashcards.html) — audio plays on reveal, workflow
       is English -> say aloud -> write on paper -> Show -> hear correct audio.
 
-1. TRANSFORM & GENERATE DRILLS  (the missing levels of production)
-   Why: production has three levels. He only trains level 1.
+DONE: Generate Drill (generate_drill.html) — Gemini-powered sentence production
+      exercises. Given a situation + vocabulary, build a sentence from scratch.
+
+1. TRANSFORM DRILL  (the remaining gap in production practice)
+   Why: production has three levels. He only trains levels 1 and 3.
      Level 1 RECALL    — English cue -> the one memorized phrase. = Recall Mode. Exists.
      Level 2 TRANSFORM — take a phrase he knows and bend it with grammar. MISSING.
-     Level 3 GENERATE  — build a sentence he has never seen, fast, in response to
-                         something unexpected. MISSING.
-   Conversation happens at level 3. Level 1 alone produces the exact failure he
-   described: knows the phrase, gets a reply off-script, freezes. The grammar guide
-   explains all 15 patterns but never makes him USE one to build something new —
-   that gap is what these two drills close.
+     Level 3 GENERATE  — build a sentence he has never seen, fast. = Generate Drill. Exists.
+   Level 2 is the bridge between recall and free generation. Without it he can
+   recite memorized phrases and attempt free-form sentences, but has no structured
+   practice bending known phrases with grammar rules.
 
    TRANSFORM DRILL (new page: transform_drill.html)
      - Show a phrase he already knows + one instruction. He says the transformed
@@ -79,19 +80,6 @@ DONE: Production Mode (flashcards.html) — audio plays on reveal, workflow
        baseId points into window.PHRASES, patternRef links to the anchor in
        grammar_guide.html so he can jump to the explanation when he gets it wrong.
      - Reveal plays audio + self-grade.
-
-   GENERATE DRILL (new page: generate_drill.html)
-     - Give an English SITUATION that is deliberately NOT in the phrase list, plus
-       3-4 words he already knows. He builds a sentence from scratch, out loud.
-         "The waiter asks if you want it spicy. You want it a little spicy."
-           given: 要 / 一点 / 辣 / 不太
-     - Reveal a MODEL answer, clearly labelled as one valid answer, not the only one.
-       Plus audio. Self-graded — there is no way to auto-mark this and that is fine.
-     - Timed variant: 5-second cap before reveal, to push toward automaticity.
-       Speed is the whole point at level 3; a correct sentence after 20 seconds of
-       assembly is not conversation.
-     - Situations should be drawn from the same travel contexts as Course 1 so the
-       vocabulary is already in place and only the assembly is new.
 
 
 PRIORITY 2 — consistency and plumbing
@@ -212,5 +200,11 @@ PARKING LOT (unchanged, lower priority)
   - Short dialogue/story reader (bridges phrases to comprehension)
   - Stroke order watch-only animations
   - Spaced repetition tracking
-  - HSK vocabulary sets
+  - Expand conversation_phrases.html — 26 high-frequency phrases shipped
+    ("Conversational Building Blocks"). ~44 more intermediate/advanced phrases
+    (diplomatic disagreement, structured connectors, emphasis) in
+    reference/conversation_phrases_video.txt. Pull in as level warrants.
+  - HSK vocabulary sets — ~3500 words across HSK levels. Source PDFs at
+    https://hskcore.com/hsk-vocabulary-pdfs/ or
+    https://www.thepurelanguage.com/hsk/vocabulary-pdf
   - Netflix bridge: a page of listening strategies + which shows suit a beginner ear
