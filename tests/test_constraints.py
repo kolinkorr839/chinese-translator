@@ -120,6 +120,7 @@ FLASHCARD_PAGES = [
     "pinyin_chart.html",
     "listening_drill.html",
     "generate_drill.html",
+    "story_reader.html",
 ]
 
 
@@ -149,6 +150,7 @@ TTS_PAGES = [
     "scenarios.html",
     "listening_drill.html",
     "generate_drill.html",
+    "story_reader.html",
 ]
 
 
