@@ -20,7 +20,7 @@ window.PHRASES = [
   {"id": "L02-004", "lesson": 2, "lessonTitle": "Lesson 2: Introducing Yourself", "section": "Essential Phrases", "simp": "我姓...", "trad": "我姓...", "pinyin": "wǒ xìng...", "meaning": "My surname is..."},
   {"id": "L02-005", "lesson": 2, "lessonTitle": "Lesson 2: Introducing Yourself", "section": "Essential Phrases", "simp": "我是美国人", "trad": "我是美國人", "pinyin": "wǒ shì měiguórén", "meaning": "I am American"},
   {"id": "L02-006", "lesson": 2, "lessonTitle": "Lesson 2: Introducing Yourself", "section": "Essential Phrases", "simp": "你是哪国人？", "trad": "你是哪國人？", "pinyin": "nǐ shì nǎ guó rén?", "meaning": "What country are you from?"},
-  {"id": "L02-007", "lesson": 2, "lessonTitle": "Lesson 2: Introducing Yourself", "section": "Essential Phrases", "simp": "认识你很高兴", "trad": "認識你很高興", "pinyin": "rènshi nǐ hěn gāoxìng", "meaning": "Nice to meet you"},
+  {"id": "L02-007", "lesson": 2, "lessonTitle": "Lesson 2: Introducing Yourself", "section": "Essential Phrases", "simp": "很高兴认识你", "trad": "很高興認識你", "pinyin": "hěn gāoxìng rènshi nǐ", "meaning": "Nice to meet you"},
   {"id": "L02-008", "lesson": 2, "lessonTitle": "Lesson 2: Introducing Yourself", "section": "Essential Phrases", "simp": "我不会说中文", "trad": "我不會說中文", "pinyin": "wǒ bú huì shuō zhōngwén", "meaning": "I can't speak Chinese"},
   {"id": "L02-009", "lesson": 2, "lessonTitle": "Lesson 2: Introducing Yourself", "section": "Essential Phrases", "simp": "我会说一点点", "trad": "我會說一點點", "pinyin": "wǒ huì shuō yìdiǎndiǎn", "meaning": "I can speak a tiny bit"},
   {"id": "L02-010", "lesson": 2, "lessonTitle": "Lesson 2: Introducing Yourself", "section": "Essential Phrases", "simp": "你会说英文吗？", "trad": "你會說英文嗎？", "pinyin": "nǐ huì shuō yīngwén ma?", "meaning": "Do you speak English?"},

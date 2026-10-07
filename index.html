@@ -300,10 +300,111 @@ body {
 }
 
 iframe {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   border: none;
   background: #fff;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* -- Study timer badge ----------------------- */
+
+.study-badge {
+  position: fixed;
+  top: 12px;
+  right: 16px;
+  z-index: 400;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--vermillion);
+  color: #fff;
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(196, 30, 58, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+  user-select: none;
+}
+
+.study-badge:hover {
+  transform: scale(1.1);
+  box-shadow: 0 3px 12px rgba(196, 30, 58, 0.4);
+}
+
+.study-panel {
+  display: none;
+  position: fixed;
+  top: 56px;
+  right: 16px;
+  z-index: 400;
+  width: 240px;
+  max-height: 420px;
+  background: var(--rice-paper);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  animation: panelSlide 0.15s ease-out;
+}
+
+.study-panel.open { display: block; }
+
+@keyframes panelSlide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.study-panel-header {
+  padding: 12px 14px 8px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ink-wash);
+}
+
+.study-panel-list {
+  overflow-y: auto;
+  max-height: 370px;
+  padding: 0 14px 12px;
+}
+
+.study-panel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-family: 'Crimson Pro', serif;
+  font-size: 13px;
+  color: var(--ink);
+  border-bottom: 1px solid rgba(26, 26, 46, 0.05);
+}
+
+.study-panel-row:last-child { border-bottom: none; }
+
+.study-panel-row .day-label {
+  color: var(--ink-wash);
+  font-size: 12px;
+}
+
+.study-panel-row .day-minutes {
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.study-panel-row.today {
+  color: var(--vermillion);
+}
+
+.study-panel-row.today .day-label {
+  color: var(--vermillion);
 }
 
 /* -- Hamburger ------------------------------- */
@@ -413,6 +514,13 @@ iframe {
 
 <!-- Overlay (mobile) -->
 <div class="overlay" id="overlay"></div>
+
+<!-- Study timer -->
+<div class="study-badge" id="study-badge" title="Study time (minutes today)">0</div>
+<div class="study-panel" id="study-panel">
+  <div class="study-panel-header">Study Time</div>
+  <div class="study-panel-list" id="study-panel-list"></div>
+</div>
 
 <!-- Sidebar -->
 <nav class="sidebar" id="sidebar">
@@ -623,7 +731,8 @@ function loadPage(page, updateHash = true) {
     try {
       iframes[activePage].contentWindow.postMessage({ type: 'mandarin-hub:hidden' }, '*');
     } catch (e) { /* frame not ready yet */ }
-    iframes[activePage].style.display = 'none';
+    iframes[activePage].style.visibility = 'hidden';
+    iframes[activePage].style.pointerEvents = 'none';
   }
 
   if (!iframes[page]) {
@@ -649,7 +758,8 @@ function loadPage(page, updateHash = true) {
     iframes[page] = f;
   }
 
-  iframes[page].style.display = 'block';
+  iframes[page].style.visibility = 'visible';
+  iframes[page].style.pointerEvents = 'auto';
   activePage = page;
   const savedY = scrollPositions[page];
   if (savedY != null) {
@@ -825,6 +935,209 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.warn('Service worker registration failed:', err));
   });
 }
+
+// -- Study time tracker -------------------------------------------------------
+// Counts active minutes per day. "Active" = user interacted within the last
+// IDLE_TIMEOUT_MS. Pauses when the tab is hidden.
+
+(function() {
+  const STORAGE_KEY = 'mandarin-hub-study-log';
+  const IDLE_TIMEOUT_MS = 2 * 60 * 1000;
+  const TICK_MS = 1000;
+
+  const badge = document.getElementById('study-badge');
+  const panel = document.getElementById('study-panel');
+  const panelList = document.getElementById('study-panel-list');
+
+  function todayKey() {
+    const d = new Date();
+    return d.getFullYear() + '-'
+      + String(d.getMonth() + 1).padStart(2, '0') + '-'
+      + String(d.getDate()).padStart(2, '0');
+  }
+
+  function loadLog() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
+  }
+
+  function saveLog(log) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(log));
+  }
+
+  function pruneLog(log) {
+    const keys = Object.keys(log).sort();
+    while (keys.length > 60) {
+      delete log[keys.shift()];
+    }
+    return log;
+  }
+
+  let lastActivity = Date.now();
+  let tabVisible = !document.hidden;
+  let activeSeconds = 0;
+
+  // Restore today's seconds from the log
+  const log = loadLog();
+  activeSeconds = log[todayKey()] || 0;
+  updateBadge();
+
+  function isActive() {
+    return tabVisible && (Date.now() - lastActivity < IDLE_TIMEOUT_MS);
+  }
+
+  function updateBadge() {
+    badge.textContent = Math.floor(activeSeconds / 60);
+  }
+
+  function persist() {
+    const log = loadLog();
+    log[todayKey()] = activeSeconds;
+    saveLog(pruneLog(log));
+  }
+
+  // Tick every second; only increment when active
+  let lastTick = Date.now();
+  setInterval(() => {
+    const now = Date.now();
+    if (isActive()) {
+      // Use wall-clock delta so we don't lose time if the tab was throttled
+      const elapsed = Math.round((now - lastTick) / 1000);
+      activeSeconds += Math.min(elapsed, 5);
+      updateBadge();
+    }
+    lastTick = now;
+  }, TICK_MS);
+
+  // Persist every 30 seconds so we don't lose much if the tab is closed
+  setInterval(persist, 30000);
+
+  // Also persist on page hide (closing tab, navigating away)
+  window.addEventListener('pagehide', persist);
+
+  // Day rollover: if the date changed since last tick, reset
+  let currentDay = todayKey();
+  setInterval(() => {
+    const day = todayKey();
+    if (day !== currentDay) {
+      persist();
+      currentDay = day;
+      activeSeconds = 0;
+      updateBadge();
+    }
+  }, 10000);
+
+  // Activity listeners -- hub level
+  function markActive() { lastActivity = Date.now(); }
+  document.addEventListener('mousemove', markActive, { passive: true });
+  document.addEventListener('keydown', markActive, { passive: true });
+  document.addEventListener('scroll', markActive, { passive: true });
+  document.addEventListener('click', markActive, { passive: true });
+  document.addEventListener('touchstart', markActive, { passive: true });
+
+  // Any postMessage from an iframe is evidence of user interaction (scroll
+  // reports, lookups, navigation requests, etc.)
+  window.addEventListener('message', (e) => {
+    if (e.data && typeof e.data.type === 'string'
+        && e.data.type.startsWith('mandarin-hub:')) {
+      markActive();
+    }
+  });
+
+  // Detect mouse presence over the iframe area: every 3 seconds, briefly
+  // show a transparent overlay that captures one mousemove, then hide it
+  // so clicks pass through. This works across origins without touching
+  // any child page.
+  const probe = document.createElement('div');
+  probe.style.cssText =
+    'position:absolute;inset:0;z-index:1;opacity:0;cursor:inherit;display:none';
+  content.style.position = 'relative';
+  content.appendChild(probe);
+
+  setInterval(() => {
+    if (!tabVisible) return;
+    probe.style.display = 'block';
+    const hide = () => {
+      markActive();
+      probe.style.display = 'none';
+      probe.removeEventListener('mousemove', hide);
+      probe.removeEventListener('touchstart', hide);
+    };
+    probe.addEventListener('mousemove', hide, { once: true });
+    probe.addEventListener('touchstart', hide, { once: true });
+    // Auto-hide after a short window so clicks aren't blocked
+    setTimeout(() => { probe.style.display = 'none'; }, 200);
+  }, 3000);
+
+  // Iframe focus (user clicked into it)
+  window.addEventListener('blur', () => {
+    if (document.activeElement && document.activeElement.tagName === 'IFRAME') {
+      markActive();
+    }
+  });
+  window.addEventListener('focus', markActive);
+
+  // Visibility change
+  document.addEventListener('visibilitychange', () => {
+    tabVisible = !document.hidden;
+    if (tabVisible) {
+      lastTick = Date.now();
+      markActive();
+      // Day might have changed while hidden
+      const day = todayKey();
+      if (day !== currentDay) {
+        persist();
+        currentDay = day;
+        activeSeconds = 0;
+        updateBadge();
+      }
+    } else {
+      persist();
+    }
+  });
+
+  // Panel toggle
+  badge.addEventListener('click', (e) => {
+    e.stopPropagation();
+    panel.classList.toggle('open');
+    if (panel.classList.contains('open')) renderPanel();
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!panel.contains(e.target) && e.target !== badge) {
+      panel.classList.remove('open');
+    }
+  });
+
+  function renderPanel() {
+    persist();
+    const log = loadLog();
+    const days = [];
+    const now = new Date();
+    for (let i = 0; i < 60; i++) {
+      const d = new Date(now);
+      d.setDate(d.getDate() - i);
+      const key = d.getFullYear() + '-'
+        + String(d.getMonth() + 1).padStart(2, '0') + '-'
+        + String(d.getDate()).padStart(2, '0');
+      const secs = log[key] || 0;
+      const mins = Math.floor(secs / 60);
+      const label = i === 0 ? 'Today'
+        : i === 1 ? 'Yesterday'
+        : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      days.push({ label, mins, isToday: i === 0 });
+    }
+
+    panelList.innerHTML = days
+      .filter(d => d.mins > 0 || d.isToday)
+      .map(d =>
+        `<div class="study-panel-row${d.isToday ? ' today' : ''}">` +
+          `<span class="day-label">${d.label}</span>` +
+          `<span class="day-minutes">${d.mins}m</span>` +
+        `</div>`
+      ).join('') || '<div class="study-panel-row"><span class="day-label">No activity yet</span></div>';
+  }
+})();
 </script>
 
 </body>
