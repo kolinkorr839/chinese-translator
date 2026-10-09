@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Story Reader</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/pinyin-pro@3.29.3/dist/index.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -167,6 +168,14 @@ body {
   color: #1a1a2e;
   margin-bottom: 0.2rem;
 }
+.line-py {
+  font-size: 0.85rem;
+  color: #a08060;
+  display: none;
+}
+.line-py.visible {
+  display: block;
+}
 .line-en {
   font-size: 0.9rem;
   color: #888;
@@ -258,6 +267,7 @@ body {
   <div class="reader-header">
     <button class="back-btn" id="back-btn">&larr; Library</button>
     <div class="reader-title" id="reader-title"></div>
+    <button class="toggle-en-btn active" id="toggle-py-btn">PY</button>
     <button class="toggle-en-btn" id="toggle-en-btn">EN</button>
   </div>
   <div id="story-lines"></div>
@@ -280,6 +290,7 @@ let isPlaying = false;
 let currentLineIndex = -1;
 let currentStory = null;
 let showEnglish = false;
+let showPinyin = true;
 let playbackSpeed = 0.75;
 const speeds = [0.75, 1, 1.25];
 let speedIndex = 0;
@@ -334,8 +345,10 @@ function openStory(story) {
     const div = document.createElement('div');
     div.className = 'story-line';
     div.dataset.index = i;
+    const py = pinyinPro.pinyin(line.zh);
     div.innerHTML =
       `<div class="line-zh">${line.zh}</div>` +
+      `<div class="line-py${showPinyin ? ' visible' : ''}">${py}</div>` +
       `<div class="line-en${showEnglish ? ' visible' : ''}">${line.en}</div>`;
     div.addEventListener('click', () => {
       playSingleLine(i);
@@ -361,6 +374,15 @@ function closeStory() {
   document.getElementById('playback-bar').style.display = 'none';
   currentStory = null;
   renderLibrary();
+}
+
+function togglePinyin() {
+  showPinyin = !showPinyin;
+  const btn = document.getElementById('toggle-py-btn');
+  btn.classList.toggle('active', showPinyin);
+  document.querySelectorAll('.line-py').forEach(el => {
+    el.classList.toggle('visible', showPinyin);
+  });
 }
 
 function toggleEnglish() {
@@ -493,6 +515,7 @@ function cycleSpeed() {
 
 // --- Event listeners ---
 document.getElementById('back-btn').addEventListener('click', closeStory);
+document.getElementById('toggle-py-btn').addEventListener('click', togglePinyin);
 document.getElementById('toggle-en-btn').addEventListener('click', toggleEnglish);
 document.getElementById('play-btn').addEventListener('click', togglePlayback);
 document.getElementById('speed-btn').addEventListener('click', cycleSpeed);
