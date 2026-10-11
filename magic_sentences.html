@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magic Sentences - Mandarin Chinese</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rice-paper: #F5F0E8;
+  --card-bg: #FFFDF8;
+  --ink: #1a1a2e;
+  --vermillion: #C41E3A;
+  --sage: #7D8471;
+  --ink-wash: #6B7B8D;
+  --warm-border: #E8E0D4;
+  --amber: #B8860B;
+}
+
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC',
+    'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: var(--rice-paper);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(196,30,58,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(184,134,11,0.03) 0%, transparent 50%);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+.page-header h1 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--vermillion);
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.page-header .subtitle {
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.page-header .deco {
+  font-size: 1.8rem;
+  color: var(--vermillion);
+  opacity: 0.25;
+  margin-bottom: 8px;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 12px;
+}
+
+/* -- TOC -- */
+
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 36px;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.toc h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--warm-border);
+}
+
+.toc ol {
+  list-style: none;
+  counter-reset: toc-counter;
+  padding: 0;
+}
+
+.toc ol li {
+  counter-increment: toc-counter;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toc ol li a {
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 1.05rem;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.toc ol li a::before {
+  content: counter(toc-counter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(196, 30, 58, 0.08);
+  color: var(--vermillion);
+  font-size: 0.85rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.toc ol li a:hover {
+  background: rgba(196, 30, 58, 0.05);
+  color: var(--vermillion);
+}
+
+.toc ol li a .toc-count {
+  color: var(--ink-wash);
+  font-size: 0.88rem;
+  margin-left: auto;
+}
+
+/* -- Section Card -- */
+
+.section-card {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  padding: 32px 28px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+/* -- Phrase Row -- */
+
+.phrase-list {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0 60px;
+}
+
+.phrase-row {
+  display: contents;
+}
+
+.phrase-row > * {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.6);
+  transition: background 0.15s;
+}
+
+.phrase-row:last-of-type > * {
+  border-bottom: none;
+}
+
+.phrase-english {
+  font-size: 1rem;
+  color: var(--ink);
+  font-family: 'Crimson Pro', serif;
+}
+
+.phrase-chinese {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.phrase-chinese:hover {
+  color: var(--vermillion);
+}
+
+.phrase-chinese .simp {
+  /* default shown */
+}
+
+.phrase-chinese .sep {
+  color: #C4B5A0;
+  font-weight: 300;
+  margin: 0 4px;
+}
+
+.phrase-chinese .trad {
+  /* shown when different */
+}
+
+.phrase-chinese .same {
+  display: none;
+}
+
+.phrase-pinyin {
+  font-size: 0.9rem;
+  color: var(--sage);
+  font-family: 'Crimson Pro', serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+  margin-top: 2px;
+}
+
+.phrase-pinyin:hover {
+  color: #5C6350;
+}
+
+.lookup-btn {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #D4C9B8;
+  padding: 0.2rem;
+  line-height: 1;
+  transition: color 0.2s, transform 0.15s;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.lookup-btn:hover {
+  color: var(--vermillion);
+  transform: scale(1.15);
+}
+
+.back-to-toc {
+  text-align: left;
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+
+.back-to-toc a {
+  color: var(--vermillion);
+  text-decoration: none;
+}
+
+.back-to-toc a:hover {
+  text-decoration: underline;
+}
+
+/* -- Footer -- */
+
+.page-footer {
+  text-align: center;
+  padding: 24px 0 16px;
+  color: var(--ink-wash);
+  font-size: 0.85rem;
+}
+
+.page-footer .deco {
+  font-size: 1.4rem;
+  color: var(--vermillion);
+  opacity: 0.2;
+  margin-bottom: 6px;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 8px;
+}
+
+/* -- Practice Mode -- */
+
+.practice-toggle {
+  display: inline-block;
+  padding: 3px 12px;
+  border: 1.5px solid var(--sage);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--sage);
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.practice-toggle:hover {
+  border-color: var(--vermillion);
+  color: var(--vermillion);
+}
+
+.practice-toggle.active {
+  background: var(--vermillion);
+  border-color: var(--vermillion);
+  color: #fff;
+}
+
+.reveal-dot {
+  display: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--sage);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.reveal-dot:hover {
+  background: var(--vermillion);
+  transform: scale(1.2);
+}
+
+.section-card.practice-mode .phrase-chinese .simp,
+.section-card.practice-mode .phrase-chinese .sep,
+.section-card.practice-mode .phrase-chinese .trad,
+.section-card.practice-mode .phrase-chinese .phrase-pinyin {
+  display: none;
+}
+
+.section-card.practice-mode .reveal-dot {
+  display: inline-block;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .simp,
+.section-card.practice-mode .phrase-chinese.revealed .sep,
+.section-card.practice-mode .phrase-chinese.revealed .trad {
+  display: inline;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .same {
+  display: none;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .phrase-pinyin {
+  display: block;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .reveal-dot {
+  background: var(--vermillion);
+}
+
+/* -- Responsive -- */
+
+@media (max-width: 600px) {
+  .container { padding: 20px 16px 60px; }
+  .section-card { padding: 20px 16px; }
+  .phrase-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="deco">魔 法 句 子</div>
+    <h1>Magic Sentences</h1>
+    <p class="subtitle">Essential phrases you can use anywhere</p>
+  </div>
+
+  <nav class="toc" id="toc">
+    <h2>Contents</h2>
+    <ol id="toc-list"></ol>
+  </nav>
+
+  <div id="sections"></div>
+
+  <footer class="page-footer">
+    <div class="deco">魔 法 句 子</div>
+    <p>Magic Sentences</p>
+  </footer>
+
+</div>
+
+<script>
+let ttsAudio = null;
+
+function speak(chinese) {
+  if (!chinese) return;
+
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+
+  const slowdown = (primary === youdao);
+  ttsAudio = new Audio(primary);
+  if (slowdown) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+function lookupInTranslator(chinese) {
+  if (window.parent !== window) {
+    window.parent.postMessage({
+      type: 'mandarin-hub:lookup',
+      query: chinese
+    }, '*');
+  }
+}
+
+const PRACTICE_KEY = 'magic-sentences-practice';
+
+function togglePractice(sectionId, btn) {
+  const card = document.getElementById(sectionId);
+  const isActive = card.classList.toggle('practice-mode');
+  btn.classList.toggle('active', isActive);
+
+  const state = JSON.parse(localStorage.getItem(PRACTICE_KEY) || '{}');
+  if (isActive) {
+    state[sectionId] = true;
+    card.querySelectorAll('.phrase-chinese.revealed').forEach(el => el.classList.remove('revealed'));
+    card.scrollIntoView({ behavior: 'instant' });
+  } else {
+    delete state[sectionId];
+  }
+  localStorage.setItem(PRACTICE_KEY, JSON.stringify(state));
+}
+
+function handlePhraseClick(el, chinese) {
+  const inPractice = el.closest('.section-card')?.classList.contains('practice-mode');
+  if (!inPractice) {
+    speak(chinese);
+    return;
+  }
+  const wasHidden = !el.classList.contains('revealed');
+  el.classList.toggle('revealed');
+  if (wasHidden) speak(chinese);
+}
+
+const DATA = [
+  {
+    "title": "Greetings & Speaking Chinese",
+    "id": "greetings",
+    "phrases": [
+      { "en": "Hello.", "simp": "你好。", "trad": "你好。", "pinyin": "Nǐhǎo." },
+      { "en": "Do you speak Chinese?", "simp": "你会说中文吗？", "trad": "你會說中文嗎？", "pinyin": "Nǐ huì shuō Zhōngwén ma?" },
+      { "en": "I can speak Chinese.", "simp": "我会说中文。", "trad": "我會說中文。", "pinyin": "Wǒ huì shuō Zhōngwén." },
+      { "en": "I speak a little Chinese.", "simp": "我会说一点中文。", "trad": "我會說一點中文。", "pinyin": "Wǒ huì shuō yīdiǎn Zhōngwén." },
+      { "en": "I am learning Chinese.", "simp": "我在学习中文。", "trad": "我在學習中文。", "pinyin": "Wǒ zài xuéxí Zhōngwén." },
+      { "en": "You speak Chinese well!", "simp": "你的中文说得很好！", "trad": "你的中文說得很好！", "pinyin": "Nǐde Zhōngwén shuō de hěn hǎo!" },
+      { "en": "Thank you!", "simp": "谢谢你！", "trad": "謝謝你！", "pinyin": "Xièxiè nǐ!" },
+      { "en": "I do not speak Chinese well.", "simp": "我的中文说得不好。", "trad": "我的中文說得不好。", "pinyin": "Wǒde Zhōngwén shuō de bù hǎo." }
+    ]
+  },
+  {
+    "title": "Nationality & Where You're From",
+    "id": "nationality",
+    "phrases": [
+      { "en": "Where are you from?", "simp": "你从哪里来？", "trad": "你從哪裡來？", "pinyin": "Nǐ cóng nǎlǐ lái?" },
+      { "en": "I am American.", "simp": "我是美国人。", "trad": "我是美國人。", "pinyin": "Wǒ shì Měiguórén." },
+      { "en": "I am not Chinese.", "simp": "我不是中国人。", "trad": "我不是中國人。", "pinyin": "Wǒ bú shì Zhōngguórén." },
+      { "en": "Are you Chinese?", "simp": "你是中国人吗？", "trad": "你是中國人嗎？", "pinyin": "Nǐ shì Zhōngguórén ma?" },
+      { "en": "You are Chinese.", "simp": "你是中国人。", "trad": "你是中國人。", "pinyin": "Nǐ shì Zhōngguórén." }
+    ]
+  },
+  {
+    "title": "Shopping & Asking Questions",
+    "id": "shopping",
+    "phrases": [
+      { "en": "How much does this cost?", "simp": "这个多少钱？", "trad": "這個多少錢？", "pinyin": "Zhège duōshǎo qián?" },
+      { "en": "It costs one dollar.", "simp": "这个一块钱。", "trad": "這個一塊錢。", "pinyin": "Zhège yīkuài qián." },
+      { "en": "It costs two, three, four, five dollars.", "simp": "这个两、三、四、五块钱。", "trad": "這個兩、三、四、五塊錢。", "pinyin": "Zhège liǎng, sān, sì, wǔ kuài qián." },
+      { "en": "What is this?", "simp": "这个是什么？", "trad": "這個是什麼？", "pinyin": "Zhège shì shénme?" },
+      { "en": "I want this.", "simp": "我要这个。", "trad": "我要這個。", "pinyin": "Wǒ yào zhège." },
+      { "en": "I want to buy this.", "simp": "我想买这个。", "trad": "我想買這個。", "pinyin": "Wǒ xiǎng mǎi zhège." }
+    ]
+  },
+  {
+    "title": "Learning the Language",
+    "id": "learning",
+    "phrases": [
+      { "en": "Where did you learn Chinese?", "simp": "你在哪里学习中文？", "trad": "你在哪裡學習中文？", "pinyin": "Nǐ zài nǎlǐ xuéxí Zhōngwén?" },
+      { "en": "I learned Chinese online.", "simp": "我在网上学习中文。", "trad": "我在網上學習中文。", "pinyin": "Wǒ zài wǎngshàng xuéxí Zhōngwén." },
+      { "en": "I learned Chinese in America.", "simp": "我在美国学习中文。", "trad": "我在美國學習中文。", "pinyin": "Wǒ zài Měiguó xuéxí Zhōngwén." },
+      { "en": "I like Chinese food.", "simp": "我喜欢中国菜。", "trad": "我喜歡中國菜。", "pinyin": "Wǒ xǐhuān Zhōngguócài." },
+      { "en": "I like learning Chinese.", "simp": "我喜欢学习中文。", "trad": "我喜歡學習中文。", "pinyin": "Wǒ xǐhuān xuéxí Zhōngwén." },
+      { "en": "I want to learn Chinese.", "simp": "我想要学习中文。", "trad": "我想要學習中文。", "pinyin": "Wǒ xiǎngyào xuéxí Zhōngwén." }
+    ]
+  },
+  {
+    "title": "Food & Drinks",
+    "id": "food",
+    "phrases": [
+      { "en": "I want to eat Chinese food.", "simp": "我想吃中国菜。", "trad": "我想吃中國菜。", "pinyin": "Wǒ xiǎng chī Zhōngguócài." },
+      { "en": "I want to drink Chinese drinks.", "simp": "我想喝中国饮料。", "trad": "我想喝中國飲料。", "pinyin": "Wǒ xiǎng hē Zhōngguó yǐnliào." },
+      { "en": "Do you have water?", "simp": "你有水吗？", "trad": "你有水嗎？", "pinyin": "Nǐ yǒu shuǐ ma?" },
+      { "en": "I want water.", "simp": "我想要水。", "trad": "我想要水。", "pinyin": "Wǒ xiǎngyào shuǐ." }
+    ]
+  },
+  {
+    "title": "Travel & Experiences",
+    "id": "travel",
+    "phrases": [
+      { "en": "Have you been to China?", "simp": "你去过中国吗？", "trad": "你去過中國嗎？", "pinyin": "Nǐ qù guò Zhōngguó ma?" },
+      { "en": "I have been to China.", "simp": "我去过中国。", "trad": "我去過中國。", "pinyin": "Wǒ qù guò Zhōngguó." },
+      { "en": "I have not been to China.", "simp": "我没去过中国。", "trad": "我沒去過中國。", "pinyin": "Wǒ méi qù guò Zhōngguó." },
+      { "en": "I have eaten Chinese food.", "simp": "我吃过中国菜。", "trad": "我吃過中國菜。", "pinyin": "Wǒ chī guò Zhōngguócài." },
+      { "en": "I have never eaten Chinese food.", "simp": "我从来没吃过中国菜。", "trad": "我從來沒吃過中國菜。", "pinyin": "Wǒ cónglái méi chī guò Zhōngguócài." },
+      { "en": "I want to go to China.", "simp": "我想去中国。", "trad": "我想去中國。", "pinyin": "Wǒ xiǎng qù Zhōngguó." }
+    ]
+  },
+  {
+    "title": "Where You Live",
+    "id": "location",
+    "phrases": [
+      { "en": "Where do you live?", "simp": "你住在哪里？", "trad": "你住在哪裡？", "pinyin": "Nǐ zhù zài nǎlǐ?" },
+      { "en": "I live in New York.", "simp": "我住在纽约。", "trad": "我住在紐約。", "pinyin": "Wǒ zhù zài Niǔyuē." }
+    ]
+  }
+];
+
+function init() {
+  const tocList = document.getElementById('toc-list');
+  const sectionsEl = document.getElementById('sections');
+
+  DATA.forEach((section, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="#${section.id}">${section.title}<span class="toc-count">${section.phrases.length} phrases</span></a><button class="practice-toggle" onclick="togglePractice('${section.id}', this)">Practice</button>`;
+    tocList.appendChild(li);
+
+    const card = document.createElement('section');
+    card.className = 'section-card';
+    card.id = section.id;
+
+    let html = `<h2 class="section-title">${section.title}</h2><div class="phrase-list">`;
+
+    section.phrases.forEach(p => {
+      const isDiff = p.simp !== p.trad;
+      const escaped = p.simp.replace(/'/g, "\\'");
+      html += `<div class="phrase-row">
+        <div class="phrase-english">${p.en}</div>
+        <div class="phrase-chinese" onclick="handlePhraseClick(this, '${escaped}')">
+          <span class="reveal-dot"></span>
+          <span class="simp">${p.simp}</span><span class="sep${isDiff ? '' : ' same'}">| </span><span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>
+          <div class="phrase-pinyin" onclick="event.stopPropagation(); speak('${escaped}')">
+            ${p.pinyin}
+          </div>
+        </div>
+        <button class="lookup-btn" title="Look up in translator" onclick="event.stopPropagation(); lookupInTranslator('${escaped}')">&#x2197;</button>
+      </div>`;
+    });
+
+    html += '</div><div class="back-to-toc"><a href="#toc">Contents &#x2191;</a></div>';
+    card.innerHTML = html;
+    sectionsEl.appendChild(card);
+  });
+}
+
+init();
+
+(function restorePracticeState() {
+  const state = JSON.parse(localStorage.getItem(PRACTICE_KEY) || '{}');
+  Object.keys(state).forEach(sectionId => {
+    const card = document.getElementById(sectionId);
+    if (!card) return;
+    card.classList.add('practice-mode');
+    const btn = document.querySelector(`.practice-toggle[onclick*="'${sectionId}'"]`);
+    if (btn) btn.classList.add('active');
+  });
+})();
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+});
+</script>
+</body>
+</html>
