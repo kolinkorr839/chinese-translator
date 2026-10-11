@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course 2 - Phrase Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Crimson Pro", "PingFang TC", "Noto Sans TC", "Microsoft YaHei", serif;
+  background: #F5F0E8;
+  color: #1a1a2e;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(196,30,58,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(184,134,11,0.03) 0%, transparent 50%);
+}
+
+.toc {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2.5rem 32px;
+}
+.toc h1 {
+  font-family: "Cormorant Garamond", "PingFang TC", serif;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.3rem;
+  color: #C41E3A;
+  letter-spacing: 0.02em;
+}
+.toc .subtitle {
+  text-align: center;
+  color: #8B7D6B;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  font-family: "Crimson Pro", serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+.toc-list {
+  list-style: none;
+}
+.toc-list li {
+  border-bottom: 1px solid #E8E0D4;
+}
+.toc-list a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0.8rem;
+  color: #1a1a2e;
+  text-decoration: none;
+  transition: background 0.2s, padding-left 0.2s;
+  border-radius: 8px;
+  font-family: "Crimson Pro", serif;
+  font-size: 1.05rem;
+}
+.toc-list a:hover {
+  background: rgba(184,134,11,0.06);
+  padding-left: 1.2rem;
+}
+.toc-list .lesson-num {
+  color: #B8860B;
+  font-weight: 600;
+  min-width: 1.8rem;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.15rem;
+}
+.toc-list .lesson-title {
+  flex: 1;
+  margin-left: 0.5rem;
+}
+.toc-list .phrase-count {
+  color: #A89B8C;
+  font-size: 0.85rem;
+}
+
+.flashcard-view {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1rem 32px 2rem;
+  display: none;
+}
+.back-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E8E0D4;
+}
+.back-btn {
+  background: none;
+  border: 1px solid #C4B5A0;
+  color: #8B7D6B;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: "Crimson Pro", serif;
+  transition: all 0.2s;
+}
+.back-btn:hover {
+  border-color: #C41E3A;
+  color: #C41E3A;
+  background: rgba(196,30,58,0.04);
+}
+.lesson-heading {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.card {
+  position: relative;
+  background: #FFFDF8;
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 2rem;
+  align-items: center;
+  border: 1px solid #E8E0D4;
+  border-left: 3px solid transparent;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 3px rgba(139,125,107,0.08);
+  cursor: pointer;
+}
+.card:hover {
+  border-left-color: #C41E3A;
+  box-shadow: 0 4px 12px rgba(139,125,107,0.12);
+}
+.card .chars {
+  grid-row: 1 / 3;
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  padding-right: 0.5rem;
+}
+.card .simp {
+  font-size: 2.2rem;
+  color: #0D0D0D;
+  line-height: 1.2;
+  font-weight: 700;
+}
+.card .trad {
+  font-size: 2.2rem;
+  color: #0D0D0D;
+  line-height: 1.2;
+  font-weight: 700;
+}
+.card .same { display: none; }
+.card .divider {
+  font-size: 1.5rem;
+  color: #C4B5A0;
+  font-weight: 300;
+}
+.card .pinyin {
+  font-size: 1.05rem;
+  color: #7D8471;
+  align-self: end;
+  cursor: pointer;
+  font-family: "Crimson Pro", serif;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+.card .pinyin:hover {
+  color: #5C6350;
+}
+.card .meaning {
+  font-size: 0.95rem;
+  color: #6B7B8D;
+  align-self: start;
+  margin-top: 0.15rem;
+  font-family: "Crimson Pro", serif;
+}
+
+.section-header {
+  font-family: "Cormorant Garamond", serif;
+  color: #C41E3A;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 1.5rem;
+  margin-bottom: 0.4rem;
+  padding-left: 0.2rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid transparent;
+  background-image: linear-gradient(90deg, #C41E3A 0%, rgba(196,30,58,0.15) 60%, transparent 100%);
+  background-size: 100% 2px;
+  background-position: bottom left;
+  background-repeat: no-repeat;
+}
+.star-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #D4C9B8;
+  transition: color 0.2s, transform 0.15s;
+  padding: 0.2rem;
+  line-height: 1;
+  z-index: 1;
+}
+.star-btn:hover {
+  color: #B8860B;
+  transform: scale(1.15);
+}
+.star-btn.active {
+  color: #B8860B;
+}
+.lookup-btn {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #D4C9B8;
+  padding: 0.2rem;
+  line-height: 1;
+  z-index: 1;
+  transition: color 0.2s, transform 0.15s;
+}
+.lookup-btn:hover {
+  color: #C41E3A;
+  transform: scale(1.15);
+}
+
+.back-to-toc-link {
+  display: block;
+  text-align: left;
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+.back-to-toc-link a {
+  color: #C41E3A;
+  text-decoration: none;
+  cursor: pointer;
+}
+.back-to-toc-link a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .toc, .flashcard-view { padding: 1rem; }
+  .card { padding: 0.8rem; gap: 0.6rem; }
+  .card .simp { font-size: 1.8rem; }
+  .card .trad { font-size: 1.8rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="toc" id="toc">
+  <h1>Course 2 - Phrase Reference</h1>
+  <p class="subtitle" id="subtitle"></p>
+  <ul class="toc-list" id="toc-list"></ul>
+</div>
+
+<div class="flashcard-view" id="flashcard-view">
+  <div class="back-bar">
+    <button class="back-btn" onclick="showTOC()">Back</button>
+    <span class="lesson-heading" id="lesson-heading"></span>
+  </div>
+  <div class="cards" id="cards"></div>
+</div>
+
+<script src="data/course2_phrases.js"></script>
+<script>
+let ttsAudio = null;
+
+function speak(chinese) {
+  if (!chinese) return;
+
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+
+  const slowdown = (primary === youdao);
+  ttsAudio = new Audio(primary);
+  if (slowdown) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+function getTroubleWords() {
+  try { return JSON.parse(localStorage.getItem('trouble-words-c2')) || []; }
+  catch { return []; }
+}
+
+function setTroubleWords(list) {
+  try { localStorage.setItem('trouble-words-c2', JSON.stringify(list)); } catch {}
+}
+
+function isTroubleWord(simp) {
+  return getTroubleWords().some(w => w.simp === simp);
+}
+
+function toggleTroubleWord(phrase, btn) {
+  let list = getTroubleWords();
+  const idx = list.findIndex(w => w.simp === phrase.simp);
+  if (idx >= 0) {
+    list.splice(idx, 1);
+    btn.classList.remove('active');
+    btn.textContent = '☆';
+  } else {
+    list.push({ simp: phrase.simp, trad: phrase.trad, pinyin: phrase.pinyin, meaning: phrase.meaning });
+    btn.classList.add('active');
+    btn.textContent = '★';
+  }
+  setTroubleWords(list);
+}
+
+const DATA = (() => {
+  const lessons = [];
+  const idx = {};
+  window.COURSE2_PHRASES.forEach(p => {
+    if (!idx[p.lesson]) {
+      idx[p.lesson] = { title: p.lessonTitle, sections: {} };
+      lessons.push(idx[p.lesson]);
+    }
+    const l = idx[p.lesson];
+    if (!l.sections[p.section]) {
+      l.sections[p.section] = [];
+    }
+    l.sections[p.section].push(p);
+  });
+  return lessons.map(l => ({
+    title: l.title,
+    sections: Object.keys(l.sections).map(s => ({
+      title: s,
+      phrases: l.sections[s]
+    }))
+  }));
+})();
+
+function init() {
+  const totalPhrases = window.COURSE2_PHRASES.length;
+  const totalChars = new Set(window.COURSE2_PHRASES.map(p => p.simp).join('')).size;
+  document.getElementById('subtitle').textContent =
+    `${DATA.length} lessons – ${totalChars} characters – ${totalPhrases} phrases`;
+
+  const list = document.getElementById("toc-list");
+  DATA.forEach((lesson, i) => {
+    const count = lesson.sections.reduce((s, sec) => s + sec.phrases.length, 0);
+    const li = document.createElement("li");
+    li.innerHTML = `<a href="#" onclick="showLesson(${i}); return false;">
+      <span class="lesson-num">${i + 1}</span>
+      <span class="lesson-title">${lesson.title.replace(/^Lesson \d+:\s*/, "")}</span>
+      <span class="phrase-count">${count} cards</span>
+    </a>`;
+    list.appendChild(li);
+  });
+}
+
+function showLesson(idx, skipPush) {
+  const lesson = DATA[idx];
+  document.getElementById("toc").style.display = "none";
+  const view = document.getElementById("flashcard-view");
+  view.style.display = "block";
+  document.getElementById("lesson-heading").textContent = lesson.title;
+  if (!skipPush) history.pushState({ lesson: idx }, "", "#lesson-" + (idx + 1));
+
+  const container = document.getElementById("cards");
+  container.innerHTML = "";
+
+  lesson.sections.forEach(section => {
+    if (lesson.sections.length > 1) {
+      const h = document.createElement("div");
+      h.className = "section-header";
+      h.textContent = section.title;
+      container.appendChild(h);
+    }
+    section.phrases.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "card";
+      const isDiff = p.simp !== p.trad;
+      const saved = isTroubleWord(p.simp);
+      card.addEventListener('click', () => speak(p.simp));
+      card.innerHTML = `<div class="chars">
+          <span class="simp">${p.simp}</span>
+          <span class="divider${isDiff ? '' : ' same'}">|</span>
+          <span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>
+        </div>
+        <div class="pinyin">${p.pinyin}</div>
+        <div class="meaning">${p.meaning}</div>`;
+      const star = document.createElement('button');
+      star.className = 'star-btn' + (saved ? ' active' : '');
+      star.textContent = saved ? '★' : '☆';
+      star.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleTroubleWord(p, star);
+      });
+      card.appendChild(star);
+      const lookup = document.createElement('button');
+      lookup.className = 'lookup-btn';
+      lookup.textContent = '↗';
+      lookup.title = 'Look up etymology';
+      lookup.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'mandarin-hub:lookup',
+            query: p.simp
+          }, '*');
+        }
+      });
+      card.appendChild(lookup);
+      container.appendChild(card);
+    });
+  });
+
+  const tocLink = document.createElement("div");
+  tocLink.className = "back-to-toc-link";
+  tocLink.innerHTML = '<a onclick="showTOC(); return false;" href="#">Contents ↑</a>';
+  container.appendChild(tocLink);
+
+  window.scrollTo(0, 0);
+}
+
+function showTOC(skipPush) {
+  document.getElementById("flashcard-view").style.display = "none";
+  document.getElementById("toc").style.display = "block";
+  window.scrollTo(0, 0);
+  if (!skipPush) history.pushState({ toc: true }, "", "#");
+}
+
+window.addEventListener("popstate", (e) => {
+  if (e.state && e.state.lesson !== undefined) {
+    showLesson(e.state.lesson, true);
+  } else {
+    showTOC(true);
+  }
+});
+
+init();
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+});
+</script>
+</body>
+</html>
