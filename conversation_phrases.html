@@ -249,6 +249,30 @@ body {
   display: none;
 }
 
+.phrase-pattern {
+  font-size: 0.88rem;
+  font-family: 'Crimson Pro', serif;
+  font-weight: 500;
+  color: var(--sage);
+  white-space: nowrap;
+}
+
+.phrase-pattern a {
+  color: var(--sage);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(125, 132, 113, 0.4);
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.phrase-pattern a:hover {
+  color: var(--vermillion);
+  border-color: var(--vermillion);
+}
+
+.phrase-list.has-patterns {
+  grid-template-columns: auto auto 1fr auto;
+}
+
 .phrase-pinyin {
   font-size: 0.9rem;
   color: var(--sage);
@@ -399,6 +423,9 @@ body {
     grid-template-columns: 1fr;
     gap: 4px;
   }
+  .phrase-list.has-patterns {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
 </head>
@@ -456,6 +483,17 @@ function lookupInTranslator(chinese) {
     window.parent.postMessage({
       type: 'mandarin-hub:lookup',
       query: chinese
+    }, '*');
+  }
+}
+
+function navigateToPattern(event, patternId) {
+  event.stopPropagation();
+  if (window.parent !== window) {
+    event.preventDefault();
+    window.parent.postMessage({
+      type: 'mandarin-hub:navigate',
+      page: 'question_patterns.html#' + patternId
     }, '*');
   }
 }
@@ -523,36 +561,36 @@ const DATA = [
     "title": "Common Questions",
     "id": "questions",
     "phrases": [
-      { "en": "How's it going?", "simp": "最近怎么样？", "trad": "最近怎麼樣？", "pinyin": "Zuì jìn zěn me yàng?" },
-      { "en": "How are you?", "simp": "你好吗？", "trad": "你好嗎？", "pinyin": "Nǐ hǎo ma?" },
-      { "en": "What's up?", "simp": "怎么了？", "trad": "怎麼了？", "pinyin": "Zěn me le?" },
-      { "en": "How was your day?", "simp": "你今天过得怎么样？", "trad": "你今天過得怎麼樣？", "pinyin": "Nǐ jīn tiān guò de zěn me yàng?" },
-      { "en": "What are you doing?", "simp": "你在做什么？", "trad": "你在做什麼？", "pinyin": "Nǐ zài zuò shén me?" },
-      { "en": "Where are you from?", "simp": "你来自哪里？", "trad": "你來自哪裡？", "pinyin": "Nǐ lái zì nǎ lǐ?" },
-      { "en": "What do you do?", "simp": "你是做什么工作的？", "trad": "你是做什麼工作的？", "pinyin": "Nǐ shì zuò shén me gōng zuò de?" },
-      { "en": "Do you like it here?", "simp": "你喜欢这里吗？", "trad": "你喜歡這裡嗎？", "pinyin": "Nǐ xǐ huan zhè lǐ ma?" },
-      { "en": "Have you eaten?", "simp": "你吃饭了吗？", "trad": "你吃飯了嗎？", "pinyin": "Nǐ chī fàn le ma?" },
-      { "en": "What time is it?", "simp": "现在几点了？", "trad": "現在幾點了？", "pinyin": "Xiàn zài jǐ diǎn le?" },
-      { "en": "Can you help me?", "simp": "你能帮帮我吗？", "trad": "你能幫幫我嗎？", "pinyin": "Nǐ néng bāng bang wǒ ma?" },
-      { "en": "Are you okay?", "simp": "你没事吧？", "trad": "你沒事吧？", "pinyin": "Nǐ méi shì ba?" },
-      { "en": "Do you speak English?", "simp": "你会说英语吗？", "trad": "你會說英語嗎？", "pinyin": "Nǐ huì shuō Yīng yǔ ma?" },
-      { "en": "Where do you live?", "simp": "你住在哪里？", "trad": "你住在哪裡？", "pinyin": "Nǐ zhù zài nǎ lǐ?" },
-      { "en": "How old are you?", "simp": "你多大了？", "trad": "你多大了？", "pinyin": "Nǐ duō dà le?" },
-      { "en": "What's your favorite food?", "simp": "你最喜欢吃什么食物？", "trad": "你最喜歡吃什麼食物？", "pinyin": "Nǐ zuì xǐ huan chī shén me shí wù?" },
-      { "en": "Do you have any pets?", "simp": "你有宠物吗？", "trad": "你有寵物嗎？", "pinyin": "Nǐ yǒu chǒng wù ma?" },
-      { "en": "What's the weather like?", "simp": "天气怎么样？", "trad": "天氣怎麼樣？", "pinyin": "Tiān qì zěn me yàng?" },
-      { "en": "Are you busy?", "simp": "你忙吗？", "trad": "你忙嗎？", "pinyin": "Nǐ máng ma?" },
-      { "en": "Can you come?", "simp": "你能来吗？", "trad": "你能來嗎？", "pinyin": "Nǐ néng lái ma?" },
-      { "en": "What do you think?", "simp": "你怎么想？", "trad": "你怎麼想？", "pinyin": "Nǐ zěn me xiǎng?" },
-      { "en": "Where are you going?", "simp": "你去哪里？", "trad": "你去哪裡？", "pinyin": "Nǐ qù nǎ lǐ?" },
-      { "en": "How do you feel?", "simp": "你感觉怎么样？", "trad": "你感覺怎麼樣？", "pinyin": "Nǐ gǎn jué zěn me yàng?" },
-      { "en": "What's your hobby?", "simp": "你的爱好是什么？", "trad": "你的愛好是什麼？", "pinyin": "Nǐ de ài hào shì shén me?" },
-      { "en": "Have you been here before?", "simp": "你以前来过这里吗？", "trad": "你以前來過這裡嗎？", "pinyin": "Nǐ yǐ qián lái guò zhè lǐ ma?" },
-      { "en": "What's your favorite color?", "simp": "你最喜欢什么颜色？", "trad": "你最喜歡什麼顏色？", "pinyin": "Nǐ zuì xǐ huan shén me yán sè?" },
-      { "en": "What's your phone number?", "simp": "你的电话号码是多少？", "trad": "你的電話號碼是多少？", "pinyin": "Nǐ de diàn huà hào mǎ shì duō shǎo?" },
-      { "en": "Do you like music?", "simp": "你喜欢音乐吗？", "trad": "你喜歡音樂嗎？", "pinyin": "Nǐ xǐ huan yīn yuè ma?" },
-      { "en": "What's your job?", "simp": "你的职业是什么？", "trad": "你的職業是什麼？", "pinyin": "Nǐ de zhí yè shì shén me?" },
-      { "en": "Can you speak slowly?", "simp": "你能说慢一点吗？", "trad": "你能說慢一點嗎？", "pinyin": "Nǐ néng shuō màn yī diǎn ma?" }
+      { "en": "How's it going?", "simp": "最近怎么样？", "trad": "最近怎麼樣？", "pinyin": "Zuì jìn zěn me yàng?", "pattern": "Topic + 怎么样", "patternId": "pattern3" },
+      { "en": "How are you?", "simp": "你好吗？", "trad": "你好嗎？", "pinyin": "Nǐ hǎo ma?", "pattern": "Subj + adj + 吗？", "patternId": "pattern4" },
+      { "en": "What's up?", "simp": "怎么了？", "trad": "怎麼了？", "pinyin": "Zěn me le?", "pattern": "怎么 + 了", "patternId": "pattern2" },
+      { "en": "How was your day?", "simp": "你今天过得怎么样？", "trad": "你今天過得怎麼樣？", "pinyin": "Nǐ jīn tiān guò de zěn me yàng?", "pattern": "Topic + 怎么样", "patternId": "pattern3" },
+      { "en": "What are you doing?", "simp": "你在做什么？", "trad": "你在做什麼？", "pinyin": "Nǐ zài zuò shén me?", "pattern": "Subj + verb + 什么", "patternId": "pattern2" },
+      { "en": "Where are you from?", "simp": "你来自哪里？", "trad": "你來自哪裡？", "pinyin": "Nǐ lái zì nǎ lǐ?", "pattern": "Subj + verb + 哪里", "patternId": "pattern2" },
+      { "en": "What do you do?", "simp": "你是做什么工作的？", "trad": "你是做什麼工作的？", "pinyin": "Nǐ shì zuò shén me gōng zuò de?", "pattern": "Subj + verb + 什么", "patternId": "pattern2" },
+      { "en": "Do you like it here?", "simp": "你喜欢这里吗？", "trad": "你喜歡這裡嗎？", "pinyin": "Nǐ xǐ huan zhè lǐ ma?", "pattern": "Subj + verb + 吗？", "patternId": "pattern1" },
+      { "en": "Have you eaten?", "simp": "你吃饭了吗？", "trad": "你吃飯了嗎？", "pinyin": "Nǐ chī fàn le ma?", "pattern": "Subj + verb + 了 + 吗？", "patternId": "pattern5" },
+      { "en": "What time is it?", "simp": "现在几点了？", "trad": "現在幾點了？", "pinyin": "Xiàn zài jǐ diǎn le?", "pattern": "Subj + 几 + measure", "patternId": "pattern2" },
+      { "en": "Can you help me?", "simp": "你能帮帮我吗？", "trad": "你能幫幫我嗎？", "pinyin": "Nǐ néng bāng bang wǒ ma?", "pattern": "Subj + 能 + verb + 吗？", "patternId": "pattern5" },
+      { "en": "Are you okay?", "simp": "你没事吧？", "trad": "你沒事吧？", "pinyin": "Nǐ méi shì ba?", "pattern": "Subj + adj + 吧？", "patternId": "pattern4" },
+      { "en": "Do you speak English?", "simp": "你会说英语吗？", "trad": "你會說英語嗎？", "pinyin": "Nǐ huì shuō Yīng yǔ ma?", "pattern": "Subj + 会 + verb + 吗？", "patternId": "pattern5" },
+      { "en": "Where do you live?", "simp": "你住在哪里？", "trad": "你住在哪裡？", "pinyin": "Nǐ zhù zài nǎ lǐ?", "pattern": "Subj + verb + 哪里", "patternId": "pattern2" },
+      { "en": "How old are you?", "simp": "你多大了？", "trad": "你多大了？", "pinyin": "Nǐ duō dà le?", "pattern": "Subj + 多 + adj", "patternId": "pattern2" },
+      { "en": "What's your favorite food?", "simp": "你最喜欢吃什么食物？", "trad": "你最喜歡吃什麼食物？", "pinyin": "Nǐ zuì xǐ huan chī shén me shí wù?", "pattern": "Subj + verb + 什么", "patternId": "pattern2" },
+      { "en": "Do you have any pets?", "simp": "你有宠物吗？", "trad": "你有寵物嗎？", "pinyin": "Nǐ yǒu chǒng wù ma?", "pattern": "Subj + 有 + noun + 吗？", "patternId": "pattern5" },
+      { "en": "What's the weather like?", "simp": "天气怎么样？", "trad": "天氣怎麼樣？", "pinyin": "Tiān qì zěn me yàng?", "pattern": "Topic + 怎么样", "patternId": "pattern3" },
+      { "en": "Are you busy?", "simp": "你忙吗？", "trad": "你忙嗎？", "pinyin": "Nǐ máng ma?", "pattern": "Subj + adj + 吗？", "patternId": "pattern4" },
+      { "en": "Can you come?", "simp": "你能来吗？", "trad": "你能來嗎？", "pinyin": "Nǐ néng lái ma?", "pattern": "Subj + 能 + verb + 吗？", "patternId": "pattern5" },
+      { "en": "What do you think?", "simp": "你怎么想？", "trad": "你怎麼想？", "pinyin": "Nǐ zěn me xiǎng?", "pattern": "Subj + 怎么 + verb", "patternId": "pattern2" },
+      { "en": "Where are you going?", "simp": "你去哪里？", "trad": "你去哪裡？", "pinyin": "Nǐ qù nǎ lǐ?", "pattern": "Subj + verb + 哪里", "patternId": "pattern2" },
+      { "en": "How do you feel?", "simp": "你感觉怎么样？", "trad": "你感覺怎麼樣？", "pinyin": "Nǐ gǎn jué zěn me yàng?", "pattern": "Topic + 怎么样", "patternId": "pattern3" },
+      { "en": "What's your hobby?", "simp": "你的爱好是什么？", "trad": "你的愛好是什麼？", "pinyin": "Nǐ de ài hào shì shén me?", "pattern": "Subj + 是 + 什么", "patternId": "pattern2" },
+      { "en": "Have you been here before?", "simp": "你以前来过这里吗？", "trad": "你以前來過這裡嗎？", "pinyin": "Nǐ yǐ qián lái guò zhè lǐ ma?", "pattern": "Subj + verb + 过 + 吗？", "patternId": "pattern5" },
+      { "en": "What's your favorite color?", "simp": "你最喜欢什么颜色？", "trad": "你最喜歡什麼顏色？", "pinyin": "Nǐ zuì xǐ huan shén me yán sè?", "pattern": "Subj + verb + 什么", "patternId": "pattern2" },
+      { "en": "What's your phone number?", "simp": "你的电话号码是多少？", "trad": "你的電話號碼是多少？", "pinyin": "Nǐ de diàn huà hào mǎ shì duō shǎo?", "pattern": "Subj + 是 + 多少", "patternId": "pattern2" },
+      { "en": "Do you like music?", "simp": "你喜欢音乐吗？", "trad": "你喜歡音樂嗎？", "pinyin": "Nǐ xǐ huan yīn yuè ma?", "pattern": "Subj + verb + 吗？", "patternId": "pattern1" },
+      { "en": "What's your job?", "simp": "你的职业是什么？", "trad": "你的職業是什麼？", "pinyin": "Nǐ de zhí yè shì shén me?", "pattern": "Subj + 是 + 什么", "patternId": "pattern2" },
+      { "en": "Can you speak slowly?", "simp": "你能说慢一点吗？", "trad": "你能說慢一點嗎？", "pinyin": "Nǐ néng shuō màn yī diǎn ma?", "pattern": "Subj + 能 + verb + 吗？", "patternId": "pattern5" }
     ]
   },
   {
@@ -602,13 +640,18 @@ function init() {
     card.className = 'section-card';
     card.id = section.id;
 
-    let html = `<h2 class="section-title">${section.title}</h2><div class="phrase-list">`;
+    const hasPatterns = section.phrases.some(p => p.pattern);
+    let html = `<h2 class="section-title">${section.title}</h2><div class="phrase-list${hasPatterns ? ' has-patterns' : ''}">`;
 
     section.phrases.forEach(p => {
       const isDiff = p.simp !== p.trad;
       const escaped = p.simp.replace(/'/g, "\\'");
+      const patternHtml = p.pattern
+        ? `<div class="phrase-pattern"><a href="question_patterns.html#${p.patternId}" onclick="navigateToPattern(event, '${p.patternId}')">${p.pattern}</a></div>`
+        : '';
       html += `<div class="phrase-row">
         <div class="phrase-english">${p.en}</div>
+        ${patternHtml}
         <div class="phrase-chinese" onclick="handlePhraseClick(this, '${escaped}')">
           <span class="reveal-dot"></span>
           <span class="simp">${p.simp}</span><span class="sep${isDiff ? '' : ' same'}">| </span><span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>

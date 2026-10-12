@@ -1,6 +1,6 @@
 // Bump this whenever STATIC_ASSETS changes, to force a fresh precache.
 // HTML no longer needs a bump -- it is network-first (see the fetch handler).
-const CACHE_NAME = 'chinese-translator-v21';
+const CACHE_NAME = 'chinese-translator-v22';
 const STATIC_ASSETS = [
   './index.html',
   './manifest.json',
@@ -15,6 +15,7 @@ const STATIC_ASSETS = [
   './pinyin_ime_guide.html',
   './grammar_guide.html',
   './grammar_flashcards.html',
+  './question_patterns.html',
   './simplified_to_traditional_guide.html',
   './simplified_to_traditional_cheat_sheet.html',
   './simplified_traditional_flashcards.html',

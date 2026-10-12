@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Question Patterns - Mandarin Chinese</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rice-paper: #F5F0E8;
+  --card-bg: #FFFDF8;
+  --ink: #1a1a2e;
+  --vermillion: #C41E3A;
+  --sage: #7D8471;
+  --ink-wash: #6B7B8D;
+  --warm-border: #E8E0D4;
+  --amber: #B8860B;
+}
+
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC',
+    'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: var(--rice-paper);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(196,30,58,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(184,134,11,0.03) 0%, transparent 50%);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+.page-header h1 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--vermillion);
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.page-header .subtitle {
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.page-header .deco {
+  font-size: 1.8rem;
+  color: var(--vermillion);
+  opacity: 0.25;
+  margin-bottom: 8px;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 12px;
+}
+
+/* -- Cards -- */
+
+.section-card {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  padding: 32px 28px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+/* -- TOC -- */
+
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 36px;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.toc h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--warm-border);
+}
+
+.toc ol {
+  list-style: none;
+  counter-reset: toc-counter;
+  padding: 0;
+}
+
+.toc ol li {
+  counter-increment: toc-counter;
+  margin-bottom: 6px;
+}
+
+.toc ol li a {
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 1.05rem;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.toc ol li a::before {
+  content: counter(toc-counter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(196, 30, 58, 0.08);
+  color: var(--vermillion);
+  font-size: 0.85rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.toc ol li a:hover {
+  background: rgba(196, 30, 58, 0.05);
+  color: var(--vermillion);
+}
+
+/* -- Quick Reference Table -- */
+
+.ref-table-wrap {
+  overflow-x: auto;
+  margin: 16px 0 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.ref-table th {
+  background: rgba(196, 30, 58, 0.06);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--warm-border);
+  white-space: nowrap;
+}
+
+.ref-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.6);
+  vertical-align: top;
+}
+
+.ref-table tr:last-child td { border-bottom: none; }
+
+.ref-table .zh {
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.ref-table .zh:hover { color: var(--vermillion); }
+
+.ref-table .pattern-col {
+  font-family: 'Crimson Pro', serif;
+  font-weight: 500;
+  color: var(--sage);
+  white-space: nowrap;
+}
+
+/* -- Conversion Steps -- */
+
+.steps-list {
+  counter-reset: step-counter;
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 8px;
+}
+
+.steps-list li {
+  counter-increment: step-counter;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.steps-list li::before {
+  content: counter(step-counter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--vermillion);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.conversion-example {
+  background: rgba(196, 30, 58, 0.04);
+  border-left: 3px solid var(--vermillion);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 16px 0 8px;
+}
+
+.conversion-example .step-label {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-wash);
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.conversion-example .step-content {
+  font-size: 1.05rem;
+}
+
+.conversion-example .step-content .zh {
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.conversion-example .step-content .zh:hover { color: var(--vermillion); }
+
+/* -- Pattern Sections -- */
+
+.pattern-rule {
+  background: rgba(184, 134, 11, 0.06);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.pattern-rule strong { color: var(--vermillion); }
+
+.hero-example {
+  text-align: center;
+  margin: 24px 0;
+  padding: 20px 0;
+}
+
+.hero-example .english {
+  font-size: 1.1rem;
+  color: var(--ink-wash);
+  margin-bottom: 8px;
+}
+
+.hero-example .chinese {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  transition: color 0.15s;
+  margin-bottom: 6px;
+}
+
+.hero-example .chinese:hover { color: var(--vermillion); }
+
+.hero-example .pinyin {
+  font-size: 1rem;
+  color: var(--sage);
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.hero-example .pinyin:hover { color: #5C6350; }
+
+.word-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 16px 0 20px;
+}
+
+.word-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  min-width: 70px;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+
+.word-chip:hover {
+  border-color: var(--vermillion);
+  transform: translateY(-1px);
+}
+
+.word-chip .char {
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.word-chip .py {
+  font-size: 0.78rem;
+  color: var(--sage);
+  margin-top: 2px;
+}
+
+.word-chip .gloss {
+  font-size: 0.75rem;
+  color: var(--ink-wash);
+  margin-top: 2px;
+}
+
+.mental-conversion {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--ink-wash);
+  font-style: italic;
+  margin: 12px 0 20px;
+}
+
+.mental-conversion em {
+  color: var(--ink);
+  font-weight: 600;
+  font-style: normal;
+}
+
+.note-box {
+  background: rgba(196, 30, 58, 0.04);
+  border-left: 3px solid var(--vermillion);
+  border-radius: 0 8px 8px 0;
+  padding: 14px 18px;
+  margin: 16px 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.note-box strong {
+  color: var(--vermillion);
+  font-weight: 600;
+}
+
+.example-table-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.example-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.example-table th {
+  text-align: left;
+  padding: 8px 14px;
+  border-bottom: 2px solid var(--warm-border);
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-wash);
+  white-space: nowrap;
+}
+
+.example-table td {
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.6);
+  vertical-align: top;
+}
+
+.example-table tr:last-child td { border-bottom: none; }
+
+.example-table .zh {
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.example-table .zh:hover { color: var(--vermillion); }
+
+.example-table .py {
+  color: var(--sage);
+  font-size: 0.88rem;
+}
+
+.sub-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 24px 0 12px;
+}
+
+.vs-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.vs-side {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-align: center;
+}
+
+.vs-side .label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-wash);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.vs-side .content {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.vs-side .arrow { color: var(--sage); }
+
+.question-words {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.qw-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(184, 134, 11, 0.04);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.qw-item:hover { background: rgba(196, 30, 58, 0.06); }
+
+.qw-item .qw-zh {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.qw-item .qw-py {
+  font-size: 0.85rem;
+  color: var(--sage);
+}
+
+.qw-item .qw-en {
+  font-size: 0.88rem;
+  color: var(--ink-wash);
+  margin-left: auto;
+}
+
+.inline-pair {
+  margin: 8px 0;
+  padding: 4px 0;
+}
+
+.inline-pair .zh {
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.inline-pair .zh:hover { color: var(--vermillion); }
+
+.back-to-toc {
+  text-align: left;
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+
+.back-to-toc a {
+  color: var(--vermillion);
+  text-decoration: none;
+}
+
+.back-to-toc a:hover { text-decoration: underline; }
+
+/* -- Footer -- */
+
+.page-footer {
+  text-align: center;
+  padding: 24px 0 16px;
+  color: var(--ink-wash);
+  font-size: 0.85rem;
+}
+
+.page-footer .deco {
+  font-size: 1.4rem;
+  color: var(--vermillion);
+  opacity: 0.2;
+  margin-bottom: 6px;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 8px;
+}
+
+/* -- Responsive -- */
+
+@media (max-width: 600px) {
+  .container { padding: 20px 16px 60px; }
+  .section-card { padding: 20px 16px; }
+  .hero-example .chinese { font-size: 1.6rem; }
+  .word-breakdown { gap: 4px; }
+  .word-chip { padding: 8px 10px; min-width: 56px; }
+  .word-chip .char { font-size: 1.1rem; }
+  .vs-box { grid-template-columns: 1fr; }
+  .question-words { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="deco">问 句 规 律</div>
+    <h1>Question Patterns</h1>
+    <p class="subtitle">How Chinese organizes questions - five patterns, one mental model</p>
+  </div>
+
+  <!-- Quick Reference -->
+  <section class="section-card" id="quick-ref">
+    <h2 class="section-title">Quick Reference</h2>
+    <div class="ref-table-wrap">
+      <table class="ref-table">
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th>English Pattern</th>
+            <th>Chinese Pattern</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Yes/no question</td>
+            <td>Do / Does...?</td>
+            <td class="pattern-col">Subject + verb + 吗？</td>
+            <td><span class="zh" onclick="speak('你喜欢音乐吗')">你喜欢音乐吗？</span></td>
+          </tr>
+          <tr>
+            <td>Specific information</td>
+            <td>What / Where / Who...?</td>
+            <td class="pattern-col">Subject + verb + question word</td>
+            <td><span class="zh" onclick="speak('你住在哪里')">你住在哪里？</span></td>
+          </tr>
+          <tr>
+            <td>Condition / quality</td>
+            <td>How is...? What is...like?</td>
+            <td class="pattern-col">Topic + 怎么样</td>
+            <td><span class="zh" onclick="speak('天气怎么样')">天气怎么样？</span></td>
+          </tr>
+          <tr>
+            <td>Identity</td>
+            <td>Are / Is + noun?</td>
+            <td class="pattern-col">Subject + 是 + noun + 吗？</td>
+            <td><span class="zh" onclick="speak('你是美国人吗')">你是美国人吗？</span></td>
+          </tr>
+          <tr>
+            <td>Description / state</td>
+            <td>Are / Is + adjective?</td>
+            <td class="pattern-col">Subject + adjective + 吗？</td>
+            <td><span class="zh" onclick="speak('你忙吗')">你忙吗？</span></td>
+          </tr>
+          <tr>
+            <td>Ability / possibility</td>
+            <td>Can you...?</td>
+            <td class="pattern-col">Subject + 能/会 + verb + 吗？</td>
+            <td><span class="zh" onclick="speak('你会说英语吗')">你会说英语吗？</span></td>
+          </tr>
+          <tr>
+            <td>Completed event</td>
+            <td>Have you...?</td>
+            <td class="pattern-col">Subject + verb + 了 + 吗？</td>
+            <td><span class="zh" onclick="speak('你吃饭了吗')">你吃饭了吗？</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- How to Convert -->
+  <section class="section-card" id="how-to-convert">
+    <h2 class="section-title">How to Convert an English Question</h2>
+
+    <ol class="steps-list">
+      <li><strong>Identify the question type.</strong> Is it asking yes/no, what, where, how, ability, identity, or a past event?</li>
+      <li><strong>Reorder into Chinese-style English.</strong> Put the subject first, then the verb, and move the question word to where the answer belongs.</li>
+      <li><strong>Apply the Chinese pattern.</strong> Add 吗 for yes/no, or use a question word such as 什么 (what), 哪里 (where), or 怎么样 (how).</li>
+    </ol>
+
+    <div class="conversion-example">
+      <div class="step-label">English</div>
+      <div class="step-content">"What are you doing?"</div>
+    </div>
+    <div class="conversion-example">
+      <div class="step-label">Chinese-style English</div>
+      <div class="step-content">"You are doing what?"</div>
+    </div>
+    <div class="conversion-example">
+      <div class="step-label">Chinese</div>
+      <div class="step-content"><span class="zh" onclick="speak('你在做什么')">你在做什么？</span></div>
+    </div>
+
+    <div class="note-box">
+      <strong>Don't translate auxiliaries mechanically.</strong> In this sentence, 在 marks an ongoing action in Chinese - it is not a word-for-word translation of English "are."
+    </div>
+  </section>
+
+  <!-- TOC -->
+  <nav class="toc" id="toc">
+    <h2>Five Patterns</h2>
+    <ol>
+      <li><a href="#pattern1">Do / Does questions - add 吗</a></li>
+      <li><a href="#pattern2">WH-questions - question word in answer position</a></li>
+      <li><a href="#pattern3">How / what is it like? - 怎么样</a></li>
+      <li><a href="#pattern4">Are / is questions - identity vs. description</a></li>
+      <li><a href="#pattern5">Can / have / past-action questions</a></li>
+    </ol>
+  </nav>
+
+  <!-- Pattern 1 -->
+  <section class="section-card" id="pattern1">
+    <h2 class="section-title">Pattern 1: Do / Does Questions - Add 吗</h2>
+
+    <div class="pattern-rule">
+      <strong>Rule:</strong> Keep the subject and verb in their normal Chinese order, then add 吗 at the end. Chinese doesn't need helper words like <em>do</em> or <em>does</em>.<br>
+      <strong>Shortcut:</strong> Remove <em>do/does</em> from the English, put 吗 at the end.
+    </div>
+
+    <div class="hero-example">
+      <div class="english">Do you like it here?</div>
+      <div class="chinese" onclick="speak('你喜欢这里吗')">你喜欢这里吗？</div>
+      <div class="pinyin" onclick="speak('你喜欢这里吗')">Nǐ xǐhuan zhèlǐ ma?</div>
+    </div>
+
+    <div class="word-breakdown">
+      <div class="word-chip" onclick="speak('你')">
+        <span class="char">你</span>
+        <span class="py">nǐ</span>
+        <span class="gloss">you</span>
+      </div>
+      <div class="word-chip" onclick="speak('喜欢')">
+        <span class="char">喜欢</span>
+        <span class="py">xǐhuan</span>
+        <span class="gloss">like</span>
+      </div>
+      <div class="word-chip" onclick="speak('这里')">
+        <span class="char">这里</span>
+        <span class="py">zhèlǐ</span>
+        <span class="gloss">here</span>
+      </div>
+      <div class="word-chip" onclick="speak('吗')">
+        <span class="char">吗？</span>
+        <span class="py">ma</span>
+        <span class="gloss">question</span>
+      </div>
+    </div>
+
+    <div class="mental-conversion">Mental conversion: <em>You like here?</em></div>
+
+    <div class="example-table-wrap">
+      <table class="example-table">
+        <thead><tr><th>English</th><th>Chinese</th><th>Pinyin</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Do you speak English?</td>
+            <td><span class="zh" onclick="speak('你说英语吗')">你说英语吗？</span></td>
+            <td class="py">Nǐ shuō Yīngyǔ ma?</td>
+          </tr>
+          <tr>
+            <td>Do you like coffee?</td>
+            <td><span class="zh" onclick="speak('你喜欢咖啡吗')">你喜欢咖啡吗？</span></td>
+            <td class="py">Nǐ xǐhuan kāfēi ma?</td>
+          </tr>
+          <tr>
+            <td>Does he work here?</td>
+            <td><span class="zh" onclick="speak('他在这里工作吗')">他在这里工作吗？</span></td>
+            <td class="py">Tā zài zhèlǐ gōngzuò ma?</td>
+          </tr>
+          <tr>
+            <td>Do you have pets?</td>
+            <td><span class="zh" onclick="speak('你有宠物吗')">你有宠物吗？</span></td>
+            <td class="py">Nǐ yǒu chǒngwù ma?</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note-box">
+      <strong>Answering 吗 questions:</strong> Confirm or negate the main verb instead of translating English <em>yes</em> or <em>no</em>.<br><br>
+      <span class="zh" onclick="speak('你喜欢咖啡吗')">你喜欢咖啡吗？</span> - Do you like coffee?<br>
+      <span class="zh" onclick="speak('喜欢')">喜欢。</span> - Like it. (Yes)<br>
+      <span class="zh" onclick="speak('不喜欢')">不喜欢。</span> - Don't like it. (No)
+    </div>
+
+    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+  </section>
+
+  <!-- Pattern 2 -->
+  <section class="section-card" id="pattern2">
+    <h2 class="section-title">Pattern 2: WH-Questions - Question Word in Answer Position</h2>
+
+    <div class="pattern-rule">
+      <strong>Rule:</strong> Chinese keeps normal sentence order and puts the question word where the answer would go. This is one of the biggest differences from English.<br>
+      <strong>Shortcut:</strong> Subject first, verb in place, question word where the answer goes.
+    </div>
+
+    <div class="hero-example">
+      <div class="english">Where do you live?</div>
+      <div class="chinese" onclick="speak('你住在哪里')">你住在哪里？</div>
+      <div class="pinyin" onclick="speak('你住在哪里')">Nǐ zhù zài nǎlǐ?</div>
+    </div>
+
+    <div class="vs-box">
+      <div class="vs-side">
+        <div class="label">English</div>
+        <div class="content">
+          <strong>Where</strong> <span class="arrow">&rarr;</span> do you <span class="arrow">&rarr;</span> live?<br>
+          <em style="font-size:0.85rem; color:var(--ink-wash)">Question word first</em>
+        </div>
+      </div>
+      <div class="vs-side">
+        <div class="label">Chinese</div>
+        <div class="content">
+          你 <span class="arrow">&rarr;</span> 住在 <span class="arrow">&rarr;</span> <strong>哪里？</strong><br>
+          <em style="font-size:0.85rem; color:var(--ink-wash)">Question word where the answer goes</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="mental-conversion">Mental conversion: <em>You live where?</em></div>
+
+    <p style="margin: 16px 0 8px;">If the answer is "Beijing," the question word 哪里 occupies that same position:</p>
+    <div class="inline-pair">
+      <span class="zh" onclick="speak('你住在哪里')">你住在哪里？</span> - Where do you live?
+    </div>
+    <div class="inline-pair">
+      <span class="zh" onclick="speak('我住在北京')">我住在北京。</span> - I live in Beijing.
+    </div>
+
+    <div class="example-table-wrap">
+      <table class="example-table">
+        <thead><tr><th>English</th><th>Chinese</th><th>Mental Conversion</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>What are you doing?</td>
+            <td><span class="zh" onclick="speak('你在做什么')">你在做什么？</span></td>
+            <td>You are doing what?</td>
+          </tr>
+          <tr>
+            <td>Where are you going?</td>
+            <td><span class="zh" onclick="speak('你去哪里')">你去哪里？</span></td>
+            <td>You go where?</td>
+          </tr>
+          <tr>
+            <td>Who is that?</td>
+            <td><span class="zh" onclick="speak('那是谁')">那是谁？</span></td>
+            <td>That is who?</td>
+          </tr>
+          <tr>
+            <td>What do you want?</td>
+            <td><span class="zh" onclick="speak('你想要什么')">你想要什么？</span></td>
+            <td>You want what?</td>
+          </tr>
+          <tr>
+            <td>When are you leaving?</td>
+            <td><span class="zh" onclick="speak('你什么时候走')">你什么时候走？</span></td>
+            <td>You when leave?</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">Question Words</h3>
+    <div class="question-words">
+      <div class="qw-item" onclick="speak('什么')">
+        <span class="qw-zh">什么</span>
+        <span class="qw-py">shénme</span>
+        <span class="qw-en">what</span>
+      </div>
+      <div class="qw-item" onclick="speak('哪里')">
+        <span class="qw-zh">哪里</span>
+        <span class="qw-py">nǎlǐ</span>
+        <span class="qw-en">where</span>
+      </div>
+      <div class="qw-item" onclick="speak('谁')">
+        <span class="qw-zh">谁</span>
+        <span class="qw-py">shéi</span>
+        <span class="qw-en">who</span>
+      </div>
+      <div class="qw-item" onclick="speak('什么时候')">
+        <span class="qw-zh">什么时候</span>
+        <span class="qw-py">shénme shíhou</span>
+        <span class="qw-en">when</span>
+      </div>
+      <div class="qw-item" onclick="speak('为什么')">
+        <span class="qw-zh">为什么</span>
+        <span class="qw-py">wèishénme</span>
+        <span class="qw-en">why</span>
+      </div>
+      <div class="qw-item" onclick="speak('怎么')">
+        <span class="qw-zh">怎么</span>
+        <span class="qw-py">zěnme</span>
+        <span class="qw-en">how</span>
+      </div>
+    </div>
+
+    <h3 class="sub-heading">Where Does 在哪里 Go?</h3>
+    <p style="margin-bottom: 12px;">The position of 在哪里 depends on how the location relates to the verb. Think of 在 as "at" or "in."</p>
+
+    <div class="example-table-wrap">
+      <table class="example-table">
+        <thead><tr><th>Question Type</th><th>Pattern</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Where someone lives/is</td>
+            <td>Subject + verb + 在哪里</td>
+            <td><span class="zh" onclick="speak('你住在哪里')">你住在哪里？</span></td>
+          </tr>
+          <tr>
+            <td>Where an action happens</td>
+            <td>Subject + 在哪里 + verb + object</td>
+            <td><span class="zh" onclick="speak('你在哪里学习中文')">你在哪里学习中文？</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="conversion-example">
+      <div class="step-label">English</div>
+      <div class="step-content">"Where do you study Chinese?"</div>
+    </div>
+    <div class="conversion-example">
+      <div class="step-label">Remove "do", reorder</div>
+      <div class="step-content">"You where study Chinese?"</div>
+    </div>
+    <div class="conversion-example">
+      <div class="step-label">Chinese</div>
+      <div class="step-content"><span class="zh" onclick="speak('你在哪里学习中文')">你在哪里学习中文？</span></div>
+    </div>
+
+    <div class="note-box">
+      <strong>Question words don't always go at the end.</strong> They occupy the position appropriate to the information being asked about. Here, 在哪里 comes <em>before</em> the action 学习中文 because it describes where the action happens.
+    </div>
+
+    <div class="note-box">
+      <strong>Don't add 吗 to WH-questions.</strong> The question word already signals a question. <span class="zh" onclick="speak('你住在哪里')">你住在哪里？</span> is correct. 你住在哪里吗？ is not the standard form.
+    </div>
+
+    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+  </section>
+
+  <!-- Pattern 3 -->
+  <section class="section-card" id="pattern3">
+    <h2 class="section-title">Pattern 3: How / What Is It Like? - 怎么样</h2>
+
+    <div class="pattern-rule">
+      <strong>Rule:</strong> Use 怎么样 (zěnmeyàng) when asking about a condition, experience, quality, or general state.<br>
+      <strong>Shortcut:</strong> "How is X?" or "What is X like?" &rarr; X + 怎么样
+    </div>
+
+    <div class="hero-example">
+      <div class="english">How's it going?</div>
+      <div class="chinese" onclick="speak('最近怎么样')">最近怎么样？</div>
+      <div class="pinyin" onclick="speak('最近怎么样')">Zuìjìn zěnmeyàng?</div>
+    </div>
+
+    <div class="word-breakdown">
+      <div class="word-chip" onclick="speak('最近')">
+        <span class="char">最近</span>
+        <span class="py">zuìjìn</span>
+        <span class="gloss">recently</span>
+      </div>
+      <div class="word-chip" onclick="speak('怎么样')">
+        <span class="char">怎么样</span>
+        <span class="py">zěnmeyàng</span>
+        <span class="gloss">how / how is it</span>
+      </div>
+    </div>
+
+    <div class="mental-conversion">Mental conversion: <em>Recently, how?</em></div>
+
+    <div class="example-table-wrap">
+      <table class="example-table">
+        <thead><tr><th>English</th><th>Chinese</th><th>Pinyin</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>How was your day?</td>
+            <td><span class="zh" onclick="speak('你今天过得怎么样')">你今天过得怎么样？</span></td>
+            <td class="py">Nǐ jīntiān guò de zěnmeyàng?</td>
+          </tr>
+          <tr>
+            <td>What's the weather like?</td>
+            <td><span class="zh" onclick="speak('天气怎么样')">天气怎么样？</span></td>
+            <td class="py">Tiānqì zěnmeyàng?</td>
+          </tr>
+          <tr>
+            <td>How is the food?</td>
+            <td><span class="zh" onclick="speak('食物怎么样')">食物怎么样？</span></td>
+            <td class="py">Shíwù zěnmeyàng?</td>
+          </tr>
+          <tr>
+            <td>How is your Chinese?</td>
+            <td><span class="zh" onclick="speak('你的中文怎么样')">你的中文怎么样？</span></td>
+            <td class="py">Nǐ de Zhōngwén zěnmeyàng?</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-heading">怎么样 vs. 怎么</h3>
+    <div class="vs-box">
+      <div class="vs-side">
+        <div class="label">怎么样 - state / quality</div>
+        <div class="content">
+          <span class="zh" onclick="speak('这个怎么样')" style="cursor:pointer">这个怎么样？</span><br>
+          <em style="font-size:0.88rem; color:var(--ink-wash)">How is this? / What do you think?</em>
+        </div>
+      </div>
+      <div class="vs-side">
+        <div class="label">怎么 - method / manner</div>
+        <div class="content">
+          <span class="zh" onclick="speak('这个怎么做')" style="cursor:pointer">这个怎么做？</span><br>
+          <em style="font-size:0.88rem; color:var(--ink-wash)">How do you make this?</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+  </section>
+
+  <!-- Pattern 4 -->
+  <section class="section-card" id="pattern4">
+    <h2 class="section-title">Pattern 4: Are / Is Questions - Identity vs. Description</h2>
+
+    <div class="pattern-rule">
+      <strong>Rule:</strong> English uses <em>am/is/are</em> constantly, but Chinese handles identity and description differently. Use 是 for identity (with a noun). Omit 是 for descriptions (with an adjective).<br>
+      <strong>Shortcut:</strong> Identifies <em>what</em> someone is &rarr; 是. Describes <em>how</em> someone is &rarr; no 是.
+    </div>
+
+    <h3 class="sub-heading">A. Identity: use 是</h3>
+    <p style="margin-bottom: 12px;">Use 是 (shì) when identifying someone or something, paired with a noun.</p>
+
+    <div class="hero-example">
+      <div class="english">Are you American?</div>
+      <div class="chinese" onclick="speak('你是美国人吗')">你是美国人吗？</div>
+      <div class="pinyin" onclick="speak('你是美国人吗')">Nǐ shì Měiguó rén ma?</div>
+    </div>
+
+    <div class="word-breakdown">
+      <div class="word-chip" onclick="speak('你')">
+        <span class="char">你</span>
+        <span class="py">nǐ</span>
+        <span class="gloss">you</span>
+      </div>
+      <div class="word-chip" onclick="speak('是')">
+        <span class="char">是</span>
+        <span class="py">shì</span>
+        <span class="gloss">are / be</span>
+      </div>
+      <div class="word-chip" onclick="speak('美国人')">
+        <span class="char">美国人</span>
+        <span class="py">Měiguórén</span>
+        <span class="gloss">American</span>
+      </div>
+      <div class="word-chip" onclick="speak('吗')">
+        <span class="char">吗？</span>
+        <span class="py">ma</span>
+        <span class="gloss">question</span>
+      </div>
+    </div>
+
+    <p style="margin: 12px 0 4px;">Structure: Subject + 是 + noun + 吗？</p>
+    <div class="inline-pair"><span class="zh" onclick="speak('你是学生吗')">你是学生吗？</span> - Are you a student?</div>
+    <div class="inline-pair"><span class="zh" onclick="speak('他是老师吗')">他是老师吗？</span> - Is he a teacher?</div>
+    <div class="inline-pair"><span class="zh" onclick="speak('这是你的手机吗')">这是你的手机吗？</span> - Is this your phone?</div>
+
+    <h3 class="sub-heading">B. Description: usually omit 是</h3>
+    <p style="margin-bottom: 12px;">When describing with an adjective, place it directly after the subject. No 是 needed.</p>
+
+    <div class="hero-example">
+      <div class="english">Are you busy?</div>
+      <div class="chinese" onclick="speak('你忙吗')">你忙吗？</div>
+      <div class="pinyin" onclick="speak('你忙吗')">Nǐ máng ma?</div>
+    </div>
+
+    <div class="word-breakdown">
+      <div class="word-chip" onclick="speak('你')">
+        <span class="char">你</span>
+        <span class="py">nǐ</span>
+        <span class="gloss">you</span>
+      </div>
+      <div class="word-chip" onclick="speak('忙')">
+        <span class="char">忙</span>
+        <span class="py">máng</span>
+        <span class="gloss">busy</span>
+      </div>
+      <div class="word-chip" onclick="speak('吗')">
+        <span class="char">吗？</span>
+        <span class="py">ma</span>
+        <span class="gloss">question</span>
+      </div>
+    </div>
+
+    <p style="margin: 12px 0 4px;">Structure: Subject + adjective + 吗？</p>
+    <div class="inline-pair"><span class="zh" onclick="speak('你累吗')">你累吗？</span> - Are you tired?</div>
+    <div class="inline-pair"><span class="zh" onclick="speak('你高兴吗')">你高兴吗？</span> - Are you happy?</div>
+    <div class="inline-pair"><span class="zh" onclick="speak('你冷吗')">你冷吗？</span> - Are you cold?</div>
+    <div class="inline-pair"><span class="zh" onclick="speak('你好吗')">你好吗？</span> - How are you? / Are you well?</div>
+
+    <h3 class="sub-heading">Why This Matters</h3>
+    <div class="example-table-wrap">
+      <table class="example-table">
+        <thead><tr><th>English</th><th>Chinese</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Are you American?</td>
+            <td><span class="zh" onclick="speak('你是美国人吗')">你是美国人吗？</span></td>
+            <td>Identity / noun</td>
+          </tr>
+          <tr>
+            <td>Are you busy?</td>
+            <td><span class="zh" onclick="speak('你忙吗')">你忙吗？</span></td>
+            <td>Adjective</td>
+          </tr>
+          <tr>
+            <td>Are you a teacher?</td>
+            <td><span class="zh" onclick="speak('你是老师吗')">你是老师吗？</span></td>
+            <td>Identity / noun</td>
+          </tr>
+          <tr>
+            <td>Are you happy?</td>
+            <td><span class="zh" onclick="speak('你高兴吗')">你高兴吗？</span></td>
+            <td>Adjective</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+  </section>
+
+  <!-- Pattern 5 -->
+  <section class="section-card" id="pattern5">
+    <h2 class="section-title">Pattern 5: Can / Have / Past-Action Questions</h2>
+
+    <div class="pattern-rule">
+      <strong>Rule:</strong> Chinese expresses ability, possession, and completed actions with its own words and markers instead of English auxiliary verbs. Identify what the English helper word actually means.<br>
+      <strong>Shortcut:</strong> What does <em>have</em> mean? Possession &rarr; 有. Learned ability &rarr; 会. Experience &rarr; 过. Completed event &rarr; 了.
+    </div>
+
+    <h3 class="sub-heading">A. Can you...? - 能 or 会</h3>
+
+    <div class="hero-example">
+      <div class="english">Can you help me?</div>
+      <div class="chinese" onclick="speak('你能帮我吗')">你能帮我吗？</div>
+      <div class="pinyin" onclick="speak('你能帮我吗')">Nǐ néng bāng wǒ ma?</div>
+    </div>
+
+    <div class="word-breakdown">
+      <div class="word-chip" onclick="speak('你')">
+        <span class="char">你</span>
+        <span class="py">nǐ</span>
+        <span class="gloss">you</span>
+      </div>
+      <div class="word-chip" onclick="speak('能')">
+        <span class="char">能</span>
+        <span class="py">néng</span>
+        <span class="gloss">can / able</span>
+      </div>
+      <div class="word-chip" onclick="speak('帮我')">
+        <span class="char">帮我</span>
+        <span class="py">bāng wǒ</span>
+        <span class="gloss">help me</span>
+      </div>
+      <div class="word-chip" onclick="speak('吗')">
+        <span class="char">吗？</span>
+        <span class="py">ma</span>
+        <span class="gloss">question</span>
+      </div>
+    </div>
+
+    <div class="vs-box">
+      <div class="vs-side">
+        <div class="label">能 (néng) - circumstances / ability</div>
+        <div class="content">
+          <span class="zh" onclick="speak('你能来吗')" style="cursor:pointer">你能来吗？</span><br>
+          <em style="font-size:0.88rem; color:var(--ink-wash)">Can you come? (Are you able to?)</em>
+        </div>
+      </div>
+      <div class="vs-side">
+        <div class="label">会 (huì) - learned skill</div>
+        <div class="content">
+          <span class="zh" onclick="speak('你会说英语吗')" style="cursor:pointer">你会说英语吗？</span><br>
+          <em style="font-size:0.88rem; color:var(--ink-wash)">Can you speak English? (Do you know how?)</em>
+        </div>
+      </div>
+    </div>
+
+    <div class="inline-pair"><span class="zh" onclick="speak('你会开车吗')">你会开车吗？</span> - Can you drive? (learned skill)</div>
+
+    <h3 class="sub-heading">B. Have you...? - Possession vs. Experience</h3>
+    <p style="margin-bottom: 12px;">For possession, use 有 (yǒu):</p>
+    <div class="inline-pair"><span class="zh" onclick="speak('你有车吗')">你有车吗？</span> - Do you have a car?</div>
+    <div class="inline-pair"><span class="zh" onclick="speak('你有兄弟姐妹吗')">你有兄弟姐妹吗？</span> - Do you have siblings?</div>
+
+    <h3 class="sub-heading">C. Have you eaten? - 了 (le) for completed events</h3>
+
+    <div class="hero-example">
+      <div class="english">Have you eaten?</div>
+      <div class="chinese" onclick="speak('你吃饭了吗')">你吃饭了吗？</div>
+      <div class="pinyin" onclick="speak('你吃饭了吗')">Nǐ chīfàn le ma?</div>
+    </div>
+
+    <div class="word-breakdown">
+      <div class="word-chip" onclick="speak('你')">
+        <span class="char">你</span>
+        <span class="py">nǐ</span>
+        <span class="gloss">you</span>
+      </div>
+      <div class="word-chip" onclick="speak('吃饭')">
+        <span class="char">吃饭</span>
+        <span class="py">chīfàn</span>
+        <span class="gloss">eat / meal</span>
+      </div>
+      <div class="word-chip" onclick="speak('了')">
+        <span class="char">了</span>
+        <span class="py">le</span>
+        <span class="gloss">completed</span>
+      </div>
+      <div class="word-chip" onclick="speak('吗')">
+        <span class="char">吗？</span>
+        <span class="py">ma</span>
+        <span class="gloss">question</span>
+      </div>
+    </div>
+
+    <p style="margin: 12px 0 4px;">Structure: Subject + verb + 了 + 吗？</p>
+    <div class="inline-pair"><span class="zh" onclick="speak('你买了吗')">你买了吗？</span> - Have you bought it?</div>
+    <div class="inline-pair"><span class="zh" onclick="speak('你到了吗')">你到了吗？</span> - Have you arrived?</div>
+
+    <div class="note-box">
+      <strong>了 vs. 过:</strong> Not every "have you..." needs 了. For past <em>experiences</em>, use 过 (guo).<br><br>
+      "Have you ever been to China?" &rarr; <span class="zh" onclick="speak('你去过中国吗')">你去过中国吗？</span><br><br>
+      过 marks experience ("ever done X"). 了 marks a change or completed event. They are not interchangeable.
+    </div>
+
+    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+  </section>
+
+  <footer class="page-footer">
+    <div class="deco">问 句 规 律</div>
+    <p>Question Patterns</p>
+  </footer>
+
+</div>
+
+<script>
+let ttsAudio = null;
+
+function speak(chinese) {
+  if (!chinese) return;
+
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+
+  const slowdown = (primary === youdao);
+  ttsAudio = new Audio(primary);
+  if (slowdown) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+function lookupInTranslator(chinese) {
+  if (window.parent !== window) {
+    window.parent.postMessage({
+      type: 'mandarin-hub:lookup',
+      query: chinese
+    }, '*');
+  }
+}
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+  if (e.data.type === 'mandarin-hub:scroll-to-anchor' && e.data.anchor) {
+    const el = document.getElementById(e.data.anchor);
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'instant' }), 80);
+  }
+});
+</script>
+</body>
+</html>
