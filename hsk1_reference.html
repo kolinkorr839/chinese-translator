@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSK 1 Vocabulary</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rice-paper: #F5F0E8;
+  --card-bg: #FFFDF8;
+  --ink: #1a1a2e;
+  --vermillion: #C41E3A;
+  --sage: #7D8471;
+  --ink-wash: #6B7B8D;
+  --warm-border: #E8E0D4;
+}
+
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC',
+    'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: var(--rice-paper);
+  background-image:
+    repeating-linear-gradient(
+      0deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    ),
+    repeating-linear-gradient(
+      90deg, transparent, transparent 40px,
+      rgba(184, 134, 11, 0.03) 40px,
+      rgba(184, 134, 11, 0.03) 41px
+    );
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+.page-header h1 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--vermillion);
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+.page-header .subtitle {
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.search-bar {
+  max-width: 400px;
+  margin: 0 auto 24px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 16px;
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-input::placeholder { color: #C4B9A8; }
+
+.search-input:focus {
+  border-color: var(--vermillion);
+}
+
+.match-count {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ink-wash);
+  margin-bottom: 16px;
+}
+
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+  margin-bottom: 36px;
+}
+
+.ref-table thead th {
+  background: #F5EDE0;
+  color: #3D2B1F;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 2px solid var(--vermillion);
+}
+
+.ref-table thead th:first-child {
+  width: 50px;
+  text-align: center;
+}
+
+.ref-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.7);
+  vertical-align: middle;
+  font-size: 1rem;
+}
+
+.ref-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.num-cell {
+  text-align: center;
+  color: var(--ink-wash);
+  font-size: 0.85rem;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 4px;
+}
+
+.clickable:hover {
+  background: rgba(196, 30, 58, 0.06);
+}
+
+.zh {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.trad-col {
+  font-size: 1.15rem;
+  color: var(--ink);
+  opacity: 0.6;
+}
+
+.pinyin {
+  color: var(--sage);
+  font-style: italic;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 4px;
+}
+
+.pinyin:hover {
+  background: rgba(125, 132, 113, 0.1);
+}
+
+.eng {
+  color: var(--ink-wash);
+  font-size: 0.95rem;
+}
+
+.page-footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--warm-border);
+  color: var(--ink-wash);
+  font-size: 0.9rem;
+}
+
+.page-footer .deco {
+  color: var(--vermillion);
+  opacity: 0.3;
+  font-size: 1.2rem;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 8px;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 24px 14px 60px; }
+  .page-header h1 { font-size: 1.6rem; }
+  .ref-table { font-size: 0.9rem; }
+  .ref-table thead th { padding: 8px 8px; font-size: 0.8rem; }
+  .ref-table tbody td { padding: 8px 8px; }
+  .zh { font-size: 1.15rem; }
+  .trad-col { font-size: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header">
+    <h1>HSK 1 Vocabulary</h1>
+    <p class="subtitle">All 150 words - simplified, traditional, pinyin and English</p>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" class="search-input" id="search" placeholder="Search by character, pinyin, or English..." autocomplete="off">
+  </div>
+  <div class="match-count" id="match-count"></div>
+
+  <table class="ref-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Simplified</th>
+        <th>Traditional</th>
+        <th>Pinyin</th>
+        <th>English</th>
+      </tr>
+    </thead>
+    <tbody id="vocab-body"></tbody>
+  </table>
+
+  <div class="page-footer">
+    <div class="deco">汉 语 水 平 考 试</div>
+  </div>
+
+</div>
+
+<script>
+const HSK_VOCAB = [
+  {simp: "爱", trad: "愛", pinyin: "ài", english: "Love; like"},
+  {simp: "八", trad: "八", pinyin: "bā", english: "Eight"},
+  {simp: "爸爸", trad: "爸爸", pinyin: "bàba", english: "Daddy; father; papa"},
+  {simp: "杯子", trad: "杯子", pinyin: "bēizi", english: "Cup; glass"},
+  {simp: "北京", trad: "北京", pinyin: "běijīng", english: "Beijing"},
+  {simp: "本", trad: "本", pinyin: "běn", english: "This; mw for books; roots; original"},
+  {simp: "不客气", trad: "不客氣", pinyin: "búkèqi", english: "You're welcome; don't mention it"},
+  {simp: "不", trad: "不", pinyin: "bù", english: "No; not"},
+  {simp: "菜", trad: "菜", pinyin: "cài", english: "Vegetable; dish"},
+  {simp: "茶", trad: "茶", pinyin: "chá", english: "Tea"},
+  {simp: "吃", trad: "吃", pinyin: "chī", english: "Eat"},
+  {simp: "出租车", trad: "出租車", pinyin: "chūzūchē", english: "Taxi"},
+  {simp: "打电话", trad: "打電話", pinyin: "dǎdiànhuà", english: "Makes a phone call"},
+  {simp: "大", trad: "大", pinyin: "dà", english: "Big; oldest"},
+  {simp: "的", trad: "的", pinyin: "de", english: "Of; the"},
+  {simp: "点", trad: "點", pinyin: "diǎn", english: "O'clock; dot; point; mw for suggestions"},
+  {simp: "电脑", trad: "電腦", pinyin: "diànnǎo", english: "Computer; pc"},
+  {simp: "电视", trad: "電視", pinyin: "diànshì", english: "Television; TV"},
+  {simp: "电影", trad: "電影", pinyin: "diànyǐng", english: "Movie; film; flick"},
+  {simp: "东西", trad: "東西", pinyin: "dōngxī", english: "Thing"},
+  {simp: "都", trad: "都", pinyin: "dōu", english: "All; even; already"},
+  {simp: "读", trad: "讀", pinyin: "dú", english: "Read"},
+  {simp: "对不起", trad: "對不起", pinyin: "duìbuqǐ", english: "Sorry; excuse me"},
+  {simp: "多", trad: "多", pinyin: "duō", english: "Many; more; how"},
+  {simp: "多少", trad: "多少", pinyin: "duōshao", english: "How much; how many"},
+  {simp: "儿子", trad: "兒子", pinyin: "érzi", english: "Son"},
+  {simp: "二", trad: "二", pinyin: "èr", english: "Two"},
+  {simp: "饭店", trad: "飯店", pinyin: "fàndiàn", english: "Hotel; restaurant"},
+  {simp: "飞机", trad: "飛機", pinyin: "fēijī", english: "Airplane"},
+  {simp: "分钟", trad: "分鐘", pinyin: "fēnzhōng", english: "Minute"},
+  {simp: "高兴", trad: "高興", pinyin: "gāoxìng", english: "Happy; glad"},
+  {simp: "个", trad: "個", pinyin: "gè", english: "Measure word"},
+  {simp: "工作", trad: "工作", pinyin: "gōngzuò", english: "Work"},
+  {simp: "狗", trad: "狗", pinyin: "gǒu", english: "Dog"},
+  {simp: "汉语", trad: "漢語", pinyin: "hànyǔ", english: "Chinese language"},
+  {simp: "好", trad: "好", pinyin: "hǎo", english: "Good; well"},
+  {simp: "号", trad: "號", pinyin: "hào", english: "Number; name; size; order; sign"},
+  {simp: "喝", trad: "喝", pinyin: "hē", english: "To drink"},
+  {simp: "和", trad: "和", pinyin: "hé", english: "And; with"},
+  {simp: "很", trad: "很", pinyin: "hěn", english: "Very"},
+  {simp: "后面", trad: "後面", pinyin: "hòumian", english: "Back; behind; later"},
+  {simp: "回", trad: "回", pinyin: "huí", english: "Return; answer; circle; turn around; mw for occurrences"},
+  {simp: "会", trad: "會", pinyin: "huì", english: "Meeting; understand; able to; can; will; shall"},
+  {simp: "几", trad: "幾", pinyin: "jǐ", english: "Few; how many"},
+  {simp: "家", trad: "家", pinyin: "jiā", english: "Family; home; domestic"},
+  {simp: "叫", trad: "叫", pinyin: "jiào", english: "Shout; calls; bid; by"},
+  {simp: "今天", trad: "今天", pinyin: "jīntiān", english: "Today"},
+  {simp: "九", trad: "九", pinyin: "jiǔ", english: "Nine"},
+  {simp: "开", trad: "開", pinyin: "kāi", english: "Open; start; drive; boil"},
+  {simp: "看", trad: "看", pinyin: "kàn", english: "Look at; see; read; visit"},
+  {simp: "看见", trad: "看見", pinyin: "kànjiàn", english: "See"},
+  {simp: "块", trad: "塊", pinyin: "kuài", english: "Lump; piece; mw for chunks and sheets and slices"},
+  {simp: "来", trad: "來", pinyin: "lái", english: "Come; arrive"},
+  {simp: "老师", trad: "老師", pinyin: "lǎoshī", english: "Teacher"},
+  {simp: "了", trad: "了", pinyin: "le", english: "Past tense indicator"},
+  {simp: "冷", trad: "冷", pinyin: "lěng", english: "Cold; unpopular; ruthless; quiet"},
+  {simp: "里", trad: "裡", pinyin: "lǐ", english: "In; inside; inner; neighbourhood; Chinese mile half a km"},
+  {simp: "六", trad: "六", pinyin: "liù", english: "Six"},
+  {simp: "吗", trad: "嗎", pinyin: "ma", english: "Question indicator"},
+  {simp: "妈妈", trad: "媽媽", pinyin: "māma", english: "Mother; mom; mama"},
+  {simp: "买", trad: "買", pinyin: "mǎi", english: "Buy; business"},
+  {simp: "猫", trad: "貓", pinyin: "māo", english: "Cat"},
+  {simp: "没关系", trad: "沒關係", pinyin: "méiguānxi", english: "It doesn't matter"},
+  {simp: "没有", trad: "沒有", pinyin: "méiyǒu", english: "Not have; did not; is not"},
+  {simp: "米饭", trad: "米飯", pinyin: "mǐfàn", english: "Cooked rice"},
+  {simp: "名字", trad: "名字", pinyin: "míngzi", english: "Name; a person's"},
+  {simp: "明天", trad: "明天", pinyin: "míngtiān", english: "Tomorrow"},
+  {simp: "哪", trad: "哪", pinyin: "nǎ", english: "Which; how"},
+  {simp: "哪儿", trad: "哪兒", pinyin: "nǎr", english: "Where"},
+  {simp: "那", trad: "那", pinyin: "nà", english: "That; those"},
+  {simp: "呢", trad: "呢", pinyin: "ne", english: "Question particle"},
+  {simp: "能", trad: "能", pinyin: "néng", english: "Can; ability; capable; energy"},
+  {simp: "你", trad: "你", pinyin: "nǐ", english: "You"},
+  {simp: "年", trad: "年", pinyin: "nián", english: "Year; age; old"},
+  {simp: "女儿", trad: "女兒", pinyin: "nǚ'ér", english: "Daughter"},
+  {simp: "朋友", trad: "朋友", pinyin: "péngyou", english: "Friend"},
+  {simp: "漂亮", trad: "漂亮", pinyin: "piàoliang", english: "Beautiful; pretty"},
+  {simp: "苹果", trad: "蘋果", pinyin: "píngguǒ", english: "Apple"},
+  {simp: "七", trad: "七", pinyin: "qī", english: "Seven"},
+  {simp: "前面", trad: "前面", pinyin: "qiánmian", english: "Fore; front"},
+  {simp: "钱", trad: "錢", pinyin: "qián", english: "Money"},
+  {simp: "请", trad: "請", pinyin: "qǐng", english: "Please; ask; invite; request"},
+  {simp: "去", trad: "去", pinyin: "qù", english: "Go; leave; remove; send; past"},
+  {simp: "热", trad: "熱", pinyin: "rè", english: "Hot; heat; warm up"},
+  {simp: "人", trad: "人", pinyin: "rén", english: "Person; people"},
+  {simp: "认识", trad: "認識", pinyin: "rènshi", english: "Acquainted with; know; familiar with; recognize; understand"},
+  {simp: "三", trad: "三", pinyin: "sān", english: "Three"},
+  {simp: "商店", trad: "商店", pinyin: "shāngdiàn", english: "Store; shop"},
+  {simp: "上", trad: "上", pinyin: "shàng", english: "Above; on; go up; upper; first"},
+  {simp: "上午", trad: "上午", pinyin: "shàngwǔ", english: "Morning"},
+  {simp: "少", trad: "少", pinyin: "shǎo", english: "Few; lack; little; be missing"},
+  {simp: "谁", trad: "誰", pinyin: "shéi", english: "Who"},
+  {simp: "什么", trad: "什麼", pinyin: "shénme", english: "What; something; anything"},
+  {simp: "十", trad: "十", pinyin: "shí", english: "Ten"},
+  {simp: "时候", trad: "時候", pinyin: "shíhou", english: "Time; moment"},
+  {simp: "是", trad: "是", pinyin: "shì", english: "To be; is; are; am; yes"},
+  {simp: "书", trad: "書", pinyin: "shū", english: "Book; write"},
+  {simp: "水", trad: "水", pinyin: "shuǐ", english: "Water; river"},
+  {simp: "水果", trad: "水果", pinyin: "shuǐguǒ", english: "Fruit"},
+  {simp: "睡觉", trad: "睡覺", pinyin: "shuìjiào", english: "Sleep; go to bed"},
+  {simp: "说", trad: "說", pinyin: "shuō", english: "Said; speak; say; talk; explain"},
+  {simp: "四", trad: "四", pinyin: "sì", english: "Four"},
+  {simp: "岁", trad: "歲", pinyin: "suì", english: "Years old"},
+  {simp: "他", trad: "他", pinyin: "tā", english: "He; him; another; other"},
+  {simp: "她", trad: "她", pinyin: "tā", english: "She"},
+  {simp: "太", trad: "太", pinyin: "tài", english: "Too; very; highest; great"},
+  {simp: "天气", trad: "天氣", pinyin: "tiānqì", english: "Weather"},
+  {simp: "听", trad: "聽", pinyin: "tīng", english: "Listen; obey; supervise; tin can"},
+  {simp: "同学", trad: "同學", pinyin: "tóngxué", english: "Classmate; fellow student"},
+  {simp: "喂", trad: "喂", pinyin: "wèi", english: "Hello; hey; telephone greeting; to feed"},
+  {simp: "我", trad: "我", pinyin: "wǒ", english: "I; me; myself"},
+  {simp: "我们", trad: "我們", pinyin: "wǒmen", english: "We; us; ourselves"},
+  {simp: "五", trad: "五", pinyin: "wǔ", english: "Five"},
+  {simp: "喜欢", trad: "喜歡", pinyin: "xǐhuan", english: "To like; be fond of"},
+  {simp: "下", trad: "下", pinyin: "xià", english: "Below; under; down; fall; next; lower; finish"},
+  {simp: "下午", trad: "下午", pinyin: "xiàwǔ", english: "Afternoon"},
+  {simp: "下雨", trad: "下雨", pinyin: "xiàyǔ", english: "Rains; rainy"},
+  {simp: "先生", trad: "先生", pinyin: "xiānsheng", english: "Mr; teacher; husband; doctor; sir"},
+  {simp: "现在", trad: "現在", pinyin: "xiànzài", english: "Now; at present"},
+  {simp: "想", trad: "想", pinyin: "xiǎng", english: "Think; want to; to miss"},
+  {simp: "小", trad: "小", pinyin: "xiǎo", english: "Small; few; young"},
+  {simp: "小姐", trad: "小姐", pinyin: "xiǎojie", english: "Young lady; miss"},
+  {simp: "些", trad: "些", pinyin: "xiē", english: "Some; a few"},
+  {simp: "写", trad: "寫", pinyin: "xiě", english: "To write; describe; draw"},
+  {simp: "谢谢", trad: "謝謝", pinyin: "xièxie", english: "Thanks; thank you"},
+  {simp: "星期", trad: "星期", pinyin: "xīngqī", english: "Week"},
+  {simp: "学生", trad: "學生", pinyin: "xuésheng", english: "Student"},
+  {simp: "学习", trad: "學習", pinyin: "xuéxí", english: "Study; learn"},
+  {simp: "学校", trad: "學校", pinyin: "xuéxiào", english: "School"},
+  {simp: "一", trad: "一", pinyin: "yī", english: "One; single"},
+  {simp: "一点儿", trad: "一點兒", pinyin: "yīdiǎnr", english: "A little; this point; one o'clock"},
+  {simp: "医生", trad: "醫生", pinyin: "yīshēng", english: "Doctor"},
+  {simp: "医院", trad: "醫院", pinyin: "yīyuàn", english: "Hospital"},
+  {simp: "衣服", trad: "衣服", pinyin: "yīfu", english: "Clothes"},
+  {simp: "椅子", trad: "椅子", pinyin: "yǐzi", english: "Chair"},
+  {simp: "有", trad: "有", pinyin: "yǒu", english: "To have; has; there is; there are"},
+  {simp: "月", trad: "月", pinyin: "yuè", english: "Month; moon"},
+  {simp: "再见", trad: "再見", pinyin: "zàijiàn", english: "Goodbye"},
+  {simp: "在", trad: "在", pinyin: "zài", english: "Located; in; at; exist"},
+  {simp: "怎么", trad: "怎麼", pinyin: "zěnme", english: "How; can it be that"},
+  {simp: "怎么样", trad: "怎麼樣", pinyin: "zěnmeyàng", english: "How; how about"},
+  {simp: "这", trad: "這", pinyin: "zhè", english: "This; these"},
+  {simp: "中国", trad: "中國", pinyin: "zhōngguó", english: "China"},
+  {simp: "中午", trad: "中午", pinyin: "zhōngwǔ", english: "Noon; midday"},
+  {simp: "住", trad: "住", pinyin: "zhù", english: "Live; reside; dwell; stay; stop"},
+  {simp: "桌子", trad: "桌子", pinyin: "zhuōzi", english: "Table; desk"},
+  {simp: "字", trad: "字", pinyin: "zì", english: "Character; symbol; letter; word"},
+  {simp: "昨天", trad: "昨天", pinyin: "zuótiān", english: "Yesterday"},
+  {simp: "做", trad: "做", pinyin: "zuò", english: "To do; make; write; hold; be used as"},
+  {simp: "坐", trad: "坐", pinyin: "zuò", english: "Sit; travel by; take a"}
+];
+
+const tbody = document.getElementById('vocab-body');
+const searchInput = document.getElementById('search');
+const matchCount = document.getElementById('match-count');
+
+function render(filter) {
+  const q = (filter || '').toLowerCase();
+  tbody.innerHTML = '';
+  let count = 0;
+  HSK_VOCAB.forEach((w, i) => {
+    if (q && w.simp.indexOf(q) < 0 && w.trad.indexOf(q) < 0
+        && w.pinyin.toLowerCase().indexOf(q) < 0
+        && w.english.toLowerCase().indexOf(q) < 0) return;
+    count++;
+    const tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td class="num-cell">' + (i + 1) + '</td>' +
+      '<td class="clickable" data-zh="' + w.simp + '"><span class="zh">' + w.simp + '</span></td>' +
+      '<td class="trad-col">' + w.trad + '</td>' +
+      '<td class="pinyin" data-zh="' + w.simp + '">' + w.pinyin + '</td>' +
+      '<td class="eng">' + w.english + '</td>';
+    tbody.appendChild(tr);
+  });
+  if (q) {
+    matchCount.textContent = count + ' of 150 words';
+  } else {
+    matchCount.textContent = '';
+  }
+  bindClickHandlers();
+}
+
+function bindClickHandlers() {
+  document.querySelectorAll('#vocab-body .clickable').forEach(function(cell) {
+    cell.addEventListener('click', function() {
+      var zh = cell.getAttribute('data-zh');
+      if (zh) lookupInTranslator(zh);
+    });
+  });
+  document.querySelectorAll('#vocab-body td.pinyin').forEach(function(cell) {
+    cell.addEventListener('click', function() {
+      var zh = cell.getAttribute('data-zh');
+      if (zh) speak(zh);
+    });
+  });
+}
+
+searchInput.addEventListener('input', function() {
+  render(this.value);
+});
+
+render('');
+
+let ttsAudio = null;
+
+function speak(chinese) {
+  if (!chinese) return;
+
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+
+  const slowdown = (primary === youdao);
+  ttsAudio = new Audio(primary);
+  if (slowdown) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+function lookupInTranslator(query) {
+  if (window.parent !== window) {
+    window.parent.postMessage({ type: 'mandarin-hub:lookup', query }, '*');
+  }
+}
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+});
+</script>
+
+</body>
+</html>

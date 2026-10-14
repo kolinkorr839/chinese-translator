@@ -151,6 +151,15 @@ def st_pairs():
     return json.loads(_js_to_json(m.group(1)))
 
 
+def hsk1_vocab():
+    """The HSK_VOCAB array from hsk1_reference.html."""
+    src = read("hsk1_reference.html")
+    m = re.search(r"const HSK_VOCAB = (\[.*?\]);\n", src, re.S)
+    if not m:
+        raise AssertionError("could not find `const HSK_VOCAB = [...]` in hsk1_reference.html")
+    return json.loads(_js_to_json(m.group(1)))
+
+
 def pinyin_valid_combos():
     """The VALID map from pinyin_chart.html: {initial: [finals]}."""
     src = read("pinyin_chart.html")

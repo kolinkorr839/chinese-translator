@@ -121,6 +121,7 @@ FLASHCARD_PAGES = [
     "listening_drill.html",
     "generate_drill.html",
     "story_reader.html",
+    "hsk1_flashcards.html",
 ]
 
 
@@ -151,6 +152,7 @@ TTS_PAGES = [
     "listening_drill.html",
     "generate_drill.html",
     "story_reader.html",
+    "hsk1_reference.html",
 ]
 
 

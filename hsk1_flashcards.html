@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSK 1 Flashcards</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', Georgia, serif;
+    background: #F5F0E8;
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: #1a1a2e;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .prompt-area, .answer-area {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .container {
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .progress-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .trouble-row {
+    margin-bottom: 16px;
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sel-btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .sel-btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+  }
+  .sel-btn.active {
+    background: #C41E3A;
+    color: #fff;
+    border-color: #C41E3A;
+  }
+  .sel-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .trouble-badge {
+    font-size: 11px;
+    color: #8a8478;
+    margin-left: 2px;
+  }
+
+  .prompt-area {
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .english {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #1a1a2e;
+    line-height: 1.3;
+  }
+
+  .pinyin {
+    font-size: 20px;
+    color: #7D8471;
+    margin-top: 4px;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .pinyin:hover {
+    color: #5C6352;
+  }
+
+  .answer-area {
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 24px;
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .answer-area.revealed {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+
+  .char-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .char-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .char {
+    font-size: 64px;
+    line-height: 1.2;
+    color: #1a1a2e;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .char:hover {
+    color: #5C6352;
+  }
+
+  .divider {
+    font-size: 36px;
+    color: #E8E0D4;
+    font-weight: 300;
+    align-self: center;
+    margin-top: 16px;
+  }
+
+  .divider.same { display: none; }
+
+  .char-block.trad-block.same { display: none; }
+
+  .star-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #D4C9B8;
+    transition: color 0.2s, transform 0.15s;
+    padding: 0.3rem;
+    line-height: 1;
+  }
+  .star-btn:hover {
+    color: #B8860B;
+    transform: scale(1.15);
+  }
+  .star-btn.active {
+    color: #B8860B;
+  }
+
+  .show-btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #B8860B;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(139, 115, 72, 0.06);
+    display: none;
+    margin-top: 24px;
+  }
+
+  .show-btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+    color: #C41E3A;
+  }
+
+  .controls {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s;
+    box-shadow: 0 1px 4px rgba(139, 115, 72, 0.06);
+  }
+
+  .btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+  }
+
+  .btn.active {
+    background: #C41E3A;
+    color: #fff;
+    border-color: #C41E3A;
+  }
+
+  @media (max-width: 520px) {
+    .english { font-size: 24px; }
+    .pinyin { font-size: 17px; }
+    .char { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:#C41E3A; text-align:center; margin-bottom:4px; letter-spacing:0.02em;">HSK 1 Flashcards</h1>
+  <p style="text-align:center; color:#8B7D6B; font-size:0.95rem; font-family:'Crimson Pro',serif; font-weight:400; letter-spacing:0.04em; margin-bottom:16px;">English prompt - recall the Chinese</p>
+  <div class="progress-label" id="progress"></div>
+  <div class="trouble-row">
+    <button class="sel-btn" id="btn-all" onclick="selectAll()">All</button>
+    <button class="sel-btn" id="btn-trouble" onclick="selectTroubleWords()">Trouble Words <span class="trouble-badge" id="trouble-badge">(0)</span></button>
+  </div>
+  <div class="prompt-area">
+    <div class="english" id="english"></div>
+    <div class="pinyin" id="pinyin" onclick="speak(WORDS[order[idx]].simp)"></div>
+  </div>
+  <div class="answer-area" id="answer-area">
+    <div class="char-block">
+      <div class="char-label">Simplified</div>
+      <div class="char" id="simp-char" onclick="speak(WORDS[order[idx]].simp)"></div>
+    </div>
+    <div class="divider" id="divider">|</div>
+    <div class="char-block trad-block" id="trad-block">
+      <div class="char-label">Traditional</div>
+      <div class="char" id="trad-char" onclick="speak(WORDS[order[idx]].simp)"></div>
+    </div>
+    <button class="star-btn" id="star-btn" onclick="toggleStar(event)">☆</button>
+  </div>
+  <button class="show-btn" id="btn-show" onclick="revealAnswer()">Show</button>
+  <div class="controls">
+    <button class="btn active" id="btn-pause" onclick="togglePause()">Resume</button>
+    <button class="btn" id="btn-prev" onclick="goBack()">&larr; Prev</button>
+    <button class="btn" id="btn-next" onclick="goNext()">Next &rarr;</button>
+    <button class="btn" id="btn-shuffle" onclick="toggleShuffle()">Shuffle: On</button>
+    <button class="btn" id="btn-speed" onclick="cycleSpeed()">Speed: 1&times;</button>
+    <button class="btn" id="btn-sound" onclick="toggleSound()">Sound: On</button>
+  </div>
+</div>
+
+<script>
+const HSK_VOCAB = [
+  {simp:"爱",trad:"愛",pinyin:"ài",english:"Love; like"},
+  {simp:"八",trad:"八",pinyin:"bā",english:"Eight"},
+  {simp:"爸爸",trad:"爸爸",pinyin:"bàba",english:"Daddy; father; papa"},
+  {simp:"杯子",trad:"杯子",pinyin:"bēizi",english:"Cup; glass"},
+  {simp:"北京",trad:"北京",pinyin:"běijīng",english:"Beijing"},
+  {simp:"本",trad:"本",pinyin:"běn",english:"This; mw for books; roots; original"},
+  {simp:"不客气",trad:"不客氣",pinyin:"búkèqi",english:"Rude; impolite; your welcome; don't mention it"},
+  {simp:"不",trad:"不",pinyin:"bù",english:"No; not"},
+  {simp:"菜",trad:"菜",pinyin:"cài",english:"Vegetable; dish"},
+  {simp:"茶",trad:"茶",pinyin:"chá",english:"Tea"},
+  {simp:"吃",trad:"吃",pinyin:"chī",english:"Eat"},
+  {simp:"出租车",trad:"出租車",pinyin:"chūzūchē",english:"Taxi"},
+  {simp:"打电话",trad:"打電話",pinyin:"dǎdiànhuà",english:"Makes a phone call"},
+  {simp:"大",trad:"大",pinyin:"dà",english:"Big; oldest"},
+  {simp:"的",trad:"的",pinyin:"de",english:"Of; the"},
+  {simp:"点",trad:"點",pinyin:"diǎn",english:"O'clock; dot; point; mw for suggestions"},
+  {simp:"电脑",trad:"電腦",pinyin:"diànnǎo",english:"Computer; pc"},
+  {simp:"电视",trad:"電視",pinyin:"diànshì",english:"Television; TV"},
+  {simp:"电影",trad:"電影",pinyin:"diànyǐng",english:"Movie; film; flick"},
+  {simp:"东西",trad:"東西",pinyin:"dōngxī",english:"Thing"},
+  {simp:"都",trad:"都",pinyin:"dōu",english:"All; even; already"},
+  {simp:"读",trad:"讀",pinyin:"dú",english:"Read"},
+  {simp:"对不起",trad:"對不起",pinyin:"duìbuqǐ",english:"Sorry; excuse me"},
+  {simp:"多",trad:"多",pinyin:"duō",english:"Many; more; how"},
+  {simp:"多少",trad:"多少",pinyin:"duōshao",english:"How much; how many"},
+  {simp:"儿子",trad:"兒子",pinyin:"érzi",english:"Son"},
+  {simp:"二",trad:"二",pinyin:"èr",english:"Two"},
+  {simp:"饭店",trad:"飯店",pinyin:"fàndiàn",english:"Hotel; restaurant"},
+  {simp:"飞机",trad:"飛機",pinyin:"fēijī",english:"Airplane"},
+  {simp:"分钟",trad:"分鐘",pinyin:"fēnzhōng",english:"Minute"},
+  {simp:"高兴",trad:"高興",pinyin:"gāoxìng",english:"Happy; glad"},
+  {simp:"个",trad:"個",pinyin:"gè",english:"Measure word"},
+  {simp:"工作",trad:"工作",pinyin:"gōngzuò",english:"Work"},
+  {simp:"狗",trad:"狗",pinyin:"gǒu",english:"Dog"},
+  {simp:"汉语",trad:"漢語",pinyin:"hànyǔ",english:"Chinese language"},
+  {simp:"好",trad:"好",pinyin:"hǎo",english:"Good; well"},
+  {simp:"号",trad:"號",pinyin:"hào",english:"Number; name; size; order; sign"},
+  {simp:"喝",trad:"喝",pinyin:"hē",english:"To drink"},
+  {simp:"和",trad:"和",pinyin:"hé",english:"And; with"},
+  {simp:"很",trad:"很",pinyin:"hěn",english:"Very"},
+  {simp:"后面",trad:"後面",pinyin:"hòumian",english:"Back; behind; later"},
+  {simp:"回",trad:"回",pinyin:"huí",english:"Return; answer; circle; turn around; mw for occurrences"},
+  {simp:"会",trad:"會",pinyin:"huì",english:"Meeting; understand; able to; can; will; shall"},
+  {simp:"几",trad:"幾",pinyin:"jǐ",english:"Few; how many"},
+  {simp:"家",trad:"家",pinyin:"jiā",english:"Family; home; domestic"},
+  {simp:"叫",trad:"叫",pinyin:"jiào",english:"Shout; calls; bid; by"},
+  {simp:"今天",trad:"今天",pinyin:"jīntiān",english:"Today"},
+  {simp:"九",trad:"九",pinyin:"jiǔ",english:"Nine"},
+  {simp:"开",trad:"開",pinyin:"kāi",english:"Open; start; drive; boil"},
+  {simp:"看",trad:"看",pinyin:"kàn",english:"Look at; see; read; visit"},
+  {simp:"看见",trad:"看見",pinyin:"kànjiàn",english:"See"},
+  {simp:"块",trad:"塊",pinyin:"kuài",english:"Lump; piece; mw for things in chunks and sheets and slices"},
+  {simp:"来",trad:"來",pinyin:"lái",english:"Come; arrive"},
+  {simp:"老师",trad:"老師",pinyin:"lǎoshī",english:"Teacher"},
+  {simp:"了",trad:"了",pinyin:"le",english:"Past tense indicator"},
+  {simp:"冷",trad:"冷",pinyin:"lěng",english:"Cold; unpopular; ruthless; quiet"},
+  {simp:"里",trad:"裡",pinyin:"lǐ",english:"In; inside; inner; neighbourhood; Chinese mile half a km"},
+  {simp:"六",trad:"六",pinyin:"liù",english:"Six"},
+  {simp:"吗",trad:"嗎",pinyin:"ma",english:"Question indicator"},
+  {simp:"妈妈",trad:"媽媽",pinyin:"māma",english:"Mother; mom; mama"},
+  {simp:"买",trad:"買",pinyin:"mǎi",english:"Buy; business"},
+  {simp:"猫",trad:"貓",pinyin:"māo",english:"Cat"},
+  {simp:"没关系",trad:"沒關係",pinyin:"méiguānxi",english:"It doesn't matter"},
+  {simp:"没有",trad:"沒有",pinyin:"méiyǒu",english:"Not have; did not; is not"},
+  {simp:"米饭",trad:"米飯",pinyin:"mǐfàn",english:"Cooked rice"},
+  {simp:"名字",trad:"名字",pinyin:"míngzi",english:"Name; a person's"},
+  {simp:"明天",trad:"明天",pinyin:"míngtiān",english:"Tomorrow"},
+  {simp:"哪",trad:"哪",pinyin:"nǎ",english:"Which; how"},
+  {simp:"哪儿",trad:"哪兒",pinyin:"nǎr",english:"Where"},
+  {simp:"那",trad:"那",pinyin:"nà",english:"That; those"},
+  {simp:"呢",trad:"呢",pinyin:"ne",english:"Question particle"},
+  {simp:"能",trad:"能",pinyin:"néng",english:"Can; ability; capable; energy"},
+  {simp:"你",trad:"你",pinyin:"nǐ",english:"You"},
+  {simp:"年",trad:"年",pinyin:"nián",english:"Year; age; old"},
+  {simp:"女儿",trad:"女兒",pinyin:"nǚ'ér",english:"Daughter"},
+  {simp:"朋友",trad:"朋友",pinyin:"péngyou",english:"Friend"},
+  {simp:"漂亮",trad:"漂亮",pinyin:"piàoliang",english:"Beautiful; pretty"},
+  {simp:"苹果",trad:"蘋果",pinyin:"píngguǒ",english:"Apple"},
+  {simp:"七",trad:"七",pinyin:"qī",english:"Seven"},
+  {simp:"前面",trad:"前面",pinyin:"qiánmian",english:"Fore; front"},
+  {simp:"钱",trad:"錢",pinyin:"qián",english:"Money"},
+  {simp:"请",trad:"請",pinyin:"qǐng",english:"Please; ask; invite; request"},
+  {simp:"去",trad:"去",pinyin:"qù",english:"Go; leave; remove; send; past"},
+  {simp:"热",trad:"熱",pinyin:"rè",english:"Hot; heat; warm up"},
+  {simp:"人",trad:"人",pinyin:"rén",english:"Person; people"},
+  {simp:"认识",trad:"認識",pinyin:"rènshi",english:"Acquainted with; know; familiar with; recognize; understand"},
+  {simp:"三",trad:"三",pinyin:"sān",english:"Three"},
+  {simp:"商店",trad:"商店",pinyin:"shāngdiàn",english:"Store; shop"},
+  {simp:"上",trad:"上",pinyin:"shàng",english:"Above; on; go up; upper; first"},
+  {simp:"上午",trad:"上午",pinyin:"shàngwǔ",english:"Morning"},
+  {simp:"少",trad:"少",pinyin:"shǎo",english:"Few; lack; little; be missing"},
+  {simp:"谁",trad:"誰",pinyin:"shéi",english:"Who"},
+  {simp:"什么",trad:"什麼",pinyin:"shénme",english:"What; something; anything"},
+  {simp:"十",trad:"十",pinyin:"shí",english:"Ten"},
+  {simp:"时候",trad:"時候",pinyin:"shíhou",english:"Time; moment"},
+  {simp:"是",trad:"是",pinyin:"shì",english:"To be; is; are; am; yes"},
+  {simp:"书",trad:"書",pinyin:"shū",english:"Book; write"},
+  {simp:"水",trad:"水",pinyin:"shuǐ",english:"Water; river"},
+  {simp:"水果",trad:"水果",pinyin:"shuǐguǒ",english:"Fruit"},
+  {simp:"睡觉",trad:"睡覺",pinyin:"shuìjiào",english:"Sleep; go to bed"},
+  {simp:"说",trad:"說",pinyin:"shuō",english:"Said; speak; say; talk; explain"},
+  {simp:"四",trad:"四",pinyin:"sì",english:"Four"},
+  {simp:"岁",trad:"歲",pinyin:"suì",english:"Years old"},
+  {simp:"他",trad:"他",pinyin:"tā",english:"He; him; another; other"},
+  {simp:"她",trad:"她",pinyin:"tā",english:"She"},
+  {simp:"太",trad:"太",pinyin:"tài",english:"Too; very; highest; great"},
+  {simp:"天气",trad:"天氣",pinyin:"tiānqì",english:"Weather"},
+  {simp:"听",trad:"聽",pinyin:"tīng",english:"Listen; obey; supervise; tin can"},
+  {simp:"同学",trad:"同學",pinyin:"tóngxué",english:"Classmate; fellow student"},
+  {simp:"喂",trad:"喂",pinyin:"wèi",english:"Hello; hey; telephone greeting; to feed"},
+  {simp:"我",trad:"我",pinyin:"wǒ",english:"I; me; myself"},
+  {simp:"我们",trad:"我們",pinyin:"wǒmen",english:"We; us; ourselves"},
+  {simp:"五",trad:"五",pinyin:"wǔ",english:"Five"},
+  {simp:"喜欢",trad:"喜歡",pinyin:"xǐhuan",english:"To like; be fond of"},
+  {simp:"下",trad:"下",pinyin:"xià",english:"Below; under; down; fall; next; lower; finish"},
+  {simp:"下午",trad:"下午",pinyin:"xiàwǔ",english:"Afternoon"},
+  {simp:"下雨",trad:"下雨",pinyin:"xiàyǔ",english:"Rains; rainy"},
+  {simp:"先生",trad:"先生",pinyin:"xiānsheng",english:"Mr; teacher; husband; doctor; sir"},
+  {simp:"现在",trad:"現在",pinyin:"xiànzài",english:"Now; at present"},
+  {simp:"想",trad:"想",pinyin:"xiǎng",english:"Think; want to; to miss"},
+  {simp:"小",trad:"小",pinyin:"xiǎo",english:"Small; few; young"},
+  {simp:"小姐",trad:"小姐",pinyin:"xiǎojie",english:"Young lady; miss"},
+  {simp:"些",trad:"些",pinyin:"xiē",english:"Some; a few"},
+  {simp:"写",trad:"寫",pinyin:"xiě",english:"To write; describe; draw"},
+  {simp:"谢谢",trad:"謝謝",pinyin:"xièxie",english:"Thanks; thank you"},
+  {simp:"星期",trad:"星期",pinyin:"xīngqī",english:"Week"},
+  {simp:"学生",trad:"學生",pinyin:"xuésheng",english:"Student"},
+  {simp:"学习",trad:"學習",pinyin:"xuéxí",english:"Study; learn"},
+  {simp:"学校",trad:"學校",pinyin:"xuéxiào",english:"School"},
+  {simp:"一",trad:"一",pinyin:"yī",english:"One; single"},
+  {simp:"一点儿",trad:"一點兒",pinyin:"yīdiǎnr",english:"A little; this point; one o'clock"},
+  {simp:"医生",trad:"醫生",pinyin:"yīshēng",english:"Doctor"},
+  {simp:"医院",trad:"醫院",pinyin:"yīyuàn",english:"Hospital"},
+  {simp:"衣服",trad:"衣服",pinyin:"yīfu",english:"Clothes"},
+  {simp:"椅子",trad:"椅子",pinyin:"yǐzi",english:"Chair"},
+  {simp:"有",trad:"有",pinyin:"yǒu",english:"To have; has; there is; there are"},
+  {simp:"月",trad:"月",pinyin:"yuè",english:"Month; moon"},
+  {simp:"再见",trad:"再見",pinyin:"zàijiàn",english:"Goodbye"},
+  {simp:"在",trad:"在",pinyin:"zài",english:"Located; in; at; exist"},
+  {simp:"怎么",trad:"怎麼",pinyin:"zěnme",english:"How; can it be that"},
+  {simp:"怎么样",trad:"怎麼樣",pinyin:"zěnmeyàng",english:"How; how about"},
+  {simp:"这",trad:"這",pinyin:"zhè",english:"This; these"},
+  {simp:"中国",trad:"中國",pinyin:"zhōngguó",english:"China"},
+  {simp:"中午",trad:"中午",pinyin:"zhōngwǔ",english:"Noon; midday"},
+  {simp:"住",trad:"住",pinyin:"zhù",english:"Live; reside; dwell; stay; stop"},
+  {simp:"桌子",trad:"桌子",pinyin:"zhuōzi",english:"Table; desk"},
+  {simp:"字",trad:"字",pinyin:"zì",english:"Character; symbol; letter; word"},
+  {simp:"昨天",trad:"昨天",pinyin:"zuótiān",english:"Yesterday"},
+  {simp:"做",trad:"做",pinyin:"zuò",english:"To do; make; write; hold; be used as"},
+  {simp:"坐",trad:"坐",pinyin:"zuò",english:"Sit; travel by; take a"},
+];
+
+const WORDS = HSK_VOCAB.map(w => ({ ...w, meaning: w.english }));
+
+let order = [];
+let idx = 0;
+let paused = true;
+let shuffled = true;
+let revealed = false;
+let timer = null;
+let timerStart = 0;
+let timerDuration = 0;
+let soundOn = true;
+let troubleMode = false;
+let fullWords = WORDS.slice();
+
+const REVEAL_MS = 1000;
+const ADVANCE_MS = 2000;
+const SPEEDS = [0.5, 0.75, 1, 1.5, 2];
+const DEFAULT_SPEED_IDX = SPEEDS.indexOf(1);
+
+let speedIdx = (() => {
+  try {
+    const i = parseInt(localStorage.getItem('mandarin-hub-speed'), 10);
+    return Number.isInteger(i) && i >= 0 && i < SPEEDS.length ? i : DEFAULT_SPEED_IDX;
+  } catch { return DEFAULT_SPEED_IDX; }
+})();
+
+const revealMs = () => Math.round(REVEAL_MS / SPEEDS[speedIdx]);
+const advanceMs = () => Math.round(ADVANCE_MS / SPEEDS[speedIdx]);
+
+function updateSpeedBtn() {
+  const b = document.getElementById('btn-speed');
+  if (b) b.textContent = 'Speed: ' + SPEEDS[speedIdx] + '×';
+}
+
+function cycleSpeed() {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  try { localStorage.setItem('mandarin-hub-speed', String(speedIdx)); } catch {}
+  updateSpeedBtn();
+}
+
+function getTroubleWords() {
+  try { return JSON.parse(localStorage.getItem('hsk1-trouble-words')) || []; }
+  catch { return []; }
+}
+
+function setTroubleWords(list) {
+  try { localStorage.setItem('hsk1-trouble-words', JSON.stringify(list)); } catch {}
+}
+
+function isTroubleWord(simp) {
+  return getTroubleWords().some(w => w.simp === simp);
+}
+
+function updateTroubleBadge() {
+  const count = getTroubleWords().length;
+  const badge = document.getElementById('trouble-badge');
+  const btn = document.getElementById('btn-trouble');
+  if (badge) badge.textContent = '(' + count + ')';
+  if (btn) btn.disabled = count === 0 && !troubleMode;
+}
+
+function toggleStar(e) {
+  e.stopPropagation();
+  const p = WORDS[order[idx]];
+  let list = getTroubleWords();
+  const i = list.findIndex(w => w.simp === p.simp);
+  const btn = document.getElementById('star-btn');
+  if (i >= 0) {
+    list.splice(i, 1);
+    btn.classList.remove('active');
+    btn.textContent = '☆';
+  } else {
+    list.push({ simp: p.simp, trad: p.trad, pinyin: p.pinyin, meaning: p.meaning });
+    btn.classList.add('active');
+    btn.textContent = '★';
+  }
+  setTroubleWords(list);
+  updateTroubleBadge();
+}
+
+function selectAll() {
+  troubleMode = false;
+  WORDS.length = 0;
+  fullWords.forEach(w => WORDS.push(w));
+  document.getElementById('btn-all').classList.add('active');
+  document.getElementById('btn-trouble').classList.remove('active');
+  updateTroubleBadge();
+  resetDeck();
+}
+
+function selectTroubleWords() {
+  const words = getTroubleWords();
+  if (words.length === 0) return;
+  troubleMode = true;
+  WORDS.length = 0;
+  words.forEach(w => WORDS.push(w));
+  document.getElementById('btn-all').classList.remove('active');
+  document.getElementById('btn-trouble').classList.add('active');
+  resetDeck();
+}
+
+let zhVoice = null;
+
+function initVoice() {
+  const pick = () => {
+    const voices = speechSynthesis.getVoices();
+    zhVoice = voices.find(v => v.lang.startsWith('zh-CN'))
+      || voices.find(v => v.lang.startsWith('zh'))
+      || null;
+  };
+  pick();
+  if (!zhVoice) speechSynthesis.addEventListener('voiceschanged', pick);
+}
+
+function speak(chinese) {
+  if (!soundOn) return;
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(chinese);
+  utt.lang = 'zh-CN';
+  utt.rate = 0.8;
+  if (zhVoice) utt.voice = zhVoice;
+  speechSynthesis.speak(utt);
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function buildOrder() {
+  order = WORDS.map((_, i) => i);
+  if (shuffled) shuffle(order);
+}
+
+function resetDeck() {
+  buildOrder();
+  idx = 0;
+  clearInterval(timer);
+  showCard();
+}
+
+function showCard() {
+  const p = WORDS[order[idx]];
+  const isDiff = p.simp !== p.trad;
+
+  document.getElementById('english').textContent = p.meaning || p.english;
+  document.getElementById('pinyin').textContent = p.pinyin;
+  document.getElementById('simp-char').textContent = p.simp;
+  document.getElementById('trad-char').textContent = p.trad;
+
+  document.getElementById('divider').className = isDiff ? 'divider' : 'divider same';
+  document.getElementById('trad-block').className = isDiff ? 'char-block trad-block' : 'char-block trad-block same';
+
+  document.getElementById('answer-area').classList.remove('revealed');
+  revealed = false;
+
+  document.getElementById('progress').textContent = (idx + 1) + ' / ' + WORDS.length;
+
+  const star = document.getElementById('star-btn');
+  const saved = isTroubleWord(p.simp);
+  star.className = 'star-btn' + (saved ? ' active' : '');
+  star.textContent = saved ? '★' : '☆';
+
+  if (paused) {
+    document.getElementById('btn-show').style.display = 'inline-block';
+  } else {
+    document.getElementById('btn-show').style.display = 'none';
+    speak(p.simp);
+    startTimer(revealMs(), () => {
+      document.getElementById('answer-area').classList.add('revealed');
+      revealed = true;
+      startTimer(advanceMs(), advance);
+    });
+  }
+}
+
+function startTimer(ms, cb) {
+  clearInterval(timer);
+  timerStart = Date.now();
+  timerDuration = ms;
+  timer = setInterval(() => {
+    if (paused) return;
+    const elapsed = Date.now() - timerStart;
+    if (elapsed >= timerDuration) {
+      clearInterval(timer);
+      cb();
+    }
+  }, 50);
+}
+
+function advance() {
+  idx = (idx + 1) % order.length;
+  if (idx === 0 && shuffled) shuffle(order);
+  showCard();
+}
+
+function revealAnswer() {
+  document.getElementById('btn-show').style.display = 'none';
+  document.getElementById('answer-area').classList.add('revealed');
+  revealed = true;
+  const p = WORDS[order[idx]];
+  if (soundOn) speak(p.simp);
+}
+
+function togglePause() {
+  paused = !paused;
+  const btn = document.getElementById('btn-pause');
+  btn.textContent = paused ? 'Resume' : 'Pause';
+  btn.classList.toggle('active', paused);
+  if (paused) {
+    clearInterval(timer);
+    if (!revealed) {
+      document.getElementById('btn-show').style.display = 'inline-block';
+    }
+  } else {
+    document.getElementById('btn-show').style.display = 'none';
+    if (!revealed) {
+      startTimer(revealMs(), () => {
+        document.getElementById('answer-area').classList.add('revealed');
+        revealed = true;
+        startTimer(advanceMs(), advance);
+      });
+    } else {
+      startTimer(advanceMs(), advance);
+    }
+  }
+}
+
+function goNext() {
+  clearInterval(timer);
+  advance();
+}
+
+function goBack() {
+  clearInterval(timer);
+  idx = (idx - 1 + order.length) % order.length;
+  showCard();
+}
+
+function toggleShuffle() {
+  shuffled = !shuffled;
+  document.getElementById('btn-shuffle').textContent = shuffled ? 'Shuffle: On' : 'Shuffle: Off';
+  buildOrder();
+  idx = 0;
+  clearInterval(timer);
+  showCard();
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('btn-sound').textContent = soundOn ? 'Sound: On' : 'Sound: Off';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === ' ') { e.preventDefault(); togglePause(); }
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goBack();
+  if (e.key === 's' || e.key === 'S') toggleSound();
+  if (e.key === 'Enter' || e.key === 'r' || e.key === 'R') {
+    e.preventDefault();
+    if (paused && !revealed) revealAnswer();
+  }
+});
+
+updateTroubleBadge();
+buildOrder();
+initVoice();
+updateSpeedBtn();
+
+function startFirstCard() {
+  if (startFirstCard.done) return;
+  startFirstCard.done = true;
+  showCard();
+}
+
+const voices = speechSynthesis.getVoices();
+if (voices.length > 0) {
+  showCard();
+} else {
+  speechSynthesis.addEventListener('voiceschanged', startFirstCard, { once: true });
+  setTimeout(startFirstCard, 1000);
+}
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', e => {
+  if (e.source !== window.parent) return;
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:hidden') {
+    if (!paused) togglePause();
+    if (window.speechSynthesis) speechSynthesis.cancel();
+  }
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+});
+
+window.addEventListener('storage', (e) => {
+  if (e.key === 'hsk1-trouble-words') updateTroubleBadge();
+});
+</script>
+</body>
+</html>

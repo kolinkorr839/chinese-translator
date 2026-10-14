@@ -30,6 +30,8 @@ BILINGUAL_BY_DESIGN = {
     "scenarios.html",
     "listening_drill.html",
     "course2_reference.html",
+    "hsk1_reference.html",
+    "hsk1_flashcards.html",
 }
 
 # Prose pages known to mix scripts today. This is TODO item 5.
@@ -263,6 +265,26 @@ def check_shared_phrase_data_has_stable_ids():
                 ids.append(pid)
     assert len(ids) == len(set(ids)), "duplicate phrase IDs found"
     return f"{len(ids)} phrases, all IDs unique"
+
+
+@check
+def check_hsk1_vocab_data_parses():
+    """the HSK-1 vocabulary data parses and has 150 entries"""
+    data = s.hsk1_vocab()
+    assert data, "HSK-1 vocab data is empty"
+    assert len(data) == 150, f"expected 150 HSK-1 words, got {len(data)}"
+    return f"{len(data)} words"
+
+
+@check
+def check_hsk1_vocab_has_all_fields():
+    """every HSK-1 word has non-empty simp, trad, pinyin and english"""
+    bad = []
+    for i, w in enumerate(s.hsk1_vocab(), 1):
+        for field in ("simp", "trad", "pinyin", "english"):
+            if not str(w.get(field, "")).strip():
+                bad.append(f"word {i}: missing {field!r}")
+    assert not bad, "incomplete HSK-1 entries:\n  " + "\n  ".join(bad[:20])
 
 
 @check
