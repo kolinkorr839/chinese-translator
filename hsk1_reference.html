@@ -158,6 +158,7 @@ body {
   font-size: 0.85rem;
 }
 
+
 .clickable {
   cursor: pointer;
   transition: background 0.15s;
@@ -214,6 +215,17 @@ body {
   font-family: 'PingFang TC', 'Noto Serif TC', serif;
   letter-spacing: 8px;
   margin-bottom: 8px;
+}
+
+.section-row td {
+  background: #F5EDE0;
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #3D2B1F;
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--vermillion);
+  letter-spacing: 1px;
 }
 
 @media (max-width: 600px) {
@@ -426,6 +438,12 @@ function render(filter) {
     if (q && w.simp.indexOf(q) < 0 && w.trad.indexOf(q) < 0
         && w.pinyin.toLowerCase().indexOf(q) < 0
         && w.english.toLowerCase().indexOf(q) < 0) return;
+    if (!q && i % 15 === 0) {
+      const hdr = document.createElement('tr');
+      hdr.className = 'section-row';
+      hdr.innerHTML = '<td colspan="5">Section ' + (Math.floor(i / 15) + 1) + '</td>';
+      tbody.appendChild(hdr);
+    }
     count++;
     const tr = document.createElement('tr');
     tr.innerHTML =
@@ -444,19 +462,27 @@ function render(filter) {
   bindClickHandlers();
 }
 
+function hasSelection() {
+  var sel = window.getSelection();
+  return sel && sel.toString().length > 0;
+}
+
 function bindClickHandlers() {
   document.querySelectorAll('#vocab-body .clickable').forEach(function(cell) {
     cell.addEventListener('click', function() {
+      if (hasSelection()) return;
       var zh = cell.getAttribute('data-zh');
       if (zh) lookupInTranslator(zh);
     });
   });
   document.querySelectorAll('#vocab-body td.pinyin').forEach(function(cell) {
     cell.addEventListener('click', function() {
+      if (hasSelection()) return;
       var zh = cell.getAttribute('data-zh');
       if (zh) speak(zh);
     });
   });
+
 }
 
 searchInput.addEventListener('input', function() {
