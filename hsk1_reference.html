@@ -228,6 +228,29 @@ body {
   letter-spacing: 1px;
 }
 
+.star-cell {
+  text-align: center;
+  width: 40px;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #D4C9B8;
+  transition: color 0.2s, transform 0.15s;
+  padding: 0.2rem;
+  line-height: 1;
+}
+.star-btn:hover {
+  color: #B8860B;
+  transform: scale(1.15);
+}
+.star-btn.active {
+  color: #B8860B;
+}
+
 @media (max-width: 600px) {
   .container { padding: 24px 14px 60px; }
   .page-header h1 { font-size: 1.6rem; }
@@ -261,6 +284,7 @@ body {
         <th>Traditional</th>
         <th>Pinyin</th>
         <th>English</th>
+        <th style="width:40px"></th>
       </tr>
     </thead>
     <tbody id="vocab-body"></tbody>
@@ -430,6 +454,34 @@ const tbody = document.getElementById('vocab-body');
 const searchInput = document.getElementById('search');
 const matchCount = document.getElementById('match-count');
 
+function getTroubleWords() {
+  try { return JSON.parse(localStorage.getItem('hsk1-trouble-words')) || []; }
+  catch { return []; }
+}
+
+function setTroubleWords(list) {
+  try { localStorage.setItem('hsk1-trouble-words', JSON.stringify(list)); } catch {}
+}
+
+function isTroubleWord(simp) {
+  return getTroubleWords().some(w => w.simp === simp);
+}
+
+function toggleTroubleWord(w, btn) {
+  let list = getTroubleWords();
+  const idx = list.findIndex(x => x.simp === w.simp);
+  if (idx >= 0) {
+    list.splice(idx, 1);
+    btn.classList.remove('active');
+    btn.textContent = '☆';
+  } else {
+    list.push({ simp: w.simp, trad: w.trad, pinyin: w.pinyin, meaning: w.english });
+    btn.classList.add('active');
+    btn.textContent = '★';
+  }
+  setTroubleWords(list);
+}
+
 function render(filter) {
   const q = (filter || '').toLowerCase();
   tbody.innerHTML = '';
@@ -441,17 +493,19 @@ function render(filter) {
     if (!q && i % 15 === 0) {
       const hdr = document.createElement('tr');
       hdr.className = 'section-row';
-      hdr.innerHTML = '<td colspan="5">Section ' + (Math.floor(i / 15) + 1) + '</td>';
+      hdr.innerHTML = '<td colspan="6">Section ' + (Math.floor(i / 15) + 1) + '</td>';
       tbody.appendChild(hdr);
     }
     count++;
     const tr = document.createElement('tr');
+    const saved = isTroubleWord(w.simp);
     tr.innerHTML =
       '<td class="num-cell">' + (i + 1) + '</td>' +
       '<td class="clickable" data-zh="' + w.simp + '"><span class="zh">' + w.simp + '</span></td>' +
       '<td class="trad-col">' + w.trad + '</td>' +
       '<td class="pinyin" data-zh="' + w.simp + '">' + w.pinyin + '</td>' +
-      '<td class="eng">' + w.english + '</td>';
+      '<td class="eng">' + w.english + '</td>' +
+      '<td class="star-cell"><button class="star-btn' + (saved ? ' active' : '') + '" data-idx="' + i + '">' + (saved ? '★' : '☆') + '</button></td>';
     tbody.appendChild(tr);
   });
   if (q) {
@@ -482,7 +536,12 @@ function bindClickHandlers() {
       if (zh) speak(zh);
     });
   });
-
+  document.querySelectorAll('#vocab-body .star-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var i = parseInt(btn.getAttribute('data-idx'), 10);
+      toggleTroubleWord(HSK_VOCAB[i], btn);
+    });
+  });
 }
 
 searchInput.addEventListener('input', function() {
