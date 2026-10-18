@@ -148,6 +148,7 @@ TTS_PAGES = [
     "adjective_reference.html",
     "word_categories.html",
     "conversation_phrases.html",
+    "common_phrases.html",
     "scenarios.html",
     "listening_drill.html",
     "generate_drill.html",

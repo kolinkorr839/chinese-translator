@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Common Phrases - Mandarin Chinese</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rice-paper: #F5F0E8;
+  --card-bg: #FFFDF8;
+  --ink: #1a1a2e;
+  --vermillion: #C41E3A;
+  --sage: #7D8471;
+  --ink-wash: #6B7B8D;
+  --warm-border: #E8E0D4;
+  --amber: #B8860B;
+}
+
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC',
+    'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: var(--rice-paper);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(196,30,58,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(184,134,11,0.03) 0%, transparent 50%);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+.page-header h1 {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--vermillion);
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.page-header .subtitle {
+  font-size: 0.95rem;
+  color: var(--ink-wash);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.page-header .deco {
+  font-size: 1.8rem;
+  color: var(--vermillion);
+  opacity: 0.25;
+  margin-bottom: 8px;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 12px;
+}
+
+/* -- TOC -- */
+
+.toc {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 36px;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.toc h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--warm-border);
+}
+
+.toc ol {
+  list-style: none;
+  counter-reset: toc-counter;
+  padding: 0;
+}
+
+.toc ol li {
+  counter-increment: toc-counter;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toc ol li a {
+  flex: 1;
+  min-width: 0;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 1.05rem;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.toc ol li a::before {
+  content: counter(toc-counter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(196, 30, 58, 0.08);
+  color: var(--vermillion);
+  font-size: 0.85rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.toc ol li a:hover {
+  background: rgba(196, 30, 58, 0.05);
+  color: var(--vermillion);
+}
+
+.toc ol li a .toc-count {
+  color: var(--ink-wash);
+  font-size: 0.88rem;
+  margin-left: auto;
+}
+
+/* -- Section Card -- */
+
+.section-card {
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 12px;
+  padding: 32px 28px;
+  margin-bottom: 28px;
+  box-shadow: 0 2px 12px rgba(139, 119, 75, 0.06),
+              0 1px 3px rgba(26, 26, 46, 0.04);
+}
+
+.section-title {
+  font-family: 'Cormorant Garamond', 'Noto Serif TC', serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+/* -- Phrase Row -- */
+
+.phrase-list {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0 60px;
+}
+
+.phrase-row {
+  display: contents;
+}
+
+.phrase-row > * {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.6);
+  transition: background 0.15s;
+}
+
+.phrase-row:last-of-type > * {
+  border-bottom: none;
+}
+
+.phrase-english {
+  font-size: 1rem;
+  color: var(--ink);
+  font-family: 'Crimson Pro', serif;
+}
+
+.phrase-chinese {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.phrase-chinese:hover {
+  color: var(--vermillion);
+}
+
+.phrase-chinese .simp {
+  /* default shown */
+}
+
+.phrase-chinese .sep {
+  color: #C4B5A0;
+  font-weight: 300;
+  margin: 0 4px;
+}
+
+.phrase-chinese .trad {
+  /* shown when different */
+}
+
+.phrase-chinese .same {
+  display: none;
+}
+
+.phrase-pinyin {
+  font-size: 0.9rem;
+  color: var(--sage);
+  font-family: 'Crimson Pro', serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+  margin-top: 2px;
+}
+
+.phrase-pinyin:hover {
+  color: #5C6350;
+}
+
+.lookup-btn {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #D4C9B8;
+  padding: 0.2rem;
+  line-height: 1;
+  transition: color 0.2s, transform 0.15s;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.lookup-btn:hover {
+  color: var(--vermillion);
+  transform: scale(1.15);
+}
+
+.back-to-toc {
+  text-align: left;
+  margin-top: 16px;
+  font-size: 0.85rem;
+}
+
+.back-to-toc a {
+  color: var(--vermillion);
+  text-decoration: none;
+}
+
+.back-to-toc a:hover {
+  text-decoration: underline;
+}
+
+/* -- Footer -- */
+
+.page-footer {
+  text-align: center;
+  padding: 24px 0 16px;
+  color: var(--ink-wash);
+  font-size: 0.85rem;
+}
+
+.page-footer .deco {
+  font-size: 1.4rem;
+  color: var(--vermillion);
+  opacity: 0.2;
+  margin-bottom: 6px;
+  font-family: 'PingFang TC', 'Noto Serif TC', serif;
+  letter-spacing: 8px;
+}
+
+/* -- Practice Mode -- */
+
+.practice-toggle {
+  display: inline-block;
+  padding: 3px 12px;
+  border: 1.5px solid var(--sage);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--sage);
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.practice-toggle:hover {
+  border-color: var(--vermillion);
+  color: var(--vermillion);
+}
+
+.practice-toggle.active {
+  background: var(--vermillion);
+  border-color: var(--vermillion);
+  color: #fff;
+}
+
+.reveal-dot {
+  display: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--sage);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.15s;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.reveal-dot:hover {
+  background: var(--vermillion);
+  transform: scale(1.2);
+}
+
+.section-card.practice-mode .phrase-chinese .simp,
+.section-card.practice-mode .phrase-chinese .sep,
+.section-card.practice-mode .phrase-chinese .trad,
+.section-card.practice-mode .phrase-chinese .phrase-pinyin {
+  display: none;
+}
+
+.section-card.practice-mode .reveal-dot {
+  display: inline-block;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .simp,
+.section-card.practice-mode .phrase-chinese.revealed .sep,
+.section-card.practice-mode .phrase-chinese.revealed .trad {
+  display: inline;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .same {
+  display: none;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .phrase-pinyin {
+  display: block;
+}
+
+.section-card.practice-mode .phrase-chinese.revealed .reveal-dot {
+  background: var(--vermillion);
+}
+
+/* -- Responsive -- */
+
+@media (max-width: 600px) {
+  .container { padding: 20px 16px 60px; }
+  .section-card { padding: 20px 16px; }
+  .phrase-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header">
+    <div class="deco">常 用 短 语</div>
+    <h1>Common Phrases</h1>
+    <p class="subtitle">Essential everyday Mandarin phrases</p>
+  </div>
+
+  <nav class="toc" id="toc">
+    <h2>Contents</h2>
+    <ol id="toc-list"></ol>
+  </nav>
+
+  <div id="sections"></div>
+
+  <footer class="page-footer">
+    <div class="deco">常 用 短 语</div>
+    <p>Common Phrases</p>
+  </footer>
+
+</div>
+
+<script>
+let ttsAudio = null;
+
+function speak(chinese) {
+  if (!chinese) return;
+
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const youdao = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(chinese)}&le=zh`;
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=zh-CN&q=${encodeURIComponent(chinese)}`;
+  const engine = localStorage.getItem('tts_engine')
+    || (location.protocol === 'file:' ? 'youdao' : 'google');
+  const primary = engine === 'youdao' ? youdao : google;
+  const fallback = engine === 'youdao' ? google : youdao;
+
+  const slowdown = (primary === youdao);
+  ttsAudio = new Audio(primary);
+  if (slowdown) ttsAudio.playbackRate = 0.75;
+  ttsAudio.play().catch(() => {
+    ttsAudio = new Audio(fallback);
+    if (!slowdown) ttsAudio.playbackRate = 0.75;
+    ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
+  });
+}
+
+function lookupInTranslator(chinese) {
+  if (window.parent !== window) {
+    window.parent.postMessage({
+      type: 'mandarin-hub:lookup',
+      query: chinese
+    }, '*');
+  }
+}
+
+const PRACTICE_KEY = 'common-phrases-practice';
+
+function togglePractice(sectionId, btn) {
+  const card = document.getElementById(sectionId);
+  const isActive = card.classList.toggle('practice-mode');
+  btn.classList.toggle('active', isActive);
+
+  const state = JSON.parse(localStorage.getItem(PRACTICE_KEY) || '{}');
+  if (isActive) {
+    state[sectionId] = true;
+    card.querySelectorAll('.phrase-chinese.revealed').forEach(el => el.classList.remove('revealed'));
+    card.scrollIntoView({ behavior: 'instant' });
+  } else {
+    delete state[sectionId];
+  }
+  localStorage.setItem(PRACTICE_KEY, JSON.stringify(state));
+}
+
+function hasSelection() {
+  var sel = window.getSelection();
+  return sel && sel.toString().length > 0;
+}
+
+function handlePhraseClick(el, chinese) {
+  if (hasSelection()) return;
+  const inPractice = el.closest('.section-card')?.classList.contains('practice-mode');
+  if (!inPractice) {
+    speak(chinese);
+    return;
+  }
+  const wasHidden = !el.classList.contains('revealed');
+  el.classList.toggle('revealed');
+  if (wasHidden) speak(chinese);
+}
+
+const DATA = [
+  {
+    "title": "Basics & Greetings",
+    "id": "basics",
+    "phrases": [
+      { "en": "It's nothing / It's fine", "simp": "没事", "trad": "沒事", "pinyin": "méi shì" },
+      { "en": "You're welcome", "simp": "不客气", "trad": "不客氣", "pinyin": "bú kè qi" },
+      { "en": "Goodbye", "simp": "再见", "trad": "再見", "pinyin": "zài jiàn" },
+      { "en": "Very good", "simp": "很好", "trad": "很好", "pinyin": "hěn hǎo" },
+      { "en": "And you? / What about you?", "simp": "你呢", "trad": "你呢", "pinyin": "nǐ ne" },
+      { "en": "See you next time", "simp": "下次见", "trad": "下次見", "pinyin": "xià cì jiàn" },
+      { "en": "See you tomorrow", "simp": "明天见", "trad": "明天見", "pinyin": "míng tiān jiàn" },
+      { "en": "Take care", "simp": "保重", "trad": "保重", "pinyin": "bǎo zhòng" },
+      { "en": "Excuse me / Sorry (embarrassed)", "simp": "不好意思", "trad": "不好意思", "pinyin": "bù hǎo yì si" },
+      { "en": "Merry Christmas", "simp": "圣诞快乐", "trad": "聖誕快樂", "pinyin": "Shèng dàn kuài lè" }
+    ]
+  },
+  {
+    "title": "Reactions & Exclamations",
+    "id": "reactions",
+    "phrases": [
+      { "en": "No problem", "simp": "没问题", "trad": "沒問題", "pinyin": "méi wèn tí" },
+      { "en": "No need", "simp": "不用", "trad": "不用", "pinyin": "bú yòng" },
+      { "en": "Me too", "simp": "我也是", "trad": "我也是", "pinyin": "wǒ yě shì" },
+      { "en": "It's okay / Not bad", "simp": "还可以", "trad": "還可以", "pinyin": "hái kě yǐ" },
+      { "en": "Really / Truly", "simp": "真的", "trad": "真的", "pinyin": "zhēn de" },
+      { "en": "Awesome! / Great!", "simp": "太棒了", "trad": "太棒了", "pinyin": "tài bàng le" },
+      { "en": "Funny / Hilarious", "simp": "搞笑", "trad": "搞笑", "pinyin": "gǎo xiào" },
+      { "en": "So amazing! / So impressive!", "simp": "太厉害了", "trad": "太厲害了", "pinyin": "tài lì hai le" },
+      { "en": "Whatever / Anything is fine", "simp": "随便", "trad": "隨便", "pinyin": "suí biàn" },
+      { "en": "Impossible", "simp": "不可能", "trad": "不可能", "pinyin": "bù kě néng" },
+      { "en": "Come on! / You can do it!", "simp": "加油", "trad": "加油", "pinyin": "jiā yóu" },
+      { "en": "Cheers!", "simp": "干杯", "trad": "乾杯", "pinyin": "gān bēi" },
+      { "en": "Just right / Exactly", "simp": "刚好", "trad": "剛好", "pinyin": "gāng hǎo" }
+    ]
+  },
+  {
+    "title": "Questions",
+    "id": "questions",
+    "phrases": [
+      { "en": "Where is it?", "simp": "在哪里？", "trad": "在哪裡？", "pinyin": "zài nǎ lǐ?" },
+      { "en": "How is it? / How about it?", "simp": "怎么样", "trad": "怎麼樣", "pinyin": "zěn me yàng" },
+      { "en": "What time?", "simp": "几点？", "trad": "幾點？", "pinyin": "jǐ diǎn?" },
+      { "en": "How much? / How many?", "simp": "多少？", "trad": "多少？", "pinyin": "duō shǎo?" },
+      { "en": "Right? / Correct?", "simp": "对吗？", "trad": "對嗎？", "pinyin": "duì ma?" },
+      { "en": "Are you free?", "simp": "有空吗？", "trad": "有空嗎？", "pinyin": "yǒu kòng ma?" },
+      { "en": "How many times?", "simp": "几次？", "trad": "幾次？", "pinyin": "jǐ cì?" },
+      { "en": "What are you doing? / Why?", "simp": "干嘛", "trad": "幹嘛", "pinyin": "gàn ma" },
+      { "en": "How to get there?", "simp": "怎么走", "trad": "怎麼走", "pinyin": "zěn me zǒu" }
+    ]
+  },
+  {
+    "title": "Requests & Commands",
+    "id": "requests",
+    "phrases": [
+      { "en": "Help me", "simp": "帮我", "trad": "幫我", "pinyin": "bāng wǒ" },
+      { "en": "I'll help you", "simp": "我帮你", "trad": "我幫你", "pinyin": "wǒ bāng nǐ" },
+      { "en": "Give me", "simp": "给我", "trad": "給我", "pinyin": "gěi wǒ" },
+      { "en": "Say it again", "simp": "再说一遍", "trad": "再說一遍", "pinyin": "zài shuō yí biàn" },
+      { "en": "Slower / A bit slower", "simp": "慢一点", "trad": "慢一點", "pinyin": "màn yì diǎn" },
+      { "en": "Be careful", "simp": "小心", "trad": "小心", "pinyin": "xiǎo xīn" },
+      { "en": "Don't", "simp": "别", "trad": "別", "pinyin": "bié" },
+      { "en": "Calm down", "simp": "冷静一下", "trad": "冷靜一下", "pinyin": "lěng jìng yí xià" },
+      { "en": "Explain a bit", "simp": "解释一下", "trad": "解釋一下", "pinyin": "jiě shì yí xià" },
+      { "en": "Look it up / Check", "simp": "查一下", "trad": "查一下", "pinyin": "chá yí xià" },
+      { "en": "Please leave a message", "simp": "请留言", "trad": "請留言", "pinyin": "qǐng liú yán" },
+      { "en": "Take your time", "simp": "慢慢来", "trad": "慢慢來", "pinyin": "màn man lái" }
+    ]
+  },
+  {
+    "title": "Time & Status",
+    "id": "time",
+    "phrases": [
+      { "en": "Not yet", "simp": "还没", "trad": "還沒", "pinyin": "hái méi" },
+      { "en": "Ready", "simp": "准备好了", "trad": "準備好了", "pinyin": "zhǔn bèi hǎo le" },
+      { "en": "Right away / Immediately", "simp": "马上", "trad": "馬上", "pinyin": "mǎ shàng" },
+      { "en": "Very late", "simp": "很晚", "trad": "很晚", "pinyin": "hěn wǎn" },
+      { "en": "No time", "simp": "没时间", "trad": "沒時間", "pinyin": "méi shí jiān" },
+      { "en": "Recently / Lately", "simp": "最近", "trad": "最近", "pinyin": "zuì jìn" },
+      { "en": "Every time", "simp": "每次", "trad": "每次", "pinyin": "měi cì" },
+      { "en": "First time", "simp": "第一次", "trad": "第一次", "pinyin": "dì yī cì" },
+      { "en": "Almost there", "simp": "快到了", "trad": "快到了", "pinyin": "kuài dào le" },
+      { "en": "It's okay now / Ready now", "simp": "现在可以了", "trad": "現在可以了", "pinyin": "xiàn zài kě yǐ le" }
+    ]
+  },
+  {
+    "title": "Problems & Emergencies",
+    "id": "problems",
+    "phrases": [
+      { "en": "Call the police", "simp": "报警", "trad": "報警", "pinyin": "bào jǐng" },
+      { "en": "It's gone / Missing", "simp": "不见了", "trad": "不見了", "pinyin": "bú jiàn le" },
+      { "en": "Can't find it", "simp": "找不到", "trad": "找不到", "pinyin": "zhǎo bú dào" },
+      { "en": "Broken / Out of order", "simp": "坏了", "trad": "壞了", "pinyin": "huài le" },
+      { "en": "Lost (something)", "simp": "丢了", "trad": "丟了", "pinyin": "diū le" },
+      { "en": "Help! / Save me!", "simp": "救命", "trad": "救命", "pinyin": "jiù mìng" },
+      { "en": "Missed it", "simp": "错过了", "trad": "錯過了", "pinyin": "cuò guò le" },
+      { "en": "Out of battery / No power", "simp": "没电了", "trad": "沒電了", "pinyin": "méi diàn le" },
+      { "en": "Delayed", "simp": "延误了", "trad": "延誤了", "pinyin": "yán wù le" },
+      { "en": "I'm late", "simp": "我迟到了", "trad": "我遲到了", "pinyin": "wǒ chí dào le" }
+    ]
+  },
+  {
+    "title": "Health & Feelings",
+    "id": "health",
+    "phrases": [
+      { "en": "Not comfortable / Unwell", "simp": "不舒服", "trad": "不舒服", "pinyin": "bù shū fu" },
+      { "en": "Allergic", "simp": "过敏", "trad": "過敏", "pinyin": "guò mǐn" },
+      { "en": "Stomach ache", "simp": "肚子疼", "trad": "肚子疼", "pinyin": "dù zi téng" },
+      { "en": "Cold (illness)", "simp": "感冒", "trad": "感冒", "pinyin": "gǎn mào" },
+      { "en": "Really tired", "simp": "真累", "trad": "真累", "pinyin": "zhēn lèi" },
+      { "en": "A bit sleepy", "simp": "有点困", "trad": "有點困", "pinyin": "yǒu diǎn kùn" },
+      { "en": "Much better", "simp": "好多了", "trad": "好多了", "pinyin": "hǎo duō le" },
+      { "en": "I'm very...", "simp": "我很", "trad": "我很", "pinyin": "wǒ hěn" },
+      { "en": "Very boring", "simp": "很无聊", "trad": "很無聊", "pinyin": "hěn wú liáo" },
+      { "en": "A little / Somewhat", "simp": "有点", "trad": "有點", "pinyin": "yǒu diǎn" }
+    ]
+  },
+  {
+    "title": "Shopping & Money",
+    "id": "shopping",
+    "phrases": [
+      { "en": "Swipe card / Pay by card", "simp": "刷卡", "trad": "刷卡", "pinyin": "shuā kǎ" },
+      { "en": "A little more", "simp": "多一点", "trad": "多一點", "pinyin": "duō yì diǎn" },
+      { "en": "Pay the bill", "simp": "买单", "trad": "買單", "pinyin": "mǎi dān" },
+      { "en": "Discount", "simp": "打折", "trad": "打折", "pinyin": "dǎ zhé" },
+      { "en": "Go shopping / Buy things", "simp": "买东西", "trad": "買東西", "pinyin": "mǎi dōng xi" },
+      { "en": "Membership card", "simp": "会员卡", "trad": "會員卡", "pinyin": "huì yuán kǎ" },
+      { "en": "Exchange some money", "simp": "换点钱", "trad": "換點錢", "pinyin": "huàn diǎn qián" },
+      { "en": "Not quite suitable", "simp": "不太合适", "trad": "不太合適", "pinyin": "bú tài hé shì" },
+      { "en": "In total / Altogether", "simp": "一共", "trad": "一共", "pinyin": "yí gòng" },
+      { "en": "I want this one", "simp": "要这个", "trad": "要這個", "pinyin": "yào zhè ge" },
+      { "en": "Next one", "simp": "下一个", "trad": "下一個", "pinyin": "xià yí gè" }
+    ]
+  },
+  {
+    "title": "Travel & Transport",
+    "id": "travel",
+    "phrases": [
+      { "en": "Next stop", "simp": "下一站", "trad": "下一站", "pinyin": "xià yí zhàn" },
+      { "en": "Take the subway", "simp": "坐地铁", "trad": "坐地鐵", "pinyin": "zuò dì tiě" },
+      { "en": "Rent a car", "simp": "租车", "trad": "租車", "pinyin": "zū chē" },
+      { "en": "Double room", "simp": "双人房", "trad": "雙人房", "pinyin": "shuāng rén fáng" },
+      { "en": "Check out", "simp": "退房", "trad": "退房", "pinyin": "tuì fáng" },
+      { "en": "Call a car / taxi", "simp": "叫车", "trad": "叫車", "pinyin": "jiào chē" },
+      { "en": "Book tickets", "simp": "订票", "trad": "訂票", "pinyin": "dìng piào" }
+    ]
+  },
+  {
+    "title": "Communication & Tech",
+    "id": "communication",
+    "phrases": [
+      { "en": "Send a message", "simp": "发信息", "trad": "發信息", "pinyin": "fā xìn xī" },
+      { "en": "Send it to you", "simp": "发给你", "trad": "發給你", "pinyin": "fā gěi nǐ" },
+      { "en": "Joking / Kidding", "simp": "开玩笑", "trad": "開玩笑", "pinyin": "kāi wán xiào" },
+      { "en": "Very interesting", "simp": "很有趣", "trad": "很有趣", "pinyin": "hěn yǒu qù" },
+      { "en": "Speak English", "simp": "说英语", "trad": "說英語", "pinyin": "shuō Yīng yǔ" },
+      { "en": "I'm from...", "simp": "我来自", "trad": "我來自", "pinyin": "wǒ lái zì" },
+      { "en": "Add me (on social media)", "simp": "加我一下", "trad": "加我一下", "pinyin": "jiā wǒ yí xià" },
+      { "en": "Received / Got it", "simp": "收到了", "trad": "收到了", "pinyin": "shōu dào le" },
+      { "en": "Forgot the password", "simp": "忘记密码了", "trad": "忘記密碼了", "pinyin": "wàng jì mì mǎ le" },
+      { "en": "I don't understand", "simp": "我不明白", "trad": "我不明白", "pinyin": "wǒ bù míng bai" }
+    ]
+  },
+  {
+    "title": "Plans & Activities",
+    "id": "plans",
+    "phrases": [
+      { "en": "I will / I can", "simp": "我会", "trad": "我會", "pinyin": "wǒ huì" },
+      { "en": "Go home", "simp": "回家", "trad": "回家", "pinyin": "huí jiā" },
+      { "en": "At home", "simp": "在家", "trad": "在家", "pinyin": "zài jiā" },
+      { "en": "Go window shopping / Stroll around", "simp": "逛街", "trad": "逛街", "pinyin": "guàng jiē" },
+      { "en": "Watch a movie", "simp": "看电影", "trad": "看電影", "pinyin": "kàn diàn yǐng" },
+      { "en": "Raining", "simp": "下雨", "trad": "下雨", "pinyin": "xià yǔ" },
+      { "en": "Listen to music", "simp": "听音乐", "trad": "聽音樂", "pinyin": "tīng yīn yuè" },
+      { "en": "I plan to...", "simp": "我打算", "trad": "我打算", "pinyin": "wǒ dǎ suàn" },
+      { "en": "Finished / Done", "simp": "做完了", "trad": "做完了", "pinyin": "zuò wán le" },
+      { "en": "It's over / Finished", "simp": "结束了", "trad": "結束了", "pinyin": "jié shù le" },
+      { "en": "I need...", "simp": "我需要", "trad": "我需要", "pinyin": "wǒ xū yào" },
+      { "en": "Make an appointment", "simp": "预约", "trad": "預約", "pinyin": "yù yuē" },
+      { "en": "Take a rest", "simp": "休息一下", "trad": "休息一下", "pinyin": "xiū xi yí xià" },
+      { "en": "Wait a moment", "simp": "等一下", "trad": "等一下", "pinyin": "děng yí xià" }
+    ]
+  },
+  {
+    "title": "Opinions & Descriptions",
+    "id": "opinions",
+    "phrases": [
+      { "en": "I don't know", "simp": "不知道", "trad": "不知道", "pinyin": "bù zhī dào" },
+      { "en": "Not clear / I don't know", "simp": "不清楚", "trad": "不清楚", "pinyin": "bù qīng chǔ" },
+      { "en": "Wrong / Incorrect", "simp": "不对", "trad": "不對", "pinyin": "bú duì" },
+      { "en": "Or / Still", "simp": "还是", "trad": "還是", "pinyin": "hái shì" },
+      { "en": "I was wrong", "simp": "我错了", "trad": "我錯了", "pinyin": "wǒ cuò le" },
+      { "en": "I can't / I don't know how", "simp": "我不会", "trad": "我不會", "pinyin": "wǒ bú huì" },
+      { "en": "Favorite", "simp": "最喜欢的", "trad": "最喜歡的", "pinyin": "zuì xǐ huan de" },
+      { "en": "I believe you", "simp": "我相信你", "trad": "我相信你", "pinyin": "wǒ xiāng xìn nǐ" },
+      { "en": "Remember", "simp": "记得", "trad": "記得", "pinyin": "jì de" },
+      { "en": "Compliment / Praise", "simp": "夸奖", "trad": "誇獎", "pinyin": "kuā jiǎng" },
+      { "en": "Not free / Busy", "simp": "没空", "trad": "沒空", "pinyin": "méi kòng" },
+      { "en": "Very close / Nearby", "simp": "很近", "trad": "很近", "pinyin": "hěn jìn" },
+      { "en": "Next to / Beside", "simp": "旁边", "trad": "旁邊", "pinyin": "páng biān" },
+      { "en": "Very dirty", "simp": "很脏", "trad": "很髒", "pinyin": "hěn zāng" }
+    ]
+  }
+];
+
+function init() {
+  const tocList = document.getElementById('toc-list');
+  const sectionsEl = document.getElementById('sections');
+
+  DATA.forEach((section, i) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<a href="#${section.id}">${section.title}<span class="toc-count">${section.phrases.length} phrases</span></a><button class="practice-toggle" onclick="togglePractice('${section.id}', this)">Practice</button>`;
+    tocList.appendChild(li);
+
+    const card = document.createElement('section');
+    card.className = 'section-card';
+    card.id = section.id;
+
+    let html = `<h2 class="section-title">${section.title}</h2><div class="phrase-list">`;
+
+    section.phrases.forEach(p => {
+      const isDiff = p.simp !== p.trad;
+      const escaped = p.simp.replace(/'/g, "\\'");
+      html += `<div class="phrase-row">
+        <div class="phrase-english">${p.en}</div>
+        <div class="phrase-chinese" onclick="handlePhraseClick(this, '${escaped}')">
+          <span class="reveal-dot"></span>
+          <span class="simp">${p.simp}</span><span class="sep${isDiff ? '' : ' same'}">| </span><span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>
+          <div class="phrase-pinyin" onclick="event.stopPropagation(); speak('${escaped}')">
+            ${p.pinyin}
+          </div>
+        </div>
+        <button class="lookup-btn" title="Look up in translator" onclick="event.stopPropagation(); lookupInTranslator('${escaped}')">↗</button>
+      </div>`;
+    });
+
+    html += '</div><div class="back-to-toc"><a href="#toc">Contents &#x2191;</a></div>';
+    card.innerHTML = html;
+    sectionsEl.appendChild(card);
+  });
+}
+
+init();
+
+(function restorePracticeState() {
+  const state = JSON.parse(localStorage.getItem(PRACTICE_KEY) || '{}');
+  Object.keys(state).forEach(sectionId => {
+    const card = document.getElementById(sectionId);
+    if (!card) return;
+    card.classList.add('practice-mode');
+    const btn = document.querySelector(`.practice-toggle[onclick*="'${sectionId}'"]`);
+    if (btn) btn.classList.add('active');
+  });
+})();
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) { /* not in iframe */ }
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+});
+</script>
+</body>
+</html>
