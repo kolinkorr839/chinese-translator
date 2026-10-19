@@ -400,6 +400,100 @@ body {
     gap: 4px;
   }
 }
+
+/* -- Sentence Patterns Table -- */
+
+.pattern-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.3rem;
+}
+
+.pattern-table thead th {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-wash);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--warm-border);
+}
+
+.pattern-table tbody tr.pattern-row td {
+  padding: 14px 12px 4px;
+  vertical-align: top;
+  font-weight: 600;
+}
+
+.pattern-table tbody tr.example-row td {
+  padding: 2px 12px 14px;
+  vertical-align: top;
+  font-size: 1.1rem;
+  color: var(--ink-wash);
+  border-bottom: 1px solid rgba(232, 224, 212, 0.6);
+}
+
+.pattern-table .col-en { width: 30%; }
+.pattern-table .col-zh { width: 30%; }
+.pattern-table .col-es { width: 35%; }
+.pattern-table .col-action { width: 5%; }
+
+.pattern-table .cell-zh {
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.pattern-table .cell-zh:hover {
+  color: var(--vermillion);
+}
+
+.pattern-table .cell-es {
+  color: var(--amber);
+  font-style: italic;
+}
+
+.pattern-table .example-row .cell-es {
+  font-weight: 400;
+}
+
+.pattern-table .lookup-btn {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #D4C9B8;
+  padding: 0.2rem;
+  line-height: 1;
+  transition: color 0.2s, transform 0.15s;
+}
+
+.pattern-table .lookup-btn:hover {
+  color: var(--vermillion);
+  transform: scale(1.15);
+}
+
+@media (max-width: 600px) {
+  .pattern-table thead { display: none; }
+  .pattern-table tbody tr { display: block; margin-bottom: 4px; }
+  .pattern-table tbody td { display: block; padding: 2px 8px; width: 100%; }
+  .pattern-table .col-action { display: none; }
+  .pattern-table tbody tr.pattern-row td:first-child { padding-top: 12px; }
+  .pattern-table tbody tr.example-row td:last-child { padding-bottom: 12px; border-bottom: 1px solid rgba(232, 224, 212, 0.6); }
+  .pattern-table tbody tr.example-row td { border-bottom: none; }
+}
+
+.yt-ref {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ink-wash);
+  text-decoration: none;
+  margin-left: 8px;
+  font-family: 'Crimson Pro', serif;
+}
+
+.yt-ref:hover {
+  color: var(--vermillion);
+}
 </style>
 </head>
 <body>
@@ -568,6 +662,213 @@ const DATA = [
       { "en": "Where do you live?", "simp": "你住在哪里？", "trad": "你住在哪裡？", "pinyin": "Nǐ zhù zài nǎlǐ?" },
       { "en": "I live in New York.", "simp": "我住在纽约。", "trad": "我住在紐約。", "pinyin": "Wǒ zhù zài Niǔyuē." }
     ]
+  },
+  {
+    "title": "Sentence Patterns",
+    "id": "patterns",
+    "ref": "https://www.youtube.com/watch?v=2HXsu7yBvbk",
+    "phrases": [
+      {
+        "en": "Want + action",
+        "simp": "想 + action",
+        "trad": "想 + action",
+        "pinyin": "",
+        "spanish": "Quiero + infinitive",
+        "example": { "en": "I want to practice Chinese.", "simp": "我想练习中文。", "trad": "我想練習中文。", "pinyin": "Wǒ xiǎng liànxí Zhōngwén.", "spanish": "Quiero practicar chino." }
+      },
+      {
+        "en": "Going to / Need to + action",
+        "simp": "要 + action",
+        "trad": "要 + action",
+        "pinyin": "",
+        "spanish": "Voy a + infinitive / Tengo que + infinitive",
+        "example": { "en": "I need to go soon.", "simp": "我要走了。", "trad": "我要走了。", "pinyin": "Wǒ yào zǒu le.", "spanish": "Tengo que irme." }
+      },
+      {
+        "en": "Permitted to + action",
+        "simp": "可以 + action",
+        "trad": "可以 + action",
+        "pinyin": "",
+        "spanish": "Puedo + infinitive",
+        "example": { "en": "Can I sit here?", "simp": "我可以坐这里吗？", "trad": "我可以坐這裡嗎？", "pinyin": "Wǒ kěyǐ zuò zhèlǐ ma?", "spanish": "¿Puedo sentarme aquí?" }
+      },
+      {
+        "en": "Know how to + action",
+        "simp": "会 + action",
+        "trad": "會 + action",
+        "pinyin": "",
+        "spanish": "Sé + infinitive",
+        "example": { "en": "I can speak a little Chinese.", "simp": "我会说一点中文。", "trad": "我會說一點中文。", "pinyin": "Wǒ huì shuō yīdiǎn Zhōngwén.", "spanish": "Sé hablar un poco de chino." }
+      },
+      {
+        "en": "Think / Feel",
+        "simp": "觉得 + opinion",
+        "trad": "覺得 + opinion",
+        "pinyin": "",
+        "spanish": "Creo que… / Me parece que…",
+        "example": { "en": "I think your Chinese is great.", "simp": "我觉得你的中文很好。", "trad": "我覺得你的中文很好。", "pinyin": "Wǒ juédé nǐ de Zhōngwén hěn hǎo.", "spanish": "Creo que tu chino es muy bueno." }
+      },
+      {
+        "en": "Like to / like",
+        "simp": "喜欢 + action or thing",
+        "trad": "喜歡 + action or thing",
+        "pinyin": "",
+        "spanish": "Me gusta + infinitive or noun",
+        "example": { "en": "I like Chinese food.", "simp": "我喜欢中国菜。", "trad": "我喜歡中國菜。", "pinyin": "Wǒ xǐhuān Zhōngguócài.", "spanish": "Me gusta la comida china." }
+      },
+      {
+        "en": "Should + action",
+        "simp": "应该 + action",
+        "trad": "應該 + action",
+        "pinyin": "",
+        "spanish": "Debería + infinitive",
+        "example": { "en": "You should try this restaurant.", "simp": "你应该试试这家餐厅。", "trad": "你應該試試這家餐廳。", "pinyin": "Nǐ yīnggāi shìshi zhè jiā cāntīng.", "spanish": "Deberías probar este restaurante." }
+      },
+      {
+        "en": "Because…, So…",
+        "simp": "因为…，所以…",
+        "trad": "因為…，所以…",
+        "pinyin": "",
+        "spanish": "Porque…, así que…",
+        "example": { "en": "Because I like Chinese culture, I'm learning Chinese.", "simp": "因为我喜欢中国文化，所以我学中文。", "trad": "因為我喜歡中國文化，所以我學中文。", "pinyin": "Yīnwèi wǒ xǐhuān Zhōngguó wénhuà, suǒyǐ wǒ xué Zhōngwén.", "spanish": "Porque me gusta la cultura china, estudio chino." }
+      },
+      {
+        "en": "Although…, Still…",
+        "simp": "虽然…，但是…",
+        "trad": "雖然…，但是…",
+        "pinyin": "",
+        "spanish": "Aunque…, aun así…",
+        "example": { "en": "Although I'm busy, I still want to chat.", "simp": "虽然很忙，但是我还想聊天。", "trad": "雖然很忙，但是我還想聊天。", "pinyin": "Suīrán hěn máng, dànshì wǒ hái xiǎng liáotiān.", "spanish": "Aunque estoy ocupado, todavía quiero charlar." }
+      },
+      {
+        "en": "If…, Then…",
+        "simp": "如果…，就…",
+        "trad": "如果…，就…",
+        "pinyin": "",
+        "spanish": "Si…, entonces…",
+        "example": { "en": "If you're free tomorrow, let's meet.", "simp": "如果你明天有空，就一起见面吧。", "trad": "如果你明天有空，就一起見面吧。", "pinyin": "Rúguǒ nǐ míngtiān yǒu kòng, jiù yīqǐ jiànmiàn ba.", "spanish": "Si estás libre mañana, quedemos." }
+      },
+      {
+        "en": "When / While",
+        "simp": "…的时候",
+        "trad": "…的時候",
+        "pinyin": "",
+        "spanish": "Cuando… / Mientras…",
+        "example": { "en": "When I have free time, I study Chinese.", "simp": "我有空的时候学中文。", "trad": "我有空的時候學中文。", "pinyin": "Wǒ yǒu kòng de shíhòu xué Zhōngwén.", "spanish": "Cuando tengo tiempo libre, estudio chino." }
+      },
+      {
+        "en": "First…, Then…",
+        "simp": "先…，然后…",
+        "trad": "先…，然後…",
+        "pinyin": "",
+        "spanish": "Primero…, después…",
+        "example": { "en": "First order coffee, then we'll chat.", "simp": "先点咖啡，然后我们聊天。", "trad": "先點咖啡，然後我們聊天。", "pinyin": "Xiān diǎn kāfēi, ránhòu wǒmen liáotiān.", "spanish": "Primero pido café, después charlamos." }
+      },
+      {
+        "en": "Before / After",
+        "simp": "以前 / 以后",
+        "trad": "以前 / 以後",
+        "pinyin": "",
+        "spanish": "Antes de… / Después de…",
+        "example": { "en": "After work, let's get dinner.", "simp": "下班以后一起吃饭吧。", "trad": "下班以後一起吃飯吧。", "pinyin": "Xiàbān yǐhòu yīqǐ chī fàn ba.", "spanish": "Después del trabajo, cenemos juntos." }
+      },
+      {
+        "en": "Doing X while doing Y",
+        "simp": "一边…，一边…",
+        "trad": "一邊…，一邊…",
+        "pinyin": "",
+        "spanish": "Hago X mientras hago Y",
+        "example": { "en": "I chat while drinking coffee.", "simp": "我一边喝咖啡，一边聊天。", "trad": "我一邊喝咖啡，一邊聊天。", "pinyin": "Wǒ yībiān hē kāfēi, yībiān liáotiān.", "spanish": "Tomo café mientras charlamos." }
+      },
+      {
+        "en": "Can you…? / Is it possible…?",
+        "simp": "能不能…?",
+        "trad": "能不能…?",
+        "pinyin": "",
+        "spanish": "¿Puedes…? / ¿Se puede…?",
+        "example": { "en": "Can you speak slower?", "simp": "你能不能说慢一点？", "trad": "你能不能說慢一點？", "pinyin": "Nǐ néng bù néng shuō màn yīdiǎn?", "spanish": "¿Puedes hablar más despacio?" }
+      },
+      {
+        "en": "May I…? / Is it okay if…?",
+        "simp": "…可以吗？",
+        "trad": "…可以嗎？",
+        "pinyin": "",
+        "spanish": "¿Puedo…? / ¿Está bien si…?",
+        "example": { "en": "May I ask your name?", "simp": "我问你的名字可以吗？", "trad": "我問你的名字可以嗎？", "pinyin": "Wǒ wèn nǐ de míngzì kěyǐ ma?", "spanish": "¿Puedo preguntarte tu nombre?" }
+      },
+      {
+        "en": "Suggestion",
+        "simp": "…吧",
+        "trad": "…吧",
+        "pinyin": "",
+        "spanish": "Vamos a… / Deberías…",
+        "example": { "en": "Let's eat together!", "simp": "一起吃饭吧！", "trad": "一起吃飯吧！", "pinyin": "Yīqǐ chī fàn ba!", "spanish": "¡Comamos juntos!" }
+      },
+      {
+        "en": "How about…?",
+        "simp": "…怎么样？",
+        "trad": "…怎麼樣？",
+        "pinyin": "",
+        "spanish": "¿Qué tal…? / ¿Qué te parece…?",
+        "example": { "en": "How about Saturday?", "simp": "星期六怎么样？", "trad": "星期六怎麼樣？", "pinyin": "Xīngqīliù zěnmeyàng?", "spanish": "¿Qué tal el sábado?" }
+      },
+      {
+        "en": "Soft confirmation",
+        "simp": "是不是…？",
+        "trad": "是不是…？",
+        "pinyin": "",
+        "spanish": "¿Verdad? / ¿No es cierto?",
+        "example": { "en": "You like coffee, right?", "simp": "你是不是喜欢咖啡？", "trad": "你是不是喜歡咖啡？", "pinyin": "Nǐ shì bú shì xǐhuān kāfēi?", "spanish": "Te gusta el café, ¿verdad?" }
+      },
+      {
+        "en": "The more X, the more Y",
+        "simp": "越…越…",
+        "trad": "越…越…",
+        "pinyin": "",
+        "spanish": "Cuanto más X, más Y",
+        "example": { "en": "The more we chat, the more interesting it gets.", "simp": "我们越聊越有意思。", "trad": "我們越聊越有意思。", "pinyin": "Wǒmen yuè liáo yuè yǒu yìsi.", "spanish": "Cuanto más charlamos, más interesante es." }
+      },
+      {
+        "en": "Not only X, but also Y",
+        "simp": "不但…而且…",
+        "trad": "不但…而且…",
+        "pinyin": "",
+        "spanish": "No solo X, sino también Y",
+        "example": { "en": "I not only speak Chinese, but also Spanish.", "simp": "我不但会说中文，而且会说西班牙语。", "trad": "我不但會說中文，而且會說西班牙語。", "pinyin": "Wǒ búdàn huì shuō Zhōngwén, érqiě huì shuō Xībānyáyǔ.", "spanish": "No solo hablo chino, sino también español." }
+      },
+      {
+        "en": "As long as…, then…",
+        "simp": "只要…，就…",
+        "trad": "只要…，就…",
+        "pinyin": "",
+        "spanish": "Siempre que…, …",
+        "example": { "en": "As long as you practice, you'll improve.", "simp": "只要练习，就会进步。", "trad": "只要練習，就會進步。", "pinyin": "Zhǐyào liànxí, jiù huì jìnbù.", "spanish": "Siempre que practiques, mejorarás." }
+      },
+      {
+        "en": "No matter what…, still…",
+        "simp": "无论…，都…",
+        "trad": "無論…，都…",
+        "pinyin": "",
+        "spanish": "No importa…, …",
+        "example": { "en": "No matter how busy, I still study Chinese.", "simp": "无论多忙，我都学中文。", "trad": "無論多忙，我都學中文。", "pinyin": "Wúlùn duō máng, wǒ dōu xué Zhōngwén.", "spanish": "No importa qué tan ocupado, estudio chino." }
+      },
+      {
+        "en": "Comparison (X is more than Y)",
+        "simp": "X 比 Y + adj.",
+        "trad": "X 比 Y + adj.",
+        "pinyin": "",
+        "spanish": "X es más… que Y",
+        "example": { "en": "Your Chinese is better than mine.", "simp": "你的中文比我的好。", "trad": "你的中文比我的好。", "pinyin": "Nǐ de Zhōngwén bǐ wǒ de hǎo.", "spanish": "Tu chino es mejor que el mío." }
+      },
+      {
+        "en": "Turns out that…",
+        "simp": "原来…",
+        "trad": "原來…",
+        "pinyin": "",
+        "spanish": "Resulta que…",
+        "example": { "en": "Turns out we live nearby!", "simp": "原来我们住得很近！", "trad": "原來我們住得很近！", "pinyin": "Yuánlái wǒmen zhù de hěn jìn!", "spanish": "¡Resulta que vivimos cerca!" }
+      }
+    ]
   }
 ];
 
@@ -584,25 +885,62 @@ function init() {
     card.className = 'section-card';
     card.id = section.id;
 
-    let html = `<h2 class="section-title">${section.title}</h2><div class="phrase-list">`;
+    const refHtml = section.ref
+      ? ` <a class="yt-ref" href="${section.ref}" target="_blank" rel="noopener">&#9654; Video</a>`
+      : '';
+    const isPatterns = !!section.ref;
+    let html = `<h2 class="section-title">${section.title}${refHtml}</h2>`;
 
-    section.phrases.forEach(p => {
-      const isDiff = p.simp !== p.trad;
-      const escaped = p.simp.replace(/'/g, "\\'");
-      html += `<div class="phrase-row">
-        <div class="phrase-english">${p.en}</div>
-        <div class="phrase-chinese" onclick="handlePhraseClick(this, '${escaped}')">
-          <span class="reveal-dot"></span>
-          <span class="simp">${p.simp}</span><span class="sep${isDiff ? '' : ' same'}">| </span><span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>
-          <div class="phrase-pinyin" onclick="event.stopPropagation(); speak('${escaped}')">
-            ${p.pinyin}
+    if (isPatterns) {
+      html += `<table class="pattern-table"><thead><tr>
+        <th class="col-en">English</th>
+        <th class="col-zh">中文</th>
+        <th class="col-es">Español</th>
+        <th class="col-action"></th>
+      </tr></thead><tbody>`;
+
+      section.phrases.forEach(p => {
+        const ex = p.example;
+        const exEsc = ex.simp.replace(/'/g, "\\'");
+        html += `<tr class="pattern-row">
+          <td>${p.en}</td>
+          <td class="cell-zh" onclick="speak('${exEsc}')">${p.simp}</td>
+          <td class="cell-es">${p.spanish}</td>
+          <td><button class="lookup-btn" title="Look up in translator" onclick="lookupInTranslator('${exEsc}')">&#x2197;</button></td>
+        </tr>
+        <tr class="example-row">
+          <td>${ex.en}</td>
+          <td class="cell-zh" onclick="speak('${exEsc}')">${ex.simp}</td>
+          <td class="cell-es">${ex.spanish}</td>
+          <td></td>
+        </tr>`;
+      });
+
+      html += '</tbody></table>';
+    } else {
+      html += '<div class="phrase-list">';
+
+      section.phrases.forEach(p => {
+        const isDiff = p.simp !== p.trad;
+        const escaped = p.simp.replace(/'/g, "\\'");
+
+        html += `<div class="phrase-row">
+          <div class="phrase-english">${p.en}</div>
+          <div class="phrase-chinese" onclick="handlePhraseClick(this, '${escaped}')">
+            <span class="reveal-dot"></span>
+            <span class="simp">${p.simp}</span><span class="sep${isDiff ? '' : ' same'}">| </span><span class="trad${isDiff ? '' : ' same'}">${p.trad}</span>
+            <div class="phrase-pinyin" onclick="event.stopPropagation(); speak('${escaped}')">
+              ${p.pinyin}
+            </div>
           </div>
-        </div>
-        <button class="lookup-btn" title="Look up in translator" onclick="event.stopPropagation(); lookupInTranslator('${escaped}')">&#x2197;</button>
-      </div>`;
-    });
+          <button class="lookup-btn" title="Look up in translator" onclick="event.stopPropagation(); lookupInTranslator('${escaped}')">&#x2197;</button>
+        </div>`;
+      });
 
-    html += '</div><div class="back-to-toc"><a href="#toc">Contents &#x2191;</a></div>';
+      html += '</div>';
+    }
+
+    html += '<div class="back-to-toc"><a href="#toc">Contents &#x2191;</a></div>';
     card.innerHTML = html;
     sectionsEl.appendChild(card);
   });
