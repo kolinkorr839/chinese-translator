@@ -33,6 +33,8 @@ BILINGUAL_BY_DESIGN = {
     "course2_reference.html",
     "hsk1_reference.html",
     "hsk1_flashcards.html",
+    "hsk2_reference.html",
+    "hsk2_flashcards.html",
 }
 
 # Prose pages known to mix scripts today. This is TODO item 5.
@@ -286,6 +288,26 @@ def check_hsk1_vocab_has_all_fields():
             if not str(w.get(field, "")).strip():
                 bad.append(f"word {i}: missing {field!r}")
     assert not bad, "incomplete HSK-1 entries:\n  " + "\n  ".join(bad[:20])
+
+
+@check
+def check_hsk2_vocab_data_parses():
+    """the HSK-2 vocabulary data parses and has 151 entries"""
+    data = s.hsk2_vocab()
+    assert data, "HSK-2 vocab data is empty"
+    assert len(data) == 151, f"expected 151 HSK-2 words, got {len(data)}"
+    return f"{len(data)} words"
+
+
+@check
+def check_hsk2_vocab_has_all_fields():
+    """every HSK-2 word has non-empty simp, trad, pinyin and english"""
+    bad = []
+    for i, w in enumerate(s.hsk2_vocab(), 1):
+        for field in ("simp", "trad", "pinyin", "english"):
+            if not str(w.get(field, "")).strip():
+                bad.append(f"word {i}: missing {field!r}")
+    assert not bad, "incomplete HSK-2 entries:\n  " + "\n  ".join(bad[:20])
 
 
 @check
