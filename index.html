@@ -698,6 +698,14 @@ iframe {
     </button>
   </div>
 
+  <div class="section-label">Tools</div>
+  <div class="nav-group">
+    <button class="nav-item" data-page="study_stats.html">
+      <span class="nav-icon">统</span>
+      <span class="nav-label">Study Stats</span>
+    </button>
+  </div>
+
   <!-- Footer with ink wash mountains -->
   <div class="sidebar-footer">
     <svg viewBox="0 0 180 60" xmlns="http://www.w3.org/2000/svg">
@@ -980,6 +988,7 @@ if ('serviceWorker' in navigator) {
 
 (function() {
   const STORAGE_KEY = 'mandarin-hub-study-log';
+  const PAGE_LOG_KEY = 'mandarin-hub-page-log';
   const IDLE_TIMEOUT_MS = 2 * 60 * 1000;
   const TICK_MS = 1000;
 
@@ -1011,6 +1020,30 @@ if ('serviceWorker' in navigator) {
     return log;
   }
 
+  function loadPageLog() {
+    try { return JSON.parse(localStorage.getItem(PAGE_LOG_KEY)) || {}; }
+    catch { return {}; }
+  }
+
+  function savePageLog(pl) {
+    localStorage.setItem(PAGE_LOG_KEY, JSON.stringify(pl));
+  }
+
+  function prunePageLog(pl) {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - 60);
+    const cutoffKey = cutoff.getFullYear() + '-'
+      + String(cutoff.getMonth() + 1).padStart(2, '0') + '-'
+      + String(cutoff.getDate()).padStart(2, '0');
+    for (const page of Object.keys(pl)) {
+      for (const day of Object.keys(pl[page])) {
+        if (day < cutoffKey) delete pl[page][day];
+      }
+      if (Object.keys(pl[page]).length === 0) delete pl[page];
+    }
+    return pl;
+  }
+
   let lastActivity = Date.now();
   let tabVisible = !document.hidden;
   let activeSeconds = 0;
@@ -1028,10 +1061,23 @@ if ('serviceWorker' in navigator) {
     badge.textContent = Math.floor(activeSeconds / 60);
   }
 
+  let pageSeconds = {};
+
   function persist() {
     const log = loadLog();
     log[todayKey()] = activeSeconds;
     saveLog(pruneLog(log));
+
+    if (Object.keys(pageSeconds).length > 0) {
+      const pl = loadPageLog();
+      const day = todayKey();
+      for (const [page, secs] of Object.entries(pageSeconds)) {
+        if (!pl[page]) pl[page] = {};
+        pl[page][day] = (pl[page][day] || 0) + secs;
+      }
+      pageSeconds = {};
+      savePageLog(prunePageLog(pl));
+    }
   }
 
   // Tick every second; only increment when active
@@ -1039,10 +1085,12 @@ if ('serviceWorker' in navigator) {
   setInterval(() => {
     const now = Date.now();
     if (isActive()) {
-      // Use wall-clock delta so we don't lose time if the tab was throttled
-      const elapsed = Math.round((now - lastTick) / 1000);
-      activeSeconds += Math.min(elapsed, 5);
+      const elapsed = Math.min(Math.round((now - lastTick) / 1000), 5);
+      activeSeconds += elapsed;
       updateBadge();
+      if (activePage) {
+        pageSeconds[activePage] = (pageSeconds[activePage] || 0) + elapsed;
+      }
     }
     lastTick = now;
   }, TICK_MS);

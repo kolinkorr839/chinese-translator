@@ -1312,6 +1312,8 @@ document.addEventListener('keydown', e => {
   } else if (e.key === 'Enter' || e.key === 'r' || e.key === 'R') {
     e.preventDefault();
     if (paused && !revealed) revealAnswer();
+  } else if (e.key === 's' || e.key === 'S') {
+    toggleStar(e);
   }
 });
 

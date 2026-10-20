@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Stats - Mandarin Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --rice-paper: #F5F0E8;
+  --card-bg: #FFFDF8;
+  --ink: #1a1a2e;
+  --vermillion: #C41E3A;
+  --sage: #7D8471;
+  --ink-wash: #6B7B8D;
+  --warm-border: #E8E0D4;
+  --amber: #B8860B;
+}
+
+body {
+  font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC',
+    'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', serif;
+  background: var(--rice-paper);
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(196,30,58,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(184,134,11,0.03) 0%, transparent 50%);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px 80px;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--warm-border);
+  position: relative;
+}
+
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
+  background: var(--vermillion);
+}
+
+.page-header h1 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.page-header p {
+  color: var(--ink-wash);
+  font-size: 1rem;
+}
+
+/* -- Range selector -- */
+.range-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.range-btn {
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.9rem;
+  padding: 5px 14px;
+  border: 1px solid var(--warm-border);
+  border-radius: 16px;
+  background: var(--card-bg);
+  color: var(--ink-wash);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.range-btn:hover { color: var(--ink); border-color: var(--ink-wash); }
+
+.range-btn.active {
+  background: var(--vermillion);
+  color: #fff;
+  border-color: var(--vermillion);
+}
+
+/* -- Summary cards -- */
+.summary-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.summary-card {
+  flex: 1;
+  min-width: 120px;
+  background: var(--card-bg);
+  border: 1px solid var(--warm-border);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.summary-card .value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--vermillion);
+  line-height: 1.2;
+}
+
+.summary-card .label {
+  font-size: 0.85rem;
+  color: var(--ink-wash);
+  margin-top: 2px;
+}
+
+/* -- Page table -- */
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 28px;
+}
+
+.stats-table thead th {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink-wash);
+  text-align: left;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--warm-border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+
+.stats-table thead th:hover { color: var(--ink); }
+.stats-table thead th.sorted { color: var(--vermillion); }
+
+.stats-table thead th .sort-arrow {
+  font-size: 0.7rem;
+  margin-left: 4px;
+}
+
+.stats-table tbody td {
+  padding: 10px 12px;
+  vertical-align: middle;
+  border-bottom: 1px solid rgba(232, 224, 212, 0.6);
+  font-size: 1rem;
+}
+
+.stats-table tbody tr:hover { background: rgba(196, 30, 58, 0.03); }
+
+.stats-table .page-name {
+  font-weight: 500;
+}
+
+.stats-table .bar-cell {
+  width: 40%;
+}
+
+.bar-bg {
+  background: rgba(232, 224, 212, 0.5);
+  border-radius: 4px;
+  height: 18px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--vermillion);
+  opacity: 0.7;
+  transition: width 0.3s ease;
+}
+
+.stats-table .time-val {
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.stats-table .last-visited {
+  color: var(--ink-wash);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink-wash);
+  font-size: 1.1rem;
+}
+
+@media (max-width: 600px) {
+  .container { padding: 24px 16px 60px; }
+  .summary-card .value { font-size: 1.5rem; }
+  .stats-table .bar-cell { display: none; }
+  .stats-table .last-visited { display: none; }
+  .stats-table thead th,
+  .stats-table tbody td { padding: 8px 8px; font-size: 0.9rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Study Stats</h1>
+    <p>Time spent on each page</p>
+  </div>
+
+  <div class="range-bar" id="range-bar">
+    <button class="range-btn" data-days="7">7 days</button>
+    <button class="range-btn active" data-days="30">30 days</button>
+    <button class="range-btn" data-days="0">All time</button>
+  </div>
+
+  <div class="summary-row" id="summary-row"></div>
+
+  <table class="stats-table" id="stats-table">
+    <thead>
+      <tr>
+        <th data-col="name">Page <span class="sort-arrow"></span></th>
+        <th data-col="time" class="sorted">Time <span class="sort-arrow">&#9660;</span></th>
+        <th data-col="bar" class="bar-cell"></th>
+        <th data-col="last">Last visited <span class="sort-arrow"></span></th>
+      </tr>
+    </thead>
+    <tbody id="stats-body"></tbody>
+  </table>
+
+  <div class="empty-state" id="empty-state" style="display:none">
+    No study data yet. Start exploring pages and time will be tracked automatically.
+  </div>
+</div>
+
+<script>
+const PAGE_NAMES = {
+  "mandarin_translation.html": "Translator",
+  "phrase_reference.html": "Phrase Reference",
+  "flashcards.html": "Flashcards",
+  "scenarios.html": "Scenarios",
+  "listening_drill.html": "Listening Drill",
+  "generate_drill.html": "Generate Drill",
+  "story_reader.html": "Story Reader",
+  "course2_reference.html": "Course 2 Reference",
+  "hsk1_reference.html": "HSK 1",
+  "hsk1_flashcards.html": "HSK 1 Flashcards",
+  "pinyin_chart.html": "Pinyin Chart",
+  "pinyin_guide.html": "Pinyin Guide",
+  "pinyin_ime_guide.html": "IME Guide",
+  "grammar_guide.html": "Grammar Guide",
+  "grammar_flashcards.html": "Grammar Flashcards",
+  "question_patterns.html": "Question Patterns",
+  "adjective_reference.html": "Adjective Reference",
+  "conversation_phrases.html": "Conversation Phrases",
+  "common_phrases.html": "Common Phrases",
+  "word_categories.html": "Word Categories",
+  "magic_sentences.html": "Magic Sentences",
+  "radicals_reference.html": "Radicals Reference",
+  "simplified_to_traditional_guide.html": "S/T Guide",
+  "simplified_to_traditional_cheat_sheet.html": "S/T Cheat Sheet",
+  "simplified_traditional_flashcards.html": "S/T Flashcards",
+  "study_stats.html": "Study Stats"
+};
+
+const PAGE_LOG_KEY = 'mandarin-hub-page-log';
+
+function loadPageLog() {
+  try { return JSON.parse(localStorage.getItem(PAGE_LOG_KEY)) || {}; }
+  catch { return {}; }
+}
+
+function dateKey(d) {
+  return d.getFullYear() + '-'
+    + String(d.getMonth() + 1).padStart(2, '0') + '-'
+    + String(d.getDate()).padStart(2, '0');
+}
+
+function cutoffKey(days) {
+  if (days === 0) return null;
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  return dateKey(d);
+}
+
+function formatTime(totalSecs) {
+  const hrs = Math.floor(totalSecs / 3600);
+  const mins = Math.floor((totalSecs % 3600) / 60);
+  if (hrs > 0) return hrs + 'h ' + mins + 'm';
+  return mins + 'm';
+}
+
+function formatDate(key) {
+  if (!key) return '-';
+  const [y, m, d] = key.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  if (dateKey(today) === key) return 'Today';
+  if (dateKey(yesterday) === key) return 'Yesterday';
+  return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+let currentDays = 30;
+let sortCol = 'time';
+let sortAsc = false;
+
+function aggregate(days) {
+  const pl = loadPageLog();
+  const cutoff = cutoffKey(days);
+  const rows = [];
+
+  for (const [page, dayMap] of Object.entries(pl)) {
+    let total = 0;
+    let lastDay = null;
+    for (const [day, secs] of Object.entries(dayMap)) {
+      if (cutoff && day < cutoff) continue;
+      total += secs;
+      if (!lastDay || day > lastDay) lastDay = day;
+    }
+    if (total > 0) {
+      rows.push({
+        page,
+        name: PAGE_NAMES[page] || page.replace('.html', '').replace(/_/g, ' '),
+        time: total,
+        last: lastDay
+      });
+    }
+  }
+  return rows;
+}
+
+function render() {
+  const rows = aggregate(currentDays);
+
+  const emptyEl = document.getElementById('empty-state');
+  const tableEl = document.getElementById('stats-table');
+  const summaryEl = document.getElementById('summary-row');
+
+  if (rows.length === 0) {
+    emptyEl.style.display = '';
+    tableEl.style.display = 'none';
+    summaryEl.innerHTML = '';
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  tableEl.style.display = '';
+
+  const totalTime = rows.reduce((s, r) => s + r.time, 0);
+  const pagesUsed = rows.length;
+  const topPage = [...rows].sort((a, b) => b.time - a.time)[0];
+
+  summaryEl.innerHTML = `
+    <div class="summary-card">
+      <div class="value">${formatTime(totalTime)}</div>
+      <div class="label">Total study time</div>
+    </div>
+    <div class="summary-card">
+      <div class="value">${pagesUsed}</div>
+      <div class="label">Pages visited</div>
+    </div>
+    <div class="summary-card">
+      <div class="value">${topPage ? topPage.name : '-'}</div>
+      <div class="label">Most time spent</div>
+    </div>
+  `;
+
+  rows.sort((a, b) => {
+    let cmp = 0;
+    if (sortCol === 'name') cmp = a.name.localeCompare(b.name);
+    else if (sortCol === 'time') cmp = a.time - b.time;
+    else if (sortCol === 'last') cmp = (a.last || '').localeCompare(b.last || '');
+    return sortAsc ? cmp : -cmp;
+  });
+
+  const maxTime = Math.max(...rows.map(r => r.time));
+  const tbody = document.getElementById('stats-body');
+  tbody.innerHTML = rows.map(r => {
+    const pct = maxTime > 0 ? (r.time / maxTime * 100) : 0;
+    return `<tr>
+      <td class="page-name">${r.name}</td>
+      <td class="time-val">${formatTime(r.time)}</td>
+      <td class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${pct.toFixed(1)}%"></div></div></td>
+      <td class="last-visited">${formatDate(r.last)}</td>
+    </tr>`;
+  }).join('');
+
+  document.querySelectorAll('.stats-table thead th').forEach(th => {
+    const col = th.dataset.col;
+    if (col === 'bar') return;
+    th.classList.toggle('sorted', col === sortCol);
+    const arrow = th.querySelector('.sort-arrow');
+    if (arrow) arrow.innerHTML = col === sortCol ? (sortAsc ? '&#9650;' : '&#9660;') : '';
+  });
+}
+
+document.getElementById('range-bar').addEventListener('click', e => {
+  const btn = e.target.closest('.range-btn');
+  if (!btn) return;
+  document.querySelectorAll('.range-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentDays = parseInt(btn.dataset.days, 10);
+  render();
+});
+
+document.querySelector('.stats-table thead').addEventListener('click', e => {
+  const th = e.target.closest('th');
+  if (!th || th.dataset.col === 'bar') return;
+  const col = th.dataset.col;
+  if (col === sortCol) {
+    sortAsc = !sortAsc;
+  } else {
+    sortCol = col;
+    sortAsc = col === 'name';
+  }
+  render();
+});
+
+render();
+</script>
+
+</body>
+</html>

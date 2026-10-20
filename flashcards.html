@@ -796,7 +796,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === ' ') { e.preventDefault(); togglePause(); }
   if (e.key === 'ArrowRight') goNext();
   if (e.key === 'ArrowLeft') goBack();
-  if (e.key === 's' || e.key === 'S') toggleSound();
+  if (e.key === 's' || e.key === 'S') toggleStar(e);
   if (e.key === 'Enter' || e.key === 'r' || e.key === 'R') {
     e.preventDefault();
     if (paused && !revealed) revealAnswer();
