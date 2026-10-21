@@ -662,6 +662,12 @@ body {
             <td class="pattern-col">Subject + verb + 了 + 吗？</td>
             <td><span class="zh" onclick="speak('你吃饭了吗')">你吃饭了吗？</span></td>
           </tr>
+          <tr>
+            <td>A-not-A (yes/no)</td>
+            <td>Do you...or not?</td>
+            <td class="pattern-col">Subject + A + 不 + A？</td>
+            <td><span class="zh" onclick="speak('你是不是喜欢咖啡')">你是不是喜欢咖啡？</span></td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -697,13 +703,14 @@ body {
 
   <!-- TOC -->
   <nav class="toc" id="toc">
-    <h2>Five Patterns</h2>
+    <h2>Six Patterns</h2>
     <ol>
       <li><a href="#pattern1">Do / Does questions - add 吗</a></li>
       <li><a href="#pattern2">WH-questions - question word in answer position</a></li>
       <li><a href="#pattern3">How / what is it like? - 怎么样</a></li>
       <li><a href="#pattern4">Are / is questions - identity vs. description</a></li>
       <li><a href="#pattern5">Can / have / past-action questions</a></li>
+      <li><a href="#pattern6">A-not-A questions - A + 不 + A</a></li>
     </ol>
   </nav>
 
@@ -782,7 +789,7 @@ body {
       <span class="zh" onclick="speak('不喜欢')">不喜欢。</span> - Don't like it. (No)
     </div>
 
-    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+    <div class="back-to-toc"><a href="#toc">Six Patterns &#x2191;</a></div>
   </section>
 
   <!-- Pattern 2 -->
@@ -936,7 +943,7 @@ body {
       <strong>Don't add 吗 to WH-questions.</strong> The question word already signals a question. <span class="zh" onclick="speak('你住在哪里')">你住在哪里？</span> is correct. 你住在哪里吗？ is not the standard form.
     </div>
 
-    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+    <div class="back-to-toc"><a href="#toc">Six Patterns &#x2191;</a></div>
   </section>
 
   <!-- Pattern 3 -->
@@ -1015,7 +1022,7 @@ body {
       </div>
     </div>
 
-    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+    <div class="back-to-toc"><a href="#toc">Six Patterns &#x2191;</a></div>
   </section>
 
   <!-- Pattern 4 -->
@@ -1126,7 +1133,7 @@ body {
       </table>
     </div>
 
-    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+    <div class="back-to-toc"><a href="#toc">Six Patterns &#x2191;</a></div>
   </section>
 
   <!-- Pattern 5 -->
@@ -1234,7 +1241,90 @@ body {
       过 marks experience ("ever done X"). 了 marks a change or completed event. They are not interchangeable.
     </div>
 
-    <div class="back-to-toc"><a href="#toc">Five Patterns &#x2191;</a></div>
+    <div class="back-to-toc"><a href="#toc">Six Patterns &#x2191;</a></div>
+  </section>
+
+  <!-- Pattern 6 -->
+  <section class="section-card" id="pattern6">
+    <h2 class="section-title">Pattern 6: A-not-A Questions - A + 不 + A</h2>
+
+    <div class="pattern-rule">
+      <strong>Rule:</strong> Instead of adding 吗, repeat the key word in positive-negative form: A + 不 + A. The "A" can be a verb, adjective, or modal. This offers a choice between "do" and "don't" directly inside the sentence.<br>
+      <strong>Shortcut:</strong> Take the key word, sandwich 不 in the middle: 是不是, 喜不喜欢, 好不好, 能不能.
+    </div>
+
+    <div class="hero-example">
+      <div class="english">Do you like coffee (or not)?</div>
+      <div class="chinese" onclick="speak('你是不是喜欢咖啡')">你是不是喜欢咖啡？</div>
+      <div class="pinyin" onclick="speak('你是不是喜欢咖啡')">Nǐ shì bu shì xǐhuan kāfēi?</div>
+    </div>
+
+    <div class="word-breakdown">
+      <div class="word-chip" onclick="speak('你')">
+        <span class="char">你</span>
+        <span class="py">nǐ</span>
+        <span class="gloss">you</span>
+      </div>
+      <div class="word-chip" onclick="speak('是不是')">
+        <span class="char">是不是</span>
+        <span class="py">shì bu shì</span>
+        <span class="gloss">is or isn't</span>
+      </div>
+      <div class="word-chip" onclick="speak('喜欢')">
+        <span class="char">喜欢</span>
+        <span class="py">xǐhuan</span>
+        <span class="gloss">like</span>
+      </div>
+      <div class="word-chip" onclick="speak('咖啡')">
+        <span class="char">咖啡</span>
+        <span class="py">kāfēi</span>
+        <span class="gloss">coffee</span>
+      </div>
+    </div>
+
+    <div class="mental-conversion">Mental conversion: <em>You is-or-isn't like coffee?</em></div>
+
+    <div class="example-table-wrap">
+      <table class="example-table">
+        <thead><tr><th>English</th><th>Chinese</th><th>Pinyin</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Do you like it or not?</td>
+            <td><span class="zh" onclick="speak('你喜不喜欢')">你喜不喜欢？</span></td>
+            <td class="py">Nǐ xǐ bu xǐhuan?</td>
+          </tr>
+          <tr>
+            <td>Is this good or not?</td>
+            <td><span class="zh" onclick="speak('这个好不好')">这个好不好？</span></td>
+            <td class="py">Zhège hǎo bu hǎo?</td>
+          </tr>
+          <tr>
+            <td>Are you busy or not?</td>
+            <td><span class="zh" onclick="speak('你忙不忙')">你忙不忙？</span></td>
+            <td class="py">Nǐ máng bu máng?</td>
+          </tr>
+          <tr>
+            <td>Can you see it or not?</td>
+            <td><span class="zh" onclick="speak('你看得见看不见')">你看得见看不见？</span></td>
+            <td class="py">Nǐ kàn de jiàn kàn bu jiàn?</td>
+          </tr>
+          <tr>
+            <td>Is he a student?</td>
+            <td><span class="zh" onclick="speak('他是不是学生')">他是不是学生？</span></td>
+            <td class="py">Tā shì bu shì xuéshēng?</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note-box">
+      <strong>吗 vs. A-not-A:</strong> Both ask yes/no questions. 吗 is neutral and more common in casual speech. A-not-A is more direct - it presents both options explicitly, like asking "do you or don't you?" It sounds slightly more pressing or deliberate.<br><br>
+      <span class="zh" onclick="speak('你喜欢咖啡吗')">你喜欢咖啡吗？</span> - Do you like coffee? (neutral)<br>
+      <span class="zh" onclick="speak('你喜不喜欢咖啡')">你喜不喜欢咖啡？</span> - Do you like coffee or not? (more direct)<br><br>
+      <strong>For multi-syllable words,</strong> only the first syllable repeats: 喜欢 becomes 喜不喜欢, not 喜欢不喜欢.
+    </div>
+
+    <div class="back-to-toc"><a href="#toc">Six Patterns &#x2191;</a></div>
   </section>
 
   <footer class="page-footer">
