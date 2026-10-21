@@ -798,9 +798,6 @@ html { scroll-behavior: auto; }
       <tr><td style="padding:4px 8px">continuing state</td>
           <td style="padding:4px 8px">着 <a href="#zhe" style="font-size:0.85em;color:var(--vermillion)">(着)</a></td>
           <td style="padding:4px 8px"><span class="simp">门开着</span><span class="sep"> | </span><span class="trad">門開著</span> - The door is open</td></tr>
-      <tr><td style="padding:4px 8px">at / in</td>
-          <td style="padding:4px 8px">在 <a href="#zai" style="font-size:0.85em;color:var(--vermillion)">(在)</a></td>
-          <td style="padding:4px 8px"><span class="simp">我在家</span><span class="sep"> | </span><span class="trad">我在家</span> - I am at home</td></tr>
       <tr><td style="padding:4px 8px">completed</td>
           <td style="padding:4px 8px">了 <a href="#le" style="font-size:0.85em;color:var(--vermillion)">(了)</a></td>
           <td style="padding:4px 8px"><span class="simp">我吃了饭</span><span class="sep"> | </span><span class="trad">我吃了飯</span> - I ate</td></tr>
@@ -2962,6 +2959,7 @@ html { scroll-behavior: auto; }
 
 <script>
 let ttsAudio = null;
+let ttsVolume = 1;
 
 function speak(chinese) {
   if (!chinese) return;
@@ -2977,9 +2975,11 @@ function speak(chinese) {
 
   const slowdown = (primary === youdao);
   ttsAudio = new Audio(primary);
+  ttsAudio.volume = ttsVolume;
   if (slowdown) ttsAudio.playbackRate = 0.75;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
+    ttsAudio.volume = ttsVolume;
     if (!slowdown) ttsAudio.playbackRate = 0.75;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
@@ -3015,6 +3015,9 @@ window.addEventListener('scroll', () => {
 
 window.addEventListener('message', (e) => {
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') {
+    ttsVolume = e.data.volume;
+  }
   if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
     const y = e.data.scrollY;
     setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);

@@ -1044,12 +1044,15 @@ function initVoice() {
   if (!zhVoice) speechSynthesis.addEventListener('voiceschanged', pick);
 }
 
+let ttsVolume = 1;
+
 function speak(chinese) {
   if (!soundOn) return;
   speechSynthesis.cancel();
   const utt = new SpeechSynthesisUtterance(chinese);
   utt.lang = 'zh-CN';
   utt.rate = 0.75;
+  utt.volume = ttsVolume;
   if (zhVoice) utt.voice = zhVoice;
   speechSynthesis.speak(utt);
 }
@@ -1342,6 +1345,7 @@ window.addEventListener('scroll', () => {
 window.addEventListener('message', e => {
   if (e.source !== window.parent) return;
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') { ttsVolume = e.data.volume; }
   if (e.data.type === 'mandarin-hub:hidden') {
     if (!paused) togglePause();
     if (window.speechSynthesis) speechSynthesis.cancel();

@@ -194,7 +194,7 @@ th.row-active-header {
 
 <script>
 const SPEED_MS = 700;
-const VOLUME = 0.1;
+let ttsVolume = 0.1;
 
 const INITIALS = ['','b','p','m','f','d','t','n','l','g','k','h','j','q','x','z','c','s','zh','ch','sh','r','y','w'];
 
@@ -333,6 +333,7 @@ function speakFallback(text) {
   const utt = new SpeechSynthesisUtterance(text);
   utt.lang = 'zh-CN';
   utt.rate = 0.8;
+  utt.volume = ttsVolume;
   if (zhVoice) utt.voice = zhVoice;
   speechSynthesis.speak(utt);
 }
@@ -357,7 +358,7 @@ function speak(displayPinyin, basePinyin) {
   function tryNext() {
     if (i >= urls.length) { speakFallback(displayPinyin); return; }
     const audio = new Audio(urls[i]);
-    audio.volume = VOLUME;
+    audio.volume = ttsVolume;
     currentAudio = audio;
     i++;
     audio.play().catch(tryNext);
@@ -532,7 +533,7 @@ function speakSolo(basePinyin) {
   function tryNext() {
     if (i >= urls.length) { speakFallback(basePinyin); return; }
     const audio = new Audio(urls[i]);
-    audio.volume = VOLUME;
+    audio.volume = ttsVolume;
     soloAudio = audio;
     i++;
     audio.play().catch(tryNext);
@@ -620,6 +621,7 @@ window.addEventListener('scroll', () => {
 window.addEventListener('message', e => {
   if (e.source !== window.parent) return;
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') { ttsVolume = e.data.volume; }
   if (e.data.type === 'mandarin-hub:hidden') {
     stopPlayback();
   }

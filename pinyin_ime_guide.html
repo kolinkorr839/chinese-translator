@@ -557,6 +557,7 @@
 
 <script>
 let currentAudio = null;
+let ttsVolume = 1;
 
 const INITIAL_FINALS = {
   'b':'a','p':'a','m':'a','f':'a',
@@ -611,10 +612,12 @@ function speak(pinyin) {
     if (i >= urls.length) {
       const u = new SpeechSynthesisUtterance(pinyin);
       u.lang = 'zh-CN';
+      u.volume = ttsVolume;
       speechSynthesis.speak(u);
       return;
     }
     const audio = new Audio(urls[i]);
+    audio.volume = ttsVolume;
     currentAudio = audio;
     i++;
     audio.play().catch(tryNext);
@@ -651,6 +654,7 @@ window.addEventListener('scroll', () => {
 
 window.addEventListener('message', (e) => {
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') { ttsVolume = e.data.volume; }
   if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
     const y = e.data.scrollY;
     setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);

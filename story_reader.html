@@ -286,6 +286,7 @@ body {
 <script src="data/stories.js"></script>
 <script>
 let ttsAudio = null;
+let ttsVolume = 1;
 let isPlaying = false;
 let currentLineIndex = -1;
 let currentStory = null;
@@ -419,10 +420,12 @@ function speak(chinese) {
     const fallback = engine === 'youdao' ? google : youdao;
 
     ttsAudio = new Audio(primary);
+    ttsAudio.volume = ttsVolume;
     ttsAudio.playbackRate = playbackSpeed;
     ttsAudio.onended = resolve;
     ttsAudio.onerror = () => {
       ttsAudio = new Audio(fallback);
+      ttsAudio.volume = ttsVolume;
       ttsAudio.playbackRate = playbackSpeed;
       ttsAudio.onended = resolve;
       ttsAudio.onerror = () => resolve();
@@ -430,6 +433,7 @@ function speak(chinese) {
     };
     ttsAudio.play().catch(() => {
       ttsAudio = new Audio(fallback);
+      ttsAudio.volume = ttsVolume;
       ttsAudio.playbackRate = playbackSpeed;
       ttsAudio.onended = resolve;
       ttsAudio.onerror = () => resolve();
@@ -534,6 +538,9 @@ window.addEventListener('scroll', () => {
 window.addEventListener('message', (e) => {
   if (e.source !== window.parent) return;
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') {
+    ttsVolume = e.data.volume;
+  }
   if (e.data.type === 'mandarin-hub:hidden') {
     stopPlayback();
     highlightLine(currentLineIndex);

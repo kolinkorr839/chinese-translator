@@ -3048,6 +3048,7 @@ p { margin: 0.5rem 0; }
 
 <script>
 let ttsAudio = null;
+let ttsVolume = 1;
 
 function speak(chinese) {
   if (!chinese) return;
@@ -3062,9 +3063,11 @@ function speak(chinese) {
 
   const slowdown = (primary === youdao);
   ttsAudio = new Audio(primary);
+  ttsAudio.volume = ttsVolume;
   if (slowdown) ttsAudio.playbackRate = 0.75;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
+    ttsAudio.volume = ttsVolume;
     if (!slowdown) ttsAudio.playbackRate = 0.75;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
@@ -3138,6 +3141,7 @@ function speakThenDo(chinese, callback) {
     let fired = false;
     const fail = () => { if (fired) return; fired = true; onFail(); };
     ttsAudio = new Audio(url);
+    ttsAudio.volume = ttsVolume;
     if (slow) ttsAudio.playbackRate = 0.75;
     ttsAudio.onended = callback;
     ttsAudio.onerror = fail;
@@ -3219,6 +3223,7 @@ window.addEventListener('scroll', () => {
 
 window.addEventListener('message', (e) => {
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') { ttsVolume = e.data.volume; }
   if (e.data.type === 'mandarin-hub:hidden') {
     stopPlay();
   }

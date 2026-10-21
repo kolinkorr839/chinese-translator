@@ -641,6 +641,7 @@ body {
 
 <script>
 let ttsAudio = null;
+let ttsVolume = 1;
 
 function speak(chinese) {
   if (!chinese) return;
@@ -656,9 +657,11 @@ function speak(chinese) {
 
   const slowdown = (primary === youdao);
   ttsAudio = new Audio(primary);
+  ttsAudio.volume = ttsVolume;
   if (slowdown) ttsAudio.playbackRate = 0.75;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
+    ttsAudio.volume = ttsVolume;
     if (!slowdown) ttsAudio.playbackRate = 0.75;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
@@ -670,8 +673,14 @@ function lookupInTranslator(query) {
   }
 }
 
+function hasSelection() {
+  var sel = window.getSelection();
+  return sel && sel.toString().length > 0;
+}
+
 document.querySelectorAll('.clickable').forEach(cell => {
   cell.addEventListener('click', () => {
+    if (hasSelection()) return;
     const zh = cell.getAttribute('data-zh');
     if (zh) lookupInTranslator(zh);
   });
@@ -679,6 +688,7 @@ document.querySelectorAll('.clickable').forEach(cell => {
 
 document.querySelectorAll('td.pinyin').forEach(cell => {
   cell.addEventListener('click', () => {
+    if (hasSelection()) return;
     const sibling = cell.previousElementSibling;
     if (sibling && sibling.classList.contains('clickable')) {
       const zh = sibling.getAttribute('data-zh');
@@ -689,6 +699,7 @@ document.querySelectorAll('td.pinyin').forEach(cell => {
 
 document.querySelectorAll('.rule-example').forEach(ex => {
   ex.addEventListener('click', () => {
+    if (hasSelection()) return;
     const zh = ex.getAttribute('data-zh');
     if (zh) speak(zh);
   });
@@ -706,6 +717,9 @@ window.addEventListener('scroll', () => {
 
 window.addEventListener('message', (e) => {
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') {
+    ttsVolume = e.data.volume;
+  }
   if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
     const y = e.data.scrollY;
     setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);

@@ -473,6 +473,7 @@ td:first-child {
 
 <script>
 let ttsAudio = null;
+let ttsVolume = 1;
 
 function speak(chinese) {
   if (!chinese) return;
@@ -485,12 +486,19 @@ function speak(chinese) {
 
   const isFile = location.protocol === 'file:';
   ttsAudio = new Audio(primary);
+  ttsAudio.volume = ttsVolume;
   if (isFile) ttsAudio.playbackRate = 0.75;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
+    ttsAudio.volume = ttsVolume;
     if (!isFile) ttsAudio.playbackRate = 0.75;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
+}
+
+function hasSelection() {
+  var sel = window.getSelection();
+  return sel && sel.toString().length > 0;
 }
 
 function lookupInTranslator(query) {
@@ -700,7 +708,7 @@ RADICALS.forEach(rd => {
   radMain.className = 'radical-main';
   radMain.textContent = rd.r;
   radMain.title = 'Show stroke order';
-  radMain.addEventListener('click', () => showStrokeOrder(rd.r));
+  radMain.addEventListener('click', () => { if (!hasSelection()) showStrokeOrder(rd.r); });
   tdRad.appendChild(radMain);
   if (rd.v) {
     const radVar = document.createElement('span');
@@ -734,7 +742,7 @@ RADICALS.forEach(rd => {
     charSpan.className = 'example-char';
     charSpan.textContent = ch;
     charSpan.title = 'Click to hear';
-    charSpan.addEventListener('click', () => speak(ch));
+    charSpan.addEventListener('click', () => { if (!hasSelection()) speak(ch); });
     item.appendChild(charSpan);
 
     const detail = document.createElement('span');
@@ -1070,6 +1078,9 @@ window.addEventListener('scroll', () => {
 
 window.addEventListener('message', (e) => {
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') {
+    ttsVolume = e.data.volume;
+  }
   if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
     const y = e.data.scrollY;
     setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);

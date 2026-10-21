@@ -410,6 +410,7 @@ let correctCount = 0;
 let wrongCount = 0;
 let advanceTimer = null;
 let ttsAudio = null;
+let ttsVolume = 1;
 
 function speak(chinese) {
   if (!chinese) return;
@@ -422,9 +423,11 @@ function speak(chinese) {
   const fallback = engine === 'youdao' ? google : youdao;
   const slowdown = (primary === youdao);
   ttsAudio = new Audio(primary);
+  ttsAudio.volume = ttsVolume;
   if (slowdown) ttsAudio.playbackRate = 0.75;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
+    ttsAudio.volume = ttsVolume;
     if (!slowdown) ttsAudio.playbackRate = 0.75;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
@@ -642,6 +645,7 @@ buildPicker();
 window.addEventListener('message', e => {
   if (e.source !== window.parent) return;
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') { ttsVolume = e.data.volume; }
   if (e.data.type === 'mandarin-hub:hidden') {
     if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
     clearTimeout(advanceTimer);

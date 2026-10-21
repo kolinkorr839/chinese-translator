@@ -410,6 +410,7 @@ const GRAMMAR_ANCHORS = {
 };
 
 let ttsAudio = null;
+let ttsVolume = 1;
 let selectedLessons = new Set();
 let sessionCount = 0;
 let timerInterval = null;
@@ -554,8 +555,10 @@ function speak(chinese) {
   const primary = engine === 'youdao' ? youdao : google;
   const fallback = engine === 'youdao' ? google : youdao;
   ttsAudio = new Audio(primary);
+  ttsAudio.volume = ttsVolume;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
+    ttsAudio.volume = ttsVolume;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
 }
@@ -786,7 +789,9 @@ function init() {
 }
 
 window.addEventListener('message', (e) => {
-  if (e.data && e.data.type === 'mandarin-hub:hidden') {
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') { ttsVolume = e.data.volume; }
+  if (e.data.type === 'mandarin-hub:hidden') {
     stopTimer();
     if (ttsAudio) { ttsAudio.pause(); }
   }

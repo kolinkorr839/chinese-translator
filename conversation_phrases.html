@@ -455,6 +455,7 @@ body {
 
 <script>
 let ttsAudio = null;
+let ttsVolume = 1;
 
 function speak(chinese) {
   if (!chinese) return;
@@ -470,9 +471,11 @@ function speak(chinese) {
 
   const slowdown = (primary === youdao);
   ttsAudio = new Audio(primary);
+  ttsAudio.volume = ttsVolume;
   if (slowdown) ttsAudio.playbackRate = 0.75;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
+    ttsAudio.volume = ttsVolume;
     if (!slowdown) ttsAudio.playbackRate = 0.75;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
@@ -516,7 +519,13 @@ function togglePractice(sectionId, btn) {
   localStorage.setItem(PRACTICE_KEY, JSON.stringify(state));
 }
 
+function hasSelection() {
+  var sel = window.getSelection();
+  return sel && sel.toString().length > 0;
+}
+
 function handlePhraseClick(el, chinese) {
+  if (hasSelection()) return;
   const inPractice = el.closest('.section-card')?.classList.contains('practice-mode');
   if (!inPractice) {
     speak(chinese);
@@ -694,6 +703,9 @@ window.addEventListener('scroll', () => {
 
 window.addEventListener('message', (e) => {
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') {
+    ttsVolume = e.data.volume;
+  }
   if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
     const y = e.data.scrollY;
     setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);

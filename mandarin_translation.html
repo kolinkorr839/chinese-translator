@@ -1344,6 +1344,7 @@ function getPinyin(chinese) {
 }
 
 let ttsAudio = null;
+let ttsVolume = 1;
 const ttsDefault = location.protocol === 'file:' ? 'youdao' : 'google';
 let ttsEngine = location.protocol === 'file:'
   ? (localStorage.getItem('tts_engine') || ttsDefault)
@@ -1372,9 +1373,11 @@ function speak(chinese) {
 
   const slowdown = (primary === youdao);
   ttsAudio = new Audio(primary);
+  ttsAudio.volume = ttsVolume;
   if (slowdown) ttsAudio.playbackRate = 0.75;
   ttsAudio.play().catch(() => {
     ttsAudio = new Audio(fallback);
+    ttsAudio.volume = ttsVolume;
     if (!slowdown) ttsAudio.playbackRate = 0.75;
     ttsAudio.play().catch(err => console.warn('TTS unavailable:', err.name));
   });
@@ -1947,6 +1950,9 @@ document.getElementById('english-input').addEventListener('keydown', (e) => {
 })();
 window.addEventListener('message', (e) => {
   if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') {
+    ttsVolume = e.data.volume;
+  }
   if (e.data.type === 'mandarin-hub:lookup-query') {
     document.getElementById('english-input').value = e.data.query;
     translate();
