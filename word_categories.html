@@ -235,7 +235,7 @@ body {
   </div>
 
   <!-- Measure Words -->
-  <h2 class="section-heading">Measure Words</h2>
+  <h2 class="section-heading" id="measure-words">Measure Words</h2>
   <table class="ref-table">
     <thead>
       <tr>
@@ -522,6 +522,10 @@ window.addEventListener('message', (e) => {
   if (!e.data) return;
   if (e.data.type === 'mandarin-hub:volume') {
     ttsVolume = e.data.volume;
+  }
+  if (e.data.type === 'mandarin-hub:scroll-to-anchor' && e.data.anchor) {
+    const el = document.getElementById(e.data.anchor);
+    if (el) el.scrollIntoView({ behavior: 'instant' });
   }
   if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
     const y = e.data.scrollY;
