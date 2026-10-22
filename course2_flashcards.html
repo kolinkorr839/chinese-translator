@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course 2 Flashcards</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Crimson+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Crimson Pro', 'PingFang TC', 'Noto Sans TC', Georgia, serif;
+    background: #F5F0E8;
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    color: #1a1a2e;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .prompt-area, .answer-area {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .container {
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .progress-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .lesson-selector {
+    margin-bottom: 16px;
+  }
+  .selector-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .range-input {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: #1a1a2e;
+    width: 130px;
+    text-align: center;
+    font-family: 'Crimson Pro', Georgia, serif;
+  }
+  .range-input::placeholder { color: #C4B9A8; }
+  .range-input:focus {
+    outline: none;
+    border-color: #C41E3A;
+  }
+  .sel-btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .sel-btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+  }
+  .sel-btn.active {
+    background: #C41E3A;
+    color: #fff;
+    border-color: #C41E3A;
+  }
+  .lesson-picker {
+    display: none;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: #FFFDF8;
+    border-radius: 8px;
+    border: 1px solid #E8E0D4;
+    box-shadow: 0 2px 12px rgba(139, 115, 72, 0.08);
+  }
+  .lesson-cb {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #6B7B8D;
+    transition: background 0.15s, color 0.15s;
+  }
+  .lesson-cb:hover { background: #F5F0E8; }
+  .lesson-cb input { accent-color: #C41E3A; }
+  .lesson-cb.checked {
+    color: #1a1a2e;
+    background: #F5F0E8;
+  }
+  .trouble-badge {
+    font-size: 11px;
+    color: #8a8478;
+    margin-left: 2px;
+  }
+  .sel-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .prompt-area {
+    min-height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .english {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: #1a1a2e;
+    line-height: 1.3;
+  }
+
+  .pinyin {
+    font-size: 20px;
+    color: #7D8471;
+    margin-top: 4px;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .pinyin:hover {
+    color: #5C6352;
+  }
+
+  .answer-area {
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-top: 24px;
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .answer-area.revealed {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+
+  .char-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .char-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #B8860B;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .char {
+    font-size: 64px;
+    line-height: 1.2;
+    color: #1a1a2e;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+
+  .char:hover {
+    color: #5C6352;
+  }
+
+  .divider {
+    font-size: 36px;
+    color: #E8E0D4;
+    font-weight: 300;
+    align-self: center;
+    margin-top: 16px;
+  }
+
+  .divider.same { display: none; }
+
+  .char-block.trad-block.same { display: none; }
+
+  .star-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #D4C9B8;
+    transition: color 0.2s, transform 0.15s;
+    padding: 0.3rem;
+    line-height: 1;
+  }
+  .star-btn:hover {
+    color: #B8860B;
+    transform: scale(1.15);
+  }
+  .star-btn.active {
+    color: #B8860B;
+  }
+
+  .show-btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 10px;
+    padding: 10px 28px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #B8860B;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    box-shadow: 0 1px 4px rgba(139, 115, 72, 0.06);
+    display: none;
+    margin-top: 24px;
+  }
+
+  .show-btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+    color: #C41E3A;
+  }
+
+  .controls {
+    margin-top: 32px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    background: #FFFDF8;
+    border: 1px solid #E8E0D4;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a2e;
+    cursor: pointer;
+    font-family: 'Crimson Pro', Georgia, serif;
+    transition: background 0.2s, border-color 0.2s;
+    box-shadow: 0 1px 4px rgba(139, 115, 72, 0.06);
+  }
+
+  .btn:hover {
+    background: #F5F0E8;
+    border-color: #C41E3A;
+  }
+
+  .btn.active {
+    background: #C41E3A;
+    color: #fff;
+    border-color: #C41E3A;
+  }
+
+  @media (max-width: 520px) {
+    .english { font-size: 24px; }
+    .pinyin { font-size: 17px; }
+    .char { font-size: 48px; }
+    .range-input { width: 110px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 style="font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:700; color:#C41E3A; text-align:center; margin-bottom:4px; letter-spacing:0.02em;">Course 2 Flashcards</h1>
+  <p style="text-align:center; color:#8B7D6B; font-size:0.95rem; font-family:'Crimson Pro',serif; font-weight:400; letter-spacing:0.04em; margin-bottom:16px;">English prompt - recall the Chinese</p>
+  <div class="progress-label" id="progress"></div>
+  <div class="lesson-selector" id="lesson-selector">
+    <div class="selector-row">
+      <button class="sel-btn active" id="btn-all" onclick="selectAll()">All</button>
+      <input type="text" class="range-input" id="range-input"
+             placeholder="e.g. 2-4 or 1,3,5"
+             onkeydown="if(event.key==='Enter') applyRange()">
+      <button class="sel-btn" id="btn-apply" onclick="applyRange()">Go</button>
+      <button class="sel-btn" id="btn-pick" onclick="toggleLessonPicker()">Lessons...</button>
+      <button class="sel-btn" id="btn-trouble" onclick="selectTroubleWords()">Trouble Words <span class="trouble-badge" id="trouble-badge">(0)</span></button>
+    </div>
+    <div class="lesson-picker" id="lesson-picker"></div>
+  </div>
+  <div class="prompt-area">
+    <div class="english" id="english"></div>
+    <div class="pinyin" id="pinyin" onclick="speak(ALL_PHRASES[order[idx]].simp)"></div>
+  </div>
+  <div class="answer-area" id="answer-area">
+    <div class="char-block">
+      <div class="char-label">Simplified</div>
+      <div class="char" id="simp-char" onclick="speak(ALL_PHRASES[order[idx]].simp)"></div>
+    </div>
+    <div class="divider" id="divider">|</div>
+    <div class="char-block trad-block" id="trad-block">
+      <div class="char-label">Traditional</div>
+      <div class="char" id="trad-char" onclick="speak(ALL_PHRASES[order[idx]].simp)"></div>
+    </div>
+    <button class="star-btn" id="star-btn" onclick="toggleStar(event)">&#9734;</button>
+  </div>
+  <button class="show-btn" id="btn-show" onclick="revealAnswer()">Show</button>
+  <div class="controls">
+    <button class="btn active" id="btn-pause" onclick="togglePause()">Resume</button>
+    <button class="btn" id="btn-prev" onclick="goBack()">&larr; Prev</button>
+    <button class="btn" id="btn-next" onclick="goNext()">Next &rarr;</button>
+    <button class="btn" id="btn-shuffle" onclick="toggleShuffle()">Shuffle: On</button>
+    <button class="btn" id="btn-speed" onclick="cycleSpeed()">Speed: 1&times;</button>
+    <button class="btn" id="btn-sound" onclick="toggleSound()">Sound: On</button>
+  </div>
+</div>
+
+<script src="data/course2_phrases.js"></script>
+<script>
+const DATA = (() => {
+  const lessons = [];
+  const idx = {};
+  window.COURSE2_PHRASES.forEach(p => {
+    if (!idx[p.lesson]) {
+      idx[p.lesson] = { title: p.lessonTitle, sections: {} };
+      lessons.push(idx[p.lesson]);
+    }
+    const l = idx[p.lesson];
+    if (!l.sections[p.section]) {
+      l.sections[p.section] = [];
+    }
+    l.sections[p.section].push(p);
+  });
+  return lessons.map(l => ({
+    title: l.title,
+    sections: Object.keys(l.sections).map(s => ({
+      title: s,
+      phrases: l.sections[s]
+    }))
+  }));
+})();
+
+const ALL_PHRASES = [];
+const LESSON_RANGES = [];
+DATA.forEach((lesson, li) => {
+  const start = ALL_PHRASES.length;
+  lesson.sections.forEach(sec => {
+    sec.phrases.forEach(p => {
+      ALL_PHRASES.push({ ...p, lesson: li });
+    });
+  });
+  LESSON_RANGES.push({ start, end: ALL_PHRASES.length, title: lesson.title });
+});
+
+const TROUBLE_KEY = 'trouble-words-c2';
+
+let order = [];
+let pool = [];
+let idx = 0;
+let paused = true;
+let shuffled = true;
+let revealed = false;
+let timer = null;
+let timerStart = 0;
+let timerDuration = 0;
+let soundOn = true;
+
+const REVEAL_MS = 1000;
+const ADVANCE_MS = 2000;
+const SPEEDS = [0.5, 0.75, 1, 1.5, 2];
+const DEFAULT_SPEED_IDX = SPEEDS.indexOf(1);
+
+let speedIdx = (() => {
+  try {
+    const i = parseInt(localStorage.getItem('mandarin-hub-speed'), 10);
+    return Number.isInteger(i) && i >= 0 && i < SPEEDS.length ? i : DEFAULT_SPEED_IDX;
+  } catch { return DEFAULT_SPEED_IDX; }
+})();
+
+const revealMs = () => Math.round(REVEAL_MS / SPEEDS[speedIdx]);
+const advanceMs = () => Math.round(ADVANCE_MS / SPEEDS[speedIdx]);
+
+function updateSpeedBtn() {
+  const b = document.getElementById('btn-speed');
+  if (b) b.textContent = 'Speed: ' + SPEEDS[speedIdx] + '×';
+}
+
+function cycleSpeed() {
+  speedIdx = (speedIdx + 1) % SPEEDS.length;
+  try { localStorage.setItem('mandarin-hub-speed', String(speedIdx)); } catch {}
+  updateSpeedBtn();
+}
+let selectedLessons = new Set();
+let troubleMode = false;
+
+function getTroubleWords() {
+  try { return JSON.parse(localStorage.getItem(TROUBLE_KEY)) || []; }
+  catch { return []; }
+}
+
+function setTroubleWords(list) {
+  try { localStorage.setItem(TROUBLE_KEY, JSON.stringify(list)); } catch {}
+}
+
+function isTroubleWord(simp) {
+  return getTroubleWords().some(w => w.simp === simp);
+}
+
+function updateTroubleBadge() {
+  const count = getTroubleWords().length;
+  const badge = document.getElementById('trouble-badge');
+  const btn = document.getElementById('btn-trouble');
+  if (badge) badge.textContent = '(' + count + ')';
+  if (btn) btn.disabled = count === 0 && !troubleMode;
+}
+
+function toggleStar(e) {
+  e.stopPropagation();
+  const p = ALL_PHRASES[order[idx]];
+  let list = getTroubleWords();
+  const i = list.findIndex(w => w.simp === p.simp);
+  const btn = document.getElementById('star-btn');
+  if (i >= 0) {
+    list.splice(i, 1);
+    btn.classList.remove('active');
+    btn.textContent = '☆';
+  } else {
+    list.push({ simp: p.simp, trad: p.trad, pinyin: p.pinyin, meaning: p.meaning });
+    btn.classList.add('active');
+    btn.textContent = '★';
+  }
+  setTroubleWords(list);
+  updateTroubleBadge();
+}
+
+function restoreData() {
+  if (!troubleMode) return;
+  troubleMode = false;
+  ALL_PHRASES.length = 0;
+  LESSON_RANGES.length = 0;
+  DATA.forEach((lesson, li) => {
+    const start = ALL_PHRASES.length;
+    lesson.sections.forEach(sec => {
+      sec.phrases.forEach(p => {
+        ALL_PHRASES.push({ ...p, lesson: li });
+      });
+    });
+    LESSON_RANGES.push({ start, end: ALL_PHRASES.length, title: lesson.title });
+  });
+  document.getElementById('btn-trouble').classList.remove('active');
+  updateTroubleBadge();
+}
+
+let zhVoice = null;
+
+function initVoice() {
+  const pick = () => {
+    const voices = speechSynthesis.getVoices();
+    zhVoice = voices.find(v => v.lang.startsWith('zh-CN'))
+      || voices.find(v => v.lang.startsWith('zh'))
+      || null;
+  };
+  pick();
+  if (!zhVoice) speechSynthesis.addEventListener('voiceschanged', pick);
+}
+
+let ttsVolume = 1;
+
+function speak(chinese) {
+  if (!soundOn) return;
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(chinese);
+  utt.lang = 'zh-CN';
+  utt.rate = 0.8;
+  utt.volume = ttsVolume;
+  if (zhVoice) utt.voice = zhVoice;
+  speechSynthesis.speak(utt);
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+function buildPool() {
+  pool = [];
+  if (selectedLessons.size === 0) {
+    pool = ALL_PHRASES.map((_, i) => i);
+  } else {
+    selectedLessons.forEach(li => {
+      const r = LESSON_RANGES[li];
+      for (let i = r.start; i < r.end; i++) pool.push(i);
+    });
+  }
+}
+
+function buildOrder() {
+  order = [...pool];
+  if (shuffled) shuffle(order);
+}
+
+function resetDeck() {
+  buildPool();
+  buildOrder();
+  idx = 0;
+  clearInterval(timer);
+  showCard();
+}
+
+function showCard() {
+  const p = ALL_PHRASES[order[idx]];
+  const isDiff = p.simp !== p.trad;
+
+  document.getElementById('english').textContent = p.meaning;
+  document.getElementById('pinyin').textContent = p.pinyin;
+  document.getElementById('simp-char').textContent = p.simp;
+  document.getElementById('trad-char').textContent = p.trad;
+
+  document.getElementById('divider').className = isDiff ? 'divider' : 'divider same';
+  document.getElementById('trad-block').className = isDiff ? 'char-block trad-block' : 'char-block trad-block same';
+
+  document.getElementById('answer-area').classList.remove('revealed');
+  revealed = false;
+
+  document.getElementById('progress').textContent = `${idx + 1} / ${pool.length}`;
+
+  const star = document.getElementById('star-btn');
+  const saved = isTroubleWord(p.simp);
+  star.className = 'star-btn' + (saved ? ' active' : '');
+  star.textContent = saved ? '★' : '☆';
+
+  if (paused) {
+    document.getElementById('btn-show').style.display = 'inline-block';
+  } else {
+    document.getElementById('btn-show').style.display = 'none';
+    speak(p.simp);
+    startTimer(revealMs(), () => {
+      document.getElementById('answer-area').classList.add('revealed');
+      revealed = true;
+      startTimer(advanceMs(), advance);
+    });
+  }
+}
+
+function startTimer(ms, cb) {
+  clearInterval(timer);
+  timerStart = Date.now();
+  timerDuration = ms;
+
+  timer = setInterval(() => {
+    if (paused) return;
+    const elapsed = Date.now() - timerStart;
+    if (elapsed >= timerDuration) {
+      clearInterval(timer);
+      cb();
+    }
+  }, 50);
+}
+
+function advance() {
+  idx = (idx + 1) % order.length;
+  if (idx === 0 && shuffled) shuffle(order);
+  showCard();
+}
+
+function revealAnswer() {
+  document.getElementById('btn-show').style.display = 'none';
+  document.getElementById('answer-area').classList.add('revealed');
+  revealed = true;
+  const p = ALL_PHRASES[order[idx]];
+  if (soundOn) speak(p.simp);
+}
+
+function togglePause() {
+  paused = !paused;
+  const btn = document.getElementById('btn-pause');
+  btn.textContent = paused ? 'Resume' : 'Pause';
+  btn.classList.toggle('active', paused);
+  if (paused) {
+    clearInterval(timer);
+    if (!revealed) {
+      document.getElementById('btn-show').style.display = 'inline-block';
+    }
+  } else {
+    document.getElementById('btn-show').style.display = 'none';
+    if (!revealed) {
+      startTimer(revealMs(), () => {
+        document.getElementById('answer-area').classList.add('revealed');
+        revealed = true;
+        startTimer(advanceMs(), advance);
+      });
+    } else {
+      startTimer(advanceMs(), advance);
+    }
+  }
+}
+
+function goNext() {
+  clearInterval(timer);
+  advance();
+}
+
+function goBack() {
+  clearInterval(timer);
+  idx = (idx - 1 + order.length) % order.length;
+  showCard();
+}
+
+function toggleShuffle() {
+  shuffled = !shuffled;
+  document.getElementById('btn-shuffle').textContent = shuffled ? 'Shuffle: On' : 'Shuffle: Off';
+  buildOrder();
+  idx = 0;
+  clearInterval(timer);
+  showCard();
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('btn-sound').textContent = soundOn ? 'Sound: On' : 'Sound: Off';
+}
+
+function selectAll() {
+  restoreData();
+  selectedLessons.clear();
+  document.getElementById('range-input').value = '';
+  updateSelectorUI();
+  resetDeck();
+}
+
+function selectTroubleWords() {
+  const words = getTroubleWords();
+  if (words.length === 0) return;
+  troubleMode = true;
+  selectedLessons.clear();
+
+  ALL_PHRASES.length = 0;
+  LESSON_RANGES.length = 0;
+  words.forEach(w => {
+    ALL_PHRASES.push({ ...w, lesson: -1 });
+  });
+
+  document.getElementById('range-input').value = '';
+  document.getElementById('btn-all').classList.remove('active');
+  document.getElementById('btn-trouble').classList.add('active');
+
+  const picker = document.getElementById('lesson-picker');
+  picker.style.display = 'none';
+  document.getElementById('btn-pick').classList.remove('active');
+
+  for (let i = 0; i < DATA.length; i++) {
+    const cb = document.getElementById('cb-' + i);
+    if (cb) {
+      cb.checked = false;
+      cb.parentElement.classList.remove('checked');
+    }
+  }
+
+  pool = ALL_PHRASES.map((_, i) => i);
+  buildOrder();
+  idx = 0;
+  clearInterval(timer);
+  showCard();
+}
+
+function applyRange() {
+  restoreData();
+  const input = document.getElementById('range-input').value.trim();
+  if (!input) { selectAll(); return; }
+
+  const newSet = new Set();
+  input.split(',').forEach(part => {
+    part = part.trim();
+    const rangeMatch = part.match(/^(\d+)\s*-\s*(\d+)$/);
+    if (rangeMatch) {
+      const a = parseInt(rangeMatch[1]), b = parseInt(rangeMatch[2]);
+      for (let i = Math.min(a, b); i <= Math.max(a, b); i++) {
+        if (i >= 1 && i <= DATA.length) newSet.add(i - 1);
+      }
+    } else {
+      const n = parseInt(part);
+      if (n >= 1 && n <= DATA.length) newSet.add(n - 1);
+    }
+  });
+
+  if (newSet.size === 0) { selectAll(); return; }
+  if (newSet.size === DATA.length) { selectAll(); return; }
+  selectedLessons = newSet;
+  updateSelectorUI();
+  resetDeck();
+}
+
+function toggleLessonPicker() {
+  const picker = document.getElementById('lesson-picker');
+  const btn = document.getElementById('btn-pick');
+  if (picker.style.display === 'none' || picker.style.display === '') {
+    picker.style.display = 'flex';
+    btn.classList.add('active');
+  } else {
+    picker.style.display = 'none';
+    btn.classList.remove('active');
+  }
+}
+
+function toggleLesson(li) {
+  restoreData();
+  if (selectedLessons.has(li)) {
+    selectedLessons.delete(li);
+  } else {
+    selectedLessons.add(li);
+  }
+  if (selectedLessons.size === DATA.length) {
+    selectedLessons.clear();
+  }
+  updateSelectorUI();
+  resetDeck();
+}
+
+function updateSelectorUI() {
+  const isAll = selectedLessons.size === 0;
+  document.getElementById('btn-all').classList.toggle('active', isAll);
+
+  for (let i = 0; i < DATA.length; i++) {
+    const cb = document.getElementById('cb-' + i);
+    if (cb) {
+      cb.checked = isAll || selectedLessons.has(i);
+      cb.parentElement.classList.toggle('checked', !isAll && selectedLessons.has(i));
+    }
+  }
+
+  if (!isAll) {
+    document.getElementById('range-input').value = formatSelection(selectedLessons);
+  } else {
+    document.getElementById('range-input').value = '';
+  }
+}
+
+function formatSelection(set) {
+  const sorted = [...set].map(i => i + 1).sort((a, b) => a - b);
+  const ranges = [];
+  let start = sorted[0], prev = sorted[0];
+  for (let i = 1; i <= sorted.length; i++) {
+    if (i < sorted.length && sorted[i] === prev + 1) {
+      prev = sorted[i];
+    } else {
+      ranges.push(start === prev ? String(start) : `${start}-${prev}`);
+      if (i < sorted.length) { start = sorted[i]; prev = sorted[i]; }
+    }
+  }
+  return ranges.join(', ');
+}
+
+function initLessonPicker() {
+  const picker = document.getElementById('lesson-picker');
+  DATA.forEach((lesson, i) => {
+    const label = document.createElement('label');
+    label.className = 'lesson-cb';
+    label.title = lesson.title;
+    label.innerHTML = `<input type="checkbox" id="cb-${i}" onchange="toggleLesson(${i})"> ${i + 1}`;
+    picker.appendChild(label);
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (document.activeElement === document.getElementById('range-input')) return;
+  if (e.key === ' ') { e.preventDefault(); togglePause(); }
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goBack();
+  if (e.key === 's' || e.key === 'S') toggleStar(e);
+  if (e.key === 'Enter' || e.key === 'r' || e.key === 'R') {
+    e.preventDefault();
+    if (paused && !revealed) revealAnswer();
+  }
+  if (e.key === 'l' || e.key === 'L') toggleLessonPicker();
+});
+
+initLessonPicker();
+updateTroubleBadge();
+buildPool();
+buildOrder();
+initVoice();
+updateSpeedBtn();
+
+function startFirstCard() {
+  if (startFirstCard.done) return;
+  startFirstCard.done = true;
+  showCard();
+}
+
+const voices = speechSynthesis.getVoices();
+if (voices.length > 0) {
+  showCard();
+} else {
+  speechSynthesis.addEventListener('voiceschanged', startFirstCard, { once: true });
+  setTimeout(startFirstCard, 1000);
+}
+
+let scrollTimer = null;
+window.addEventListener('scroll', () => {
+  clearTimeout(scrollTimer);
+  scrollTimer = setTimeout(() => {
+    try {
+      parent.postMessage({ type: 'mandarin-hub:scroll-report', scrollY: window.scrollY }, '*');
+    } catch (e) {}
+  }, 150);
+}, { passive: true });
+
+window.addEventListener('message', e => {
+  if (e.source !== window.parent) return;
+  if (!e.data) return;
+  if (e.data.type === 'mandarin-hub:volume') { ttsVolume = e.data.volume; }
+  if (e.data.type === 'mandarin-hub:hidden') {
+    if (!paused) togglePause();
+    if (window.speechSynthesis) speechSynthesis.cancel();
+  }
+  if (e.data.type === 'mandarin-hub:visible' && e.data.scrollY != null) {
+    const y = e.data.scrollY;
+    setTimeout(() => { requestAnimationFrame(() => { requestAnimationFrame(() => window.scrollTo(0, y)); }); }, 50);
+  }
+});
+
+window.addEventListener('storage', (e) => {
+  if (e.key === TROUBLE_KEY) updateTroubleBadge();
+});
+</script>
+</body>
+</html>

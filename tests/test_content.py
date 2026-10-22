@@ -31,6 +31,7 @@ BILINGUAL_BY_DESIGN = {
     "scenarios.html",
     "listening_drill.html",
     "course2_reference.html",
+    "course2_flashcards.html",
     "hsk1_reference.html",
     "hsk1_flashcards.html",
     "hsk2_reference.html",
