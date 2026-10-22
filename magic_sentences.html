@@ -408,6 +408,14 @@ body {
   background: var(--vermillion);
 }
 
+.section-card.practice-mode .example-row .cell-es .es-text {
+  display: none;
+}
+
+.section-card.practice-mode .example-row .cell-es.revealed .es-text {
+  display: inline;
+}
+
 /* -- Responsive -- */
 
 @media (max-width: 600px) {
@@ -481,6 +489,7 @@ body {
 .pattern-table .cell-es {
   color: var(--amber);
   font-style: italic;
+  cursor: pointer;
 }
 
 .pattern-table .example-row .cell-es {
@@ -579,6 +588,22 @@ function speak(chinese) {
   });
 }
 
+function speakSpanish(text) {
+  if (!text) return;
+
+  if (ttsAudio) { ttsAudio.pause(); ttsAudio.src = ''; }
+
+  const google = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=es&q=${encodeURIComponent(text)}`;
+  ttsAudio = new Audio(google);
+  ttsAudio.volume = ttsVolume;
+  ttsAudio.play().catch(() => {
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'es-ES';
+    utt.volume = ttsVolume;
+    speechSynthesis.speak(utt);
+  });
+}
+
 function lookupInTranslator(chinese) {
   if (window.parent !== window) {
     window.parent.postMessage({
@@ -598,7 +623,7 @@ function togglePractice(sectionId, btn) {
   const state = JSON.parse(localStorage.getItem(PRACTICE_KEY) || '{}');
   if (isActive) {
     state[sectionId] = true;
-    card.querySelectorAll('.phrase-chinese.revealed, .cell-zh.revealed').forEach(el => el.classList.remove('revealed'));
+    card.querySelectorAll('.phrase-chinese.revealed, .cell-zh.revealed, .cell-es.revealed').forEach(el => el.classList.remove('revealed'));
     card.scrollIntoView({ behavior: 'instant' });
   } else {
     delete state[sectionId];
@@ -618,6 +643,18 @@ function handlePhraseClick(el, chinese) {
   if (wasHidden) speak(chinese);
 }
 
+function handlePatternClick(el, chinese) {
+  const card = el.closest('.section-card');
+  const inPractice = card?.classList.contains('practice-mode');
+  if (!inPractice) { speak(chinese); return; }
+  const row = el.closest('tr');
+  const esCell = row.querySelector('.cell-es');
+  const wasHidden = !el.classList.contains('revealed');
+  el.classList.toggle('revealed');
+  if (esCell) esCell.classList.toggle('revealed');
+  if (wasHidden) speak(chinese);
+}
+
 const DATA = [
   {
     "title": "Greetings & Speaking Chinese",
@@ -625,9 +662,7 @@ const DATA = [
     "phrases": [
       { "en": "Hello.", "simp": "你好。", "trad": "你好。", "pinyin": "Nǐhǎo.", "spanish": "Hola." },
       { "en": "Do you speak Chinese?", "simp": "你会说中文吗？", "trad": "你會說中文嗎？", "pinyin": "Nǐ huì shuō Zhōngwén ma?", "spanish": "¿Hablas chino?" },
-      { "en": "I can speak Chinese.", "simp": "我会说中文。", "trad": "我會說中文。", "pinyin": "Wǒ huì shuō Zhōngwén.", "spanish": "Sé hablar chino." },
       { "en": "I speak a little Chinese.", "simp": "我会说一点中文。", "trad": "我會說一點中文。", "pinyin": "Wǒ huì shuō yīdiǎn Zhōngwén.", "spanish": "Hablo un poco de chino." },
-      { "en": "I am learning Chinese.", "simp": "我在学习中文。", "trad": "我在學習中文。", "pinyin": "Wǒ zài xuéxí Zhōngwén.", "spanish": "Estoy aprendiendo chino." },
       { "en": "You speak Chinese well!", "simp": "你的中文说得很好！", "trad": "你的中文說得很好！", "pinyin": "Nǐde Zhōngwén shuō de hěn hǎo!", "spanish": "¡Hablas chino muy bien!" },
       { "en": "Thank you!", "simp": "谢谢你！", "trad": "謝謝你！", "pinyin": "Xièxiè nǐ!", "spanish": "¡Gracias!" },
       { "en": "I do not speak Chinese well.", "simp": "我的中文说得不好。", "trad": "我的中文說得不好。", "pinyin": "Wǒde Zhōngwén shuō de bù hǎo.", "spanish": "No hablo chino bien." }
@@ -638,10 +673,9 @@ const DATA = [
     "id": "nationality",
     "phrases": [
       { "en": "What nationality are you?", "simp": "你是哪国人？", "trad": "你是哪國人？", "pinyin": "Nǐ shì nǎ guó rén?", "spanish": "¿De qué nacionalidad eres?" },
-      { "en": "I am American.", "simp": "我是美国人。", "trad": "我是美國人。", "pinyin": "Wǒ shì Měiguórén.", "spanish": "Soy estadounidense." },
-      { "en": "I am not Chinese.", "simp": "我不是中国人。", "trad": "我不是中國人。", "pinyin": "Wǒ bú shì Zhōngguórén.", "spanish": "No soy chino." },
       { "en": "Are you Chinese?", "simp": "你是中国人吗？", "trad": "你是中國人嗎？", "pinyin": "Nǐ shì Zhōngguórén ma?", "spanish": "¿Eres chino?" },
-      { "en": "You are Chinese.", "simp": "你是中国人。", "trad": "你是中國人。", "pinyin": "Nǐ shì Zhōngguórén.", "spanish": "Eres chino." }
+      { "en": "I am American.", "simp": "我是美国人。", "trad": "我是美國人。", "pinyin": "Wǒ shì Měiguórén.", "spanish": "Soy estadounidense." },
+      { "en": "I am not Chinese.", "simp": "我不是中国人。", "trad": "我不是中國人。", "pinyin": "Wǒ bú shì Zhōngguórén.", "spanish": "No soy chino." }
     ]
   },
   {
@@ -661,9 +695,8 @@ const DATA = [
     "id": "learning",
     "phrases": [
       { "en": "Where did you learn Chinese?", "simp": "你在哪里学习中文？", "trad": "你在哪裡學習中文？", "pinyin": "Nǐ zài nǎlǐ xuéxí Zhōngwén?", "spanish": "¿Dónde aprendiste chino?" },
+      { "en": "I am learning Chinese.", "simp": "我在学习中文。", "trad": "我在學習中文。", "pinyin": "Wǒ zài xuéxí Zhōngwén.", "spanish": "Estoy aprendiendo chino." },
       { "en": "I learned Chinese online.", "simp": "我在网上学习中文。", "trad": "我在網上學習中文。", "pinyin": "Wǒ zài wǎngshàng xuéxí Zhōngwén.", "spanish": "Aprendí chino en línea." },
-      { "en": "I learned Chinese in America.", "simp": "我在美国学习中文。", "trad": "我在美國學習中文。", "pinyin": "Wǒ zài Měiguó xuéxí Zhōngwén.", "spanish": "Aprendí chino en Estados Unidos." },
-      { "en": "I like Chinese food.", "simp": "我喜欢中国菜。", "trad": "我喜歡中國菜。", "pinyin": "Wǒ xǐhuān Zhōngguócài.", "spanish": "Me gusta la comida china." },
       { "en": "I like learning Chinese.", "simp": "我喜欢学习中文。", "trad": "我喜歡學習中文。", "pinyin": "Wǒ xǐhuān xuéxí Zhōngwén.", "spanish": "Me gusta aprender chino." },
       { "en": "I want to learn Chinese.", "simp": "我想要学习中文。", "trad": "我想要學習中文。", "pinyin": "Wǒ xiǎngyào xuéxí Zhōngwén.", "spanish": "Quiero aprender chino." }
     ]
@@ -672,8 +705,9 @@ const DATA = [
     "title": "Food & Drinks",
     "id": "food",
     "phrases": [
+      { "en": "I like Chinese food.", "simp": "我喜欢中国菜。", "trad": "我喜歡中國菜。", "pinyin": "Wǒ xǐhuān Zhōngguócài.", "spanish": "Me gusta la comida china." },
       { "en": "I want to eat Chinese food.", "simp": "我想吃中国菜。", "trad": "我想吃中國菜。", "pinyin": "Wǒ xiǎng chī Zhōngguócài.", "spanish": "Quiero comer comida china." },
-      { "en": "I want to drink Chinese drinks.", "simp": "我想喝中国饮料。", "trad": "我想喝中國飲料。", "pinyin": "Wǒ xiǎng hē Zhōngguó yǐnliào.", "spanish": "Quiero tomar bebidas chinas." },
+      { "en": "I have eaten Chinese food.", "simp": "我吃过中国菜。", "trad": "我吃過中國菜。", "pinyin": "Wǒ chī guò Zhōngguócài.", "spanish": "He comido comida china." },
       { "en": "Do you have water?", "simp": "你有水吗？", "trad": "你有水嗎？", "pinyin": "Nǐ yǒu shuǐ ma?", "spanish": "¿Tienes agua?" },
       { "en": "I want water.", "simp": "我想要水。", "trad": "我想要水。", "pinyin": "Wǒ xiǎngyào shuǐ.", "spanish": "Quiero agua." }
     ]
@@ -683,10 +717,7 @@ const DATA = [
     "id": "travel",
     "phrases": [
       { "en": "Have you been to China?", "simp": "你去过中国吗？", "trad": "你去過中國嗎？", "pinyin": "Nǐ qù guò Zhōngguó ma?", "spanish": "¿Has ido a China?" },
-      { "en": "I have been to China.", "simp": "我去过中国。", "trad": "我去過中國。", "pinyin": "Wǒ qù guò Zhōngguó.", "spanish": "He ido a China." },
       { "en": "I have not been to China.", "simp": "我没去过中国。", "trad": "我沒去過中國。", "pinyin": "Wǒ méi qù guò Zhōngguó.", "spanish": "No he ido a China." },
-      { "en": "I have eaten Chinese food.", "simp": "我吃过中国菜。", "trad": "我吃過中國菜。", "pinyin": "Wǒ chī guò Zhōngguócài.", "spanish": "He comido comida china." },
-      { "en": "I have never eaten Chinese food.", "simp": "我从来没吃过中国菜。", "trad": "我從來沒吃過中國菜。", "pinyin": "Wǒ cónglái méi chī guò Zhōngguócài.", "spanish": "Nunca he comido comida china." },
       { "en": "I want to go to China.", "simp": "我想去中国。", "trad": "我想去中國。", "pinyin": "Wǒ xiǎng qù Zhōngguó.", "spanish": "Quiero ir a China." }
     ]
   },
@@ -877,7 +908,7 @@ const DATA = [
         "trad": "只要…，就…",
         "pinyin": "",
         "spanish": "Siempre que…, …",
-        "example": { "en": "As long as you practice, you'll improve.", "simp": "只要练习，就会进步。", "trad": "只要練習，就會進步。", "pinyin": "Zhǐyào liànxí, jiù huì jìnbù.", "spanish": "Siempre que practiques, mejorarás." }
+        "example": { "en": "As long as I practice, I'll improve.", "simp": "只要我练习，我就会进步。", "trad": "只要我練習，我就會進步。", "pinyin": "Zhǐyào wǒ liànxí, wǒ jiù huì jìnbù.", "spanish": "Siempre que practique, mejoraré." }
       },
       {
         "en": "No matter what…, still…",
@@ -937,18 +968,23 @@ function init() {
       section.phrases.forEach(p => {
         const ex = p.example;
         const exEsc = ex.simp.replace(/'/g, "\\'");
+        const pSpEsc = (p.spanish || '').replace(/'/g, "\\'");
+        const exSpEsc = (ex.spanish || '').replace(/'/g, "\\'");
         const pPinyin = p.pinyin ? `<div class="cell-pinyin">${p.pinyin}</div>` : '';
         const exPinyin = ex.pinyin ? `<div class="cell-pinyin">${ex.pinyin}</div>` : '';
         html += `<tr class="pattern-row">
           <td>${p.en}</td>
           <td class="cell-zh" onclick="speak('${exEsc}')">${p.simp}${pPinyin}</td>
-          <td class="cell-es">${p.spanish}</td>
+          <td class="cell-es" onclick="speakSpanish('${pSpEsc}')">${p.spanish}</td>
           <td><button class="lookup-btn" title="Look up in translator" onclick="lookupInTranslator('${exEsc}')">&#x2197;</button></td>
         </tr>
         <tr class="example-row">
           <td>${ex.en}</td>
-          <td class="cell-zh" onclick="speak('${exEsc}')">${ex.simp}${exPinyin}</td>
-          <td class="cell-es">${ex.spanish}</td>
+          <td class="cell-zh" onclick="handlePatternClick(this, '${exEsc}')">
+            <span class="reveal-dot"></span>
+            <span class="zh-text">${ex.simp}</span>${exPinyin}
+          </td>
+          <td class="cell-es" onclick="speakSpanish('${exSpEsc}')"><span class="es-text">${ex.spanish}</span></td>
           <td></td>
         </tr>`;
       });
@@ -966,13 +1002,14 @@ function init() {
         const escaped = p.simp.replace(/'/g, "\\'");
         const pinyin = p.pinyin ? `<div class="cell-pinyin">${p.pinyin}</div>` : '';
         const spanish = p.spanish || '';
+        const spEsc = spanish.replace(/'/g, "\\'");
         html += `<tr>
           <td>${p.en}</td>
           <td class="cell-zh" onclick="handlePhraseClick(this, '${escaped}')">
             <span class="reveal-dot"></span>
             <span class="zh-text">${p.simp}</span>${pinyin}
           </td>
-          <td class="cell-es">${spanish}</td>
+          <td class="cell-es" onclick="speakSpanish('${spEsc}')">${spanish}</td>
           <td><button class="lookup-btn" title="Look up in translator" onclick="event.stopPropagation(); lookupInTranslator('${escaped}')">&#x2197;</button></td>
         </tr>`;
       });
